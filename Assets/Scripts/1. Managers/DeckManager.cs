@@ -9,19 +9,19 @@ public class DeckManager : MonoBehaviour
     [SerializeField] private Transform playerHandTransform;
     [SerializeField] private Transform opponentHandTransform;
 
-    private DeckObject playerDeck;
-    private DeckObject opponentDeck;
+    private DeckController playerDeck;
+    private DeckController opponentDeck;
 
     private CardUIBuilderController cardUIBuilderController;
 
 
-    public void SetPlayerHand(List<SOCardDataObject> playerCardSOs)
+    public void SetPlayerDeck(List<SOCardDataObject> playerCardSOs)
     {
         playerDeck.InitDeckList(playerCardSOs);
         RandomizeCardDeck(playerDeck);
     }
 
-    public void SetOpponentHand(List<SOCardDataObject> opponentCardSOs)
+    public void SetOpponentDeck(List<SOCardDataObject> opponentCardSOs)
     {
         opponentDeck.InitDeckList(opponentCardSOs);
         RandomizeCardDeck(opponentDeck);
@@ -77,13 +77,13 @@ public class DeckManager : MonoBehaviour
 
     private void Awake()
     {
-        playerDeck = new DeckObject();
-        opponentDeck = new DeckObject();
+        playerDeck = new DeckController();
+        opponentDeck = new DeckController();
 
         cardUIBuilderController = FindObjectOfType<CardUIBuilderController>();
     }
 
-    private void RandomizeCardDeck(DeckObject destinationDeck)
+    private void RandomizeCardDeck(DeckController destinationDeck)
     {
         List<CardDataObject> newDeckOrder = new List<CardDataObject>();
         int deckCount = newDeckOrder.Count;

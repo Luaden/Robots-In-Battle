@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CardPlayManager : MonoBehaviour
+public class HandManager : MonoBehaviour
 {
     [SerializeField] private HandController playerHand;
     [SerializeField] private HandController opponentHand;

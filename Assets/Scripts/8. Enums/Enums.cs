@@ -37,9 +37,14 @@ public enum AffectedChannels
     AllPossibleChannels
 }
 
-public enum EffectTypes
+public enum CardEffectTypes
 {
     
+}
+
+public enum ComponentEffectTypes
+{
+
 }
 
 public enum EffectTarget
