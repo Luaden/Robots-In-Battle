@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class CombatManager : MonoBehaviour
 {
+    [SerializeField] private List<SOCardDataObject> testDeck;
+
     public static CombatManager instance;
 
     private DeckManager deckManager;
@@ -39,5 +41,14 @@ public class CombatManager : MonoBehaviour
     private void OnDisable()
     {
         instance = null;
+    }
+
+    [ContextMenu("Draw Card Prefab")]
+    public void DrawCardPrefab()
+    {
+        deckManager.SetPlayerDeck(testDeck);
+
+        for (int i = 0; i <= 4; i++)
+            deckManager.DrawPlayerCard();
     }
 }

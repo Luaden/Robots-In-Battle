@@ -4,24 +4,31 @@ using UnityEngine;
 
 public class HandController
 {
-    [SerializeField] private List<CardDataObject> characterHandHand;
+    [SerializeField] private List<CardDataObject> characterHand;
 
-    public List<CardDataObject> PlayerHand { get => characterHandHand; }
+    public List<CardDataObject> CharacterHand { get => characterHand; }
 
     public void AddCardToHand(CardDataObject cardToAdd)
     {
-        characterHandHand.Add(cardToAdd);
+        if (characterHand == null)
+            characterHand = new List<CardDataObject>();
+        characterHand.Add(cardToAdd);
     }
 
 
     public void RemoveCardFromHand(CardDataObject cardToRemove)
     {
-        if (!characterHandHand.Contains(cardToRemove))
+        if (!characterHand.Contains(cardToRemove))
         {
             Debug.Log(cardToRemove.CardName + " was not found in the player hand!");
             return;
         }
 
-        characterHandHand.Remove(cardToRemove);
+        characterHand.Remove(cardToRemove);
+    }
+
+    private void Awake()
+    {
+        characterHand = new List<CardDataObject>();
     }
 }

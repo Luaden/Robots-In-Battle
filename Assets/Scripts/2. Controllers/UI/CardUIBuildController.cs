@@ -11,7 +11,7 @@ public class CardUIBuildController : MonoBehaviour
     public void BuildAndDrawPlayerCard(CardDataObject cardToDraw, Transform cardStartPoint)
     {
         GameObject cardUIGameObject;
-        cardUIGameObject = Instantiate(PlayerCardPrefab);
+        cardUIGameObject = Instantiate(PlayerCardPrefab, transform);
         cardUIGameObject.transform.position = cardStartPoint.position;
 
         cardToDraw.CardUIObject = cardUIGameObject;
@@ -27,7 +27,7 @@ public class CardUIBuildController : MonoBehaviour
     public void BuildAndDrawOpponentCard(CardDataObject cardToDraw, Transform cardStartPoint)
     {
         GameObject cardUIGameObject;
-        cardUIGameObject = Instantiate(PlayerCardPrefab);
+        cardUIGameObject = Instantiate(PlayerCardPrefab, transform);
         cardUIGameObject.transform.position = cardStartPoint.position;
 
         cardToDraw.CardUIObject = cardUIGameObject;

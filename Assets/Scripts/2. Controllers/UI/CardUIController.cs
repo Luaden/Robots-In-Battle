@@ -45,17 +45,17 @@ public class CardUIController : MonoBehaviour, IPointerDownHandler, IPointerEnte
 
     public virtual void OnPointerEnter(PointerEventData eventData)
     {
-        throw new System.NotImplementedException();
+        //throw new System.NotImplementedException();
     }
 
     public virtual void OnPointerExit(PointerEventData eventData)
     {
-        throw new System.NotImplementedException();
+        //throw new System.NotImplementedException();
     }
 
     public virtual void OnPointerDown(PointerEventData eventData)
     {
-        throw new System.NotImplementedException();
+        //throw new System.NotImplementedException();
     }
 
     public virtual void OnBeginDrag(PointerEventData eventData)
@@ -82,7 +82,7 @@ public class CardUIController : MonoBehaviour, IPointerDownHandler, IPointerEnte
 
     private void MoveToSlot()
     {
-        if (!isPickedUp && cardSlotController != null)
+        if (isPickedUp || cardSlotController == null)
             return;
 
         draggableRectTransform.position = 

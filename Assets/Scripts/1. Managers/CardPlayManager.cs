@@ -7,6 +7,8 @@ public class CardPlayManager : MonoBehaviour
     private AttackPlanObject playerAttackPlan;
     private AttackPlanObject opponentAttackPlan;
 
+    private DamageCalculatorController damageCalculator;
+
     public void SetPlayerAttackPlan(AttackPlanObject attackPlan)
     {
         playerAttackPlan = attackPlan;
@@ -14,5 +16,10 @@ public class CardPlayManager : MonoBehaviour
         //Get opponent AttackPlanObject
 
         //DetermineAttackPlanInteraction();
+    }
+
+    private void Awake()
+    {
+        damageCalculator = new DamageCalculatorController();
     }
 }
