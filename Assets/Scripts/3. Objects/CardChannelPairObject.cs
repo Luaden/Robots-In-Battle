@@ -8,4 +8,7 @@ public class CardChannelPairObject
         this.card = selectedCard;
         this.cardChannel = selectedCardChannel;
     }
+
+    public CardDataObject CardData { get => card; }
+    public Channels CardChannel { get => cardChannel; }
 }
