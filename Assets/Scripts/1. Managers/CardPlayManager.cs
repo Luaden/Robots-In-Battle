@@ -4,32 +4,15 @@ using UnityEngine;
 
 public class CardPlayManager : MonoBehaviour
 {
-    [SerializeField] private HandController playerHand;
-    [SerializeField] private HandController opponentHand;
+    private AttackPlanObject playerAttackPlan;
+    private AttackPlanObject opponentAttackPlan;
 
-    public void AddCardToPlayerHand(CardDataObject cardToAdd)
+    public void SetPlayerAttackPlan(AttackPlanObject attackPlan)
     {
-        playerHand.AddCardToHand(cardToAdd);
-    }
+        playerAttackPlan = attackPlan;
 
-    public void AddCardToOpponentHand(CardDataObject cardToAdd)
-    {
-        opponentHand.AddCardToHand(cardToAdd);
-    }
+        //Get opponent AttackPlanObject
 
-    public void RemoveCardFromPlayerHand(CardDataObject cardToRemove)
-    {
-        playerHand.RemoveCardFromHand(cardToRemove);
-    }
-
-    public void RemoveCardFromOpponentHand(CardDataObject cardToRemove)
-    {
-        opponentHand.RemoveCardFromHand(cardToRemove);
-    }
-
-    private void Start()
-    {
-        playerHand = new HandController();
-        opponentHand = new HandController();
+        //DetermineAttackPlanInteraction();
     }
 }

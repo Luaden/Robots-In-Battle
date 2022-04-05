@@ -6,19 +6,19 @@ public class CardUIManager : MonoBehaviour
 {
     [SerializeField] private Transform playerDeckTransform;
     [SerializeField] private Transform opponentDeckTransform;
-    [SerializeField] private Transform playerHandTransform;
+    [SerializeField] private PlayerHandSlotManager playerHandSlotManager;
     [SerializeField] private Transform opponentHandTransform;
 
     private CardUIBuildController cardUIBuildController;
 
     public void BuildAndDrawPlayerCard(CardDataObject cardToDraw)
     {
-        cardUIBuildController.BuildAndDrawCard(cardToDraw, playerDeckTransform, playerHandTransform);
+        cardUIBuildController.BuildAndDrawPlayerCard(cardToDraw, playerDeckTransform);
     }
 
     public void BuildAndDrawOpponentCard(CardDataObject cardToDraw)
     {
-        cardUIBuildController.BuildAndDrawCard(cardToDraw, opponentDeckTransform, opponentHandTransform);
+        cardUIBuildController.BuildAndDrawOpponentCard(cardToDraw, opponentDeckTransform);
     }
 
     private void Awake()
