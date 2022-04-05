@@ -13,7 +13,7 @@ public class SOCardDataObject : ScriptableObject
     [SerializeField] private Sprite cardBackground;
 
     [Header("Card Attributes")]
-    [SerializeField] private CardType cardType;
+    [SerializeField] private CardType cardType; 
     [SerializeField] private AttackType attackType;
     [Tooltip("Defenses handle incoming damage in the selected channel(s). Guard reduces incoming damage, while Counter will nullify the incoming damage " +
     "and reflect the amount detailed below.")]

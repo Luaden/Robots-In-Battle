@@ -37,7 +37,7 @@ public class EditorCardGUI : Editor
         EditorGUILayout.PropertyField(serializedObject.FindProperty("affectedChannels"));
         EditorGUILayout.PropertyField(serializedObject.FindProperty("energyCost"));
         EditorGUILayout.PropertyField(serializedObject.FindProperty("baseDamage"));
-        EditorGUILayout.PropertyField(serializedObject.FindProperty("treatBaseDamageAsPercent"));
+        EditorGUILayout.PropertyField(serializedObject.FindProperty("treatDamageAsPercent"));
         EditorGUILayout.PropertyField(serializedObject.FindProperty("cardEffects"));
     }
 
