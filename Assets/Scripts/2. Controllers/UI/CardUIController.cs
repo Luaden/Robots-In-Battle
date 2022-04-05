@@ -45,29 +45,31 @@ public class CardUIController : MonoBehaviour, IPointerDownHandler, IPointerEnte
 
     public virtual void OnPointerEnter(PointerEventData eventData)
     {
-        throw new System.NotImplementedException();
+        //throw new System.NotImplementedException();
     }
 
     public virtual void OnPointerExit(PointerEventData eventData)
     {
-        throw new System.NotImplementedException();
+        //throw new System.NotImplementedException();
     }
 
     public virtual void OnPointerDown(PointerEventData eventData)
     {
-        throw new System.NotImplementedException();
+        //throw new System.NotImplementedException();
     }
 
     public virtual void OnBeginDrag(PointerEventData eventData)
     {
         isPickedUp = true;
-        draggableCanvasGroup.interactable = false;
+        draggableCanvasGroup.blocksRaycasts = false;
+        draggableCanvasGroup.alpha = .6f;
     }
 
     public virtual void OnEndDrag(PointerEventData eventData)
     {
         isPickedUp = false;
-        draggableCanvasGroup.interactable = true;
+        draggableCanvasGroup.blocksRaycasts = true;
+        draggableCanvasGroup.alpha = 1f;
     }
 
     public void OnDrag(PointerEventData eventData)
@@ -82,7 +84,7 @@ public class CardUIController : MonoBehaviour, IPointerDownHandler, IPointerEnte
 
     private void MoveToSlot()
     {
-        if (!isPickedUp && cardSlotController != null)
+        if (isPickedUp || cardSlotController == null)
             return;
 
         draggableRectTransform.position = 
