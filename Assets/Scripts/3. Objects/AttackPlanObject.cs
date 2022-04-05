@@ -2,9 +2,20 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class AttackPlanObject : MonoBehaviour
+// Containing information about the planned attack
+public class AttackPlanObject
 {
-    private List<CardChannelPairObject> cardChannelPairObjects;
-    
+    protected List<CardChannelPairObject> cardChannelPairObjects;
+    protected CharacterOrigin characterOrigin;
+    protected CharacterDestination characterDestination;
+
+    public AttackPlanObject(List<CardChannelPairObject> cardChannelPairObjects, 
+                            CharacterOrigin characterOrigin, 
+                            CharacterDestination characterDestination)
+    {
+        this.cardChannelPairObjects = cardChannelPairObjects;
+        this.characterOrigin = characterOrigin;
+        this.characterDestination = characterDestination;
+    }
 
 }
