@@ -4,7 +4,8 @@ using UnityEngine;
 
 public class AttackPlanObject : MonoBehaviour
 {
-    private List<CardChannelPairObject> cardChannelPairObjects;
-    
+    [SerializeField] protected List<CardChannelPairObject> cardChannelPairObjects;
+    [SerializeField] protected CharacterOrigin characterOrigin;
+    [SerializeField] protected CharacterDestination characterDestination;
 
 }
