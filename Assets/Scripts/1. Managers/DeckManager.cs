@@ -4,16 +4,8 @@ using UnityEngine;
 
 public class DeckManager : MonoBehaviour
 {
-    [SerializeField] private Transform playerDeckTransform;
-    [SerializeField] private Transform opponentDeckTransform;
-    [SerializeField] private Transform playerHandTransform;
-    [SerializeField] private Transform opponentHandTransform;
-
     private DeckController playerDeck;
     private DeckController opponentDeck;
-
-    private CardUIBuilderController cardUIBuilderController;
-
 
     public void SetPlayerDeck(List<SOCardDataObject> playerCardSOs)
     {
@@ -29,38 +21,18 @@ public class DeckManager : MonoBehaviour
 
     public void DrawPlayerCard()
     {
-        CardDataObject drawnCard;
+        CardDataObject drawnCard = playerDeck.DrawCard();
 
-        if (playerDeck.CardDeck.Count <= 0)
-        {
-            Debug.Log("Not enough utility cards to draw more!");
-            return;
-        }
-
-        drawnCard = playerDeck.CardDeck[0];
-
-        CombatManager.instance.CardPlayManager.AddCardToPlayerHand(drawnCard);
-        playerDeck.CardDeck.Remove(playerDeck.CardDeck[0]);
-
-        cardUIBuilderController.BuildAndDrawCard(drawnCard, playerDeckTransform, playerHandTransform);
+        CombatManager.instance.HandManager.AddCardToPlayerHand(drawnCard);
+        CombatManager.instance.CardUIManager.BuildAndDrawPlayerCard(drawnCard);
     }
 
     public void DrawOpponentCard()
     {
-        CardDataObject drawnCard;
+        CardDataObject drawnCard = opponentDeck.DrawCard();
 
-        if (opponentDeck.CardDeck.Count <= 0)
-        {
-            Debug.Log("Not enough utility cards to draw more!");
-            return;
-        }
-
-        drawnCard = opponentDeck.CardDeck[0];
-
-        CombatManager.instance.CardPlayManager.AddCardToOpponentHand(drawnCard);
-        opponentDeck.CardDeck.Remove(opponentDeck.CardDeck[0]);
-
-        cardUIBuilderController.BuildAndDrawCard(drawnCard, opponentDeckTransform, opponentHandTransform);
+        CombatManager.instance.HandManager.AddCardToOpponentHand(drawnCard);
+        CombatManager.instance.CardUIManager.BuildAndDrawOpponentCard(drawnCard);
     }
 
     public void ReturnCardToPlayerDeck(CardDataObject cardToReturn)
@@ -79,8 +51,6 @@ public class DeckManager : MonoBehaviour
     {
         playerDeck = new DeckController();
         opponentDeck = new DeckController();
-
-        cardUIBuilderController = FindObjectOfType<CardUIBuilderController>();
     }
 
     private void RandomizeCardDeck(DeckController destinationDeck)

@@ -9,12 +9,12 @@ public class CombatManager : MonoBehaviour
     private DeckManager deckManager;
     private HandManager handManager;
     private CardPlayManager cardPlayManager;
-
-    private MechBuildController mechBuildController;
+    private CardUIManager cardUIManager;
 
     public DeckManager DeckManager { get => deckManager; }
     public HandManager HandManager { get => HandManager; }
     public CardPlayManager CardPlayManager { get => cardPlayManager; }
+    public CardUIManager CardUIManager { get => cardUIManager; }
 
     private void Awake()
     {
@@ -23,6 +23,7 @@ public class CombatManager : MonoBehaviour
         deckManager = FindObjectOfType<DeckManager>(true);
         handManager = FindObjectOfType<HandManager>(true);
         cardPlayManager = FindObjectOfType<CardPlayManager>(true);
+        cardUIManager = FindObjectOfType<CardUIManager>(true);
     }
 
     private void Start()
