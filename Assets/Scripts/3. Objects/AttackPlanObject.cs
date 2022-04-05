@@ -2,10 +2,20 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class AttackPlanObject : MonoBehaviour
+// Containing information about the planned attack
+public class AttackPlanObject
 {
-    [SerializeField] protected List<CardChannelPairObject> cardChannelPairObjects;
-    [SerializeField] protected CharacterOrigin characterOrigin;
-    [SerializeField] protected CharacterDestination characterDestination;
+    protected List<CardChannelPairObject> cardChannelPairObjects;
+    protected CharacterOrigin characterOrigin;
+    protected CharacterDestination characterDestination;
+
+    public AttackPlanObject(List<CardChannelPairObject> cardChannelPairObjects, 
+                            CharacterOrigin characterOrigin, 
+                            CharacterDestination characterDestination)
+    {
+        this.cardChannelPairObjects = cardChannelPairObjects;
+        this.characterOrigin = characterOrigin;
+        this.characterDestination = characterDestination;
+    }
 
 }
