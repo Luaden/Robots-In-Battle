@@ -61,13 +61,15 @@ public class CardUIController : MonoBehaviour, IPointerDownHandler, IPointerEnte
     public virtual void OnBeginDrag(PointerEventData eventData)
     {
         isPickedUp = true;
-        draggableCanvasGroup.interactable = false;
+        draggableCanvasGroup.blocksRaycasts = false;
+        draggableCanvasGroup.alpha = .6f;
     }
 
     public virtual void OnEndDrag(PointerEventData eventData)
     {
         isPickedUp = false;
-        draggableCanvasGroup.interactable = true;
+        draggableCanvasGroup.blocksRaycasts = true;
+        draggableCanvasGroup.alpha = 1f;
     }
 
     public void OnDrag(PointerEventData eventData)

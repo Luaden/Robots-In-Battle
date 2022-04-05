@@ -13,6 +13,8 @@ public abstract class BaseSlotController<T> : MonoBehaviour, IDropHandler
 
     public void OnDrop(PointerEventData eventData)
     {
+        Debug.Log("Dropping item on slot!");
+
         if(eventData.pointerDrag.GetComponent<T>() == null)
         {
             Debug.Log("Item was dropped in a slot that does not fit it.");
