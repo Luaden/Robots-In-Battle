@@ -23,6 +23,12 @@ public class DeckManager : MonoBehaviour
     {
         CardDataObject drawnCard = playerDeck.DrawCard();
 
+        if(drawnCard == null)
+        {
+            Debug.Log("No more cards to draw in player deck.");
+            return;
+        }
+
         CombatManager.instance.HandManager.AddCardToPlayerHand(drawnCard);
         CombatManager.instance.CardUIManager.BuildAndDrawPlayerCard(drawnCard);
     }
@@ -56,7 +62,7 @@ public class DeckManager : MonoBehaviour
     private void RandomizeCardDeck(DeckController destinationDeck)
     {
         List<CardDataObject> newDeckOrder = new List<CardDataObject>();
-        int deckCount = newDeckOrder.Count;
+        int deckCount = destinationDeck.CardDeck.Count;
 
 
         for (int i = 0; i < deckCount; i++)
