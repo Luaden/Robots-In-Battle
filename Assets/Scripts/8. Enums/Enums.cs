@@ -66,14 +66,3 @@ public enum CharacterSelect
     Player,
     Opponent
 }
-
-public enum CharacterOrigin
-{
-    Player,
-    Opponent
-}
-public enum CharacterDestination
-{
-    Player,
-    Opponent
-}

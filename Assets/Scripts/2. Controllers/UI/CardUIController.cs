@@ -24,11 +24,11 @@ public class CardUIController : MonoBehaviour, IPointerDownHandler, IPointerEnte
     [SerializeField] private float travelSpeed;
 
     private CardDataObject cardData;
-    private CardSlotController cardSlotController;
+    private BaseSlotController<CardUIController> cardSlotController;
     private bool isPickedUp = false;
 
     public CardDataObject CardData { get => cardData; }
-    public CardSlotController CardSlotController { get => cardSlotController; set => cardSlotController = value; }
+    public BaseSlotController<CardUIController> CardSlotController { get => cardSlotController; set => UpdateCardSlot(value); }
 
     public void InitCardUI(CardDataObject newCardData)
     {
@@ -38,6 +38,8 @@ public class CardUIController : MonoBehaviour, IPointerDownHandler, IPointerEnte
         cardDescription.text = newCardData.CardDescription;
         energyCostText.text = newCardData.EnergyCost.ToString();
         damageDealtText.text = newCardData.BaseDamage.ToString();
+
+        //Need to somehow indicate possible channels and affected channels in here. Possibly description?
 
         cardData = newCardData;
         newCardData.CardUIObject = this.gameObject;
@@ -89,5 +91,11 @@ public class CardUIController : MonoBehaviour, IPointerDownHandler, IPointerEnte
 
         draggableRectTransform.position = 
             Vector2.Lerp(draggableRectTransform.position, CardSlotController.gameObject.GetComponent<RectTransform>().position, travelSpeed * Time.deltaTime);
+    }
+
+    private void UpdateCardSlot(BaseSlotController<CardUIController> newSlot)
+    {
+        cardSlotController = newSlot;
+        transform.SetParent(newSlot.transform);
     }
 }

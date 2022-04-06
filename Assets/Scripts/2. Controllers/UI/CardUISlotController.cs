@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CardSlotController : BaseSlotController<CardUIController>
+public class CardUISlotController : BaseSlotController<CardUIController>
 {
     private void Start()
     {
