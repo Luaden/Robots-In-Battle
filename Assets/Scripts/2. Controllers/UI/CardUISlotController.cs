@@ -4,8 +4,5 @@ using UnityEngine;
 
 public class CardUISlotController : BaseSlotController<CardUIController>
 {
-    private void Start()
-    {
-        slotManager.AddSlotToList(this);
-    }
+
 }

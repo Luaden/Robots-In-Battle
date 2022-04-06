@@ -19,7 +19,7 @@ public class CardUIBuildController : MonoBehaviour
 
         cardUIObject.InitCardUI(cardToDraw);
 
-        CombatManager.instance.PlayerHandSlotManager.AddItemToCollection(cardUIObject);
+        CombatManager.instance.PlayerHandSlotManager.AddItemToCollection(cardUIObject, null);
 
         cardUIGameObject.SetActive(true);
     }
@@ -35,7 +35,7 @@ public class CardUIBuildController : MonoBehaviour
 
         cardUIObject.InitCardUI(cardToDraw);
 
-        CombatManager.instance.OpponentHandSlotManager.AddItemToCollection(cardUIObject);
+        CombatManager.instance.OpponentHandSlotManager.AddItemToCollection(cardUIObject, null);
 
         cardUIGameObject.SetActive(true);
     }

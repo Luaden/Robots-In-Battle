@@ -14,7 +14,7 @@ public class ChannelsUISlotManager : BaseSlotManager<CardUIController>
 
     private List<CardChannelPairObject> cardChannelPairObjects;
 
-    public override void AddItemToCollection(CardUIController item)
+    public override void AddItemToCollection(CardUIController item, BaseSlotController<CardUIController> slot)
     {
         if(firstAttackPosition.CurrentSlottedItem == null)
         {
@@ -52,7 +52,7 @@ public class ChannelsUISlotManager : BaseSlotManager<CardUIController>
         if(CardChannelCheck(newData, selectedChannel))
         {
             newData.CardSlotController.SlotManager.RemoveItemFromCollection(newData);
-            AddItemToCollection(newData);
+            AddItemToCollection(newData, slot);
             return;
         }
 
