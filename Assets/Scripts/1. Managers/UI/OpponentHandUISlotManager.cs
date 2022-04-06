@@ -4,11 +4,11 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class OpponentHandSlotManager : BaseSlotManager<CardUIController>
+public class OpponentHandUISlotManager : BaseSlotManager<CardUIController>
 {
     public override void AddItemToCollection(CardUIController item)
     {
-        foreach (CardSlotController slot in slotList)
+        foreach (CardUISlotController slot in slotList)
             if (slot.CurrentSlottedItem == null)
             {
                 slot.CurrentSlottedItem = item;
@@ -22,7 +22,7 @@ public class OpponentHandSlotManager : BaseSlotManager<CardUIController>
 
     public override void RemoveItemFromCollection(CardUIController item)
     {
-        foreach (CardSlotController slot in slotList)
+        foreach (CardUISlotController slot in slotList)
             if (slot.CurrentSlottedItem == item)
             {
                 slot.CurrentSlottedItem = null;
@@ -30,19 +30,17 @@ public class OpponentHandSlotManager : BaseSlotManager<CardUIController>
             }
     }
 
-    public override void HandleDrop(PointerEventData eventData)
+    public override void HandleDrop(PointerEventData eventData, CardUIController droppedCard, BaseSlotController<CardUIController> slot)
     {
-        CardUIController selectedCard = eventData.pointerDrag.GetComponent<CardUIController>();
-
-        if (selectedCard == null)
+        if (droppedCard == null)
         {
             Debug.Log("Could not find appropriate data for slot.");
             //Tell card to move to previous slot.
             return;
         }
 
-        selectedCard.CardSlotController.SlotManager.RemoveItemFromCollection(selectedCard);
-        AddItemToCollection(selectedCard);
+        droppedCard.CardSlotController.SlotManager.RemoveItemFromCollection(droppedCard);
+        AddItemToCollection(droppedCard);
     }
 
     public override void AddSlotToList(BaseSlotController<CardUIController> newSlot)

@@ -13,7 +13,7 @@ public abstract class BaseSlotManager<T> : MonoBehaviour
         eventData.pointerDrag.GetComponent<RectTransform>().anchoredPosition += eventData.delta / mainCanvas.scaleFactor;
     }
 
-    public abstract void HandleDrop(PointerEventData eventData);
+    public abstract void HandleDrop(PointerEventData eventData, T newData, BaseSlotController<T> slot);
 
     public abstract void RemoveItemFromCollection(T item);
     public abstract void AddItemToCollection(T item);

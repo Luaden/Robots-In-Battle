@@ -6,7 +6,7 @@ public class CardUIManager : MonoBehaviour
 {
     [SerializeField] private Transform playerDeckTransform;
     [SerializeField] private Transform opponentDeckTransform;
-    [SerializeField] private PlayerHandSlotManager playerHandSlotManager;
+    [SerializeField] private PlayerHandUISlotManager playerHandSlotManager;
     [SerializeField] private Transform opponentHandTransform;
 
     private CardUIBuildController cardUIBuildController;

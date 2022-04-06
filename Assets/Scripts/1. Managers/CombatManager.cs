@@ -10,15 +10,15 @@ public class CombatManager : MonoBehaviour
 
     private DeckManager deckManager;
     private HandManager handManager;
-    private PlayerHandSlotManager playerHandSlotManager;
-    private OpponentHandSlotManager opponentHandSlotManager;
+    private PlayerHandUISlotManager playerHandSlotManager;
+    private OpponentHandUISlotManager opponentHandSlotManager;
     private CardPlayManager cardPlayManager;
     private CardUIManager cardUIManager;
 
     public DeckManager DeckManager { get => deckManager; }
     public HandManager HandManager { get => handManager; }
-    public PlayerHandSlotManager PlayerHandSlotManager { get => playerHandSlotManager; }
-    public OpponentHandSlotManager OpponentHandSlotManager { get => opponentHandSlotManager; }
+    public PlayerHandUISlotManager PlayerHandSlotManager { get => playerHandSlotManager; }
+    public OpponentHandUISlotManager OpponentHandSlotManager { get => opponentHandSlotManager; }
     public CardPlayManager CardPlayManager { get => cardPlayManager; }
     public CardUIManager CardUIManager { get => cardUIManager; }
 
@@ -28,7 +28,7 @@ public class CombatManager : MonoBehaviour
 
         deckManager = FindObjectOfType<DeckManager>(true);
         handManager = FindObjectOfType<HandManager>(true);
-        playerHandSlotManager = FindObjectOfType<PlayerHandSlotManager>(true);
+        playerHandSlotManager = FindObjectOfType<PlayerHandUISlotManager>(true);
         cardPlayManager = FindObjectOfType<CardPlayManager>(true);
         cardUIManager = FindObjectOfType<CardUIManager>(true);
     }

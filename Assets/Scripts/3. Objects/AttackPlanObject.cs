@@ -6,12 +6,12 @@ using UnityEngine;
 public class AttackPlanObject
 {
     protected List<CardChannelPairObject> cardChannelPairObjects;
-    protected CharacterOrigin characterOrigin;
-    protected CharacterDestination characterDestination;
+    protected CharacterSelect characterOrigin;
+    protected CharacterSelect characterDestination;
 
     public AttackPlanObject(List<CardChannelPairObject> cardChannelPairObjects, 
-                            CharacterOrigin characterOrigin, 
-                            CharacterDestination characterDestination)
+                            CharacterSelect characterOrigin, 
+                            CharacterSelect characterDestination)
     {
         this.cardChannelPairObjects = cardChannelPairObjects;
         this.characterOrigin = characterOrigin;
