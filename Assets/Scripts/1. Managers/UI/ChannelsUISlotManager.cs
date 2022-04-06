@@ -16,15 +16,6 @@ public class ChannelsUISlotManager : BaseSlotManager<CardUIController>
 
     public override void AddItemToCollection(CardUIController item)
     {
-        foreach (CardUISlotController slot in slotList)
-            if (slot.CurrentSlottedItem == null)
-            {
-                slot.CurrentSlottedItem = item;
-                item.CardSlotController = slot;
-                CombatManager.instance.HandManager.AddCardToPlayerHand(item.CardData);
-                return;
-            }
-
         if(firstAttackPosition.CurrentSlottedItem == null)
         {
             firstAttackPosition.CurrentSlottedItem = item;
