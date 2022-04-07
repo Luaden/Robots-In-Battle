@@ -44,13 +44,13 @@ public class DeckManager : MonoBehaviour
     public void ReturnCardToPlayerDeck(CardDataObject cardToReturn)
     {
         playerDeck.AddCardToBottom(cardToReturn);
-        Destroy(cardToReturn.CardUIObject);
+        CombatManager.instance.CardUIManager.DestroyCardUI(cardToReturn);
     }
 
     public void ReturnCardToOpponentDeck(CardDataObject cardToReturn)
     {
         opponentDeck.AddCardToBottom(cardToReturn);
-        Destroy(cardToReturn.CardUIObject);
+        CombatManager.instance.CardUIManager.DestroyCardUI(cardToReturn);
     }
 
     private void Awake()

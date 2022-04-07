@@ -8,7 +8,7 @@ public class OpponentHandUISlotManager : BaseSlotManager<CardUIController>
 {
     public override void AddItemToCollection(CardUIController item, BaseSlotController<CardUIController> slot)
     {
-        if(slot.CurrentSlottedItem == null)
+        if(slot != null && slot.CurrentSlottedItem == null)
         {
             slot.CurrentSlottedItem = item;
             item.CardSlotController = slot;
@@ -58,7 +58,7 @@ public class OpponentHandUISlotManager : BaseSlotManager<CardUIController>
 
     private void Awake()
     {
-        slotList = new List<BaseSlotController<CardUIController>>();
+        //slotList = new List<BaseSlotController<CardUIController>>();
     }
 }
 

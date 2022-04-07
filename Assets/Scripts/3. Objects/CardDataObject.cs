@@ -12,8 +12,7 @@ public class CardDataObject
 
     [Header("Card Attributes")]
     [SerializeField] private CardType cardType;
-    [SerializeField] private AttackType attackType;
-    [SerializeField] private DefenseType defenseType;
+    [SerializeField] private CardCategory cardCategory;
     [SerializeField] private Channels possibleChannels;
     [SerializeField] private AffectedChannels affectedChannels;
     [SerializeField] private Channels selectedChannels;
@@ -31,8 +30,7 @@ public class CardDataObject
     public Sprite CardForeground { get => cardImage; }
     public Sprite CardBackground { get => cardBackground; }
     public CardType CardType { get => cardType; }
-    public AttackType AttackType { get => attackType; }
-    public DefenseType DefenseType { get => defenseType; }
+    public CardCategory CardCategory { get => cardCategory; }
     public Channels PossibleChannels { get => possibleChannels; }
     public AffectedChannels AffectedChannels { get => affectedChannels; }
     public Channels SelectedChannels { get => selectedChannels; set => selectedChannels = value; }
@@ -54,8 +52,7 @@ public class CardDataObject
         cardBackground = data.CardBackground;
         
         cardType = data.CardType;
-        attackType = data.AttackType;
-        defenseType = data.DefenseType;
+        cardCategory = data.CardCategory;
         possibleChannels = data.PossibleChannels;
         affectedChannels = data.AffectedChannels;
         selectedChannels = Channels.None;

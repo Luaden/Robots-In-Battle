@@ -1,34 +1,33 @@
-﻿public enum CardType
+﻿using System;
+public enum CardType
 {
     Attack,
     Defense,
+    Neutral
 }
 
-public enum AttackType
+public enum CardCategory
 {
     None,
     Punch,
     Kick,
     Special,
-}
-
-public enum DefenseType
-{
-    None,
     Guard,
-    Counter,
+    Counter
 }
 
+[Flags]
 public enum Channels
 {
-    None,
-    High,
-    Mid,
-    Low,
-    HighMid,
-    HighLow,
-    MidLow,
-    All
+    None = 0,
+    High = 1,
+    Mid = 2,
+    Low = 4,
+
+    //HighMid = High | Mid,
+    //HighLow = High | Low,
+    //MidLow = High | Low,
+    All = High | Mid | Low
 }
 
 public enum AffectedChannels

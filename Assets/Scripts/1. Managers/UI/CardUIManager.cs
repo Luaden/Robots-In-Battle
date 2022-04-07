@@ -21,6 +21,12 @@ public class CardUIManager : MonoBehaviour
         cardUIBuildController.BuildAndDrawOpponentCard(cardToDraw, opponentDeckTransform);
     }
 
+    public void DestroyCardUI(CardDataObject cardToReturn)
+    {
+        //If we wanted an animation for the card here, this is where we'd do it.
+        Destroy(cardToReturn.CardUIObject);
+    }
+
     private void Awake()
     {
         cardUIBuildController = FindObjectOfType<CardUIBuildController>(true);

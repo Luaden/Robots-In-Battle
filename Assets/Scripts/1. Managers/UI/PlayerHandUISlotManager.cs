@@ -8,7 +8,6 @@ public class PlayerHandUISlotManager : BaseSlotManager<CardUIController>
 {
     public override void AddItemToCollection(CardUIController item, BaseSlotController<CardUIController> slot)
     {
-        Debug.Log(slotList.Count);
         if (slot != null && slot.CurrentSlottedItem == null)
         {
             slot.CurrentSlottedItem = item;
@@ -28,7 +27,6 @@ public class PlayerHandUISlotManager : BaseSlotManager<CardUIController>
 
         Debug.Log("No slots available in the hand to add a card to. This should not happen and should be stopped before this point.");
     }
-
 
     public override void RemoveItemFromCollection(CardUIController item)
     {
