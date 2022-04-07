@@ -10,15 +10,15 @@ public class PopupData
     private Image image;
 
     public PopupData(string name,
-                           string description,
-                           Image image)
+                    string description,
+                    Image image)
     {
         this.name = name;
         this.description = description;
         this.image = image;
     }
     public PopupData(string name,
-                       string description)
+                     string description)
     {
         this.name = name;
         this.description = description;

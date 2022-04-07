@@ -4,11 +4,24 @@ using UnityEngine;
 
 public class PopupUIManager : MonoBehaviour
 {
+    static private PopupUIManager instance;
+    public static PopupUIManager Instance { get { return instance; } }
+
+    private void Awake()
+    {
+        if(instance != null && instance != this)
+        {
+            Destroy(gameObject);
+            return;
+        }
+        instance = this;
+        cardUIPopupController = GetComponentInChildren<CardUIPopupController>();
+    }
+
     private CardUIPopupController cardUIPopupController;
     private MechUIPopupController mechUIPopupController;
     private HUDPopupController hudPopUpController;
 
-    // gets called from CardUIController
     public void HandlePopup(CardDataObject cardDataObject,
                             Transform transform)
     {
@@ -26,6 +39,11 @@ public class PopupUIManager : MonoBehaviour
     {
         //routes to MechUIPopupController
         mechUIPopupController.HandlePopup(mechObject, transform);
+    }
+
+    public void ClearPopup()
+    {
+        cardUIPopupController.Clear();
     }
 
 }

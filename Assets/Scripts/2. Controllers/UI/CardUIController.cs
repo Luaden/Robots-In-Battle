@@ -51,12 +51,12 @@ public class CardUIController : MonoBehaviour, IPointerDownHandler, IPointerUpHa
 
     public virtual void OnPointerEnter(PointerEventData eventData)
     {
-        //throw new System.NotImplementedException();
+        PopupUIManager.Instance.HandlePopup(cardData, cardSlotController.transform);
     }
 
     public virtual void OnPointerExit(PointerEventData eventData)
     {
-        //throw new System.NotImplementedException();
+        PopupUIManager.Instance.ClearPopup();
     }
 
     public virtual void OnPointerDown(PointerEventData eventData)

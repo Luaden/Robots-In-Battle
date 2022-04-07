@@ -8,8 +8,8 @@ public class CardUIPopupController : MonoBehaviour
     [SerializeField] protected GameObject popupObject;
     RectTransform rectTransform;
 
-    private int offsetX;
-    private int offsetY;
+    private int cardWidth = 150;
+    private int cardHeight = 100;
 
     private void Awake()
     {
@@ -30,13 +30,19 @@ public class CardUIPopupController : MonoBehaviour
         cardPopupObject.Assign(popupData);
 
         // put object at right location
-        rectTransform.anchoredPosition = transform.position;
+        RectTransform rect = popupObject.GetComponent<RectTransform>();
+        rect.position = transform.position + new Vector3(cardWidth, cardHeight / 2);
         // anchored to transform
 
         // display
         popupObject.SetActive(true);
 
 
+    }
+
+    public void Clear()
+    {
+        popupObject.SetActive(false);
     }
 
 }
