@@ -69,7 +69,7 @@ public class AIController : MonoBehaviour
 
         Channels[] allChannels = Enum.GetValues(typeof(Channels)).Cast<Channels>().Where(x => channel.HasFlag(x)).ToArray();
         Channels randomChannel = allChannels[random.Next(1, allChannels.Length)];
-       
+
         return randomChannel;
     }
 }
