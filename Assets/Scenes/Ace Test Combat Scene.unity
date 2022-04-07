@@ -301,6 +301,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   mainCanvas: {fileID: 616246465}
+  slotList: []
   highChannels:
   - {fileID: 979931699}
   midChannels:
@@ -2940,7 +2941,6 @@ GameObject:
   - component: {fileID: 1887365257}
   - component: {fileID: 1887365260}
   - component: {fileID: 1887365259}
-  - component: {fileID: 1887365258}
   - component: {fileID: 1887365261}
   m_Layer: 5
   m_Name: Opponent Hand
@@ -2969,36 +2969,6 @@ RectTransform:
   m_AnchoredPosition: {x: -125, y: -104}
   m_SizeDelta: {x: 200, y: -278.76}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &1887365258
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1887365256}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1aa08ab6e0800fa44ae55d278d1423e3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Content: {fileID: 1127826847}
-  m_Horizontal: 0
-  m_Vertical: 1
-  m_MovementType: 2
-  m_Elasticity: 0.1
-  m_Inertia: 1
-  m_DecelerationRate: 0.135
-  m_ScrollSensitivity: 1
-  m_Viewport: {fileID: 0}
-  m_HorizontalScrollbar: {fileID: 0}
-  m_VerticalScrollbar: {fileID: 0}
-  m_HorizontalScrollbarVisibility: 2
-  m_VerticalScrollbarVisibility: 2
-  m_HorizontalScrollbarSpacing: -3
-  m_VerticalScrollbarSpacing: -3
-  m_OnValueChanged:
-    m_PersistentCalls:
-      m_Calls: []
 --- !u!114 &1887365259
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3050,6 +3020,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   mainCanvas: {fileID: 616246465}
+  slotList:
+  - {fileID: 468409269}
+  - {fileID: 1868125039}
+  - {fileID: 943760076}
+  - {fileID: 900748901}
+  - {fileID: 395558083}
 --- !u!1 &2020399031
 GameObject:
   m_ObjectHideFlags: 0
@@ -3061,7 +3037,6 @@ GameObject:
   - component: {fileID: 2020399032}
   - component: {fileID: 2020399035}
   - component: {fileID: 2020399034}
-  - component: {fileID: 2020399033}
   - component: {fileID: 2020399036}
   m_Layer: 5
   m_Name: Player Hand
@@ -3090,36 +3065,6 @@ RectTransform:
   m_AnchoredPosition: {x: 113, y: -104}
   m_SizeDelta: {x: 200, y: -278.7594}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &2020399033
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2020399031}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1aa08ab6e0800fa44ae55d278d1423e3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Content: {fileID: 1577650754}
-  m_Horizontal: 0
-  m_Vertical: 1
-  m_MovementType: 2
-  m_Elasticity: 0.1
-  m_Inertia: 1
-  m_DecelerationRate: 0.135
-  m_ScrollSensitivity: 1
-  m_Viewport: {fileID: 0}
-  m_HorizontalScrollbar: {fileID: 0}
-  m_VerticalScrollbar: {fileID: 0}
-  m_HorizontalScrollbarVisibility: 2
-  m_VerticalScrollbarVisibility: 2
-  m_HorizontalScrollbarSpacing: -3
-  m_VerticalScrollbarSpacing: -3
-  m_OnValueChanged:
-    m_PersistentCalls:
-      m_Calls: []
 --- !u!114 &2020399034
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3171,6 +3116,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   mainCanvas: {fileID: 616246465}
+  slotList:
+  - {fileID: 1050637553}
+  - {fileID: 1479499148}
+  - {fileID: 46303376}
+  - {fileID: 690431780}
+  - {fileID: 1408028799}
 --- !u!1 &2126257078
 GameObject:
   m_ObjectHideFlags: 0
