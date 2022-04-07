@@ -355,6 +355,8 @@ GameObject:
   m_Component:
   - component: {fileID: 329746330}
   - component: {fileID: 329746329}
+  - component: {fileID: 329746331}
+  - component: {fileID: 329746328}
   m_Layer: 0
   m_Name: Combat Manager
   m_TagString: Untagged
@@ -362,6 +364,21 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!114 &329746328
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 329746327}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2f2f2581d0605184fad91dc38ba51a25, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  aggressiveness: 0
+  precision: 0
+  intelligence: 0
 --- !u!114 &329746329
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -394,6 +411,18 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &329746331
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 329746327}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 58b7de4025d18a64b90b8d082e5fdea3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &365684692
 GameObject:
   m_ObjectHideFlags: 0
@@ -1919,7 +1948,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 1068, y: -338}
+  m_AnchoredPosition: {x: 602, y: -958}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1228266659
@@ -2421,7 +2450,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 829, y: -339}
+  m_AnchoredPosition: {x: 438, y: -958}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1706771436
@@ -2560,7 +2589,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   PlayerCardPrefab: {fileID: 96194376052619105, guid: 4cddf407f1c16bb40a00dc09ad0cf2d3, type: 3}
-  OpponentCardPrefab: {fileID: 0}
+  OpponentCardPrefab: {fileID: 96194376052619105, guid: 4cddf407f1c16bb40a00dc09ad0cf2d3, type: 3}
 --- !u!114 &1733648150
 MonoBehaviour:
   m_ObjectHideFlags: 0
