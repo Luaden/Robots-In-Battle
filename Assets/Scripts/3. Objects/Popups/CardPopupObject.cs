@@ -11,7 +11,12 @@ public class CardPopupObject : MonoBehaviour
 
     public List<PopupData> PopupToDisplay { get => popupDataToDisplay; }
 
-    private void Awake()
+    public CardPopupObject()
+    {
+        Debug.Log("init");
+        Init();
+    }
+    private void Init()
     {
         popupDataToDisplay = new List<PopupData>();
     }
