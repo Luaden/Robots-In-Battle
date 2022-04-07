@@ -9,14 +9,17 @@ public class ChannelsUISlotManager : BaseSlotManager<CardUIController>
     [SerializeField] private List<BaseSlotController<CardUIController>> midChannels;
     [SerializeField] private List<BaseSlotController<CardUIController>> lowChannels;
 
-    [SerializeField] private BaseSlotController<CardUIController> firstAttackPosition;
-    [SerializeField] private BaseSlotController<CardUIController> secondAttackPosition;
+    [SerializeField] private BaseSlotController<CardUIController> playerAttackSlotA;
+    [SerializeField] private BaseSlotController<CardUIController> playerAttackSlotB;
+    [SerializeField] private BaseSlotController<CardUIController> opponentAttackSlotA;
+    [SerializeField] private BaseSlotController<CardUIController> opponentAttackSlotB;
+
 
     private List<CardChannelPairObject> cardChannelPairObjects;
     private Channels selectedChannel;
 
-    public CardDataObject ASlotItem { get => firstAttackPosition.CurrentSlottedItem.CardData; } 
-    public CardDataObject BSlotItem { get => firstAttackPosition.CurrentSlottedItem.CardData; }
+    public CardDataObject ASlotItem { get => playerAttackSlotA.CurrentSlottedItem.CardData; } 
+    public CardDataObject BSlotItem { get => playerAttackSlotA.CurrentSlottedItem.CardData; }
 
     public delegate void onASlotFilled();
     public static event onASlotFilled OnASlotFilled;
@@ -25,11 +28,11 @@ public class ChannelsUISlotManager : BaseSlotManager<CardUIController>
 
     public override void AddItemToCollection(CardUIController item, BaseSlotController<CardUIController> slot)
     {
-        if(firstAttackPosition.CurrentSlottedItem == null)
+        if(playerAttackSlotA.CurrentSlottedItem == null)
             if(item.CardData.CardType == CardType.Attack || item.CardData.CardType == CardType.Neutral)
             {
-                firstAttackPosition.CurrentSlottedItem = item;
-                item.CardSlotController = firstAttackPosition;
+                playerAttackSlotA.CurrentSlottedItem = item;
+                item.CardSlotController = playerAttackSlotA;
 
                 if (item.CardData.AffectedChannels == AffectedChannels.AllPossibleChannels)
                     item.CardData.SelectedChannels = item.CardData.PossibleChannels;
@@ -47,11 +50,11 @@ public class ChannelsUISlotManager : BaseSlotManager<CardUIController>
                 return;
             }
 
-        if (secondAttackPosition.CurrentSlottedItem == null)
+        if (playerAttackSlotB.CurrentSlottedItem == null)
             if (item.CardData.CardType == CardType.Defense || item.CardData.CardType == CardType.Neutral)
             {
-                secondAttackPosition.CurrentSlottedItem = item;
-                item.CardSlotController = secondAttackPosition;
+                playerAttackSlotB.CurrentSlottedItem = item;
+                item.CardSlotController = playerAttackSlotB;
 
                 if (item.CardData.AffectedChannels == AffectedChannels.AllPossibleChannels)
                     item.CardData.SelectedChannels = item.CardData.PossibleChannels;
@@ -67,8 +70,51 @@ public class ChannelsUISlotManager : BaseSlotManager<CardUIController>
                 return;
             }
 
-        if (firstAttackPosition.CurrentSlottedItem != null && secondAttackPosition.CurrentSlottedItem != null)
+        if (playerAttackSlotA.CurrentSlottedItem != null && playerAttackSlotB.CurrentSlottedItem != null)
             CombatManager.instance.CardPlayManager.BuildPlayerAttackPlan(cardChannelPairObjects);
+
+        Debug.Log("No slots available in the hand to add a card to. This should not happen and should be stopped before this point.");
+    }
+
+    public void OpponentAssignAttackSlot(CardUIController item, BaseSlotController<CardUIController> slot)
+    {
+        if (opponentAttackSlotA.CurrentSlottedItem == null)
+            if (item.CardData.CardType == CardType.Attack || item.CardData.CardType == CardType.Neutral)
+            {
+                opponentAttackSlotA.CurrentSlottedItem = item;
+                item.CardSlotController = opponentAttackSlotA;
+
+                if (item.CardData.AffectedChannels == AffectedChannels.AllPossibleChannels)
+                    item.CardData.SelectedChannels = item.CardData.PossibleChannels;
+                else
+                    item.CardData.SelectedChannels = selectedChannel;
+
+                return;
+            }
+            else
+            {
+                Debug.Log("This card is not the correct type for Slot A. Slot A must be an Attack or Neutral Card Type.");
+                return;
+            }
+
+        if (opponentAttackSlotB.CurrentSlottedItem == null)
+            if (item.CardData.CardType == CardType.Defense || item.CardData.CardType == CardType.Neutral)
+            {
+                opponentAttackSlotB.CurrentSlottedItem = item;
+                item.CardSlotController = opponentAttackSlotB;
+
+                if (item.CardData.AffectedChannels == AffectedChannels.AllPossibleChannels)
+                    item.CardData.SelectedChannels = item.CardData.PossibleChannels;
+                else
+                    item.CardData.SelectedChannels = selectedChannel; 
+
+                return;
+            }
+            else
+            {
+                Debug.Log("This card is not the correct type for Slot B. Slot A must be an Defense or Neutral Card Type.");
+                return;
+            }
 
         Debug.Log("No slots available in the hand to add a card to. This should not happen and should be stopped before this point.");
     }
@@ -100,16 +146,16 @@ public class ChannelsUISlotManager : BaseSlotManager<CardUIController>
 
     public override void RemoveItemFromCollection(CardUIController item)
     {
-        if (firstAttackPosition.CurrentSlottedItem == item)
+        if (playerAttackSlotA.CurrentSlottedItem == item)
         {
-            firstAttackPosition.CurrentSlottedItem = null;
+            playerAttackSlotA.CurrentSlottedItem = null;
             item.CardData.SelectedChannels = Channels.None;
             return;
         }
 
-        if (secondAttackPosition.CurrentSlottedItem == item)
+        if (playerAttackSlotB.CurrentSlottedItem == item)
         {
-            secondAttackPosition.CurrentSlottedItem = null;
+            playerAttackSlotB.CurrentSlottedItem = null;
             item.CardData.SelectedChannels = Channels.None;
             return;
         }
@@ -117,8 +163,8 @@ public class ChannelsUISlotManager : BaseSlotManager<CardUIController>
 
     public void ClearChannelUICards()
     {
-        RemoveItemFromCollection(firstAttackPosition.CurrentSlottedItem);
-        RemoveItemFromCollection(secondAttackPosition.CurrentSlottedItem);
+        RemoveItemFromCollection(playerAttackSlotA.CurrentSlottedItem);
+        RemoveItemFromCollection(playerAttackSlotB.CurrentSlottedItem);
     }
 
     private void Start()
