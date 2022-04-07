@@ -12,13 +12,13 @@ public class CardPlayManager : MonoBehaviour
     public void BuildPlayerAttackPlan(List<CardChannelPairObject> cardChannelPairObjects)
     {
         AttackPlanObject attackPlan = new AttackPlanObject(cardChannelPairObjects, CharacterSelect.Player, CharacterSelect.Opponent);
-        SetPlayerAttackPlan(attackPlan);
+        playerAttackPlan = attackPlan;
     }
 
     public void BuildOpponentAttackPlan(List<CardChannelPairObject> cardChannelPairObjects)
     {
         AttackPlanObject attackPlan = new AttackPlanObject(cardChannelPairObjects, CharacterSelect.Opponent, CharacterSelect.Player);
-        SetPlayerAttackPlan(attackPlan);
+        opponentAttackPlan = attackPlan;
     }
 
     private void SetPlayerAttackPlan(AttackPlanObject attackPlan)

@@ -23,6 +23,10 @@ public class EditorCardGUI : Editor
             case (int)CardType.Defense:
                 DisplayDefenseCardAttributes();
                 break;
+
+            case (int)CardType.Neutral:
+                DisplayNeutralCardAttributes();
+                break;
         }
 
         serializedObject.ApplyModifiedProperties();
@@ -30,9 +34,20 @@ public class EditorCardGUI : Editor
 
     private void DisplayAttackCardAttributes()
     {
-        EditorGUILayout.Space();
+        EditorGUILayout.PropertyField(serializedObject.FindProperty("cardCategory"));
+        EditorGUILayout.PropertyField(serializedObject.FindProperty("possibleChannels"));
+        EditorGUILayout.PropertyField(serializedObject.FindProperty("affectedChannels"));
+        EditorGUILayout.PropertyField(serializedObject.FindProperty("energyCost"));
+        EditorGUILayout.PropertyField(serializedObject.FindProperty("baseDamage"));
+        EditorGUILayout.PropertyField(serializedObject.FindProperty("componentDamageMultiplier"));
+        EditorGUILayout.PropertyField(serializedObject.FindProperty("treatDamageAsPercent"));
+        EditorGUILayout.PropertyField(serializedObject.FindProperty("cardEffects"));
+    }
 
-        EditorGUILayout.PropertyField(serializedObject.FindProperty("attackType"));
+    private void DisplayDefenseCardAttributes()
+    {
+        EditorGUILayout.Space();
+        EditorGUILayout.PropertyField(serializedObject.FindProperty("cardCategory"));
         EditorGUILayout.PropertyField(serializedObject.FindProperty("possibleChannels"));
         EditorGUILayout.PropertyField(serializedObject.FindProperty("affectedChannels"));
         EditorGUILayout.PropertyField(serializedObject.FindProperty("energyCost"));
@@ -41,18 +56,16 @@ public class EditorCardGUI : Editor
         EditorGUILayout.PropertyField(serializedObject.FindProperty("cardEffects"));
     }
 
-    private void DisplayDefenseCardAttributes()
+    private void DisplayNeutralCardAttributes()
     {
-        EditorGUILayout.Space();
-
-        EditorGUILayout.PropertyField(serializedObject.FindProperty("defenseType"));
+        EditorGUILayout.PropertyField(serializedObject.FindProperty("cardCategory"));
         EditorGUILayout.PropertyField(serializedObject.FindProperty("possibleChannels"));
         EditorGUILayout.PropertyField(serializedObject.FindProperty("affectedChannels"));
         EditorGUILayout.PropertyField(serializedObject.FindProperty("energyCost"));
         EditorGUILayout.PropertyField(serializedObject.FindProperty("baseDamage"));
+        EditorGUILayout.PropertyField(serializedObject.FindProperty("componentDamageMultiplier"));
         EditorGUILayout.PropertyField(serializedObject.FindProperty("treatDamageAsPercent"));
         EditorGUILayout.PropertyField(serializedObject.FindProperty("cardEffects"));
-
     }
 
     private void DisplayCardBaseAttributes()

@@ -12,6 +12,7 @@ public class CombatManager : MonoBehaviour
     private HandManager handManager;
     private PlayerHandUISlotManager playerHandSlotManager;
     private OpponentHandUISlotManager opponentHandSlotManager;
+    private ChannelsUISlotManager channelsUISlotManager;
     private CardPlayManager cardPlayManager;
     private CardUIManager cardUIManager;
 
@@ -19,6 +20,7 @@ public class CombatManager : MonoBehaviour
     public HandManager HandManager { get => handManager; }
     public PlayerHandUISlotManager PlayerHandSlotManager { get => playerHandSlotManager; }
     public OpponentHandUISlotManager OpponentHandSlotManager { get => opponentHandSlotManager; }
+    public ChannelsUISlotManager ChannelsUISlotManager { get => channelsUISlotManager; }
     public CardPlayManager CardPlayManager { get => cardPlayManager; }
     public CardUIManager CardUIManager { get => cardUIManager; }
 
@@ -29,6 +31,8 @@ public class CombatManager : MonoBehaviour
         deckManager = FindObjectOfType<DeckManager>(true);
         handManager = FindObjectOfType<HandManager>(true);
         playerHandSlotManager = FindObjectOfType<PlayerHandUISlotManager>(true);
+        opponentHandSlotManager = FindObjectOfType<OpponentHandUISlotManager>(true);
+        channelsUISlotManager = FindObjectOfType<ChannelsUISlotManager>(true);
         cardPlayManager = FindObjectOfType<CardPlayManager>(true);
         cardUIManager = FindObjectOfType<CardUIManager>(true);
     }
@@ -50,5 +54,10 @@ public class CombatManager : MonoBehaviour
 
         for (int i = 0; i <= 4; i++)
             deckManager.DrawPlayerCard();
+
+        deckManager.SetOpponentDeck(testDeck);
+
+        for (int i = 0; i <= 4; i++)
+            deckManager.DrawOpponentCard();
     }
 }
