@@ -14,17 +14,8 @@ public class ChannelsUISlotManager : BaseSlotManager<CardUIController>
 
     private List<CardChannelPairObject> cardChannelPairObjects;
 
-    public override void AddItemToCollection(CardUIController item)
+    public override void AddItemToCollection(CardUIController item, BaseSlotController<CardUIController> slot)
     {
-        foreach (CardUISlotController slot in slotList)
-            if (slot.CurrentSlottedItem == null)
-            {
-                slot.CurrentSlottedItem = item;
-                item.CardSlotController = slot;
-                CombatManager.instance.HandManager.AddCardToPlayerHand(item.CardData);
-                return;
-            }
-
         if(firstAttackPosition.CurrentSlottedItem == null)
         {
             firstAttackPosition.CurrentSlottedItem = item;
@@ -61,7 +52,7 @@ public class ChannelsUISlotManager : BaseSlotManager<CardUIController>
         if(CardChannelCheck(newData, selectedChannel))
         {
             newData.CardSlotController.SlotManager.RemoveItemFromCollection(newData);
-            AddItemToCollection(newData);
+            AddItemToCollection(newData, slot);
             return;
         }
 
