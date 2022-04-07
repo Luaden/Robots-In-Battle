@@ -13,6 +13,7 @@ public class ChannelsUISlotManager : BaseSlotManager<CardUIController>
     [SerializeField] private BaseSlotController<CardUIController> secondAttackPosition;
 
     private List<CardChannelPairObject> cardChannelPairObjects;
+    private Channels selectedChannel;
 
     public override void AddItemToCollection(CardUIController item, BaseSlotController<CardUIController> slot)
     {
@@ -20,6 +21,8 @@ public class ChannelsUISlotManager : BaseSlotManager<CardUIController>
         {
             firstAttackPosition.CurrentSlottedItem = item;
             item.CardSlotController = firstAttackPosition;
+            item.CardData.SelectedChannels = selectedChannel;
+            cardChannelPairObjects[0] = new CardChannelPairObject(item.CardData, selectedChannel);
             return;
         }
 
@@ -27,10 +30,13 @@ public class ChannelsUISlotManager : BaseSlotManager<CardUIController>
         {
             secondAttackPosition.CurrentSlottedItem = item;
             item.CardSlotController = secondAttackPosition;
+            item.CardData.SelectedChannels = selectedChannel;
+            cardChannelPairObjects[1] = new CardChannelPairObject(item.CardData, selectedChannel);
             return;
         }
 
-        //We also need to update the "SelectedChannel" for the card here.
+        if (firstAttackPosition.CurrentSlottedItem != null && secondAttackPosition.CurrentSlottedItem != null)
+            CombatManager.instance.CardPlayManager.BuildPlayerAttackPlan(cardChannelPairObjects);
 
         Debug.Log("No slots available in the hand to add a card to. This should not happen and should be stopped before this point.");
     }
@@ -45,9 +51,7 @@ public class ChannelsUISlotManager : BaseSlotManager<CardUIController>
 
     public override void HandleDrop(PointerEventData eventData, CardUIController newData, BaseSlotController<CardUIController> slot)
     {
-        Channels selectedChannel = CheckChannelSlot(slot);
-
-        Debug.Log("Selected channel is " + selectedChannel);
+        selectedChannel = CheckChannelSlot(slot);
 
         if(CardChannelCheck(newData, selectedChannel))
         {
@@ -64,33 +68,21 @@ public class ChannelsUISlotManager : BaseSlotManager<CardUIController>
         if (firstAttackPosition.CurrentSlottedItem == item)
         {
             firstAttackPosition.CurrentSlottedItem = null;
-            //We also need to update the "SelectedChannel" for the card here.
-
+            item.CardData.SelectedChannels = Channels.None;
             return;
         }
 
         if (secondAttackPosition.CurrentSlottedItem == item)
         {
             secondAttackPosition.CurrentSlottedItem = null;
-            //We also need to update the "SelectedChannel" for the card here.
-
+            item.CardData.SelectedChannels = Channels.None;
             return;
         }
     }
 
-    private AttackPlanObject BuildAttackPlanObject()
+    private void Start()
     {
-        // testing
-        CharacterSelect destination = CharacterSelect.Player;
-        CharacterSelect origin = CharacterSelect.Opponent;
-
-        // create object
-        AttackPlanObject attackPlanObject = new AttackPlanObject(cardChannelPairObjects, origin, destination);
-
-        // ends turn
-
-        //send object to CardPlayManager
-        return attackPlanObject;
+        cardChannelPairObjects = new List<CardChannelPairObject>(2);
     }
 
     private Channels CheckChannelSlot(BaseSlotController<CardUIController> slotToCheck)

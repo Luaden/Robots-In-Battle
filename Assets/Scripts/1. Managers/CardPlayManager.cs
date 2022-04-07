@@ -9,7 +9,19 @@ public class CardPlayManager : MonoBehaviour
 
     private DamageCalculatorController damageCalculator;
 
-    public void SetPlayerAttackPlan(AttackPlanObject attackPlan)
+    public void BuildPlayerAttackPlan(List<CardChannelPairObject> cardChannelPairObjects)
+    {
+        AttackPlanObject attackPlan = new AttackPlanObject(cardChannelPairObjects, CharacterSelect.Player, CharacterSelect.Opponent);
+        SetPlayerAttackPlan(attackPlan);
+    }
+
+    public void BuildOpponentAttackPlan(List<CardChannelPairObject> cardChannelPairObjects)
+    {
+        AttackPlanObject attackPlan = new AttackPlanObject(cardChannelPairObjects, CharacterSelect.Opponent, CharacterSelect.Player);
+        SetPlayerAttackPlan(attackPlan);
+    }
+
+    private void SetPlayerAttackPlan(AttackPlanObject attackPlan)
     {
         playerAttackPlan = attackPlan;
 

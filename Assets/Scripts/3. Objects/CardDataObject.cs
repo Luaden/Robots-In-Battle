@@ -35,7 +35,7 @@ public class CardDataObject
     public DefenseType DefenseType { get => defenseType; }
     public Channels PossibleChannels { get => possibleChannels; }
     public AffectedChannels AffectedChannels { get => affectedChannels; }
-    public Channels SelectedChannels { get => selectedChannels; }
+    public Channels SelectedChannels { get => selectedChannels; set => selectedChannels = value; }
     public int EnergyCost { get => energyCost; }
     public int BaseDamage { get => baseDamage; }
     public List<CardEffectObject> CardEffects { get => cardEffects; }
