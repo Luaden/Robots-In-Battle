@@ -6,19 +6,29 @@ using UnityEngine.EventSystems;
 
 public class PlayerHandUISlotManager : BaseSlotManager<CardUIController>
 {
-    public override void AddItemToCollection(CardUIController item)
+    public override void AddItemToCollection(CardUIController item, BaseSlotController<CardUIController> slot)
     {
-        foreach(CardUISlotController slot in slotList)
-            if (slot.CurrentSlottedItem == null)
+        Debug.Log(slotList.Count);
+        if (slot != null && slot.CurrentSlottedItem == null)
+        {
+            slot.CurrentSlottedItem = item;
+            item.CardSlotController = slot;
+            CombatManager.instance.HandManager.AddCardToPlayerHand(item.CardData);
+            return;
+        }
+
+        foreach (BaseSlotController<CardUIController> slotOption in slotList)
+            if (slotOption.CurrentSlottedItem == null)
             {
-                slot.CurrentSlottedItem = item;
-                item.CardSlotController = slot;
+                slotOption.CurrentSlottedItem = item;
+                item.CardSlotController = slotOption;
                 CombatManager.instance.HandManager.AddCardToPlayerHand(item.CardData);
                 return;
             }
 
         Debug.Log("No slots available in the hand to add a card to. This should not happen and should be stopped before this point.");
     }
+
 
     public override void RemoveItemFromCollection(CardUIController item)
     {
@@ -40,7 +50,7 @@ public class PlayerHandUISlotManager : BaseSlotManager<CardUIController>
         }
 
         droppedCard.CardSlotController.SlotManager.RemoveItemFromCollection(droppedCard);
-        AddItemToCollection(droppedCard);
+        AddItemToCollection(droppedCard, slot);
     }
 
     public override void AddSlotToList(BaseSlotController<CardUIController> newSlot)
@@ -50,6 +60,6 @@ public class PlayerHandUISlotManager : BaseSlotManager<CardUIController>
 
     private void Awake()
     {
-        slotList = new List<BaseSlotController<CardUIController>>();
+        //slotList = new List<BaseSlotController<CardUIController>>();
     }
 }

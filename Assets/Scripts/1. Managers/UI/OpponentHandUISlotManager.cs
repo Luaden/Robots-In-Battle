@@ -6,13 +6,21 @@ using UnityEngine.EventSystems;
 
 public class OpponentHandUISlotManager : BaseSlotManager<CardUIController>
 {
-    public override void AddItemToCollection(CardUIController item)
+    public override void AddItemToCollection(CardUIController item, BaseSlotController<CardUIController> slot)
     {
-        foreach (CardUISlotController slot in slotList)
-            if (slot.CurrentSlottedItem == null)
+        if(slot.CurrentSlottedItem == null)
+        {
+            slot.CurrentSlottedItem = item;
+            item.CardSlotController = slot;
+            CombatManager.instance.HandManager.AddCardToOpponentHand(item.CardData);
+            return;
+        }
+
+        foreach (BaseSlotController<CardUIController> slotOption in slotList)
+            if (slotOption.CurrentSlottedItem == null)
             {
-                slot.CurrentSlottedItem = item;
-                item.CardSlotController = slot;
+                slotOption.CurrentSlottedItem = item;
+                item.CardSlotController = slotOption;
                 CombatManager.instance.HandManager.AddCardToOpponentHand(item.CardData);
                 return;
             }
@@ -40,7 +48,7 @@ public class OpponentHandUISlotManager : BaseSlotManager<CardUIController>
         }
 
         droppedCard.CardSlotController.SlotManager.RemoveItemFromCollection(droppedCard);
-        AddItemToCollection(droppedCard);
+        AddItemToCollection(droppedCard, slot);
     }
 
     public override void AddSlotToList(BaseSlotController<CardUIController> newSlot)
