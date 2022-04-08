@@ -15,6 +15,8 @@ public class CombatManager : MonoBehaviour
     private ChannelsUISlotManager channelsUISlotManager;
     private CardPlayManager cardPlayManager;
     private CardUIManager cardUIManager;
+    private MechHUDManager mechHUDManager;
+    private PopupUIManager popupUIManager;
 
     private FighterDataObject playerFighter;
     private FighterDataObject opponentFighter;
@@ -26,6 +28,8 @@ public class CombatManager : MonoBehaviour
     public ChannelsUISlotManager ChannelsUISlotManager { get => channelsUISlotManager; }
     public CardPlayManager CardPlayManager { get => cardPlayManager; }
     public CardUIManager CardUIManager { get => cardUIManager; }
+    public MechHUDManager MechHUDManager { get => mechHUDManager; }
+    public PopupUIManager PopupUIManager { get => popupUIManager; }
 
     private void Awake()
     {
@@ -38,6 +42,8 @@ public class CombatManager : MonoBehaviour
         channelsUISlotManager = FindObjectOfType<ChannelsUISlotManager>(true);
         cardPlayManager = FindObjectOfType<CardPlayManager>(true);
         cardUIManager = FindObjectOfType<CardUIManager>(true);
+        mechHUDManager = FindObjectOfType<MechHUDManager>(true);
+        popupUIManager = FindObjectOfType<PopupUIManager>(true);
     }
 
     private void Start()
