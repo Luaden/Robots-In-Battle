@@ -5,17 +5,25 @@ using UnityEngine;
 // Containing information about the planned attack
 public class AttackPlanObject
 {
-    protected List<CardChannelPairObject> cardChannelPairObjects;
-    protected CharacterSelect characterOrigin;
-    protected CharacterSelect characterDestination;
+    private CardChannelPairObject cardChannelPairObjectA;
+    private CardChannelPairObject cardChannelPairObjectB;
+    private CharacterSelect characterOrigin;
+    private CharacterSelect characterDestination;
 
-    public AttackPlanObject(List<CardChannelPairObject> cardChannelPairObjects, 
-                            CharacterSelect characterOrigin, 
-                            CharacterSelect characterDestination)
+    public CardChannelPairObject cardChannelPairA { get => cardChannelPairA; }
+    public CardChannelPairObject cardChannelPairB { get => cardChannelPairB; }
+    public CharacterSelect CharacterOrigin { get => characterOrigin; }
+    public CharacterSelect CharacterDestination { get => characterDestination; }
+
+    public AttackPlanObject(CardChannelPairObject cardChannelPairA,
+                            CardChannelPairObject cardChannelPairB,
+                            CharacterSelect origin, 
+                            CharacterSelect destination)
     {
-        this.cardChannelPairObjects = cardChannelPairObjects;
-        this.characterOrigin = characterOrigin;
-        this.characterDestination = characterDestination;
+        cardChannelPairObjectA = cardChannelPairA;
+        cardChannelPairObjectB = cardChannelPairB;
+        characterOrigin = origin;
+        characterDestination = destination;
     }
 
 }

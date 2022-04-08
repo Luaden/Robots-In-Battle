@@ -15,7 +15,8 @@ public class ChannelsUISlotManager : BaseSlotManager<CardUIController>
     [SerializeField] private BaseSlotController<CardUIController> opponentAttackSlotB;
 
 
-    private List<CardChannelPairObject> cardChannelPairObjects;
+    private CardChannelPairObject cardChannelPairObjectA;
+    private CardChannelPairObject cardChannelPairObjectB;
     private Channels selectedChannel;
 
     public CardDataObject ASlotItem { get => playerAttackSlotA.CurrentSlottedItem.CardData; } 
@@ -39,7 +40,7 @@ public class ChannelsUISlotManager : BaseSlotManager<CardUIController>
                 else
                     item.CardData.SelectedChannels = selectedChannel;
 
-                cardChannelPairObjects[0] = new CardChannelPairObject(item.CardData, selectedChannel);
+                cardChannelPairObjectA = new CardChannelPairObject(item.CardData, selectedChannel);
 
                 OnASlotFilled?.Invoke();
                 return;
@@ -59,7 +60,9 @@ public class ChannelsUISlotManager : BaseSlotManager<CardUIController>
                 if (item.CardData.AffectedChannels == AffectedChannels.AllPossibleChannels)
                     item.CardData.SelectedChannels = item.CardData.PossibleChannels;
                 else
-                    item.CardData.SelectedChannels = selectedChannel; cardChannelPairObjects[1] = new CardChannelPairObject(item.CardData, selectedChannel);
+                    item.CardData.SelectedChannels = selectedChannel; 
+                
+                cardChannelPairObjectB = new CardChannelPairObject(item.CardData, selectedChannel);
 
                 OnBSlotFilled?.Invoke();
                 return;
@@ -71,7 +74,7 @@ public class ChannelsUISlotManager : BaseSlotManager<CardUIController>
             }
 
         if (playerAttackSlotA.CurrentSlottedItem != null && playerAttackSlotB.CurrentSlottedItem != null)
-            CombatManager.instance.CardPlayManager.BuildPlayerAttackPlan(cardChannelPairObjects);
+            CombatManager.instance.CardPlayManager.BuildPlayerAttackPlan(cardChannelPairObjectA, cardChannelPairObjectB);
 
         Debug.Log("No slots available in the hand to add a card to. This should not happen and should be stopped before this point.");
     }
@@ -165,13 +168,6 @@ public class ChannelsUISlotManager : BaseSlotManager<CardUIController>
     {
         RemoveItemFromCollection(playerAttackSlotA.CurrentSlottedItem);
         RemoveItemFromCollection(playerAttackSlotB.CurrentSlottedItem);
-    }
-
-    private void Start()
-    {
-        cardChannelPairObjects = new List<CardChannelPairObject>(2);
-        cardChannelPairObjects.Add(null);
-        cardChannelPairObjects.Add(null);
     }
 
     private Channels CheckChannelSlot(BaseSlotController<CardUIController> slotToCheck)

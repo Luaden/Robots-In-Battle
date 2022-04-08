@@ -23,12 +23,18 @@ public class AIController : MonoBehaviour
     private CardChannelPairObject attackA;
     private CardChannelPairObject attackB;
 
-    //Check player hand - what can they hit?
-    //Check self - are any components particularly weak? Can I guard them?
-    //Check self hand - what can I hit?
+    //Check hand - what can I hit?
     //Check player - are any components particularly weak? Can I hit them?
     //Assign value ratings based on behavior multipliers to each potential attack.
-    //Queue attacks
+
+    //Check player hand, check energy consumed from queued card, any cards consuming the same value, look at the channels they hit.
+    //Check self - are any components particularly weak? Can I guard them?
+    //Assign ratings to defensive options
+
+    //Queue attack
+
+
+
 
     private void Start()
     {
@@ -48,6 +54,7 @@ public class AIController : MonoBehaviour
         CardDataObject selectedCard = opponentHand[UnityEngine.Random.Range(0, opponentHand.Count)];
 
         attackA = new CardChannelPairObject(selectedCard, GetRandomChannelFromFlag(selectedCard.PossibleChannels));
+
         CombatManager.instance.ChannelsUISlotManager.OpponentAssignAttackSlot(selectedCard.CardUIObject.GetComponent<CardUIController>(), null);
     }
 
@@ -57,12 +64,8 @@ public class AIController : MonoBehaviour
 
         attackB = new CardChannelPairObject(selectedCard, GetRandomChannelFromFlag(selectedCard.PossibleChannels));
 
-        List<CardChannelPairObject> attacks = new List<CardChannelPairObject>();
-        attacks.Add(attackA);
-        attacks.Add(attackB);
-
         CombatManager.instance.ChannelsUISlotManager.OpponentAssignAttackSlot(selectedCard.CardUIObject.GetComponent<CardUIController>(), null);
-        CombatManager.instance.CardPlayManager.BuildOpponentAttackPlan(attacks);
+        CombatManager.instance.CardPlayManager.BuildOpponentAttackPlan(attackA, attackB);
     }
 
     private Channels GetRandomChannelFromFlag(Channels channel)
