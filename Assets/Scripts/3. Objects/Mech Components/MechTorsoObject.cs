@@ -7,20 +7,23 @@ public class MechTorsoObject
 {
     private MechComponent componentType = MechComponent.Torso;
     private Sprite componentSprite;
-    private int componentHP;
+    private int componentMaxHP;
+    private int componentCurrentHP;
     private List<ActiveFighterEffect> activeComponentEffects;
     private List<PassiveFighterEffect> passiveComponentEffects;
 
     public MechComponent ComponentType { get => componentType; }
     public Sprite ComponentSprite { get => componentSprite; }
-    public int ComponentHP { get => componentHP; }
+    public int ComponentCurrentHP { get => componentCurrentHP; }
+    public int ComponentMaxHP { get => componentMaxHP; }
     public List<ActiveFighterEffect> ActiveComponentEffects { get => activeComponentEffects; }
     public List<PassiveFighterEffect> PassiveComponentEffects { get => passiveComponentEffects; }
 
     public MechTorsoObject(SOMechComponent soTorsoScriptableObject)
     {
         componentSprite = soTorsoScriptableObject.ComponentSprite;
-        componentHP = soTorsoScriptableObject.ComponentHP;
+        componentMaxHP = soTorsoScriptableObject.ComponentHP;
+        componentCurrentHP = componentMaxHP;
         activeComponentEffects = new List<ActiveFighterEffect>();
         passiveComponentEffects = new List<PassiveFighterEffect>();
 

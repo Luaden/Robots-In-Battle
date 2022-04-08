@@ -80,6 +80,9 @@ public class CombatManager : MonoBehaviour
 
     public void DealDamageToMech(CharacterSelect character, int damage)
     {
-        
+        if (character == CharacterSelect.Player)
+            mechHUDManager.PlayerHUDBarController.UpdateHealthBar(damage);
+        if (character == CharacterSelect.Opponent)
+            mechHUDManager.OpponentHUDBarController.UpdateHealthBar(damage);
     }
 }
