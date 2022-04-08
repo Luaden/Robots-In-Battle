@@ -1,14 +1,15 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Experimental.U2D.Animation;
 
 public class HandManager : MonoBehaviour
 {
     [SerializeField] private HandController playerHand;
     [SerializeField] private HandController opponentHand;
-
-    public int PlayerHandSize { get => playerHand.CharacterHand.Count; }
-    public int OpponentHandSize { get => opponentHand.CharacterHand.Count; }
+    
+    public HandController PlayerHand { get => playerHand; }
+    public HandController OpponentHand { get => opponentHand; }
 
     public void AddCardToPlayerHand(CardDataObject cardToAdd)
     {

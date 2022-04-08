@@ -1,3 +1,5 @@
+using System;
+using System.Linq;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -17,6 +19,9 @@ public class AIController : MonoBehaviour
         "best choice that fits its other behavioral traits.")]
     [Range(-1, 1)][SerializeField] private float intelligence;
 
+    private List<CardDataObject> opponentHand;
+    private CardChannelPairObject attackA;
+    private CardChannelPairObject attackB;
 
     //Check player hand - what can they hit?
     //Check self - are any components particularly weak? Can I guard them?
@@ -24,4 +29,47 @@ public class AIController : MonoBehaviour
     //Check player - are any components particularly weak? Can I hit them?
     //Assign value ratings based on behavior multipliers to each potential attack.
     //Queue attacks
+
+    private void Start()
+    {
+        ChannelsUISlotManager.OnASlotFilled += BuildCardChannelPairA;
+        ChannelsUISlotManager.OnBSlotFilled += BuildCardChannelPairB;
+    }
+
+    private void OnDestroy()
+    {
+        ChannelsUISlotManager.OnASlotFilled -= BuildCardChannelPairA;
+        ChannelsUISlotManager.OnBSlotFilled -= BuildCardChannelPairB;
+    }
+
+    private void BuildCardChannelPairA()
+    {
+        opponentHand = CombatManager.instance.HandManager.OpponentHand.CharacterHand;
+        CardDataObject selectedCard = opponentHand[UnityEngine.Random.Range(0, opponentHand.Count)];
+
+        attackA = new CardChannelPairObject(selectedCard, GetRandomChannelFromFlag(selectedCard.PossibleChannels));
+    }
+
+    private void BuildCardChannelPairB()
+    {
+        CardDataObject selectedCard = opponentHand[UnityEngine.Random.Range(0, opponentHand.Count)];
+
+        attackB = new CardChannelPairObject(selectedCard, GetRandomChannelFromFlag(selectedCard.PossibleChannels));
+
+        List<CardChannelPairObject> attacks = new List<CardChannelPairObject>();
+        attacks.Add(attackA);
+        attacks.Add(attackB);
+
+        CombatManager.instance.CardPlayManager.BuildOpponentAttackPlan(attacks);
+    }
+
+    private Channels GetRandomChannelFromFlag(Channels channel)
+    {
+        System.Random random = new System.Random();
+
+        Channels[] allChannels = Enum.GetValues(typeof(Channels)).Cast<Channels>().Where(x => channel.HasFlag(x)).ToArray();
+        Channels randomChannel = allChannels[random.Next(1, allChannels.Length)];
+
+        return randomChannel;
+    }
 }
