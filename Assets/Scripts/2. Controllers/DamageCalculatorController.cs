@@ -13,53 +13,137 @@ public class DamageCalculatorController
         this.opponentAttackPlan = opponentAttackPlan;
 
         if (opponentAttackPlan.cardChannelPairB.CardData.CardCategory.HasFlag(CardCategory.Defensive))
-            CalculateDefensiveInteraction(playerAttackPlan.cardChannelPairA.CardData, CharacterSelect.Player, opponentAttackPlan.cardChannelPairB.CardData);
+            CalculateDefensiveInteraction(playerAttackPlan.cardChannelPairA, CharacterSelect.Player, opponentAttackPlan.cardChannelPairB);
 
         if (playerAttackPlan.cardChannelPairB.CardData.CardCategory.HasFlag(CardCategory.Defensive))
-            CalculateDefensiveInteraction(opponentAttackPlan.cardChannelPairA.CardData, CharacterSelect.Opponent, playerAttackPlan.cardChannelPairB.CardData);
+            CalculateDefensiveInteraction(opponentAttackPlan.cardChannelPairA, CharacterSelect.Opponent, playerAttackPlan.cardChannelPairB);
 
         if (playerAttackPlan.cardChannelPairA != null)
-            CalculateOffensiveInteraction(playerAttackPlan.cardChannelPairA, CharacterSelect.Player);
+            CalculateDamage(playerAttackPlan.cardChannelPairA, CharacterSelect.Opponent);
 
         if (opponentAttackPlan.cardChannelPairA != null)
-            CalculateOffensiveInteraction(opponentAttackPlan.cardChannelPairA, CharacterSelect.Opponent);
+            CalculateDamage(opponentAttackPlan.cardChannelPairA, CharacterSelect.Player);
 
         if (playerAttackPlan.cardChannelPairB != null)
-            CalculateOffensiveInteraction(playerAttackPlan.cardChannelPairB, CharacterSelect.Player);
+            CalculateDamage(playerAttackPlan.cardChannelPairB, CharacterSelect.Opponent);
 
         if (opponentAttackPlan.cardChannelPairB != null)
-            CalculateOffensiveInteraction(opponentAttackPlan.cardChannelPairB, CharacterSelect.Opponent);
+            CalculateDamage(opponentAttackPlan.cardChannelPairB, CharacterSelect.Player);
+
+        ClearAllCards();
+        //End turn here
     }
 
-    private void CalculateOffensiveInteraction(CardChannelPairObject originAttack, CharacterSelect offensiveCharacter)
+    private void CalculateDamage(CardChannelPairObject originAttack, CharacterSelect destinationMech)
     {
-        CalculateMechDamage(originAttack, offensiveCharacter);
-        CalculateComponentDamage(originAttack, offensiveCharacter);
+        CalculateMechDamage(originAttack, destinationMech);
+        CalculateComponentDamage(originAttack, destinationMech);           
     }
 
-    private void CalculateDefensiveInteraction(CardDataObject offensiveCard, CharacterSelect offensiveCharacter, CardDataObject defensiveCard)
+    private void CalculateDefensiveInteraction(CardChannelPairObject offensiveCard, CharacterSelect offensiveCharacter, CardChannelPairObject defensiveCard)
     {
-        //Check interactions
+        if (offensiveCard.CardChannel.HasFlag(defensiveCard.CardChannel))
+        {
+            if (defensiveCard.CardData.CardCategory.HasFlag(CardCategory.Guard))
+            {
+                //Attack animation
+                //Guard Animation
+                Debug.Log(offensiveCharacter + " was guarded against.");
+            }
 
+            if (defensiveCard.CardData.CardCategory.HasFlag(CardCategory.Counter))
+            {
+                //Attack animation
+                //Counter animation
+
+                Debug.Log(offensiveCharacter + " was countered.");
+                CalculateDamage(offensiveCard, offensiveCharacter);
+            }
+        }
+        else
+        {
+            if (offensiveCharacter == CharacterSelect.Player)
+                CalculateDamage(offensiveCard, CharacterSelect.Opponent);
+            else
+                CalculateDamage(offensiveCard, CharacterSelect.Player);
+        }
+
+        ClearCardsAfterDefenses(offensiveCharacter);
+    }
+
+    private void ClearCardsAfterDefenses(CharacterSelect offensiveCharacter)
+    {
         if (offensiveCharacter == CharacterSelect.Player)
         {
+            CombatManager.instance.CardUIManager.DestroyCardUI(playerAttackPlan.cardChannelPairA.CardData);
+            CombatManager.instance.CardUIManager.DestroyCardUI(opponentAttackPlan.cardChannelPairB.CardData);
+
+            ReturnCardToPlayerDeck(playerAttackPlan.cardChannelPairA.CardData);
+            ReturnCardToOpponentDeck(opponentAttackPlan.cardChannelPairB.CardData);
+
             playerAttackPlan.cardChannelPairA = null;
             opponentAttackPlan.cardChannelPairB = null;
         }
         else
         {
+            CombatManager.instance.CardUIManager.DestroyCardUI(playerAttackPlan.cardChannelPairA.CardData);
+            CombatManager.instance.CardUIManager.DestroyCardUI(opponentAttackPlan.cardChannelPairB.CardData);
+
+            ReturnCardToPlayerDeck(playerAttackPlan.cardChannelPairA.CardData);
+            ReturnCardToOpponentDeck(opponentAttackPlan.cardChannelPairB.CardData);
+
             playerAttackPlan.cardChannelPairB = null;
             opponentAttackPlan.cardChannelPairA = null;
         }
     }
 
-    private void CalculateMechDamage(CardChannelPairObject originAttack, CharacterSelect offensiveCharacter)
+    private void ClearAllCards()
+    {
+        if (playerAttackPlan.cardChannelPairA != null)
+        {
+            CombatManager.instance.CardUIManager.DestroyCardUI(playerAttackPlan.cardChannelPairA.CardData);
+            ReturnCardToPlayerDeck(playerAttackPlan.cardChannelPairA.CardData);
+        }
+
+        if (playerAttackPlan.cardChannelPairB != null)
+        {
+            CombatManager.instance.CardUIManager.DestroyCardUI(playerAttackPlan.cardChannelPairB.CardData);
+            ReturnCardToPlayerDeck(playerAttackPlan.cardChannelPairB.CardData);
+        }
+
+        if(opponentAttackPlan.cardChannelPairA != null)
+        {
+            CombatManager.instance.CardUIManager.DestroyCardUI(opponentAttackPlan.cardChannelPairA.CardData);
+            ReturnCardToOpponentDeck(opponentAttackPlan.cardChannelPairA.CardData);
+        }
+
+        if(opponentAttackPlan.cardChannelPairB != null)
+        {
+            CombatManager.instance.CardUIManager.DestroyCardUI(opponentAttackPlan.cardChannelPairB.CardData);
+            ReturnCardToOpponentDeck(opponentAttackPlan.cardChannelPairB.CardData);
+        }
+
+        playerAttackPlan = null;
+        opponentAttackPlan = null;
+    }
+
+    private void CalculateMechDamage(CardChannelPairObject originAttack, CharacterSelect destinationMech)
     {
         
     }
 
-    private void CalculateComponentDamage(CardChannelPairObject originAttack, CharacterSelect offensiveCharacter)
+    private void CalculateComponentDamage(CardChannelPairObject originAttack, CharacterSelect destinationMech)
     {
 
+    }
+
+    private void ReturnCardToPlayerDeck(CardDataObject cardToReturn)
+    {
+        CombatManager.instance.DeckManager.ReturnCardToPlayerDeck(cardToReturn);
+    }
+
+    private void ReturnCardToOpponentDeck(CardDataObject cardToReturn)
+    {
+        CombatManager.instance.DeckManager.ReturnCardToOpponentDeck(cardToReturn);
     }
 }

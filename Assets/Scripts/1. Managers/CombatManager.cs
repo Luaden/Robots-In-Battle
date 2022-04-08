@@ -77,4 +77,9 @@ public class CombatManager : MonoBehaviour
 
         return opponentFighter;
     }
+
+    public void DealDamageToMech(CharacterSelect character, int damage)
+    {
+        
+    }
 }

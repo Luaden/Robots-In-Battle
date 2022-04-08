@@ -22,7 +22,9 @@ public class CardPlayManager : MonoBehaviour
 
         if (playerAttackPlan != null && opponentAttackPlan != null)
             damageCalculator.DetermineABInteraction(playerAttackPlan, opponentAttackPlan);
-
+        
+        //Call for energy consumption here.
+        
         ClearAttackPlans();
     }
 

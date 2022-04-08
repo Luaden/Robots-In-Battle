@@ -43,12 +43,22 @@ public class DeckManager : MonoBehaviour
 
     public void ReturnCardToPlayerDeck(CardDataObject cardToReturn)
     {
+        BaseSlotController<CardUIController> slotController = cardToReturn.CardUIObject.GetComponent<CardUIController>().CardSlotController;
+
+        cardToReturn.SelectedChannels = Channels.None;
+        slotController.SlotManager.RemoveItemFromCollection(cardToReturn.CardUIObject.GetComponent<CardUIController>());
+
         playerDeck.AddCardToBottom(cardToReturn);
         CombatManager.instance.CardUIManager.DestroyCardUI(cardToReturn);
     }
 
     public void ReturnCardToOpponentDeck(CardDataObject cardToReturn)
     {
+        BaseSlotController<CardUIController> slotController = cardToReturn.CardUIObject.GetComponent<CardUIController>().CardSlotController;
+        
+        cardToReturn.SelectedChannels = Channels.None;
+        slotController.SlotManager.RemoveItemFromCollection(cardToReturn.CardUIObject.GetComponent<CardUIController>());
+        
         opponentDeck.AddCardToBottom(cardToReturn);
         CombatManager.instance.CardUIManager.DestroyCardUI(cardToReturn);
     }
