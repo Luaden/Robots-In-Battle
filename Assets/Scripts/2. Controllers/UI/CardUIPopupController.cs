@@ -4,35 +4,34 @@ using UnityEngine;
 
 public class CardUIPopupController : MonoBehaviour
 {
-    // ref in inspector?
     [SerializeField] protected GameObject popupObject;
-    RectTransform rectTransform;
 
-    private int cardWidth = 150;
-    private int cardHeight = 100;
+    private RectTransform rectTransform;
+    private int cardWidth = 125;
 
     private void Awake()
     {
-        rectTransform = GetComponent<RectTransform>();
         popupObject.SetActive(false);
     }
-
-    // create a popup anchored to transform location to display card details
-    public void HandlePopup(CardDataObject cardDataObject,
-                            Transform transform)
+    public void HandlePopup(CardDataObject cardDataObject, 
+                            Transform transform,
+                            Vector3 cursorPosition)
     {
         //create popupdata
         PopupData popupData = new PopupData(cardDataObject.CardName,
                                             cardDataObject.CardDescription);
 
+        // get component from gameobject
         CardPopupObject cardPopupObject = popupObject.GetComponent<CardPopupObject>();
+
         //assign popupdata to cardpopup
         cardPopupObject.Assign(popupData);
 
-        // put object at right location
-        RectTransform rect = popupObject.GetComponent<RectTransform>();
-        rect.position = transform.position + new Vector3(cardWidth, cardHeight / 2);
-        // anchored to transform
+        // reference the transform of the popup
+        rectTransform = popupObject.GetComponent<RectTransform>();
+
+        // put object at correct location
+        rectTransform.position = new Vector3(transform.position.x + cardWidth, cursorPosition.y);
 
         // display
         popupObject.SetActive(true);
@@ -40,7 +39,7 @@ public class CardUIPopupController : MonoBehaviour
 
     }
 
-    public void Clear()
+    public void InactivatePopup()
     {
         popupObject.SetActive(false);
     }

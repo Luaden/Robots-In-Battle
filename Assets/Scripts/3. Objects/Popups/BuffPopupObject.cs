@@ -6,4 +6,9 @@ public class BuffPopupObject : MonoBehaviour
 {
     private List<CardEffectObject> PopupDataToDisplay;
 
+    public void Assign(CardEffectObject[] cardEffectObject)
+    {
+        
+    }
+
 }

@@ -7,6 +7,11 @@ public class PopupUIManager : MonoBehaviour
     static private PopupUIManager instance;
     public static PopupUIManager Instance { get { return instance; } }
 
+    private CardUIPopupController cardUIPopupController;
+    private MechUIPopupController mechUIPopupController;
+    private HUDPopupController hudPopUpController;
+
+
     private void Awake()
     {
         if(instance != null && instance != this)
@@ -14,36 +19,41 @@ public class PopupUIManager : MonoBehaviour
             Destroy(gameObject);
             return;
         }
+
         instance = this;
         cardUIPopupController = GetComponentInChildren<CardUIPopupController>();
+        mechUIPopupController = GetComponentInChildren<MechUIPopupController>();
+        hudPopUpController = GetComponentInChildren<HUDPopupController>();
     }
-
-    private CardUIPopupController cardUIPopupController;
-    private MechUIPopupController mechUIPopupController;
-    private HUDPopupController hudPopUpController;
 
     public void HandlePopup(CardDataObject cardDataObject,
-                            Transform transform)
+                            Transform transform,
+                            Vector3 cursorPosition)
     {
-        //routes to CardUIPopupController
-        cardUIPopupController.HandlePopup(cardDataObject, transform);
+        cardUIPopupController.HandlePopup(cardDataObject,
+                                          transform,
+                                          cursorPosition);
     }
     public void HandlePopup(List<CardEffectObject> cardEffects,
-                            Transform transform)
+                            Transform transform,
+                            Vector3 cursorPosition)
     {
-        //routes to HUDPopupController
-        hudPopUpController.HandlePopup(cardEffects, transform);
+        hudPopUpController.HandlePopup(cardEffects,
+                                       transform,
+                                       cursorPosition);
     }
     public void HandlePopup(MechObject mechObject,
-                            Transform transform)
+                            Transform transform,
+                            Vector3 cursorPosition)
     {
-        //routes to MechUIPopupController
-        mechUIPopupController.HandlePopup(mechObject, transform);
+        mechUIPopupController.HandlePopup(mechObject,
+                                          transform,
+                                          cursorPosition);
     }
 
-    public void ClearPopup()
+    public void InactivatePopup()
     {
-        cardUIPopupController.Clear();
+        cardUIPopupController.InactivatePopup();
     }
 
 }
