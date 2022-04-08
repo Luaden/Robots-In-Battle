@@ -14,7 +14,7 @@ public class HUDPopupController : MonoBehaviour
         // create a popup anchored to transform location
 
     }
-    public void ClearPopup()
+    public void InactivatePopup()
     {
         popupObject.SetActive(false);
     }

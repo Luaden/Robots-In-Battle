@@ -30,24 +30,30 @@ public class PopupUIManager : MonoBehaviour
                             Transform transform,
                             Vector3 cursorPosition)
     {
-        cardUIPopupController.HandlePopup(cardDataObject, transform, cursorPosition);
+        cardUIPopupController.HandlePopup(cardDataObject,
+                                          transform,
+                                          cursorPosition);
     }
     public void HandlePopup(List<CardEffectObject> cardEffects,
                             Transform transform,
                             Vector3 cursorPosition)
     {
-        hudPopUpController.HandlePopup(cardEffects, transform, cursorPosition);
+        hudPopUpController.HandlePopup(cardEffects,
+                                       transform,
+                                       cursorPosition);
     }
     public void HandlePopup(MechObject mechObject,
                             Transform transform,
                             Vector3 cursorPosition)
     {
-        mechUIPopupController.HandlePopup(mechObject, transform, cursorPosition);
+        mechUIPopupController.HandlePopup(mechObject,
+                                          transform,
+                                          cursorPosition);
     }
 
-    public void ClearPopup()
+    public void InactivatePopup()
     {
-        cardUIPopupController.ClearPopup();
+        cardUIPopupController.InactivatePopup();
     }
 
 }

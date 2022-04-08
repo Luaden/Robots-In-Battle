@@ -15,7 +15,7 @@ public class MechUIPopupController : MonoBehaviour
         // create a popup anchored to transform location to display card details
     }
 
-    public void ClearPopup()
+    public void InactivatePopup()
     {
         popupObject.SetActive(false);
     }

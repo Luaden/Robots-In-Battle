@@ -60,7 +60,7 @@ public class CardUIController : MonoBehaviour, IPointerDownHandler, IPointerUpHa
     public virtual void OnPointerExit(PointerEventData eventData)
     {
         if (PopupUIManager.Instance != null)
-            PopupUIManager.Instance.ClearPopup();
+            PopupUIManager.Instance.InactivatePopup();
     }
 
     public virtual void OnPointerDown(PointerEventData eventData)

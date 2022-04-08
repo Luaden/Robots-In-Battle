@@ -13,10 +13,9 @@ public class CardPopupObject : MonoBehaviour
 
     public CardPopupObject()
     {
-        Debug.Log("init");
-        Init();
+        InitList();
     }
-    private void Init()
+    private void InitList()
     {
         popupDataToDisplay = new List<PopupData>();
     }
