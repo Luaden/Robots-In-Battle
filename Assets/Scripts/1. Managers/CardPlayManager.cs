@@ -9,28 +9,31 @@ public class CardPlayManager : MonoBehaviour
 
     private DamageCalculatorController damageCalculator;
 
-    public void BuildPlayerAttackPlan(List<CardChannelPairObject> cardChannelPairObjects)
+    public void BuildPlayerAttackPlan(CardChannelPairObject cardChannelPairObjectA, CardChannelPairObject cardChannelPairObjectB)
     {
-        AttackPlanObject attackPlan = new AttackPlanObject(cardChannelPairObjects, CharacterSelect.Player, CharacterSelect.Opponent);
+        AttackPlanObject attackPlan = new AttackPlanObject(cardChannelPairObjectA, cardChannelPairObjectB, CharacterSelect.Player, CharacterSelect.Opponent);
         playerAttackPlan = attackPlan;
     }
 
-    public void BuildOpponentAttackPlan(List<CardChannelPairObject> cardChannelPairObjects)
+    public void BuildOpponentAttackPlan(CardChannelPairObject cardChannelPairObjectA, CardChannelPairObject cardChannelPairObjectB)
     {
-        AttackPlanObject attackPlan = new AttackPlanObject(cardChannelPairObjects, CharacterSelect.Opponent, CharacterSelect.Player);
+        AttackPlanObject attackPlan = new AttackPlanObject(cardChannelPairObjectA, cardChannelPairObjectB, CharacterSelect.Opponent, CharacterSelect.Player);
         opponentAttackPlan = attackPlan;
+
+        if (playerAttackPlan != null && opponentAttackPlan != null)
+            damageCalculator.DetermineABInteraction(playerAttackPlan, opponentAttackPlan);
+
+        ClearAttackPlans();
     }
 
-    private void SetPlayerAttackPlan(AttackPlanObject attackPlan)
+
+    private void ClearAttackPlans()
     {
-        playerAttackPlan = attackPlan;
-
-        //Get opponent AttackPlanObject
-
-        //DetermineAttackPlanInteraction();
+        playerAttackPlan = null;
+        opponentAttackPlan = null;
     }
 
-    private void Awake()
+    private void Start()
     {
         damageCalculator = new DamageCalculatorController();
     }

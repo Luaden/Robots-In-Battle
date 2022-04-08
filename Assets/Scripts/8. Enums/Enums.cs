@@ -1,4 +1,6 @@
 ﻿using System;
+using UnityEngine;
+
 public enum CardType
 {
     Attack,
@@ -6,14 +8,23 @@ public enum CardType
     Neutral
 }
 
+[Flags]
 public enum CardCategory
 {
-    None,
-    Punch,
-    Kick,
-    Special,
-    Guard,
-    Counter
+    None = 0,
+    Punch = 1 << 0,
+    Kick = 1 << 1,
+    Special = 1 << 2,
+
+    Guard = 1 << 3,
+    Counter = 1 << 4, 
+
+    [InspectorName(null)]
+    Offensive = Punch | Kick | Special,
+    [InspectorName(null)]
+    Defensive = Guard | Counter,
+    [InspectorName(null)]
+    All = ~0
 }
 
 [Flags]
@@ -27,7 +38,7 @@ public enum Channels
     //HighMid = High | Mid,
     //HighLow = High | Low,
     //MidLow = High | Low,
-    All = High | Mid | Low
+    All = ~0,
 }
 
 public enum AffectedChannels
@@ -41,7 +52,12 @@ public enum CardEffectTypes
     
 }
 
-public enum ComponentEffectTypes
+public enum ActiveFighterEffectTypes
+{
+
+}
+
+public enum PassiveFighterEffectTypes
 {
 
 }
@@ -55,7 +71,7 @@ public enum EffectTarget
 public enum MechComponent
 {
     Head,
-    Body,
+    Torso,
     Arms,
     Legs
 }

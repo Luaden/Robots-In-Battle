@@ -16,6 +16,9 @@ public class CombatManager : MonoBehaviour
     private CardPlayManager cardPlayManager;
     private CardUIManager cardUIManager;
 
+    private FighterDataObject playerFighter;
+    private FighterDataObject opponentFighter;
+
     public DeckManager DeckManager { get => deckManager; }
     public HandManager HandManager { get => handManager; }
     public PlayerHandUISlotManager PlayerHandSlotManager { get => playerHandSlotManager; }
@@ -59,5 +62,13 @@ public class CombatManager : MonoBehaviour
 
         for (int i = 0; i <= 4; i++)
             deckManager.DrawOpponentCard();
+    }
+
+    public FighterDataObject GetFighterData(CharacterSelect mechToGet)
+    {
+        if (mechToGet == CharacterSelect.Player)
+            return playerFighter;
+
+        return opponentFighter;
     }
 }

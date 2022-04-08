@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [System.Serializable]
-public class MechComponentEffect
+public class ActiveFighterEffect
 {
-    [SerializeField] private ComponentEffectTypes componentEffect;
+    [SerializeField] private ActiveFighterEffectTypes componentEffect;
     [SerializeField] private int effectMagnitude;
 }
