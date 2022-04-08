@@ -48,7 +48,7 @@ public class DamageCalculatorController
             {
                 //Attack animation
                 //Guard Animation
-                Debug.Log(offensiveCharacter + " was guarded against.");
+                Debug.Log(offensiveCharacter + " was blocked.");
             }
 
             if (defensiveCard.CardData.CardCategory.HasFlag(CardCategory.Counter))
@@ -62,6 +62,8 @@ public class DamageCalculatorController
         }
         else
         {
+            Debug.Log(offensiveCharacter + "'s attack made it through!");
+
             if (offensiveCharacter == CharacterSelect.Player)
                 CalculateDamage(offensiveCard, CharacterSelect.Opponent);
             else
@@ -129,7 +131,11 @@ public class DamageCalculatorController
 
     private void CalculateMechDamage(CardChannelPairObject originAttack, CharacterSelect destinationMech)
     {
-        
+        Debug.Log(destinationMech + " was attacked!");
+        //This is where we would pull our additional buffs/stats from
+        //This is where we would check the EffectManager as well
+
+        CombatManager.instance.DealDamageToMech(destinationMech, originAttack.CardData.BaseDamage);
     }
 
     private void CalculateComponentDamage(CardChannelPairObject originAttack, CharacterSelect destinationMech)
