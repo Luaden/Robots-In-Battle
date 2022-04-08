@@ -5,24 +5,28 @@ using UnityEngine;
 [System.Serializable]
 public class MechHeadObject
 {
-    [SerializeField] protected MechComponent componentType;
-    [SerializeField] protected Sprite componentSprite;
-    [SerializeField] protected int componentHP;
-    [SerializeField] protected List<MechComponentEffect> componentEffects;
+    private MechComponent componentType = MechComponent.Head;
+    private Sprite componentSprite;
+    private int componentHP;
+    private List<ActiveFighterEffect> activeComponentEffects;
+    private List<PassiveFighterEffect> passiveComponentEffects;
 
     public MechComponent ComponentType { get => componentType; }
     public Sprite ComponentSprite { get => componentSprite; }
     public int ComponentHP { get => componentHP; }
-    public List<MechComponentEffect> ComponentEffects { get => componentEffects; }
+    public List<ActiveFighterEffect> ActiveComponentEffects { get => activeComponentEffects; }
+    public List<PassiveFighterEffect> PassiveComponentEffects { get => passiveComponentEffects; }
 
-    public MechHeadObject(SOMechComponent armsScriptableObject)
+    public MechHeadObject(SOMechComponent soHeadScriptableObject)
     {
-        componentType = armsScriptableObject.ComponentType;
-        componentSprite = armsScriptableObject.ComponentSprite;
-        componentHP = armsScriptableObject.ComponentHP;
-        componentEffects = new List<MechComponentEffect>();
+        componentSprite = soHeadScriptableObject.ComponentSprite;
+        componentHP = soHeadScriptableObject.ComponentHP;
+        activeComponentEffects = new List<ActiveFighterEffect>();
+        passiveComponentEffects = new List<PassiveFighterEffect>();
 
-        foreach (MechComponentEffect effect in armsScriptableObject.ComponentEffects)
-            componentEffects.Add(effect);
+        foreach (ActiveFighterEffect effect in soHeadScriptableObject.ActiveComponentEffects)
+            activeComponentEffects.Add(effect);
+        foreach (PassiveFighterEffect effect in soHeadScriptableObject.PassiveComponentEffects)
+            passiveComponentEffects.Add(effect);
     }
 }

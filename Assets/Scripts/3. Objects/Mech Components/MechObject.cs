@@ -4,9 +4,14 @@ using UnityEngine;
 
 public class MechObject
 {
-    [SerializeField] private MechHeadObject mechHead;
-    [SerializeField] private MechTorsoObject mechTorso;
-    [SerializeField] private MechArmsObject mechArms;
-    [SerializeField] private MechLegsObject mechLegs;
-    [SerializeField] private int mechTotalHP;
+    private int mechTotalHP;
+    private MechHeadObject mechHead;
+    private MechTorsoObject mechTorso;
+    private MechArmsObject mechArms;
+    private MechLegsObject mechLegs;
+
+    public MechHeadObject MechHead { get => mechHead; }
+    public MechTorsoObject MechTorso { get => mechTorso; }
+    public MechArmsObject MechArms { get => mechArms; }
+    public MechLegsObject MechLegs { get => mechLegs; }
 }

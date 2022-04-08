@@ -2,26 +2,31 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+[System.Serializable]
 public class MechTorsoObject
 {
-    [SerializeField] protected MechComponent componentType;
-    [SerializeField] protected Sprite componentSprite;
-    [SerializeField] protected int componentHP;
-    [SerializeField] protected List<MechComponentEffect> componentEffects;
+    private MechComponent componentType = MechComponent.Torso;
+    private Sprite componentSprite;
+    private int componentHP;
+    private List<ActiveFighterEffect> activeComponentEffects;
+    private List<PassiveFighterEffect> passiveComponentEffects;
 
     public MechComponent ComponentType { get => componentType; }
     public Sprite ComponentSprite { get => componentSprite; }
     public int ComponentHP { get => componentHP; }
-    public List<MechComponentEffect> ComponentEffects { get => componentEffects; }
+    public List<ActiveFighterEffect> ActiveComponentEffects { get => activeComponentEffects; }
+    public List<PassiveFighterEffect> PassiveComponentEffects { get => passiveComponentEffects; }
 
-    public MechTorsoObject(SOMechComponent armsScriptableObject)
+    public MechTorsoObject(SOMechComponent soTorsoScriptableObject)
     {
-        componentType = armsScriptableObject.ComponentType;
-        componentSprite = armsScriptableObject.ComponentSprite;
-        componentHP = armsScriptableObject.ComponentHP;
-        componentEffects = new List<MechComponentEffect>();
+        componentSprite = soTorsoScriptableObject.ComponentSprite;
+        componentHP = soTorsoScriptableObject.ComponentHP;
+        activeComponentEffects = new List<ActiveFighterEffect>();
+        passiveComponentEffects = new List<PassiveFighterEffect>();
 
-        foreach (MechComponentEffect effect in armsScriptableObject.ComponentEffects)
-            componentEffects.Add(effect);
+        foreach (ActiveFighterEffect effect in soTorsoScriptableObject.ActiveComponentEffects)
+            activeComponentEffects.Add(effect);
+        foreach (PassiveFighterEffect effect in soTorsoScriptableObject.PassiveComponentEffects)
+            passiveComponentEffects.Add(effect);
     }
 }

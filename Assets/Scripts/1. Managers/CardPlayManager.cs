@@ -21,13 +21,11 @@ public class CardPlayManager : MonoBehaviour
         opponentAttackPlan = attackPlan;
 
         if (playerAttackPlan != null && opponentAttackPlan != null)
-            DetermineAttackPlanInteractions();
+            damageCalculator.DetermineABInteraction(playerAttackPlan, opponentAttackPlan);
+
+        ClearAttackPlans();
     }
 
-    private void DetermineAttackPlanInteractions()
-    {
-        //playerAttackPlan;
-    }
 
     private void ClearAttackPlans()
     {
@@ -35,7 +33,7 @@ public class CardPlayManager : MonoBehaviour
         opponentAttackPlan = null;
     }
 
-    private void Awake()
+    private void Start()
     {
         damageCalculator = new DamageCalculatorController();
     }

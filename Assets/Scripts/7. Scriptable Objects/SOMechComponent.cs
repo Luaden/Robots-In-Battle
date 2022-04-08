@@ -9,10 +9,13 @@ public class SOMechComponent : ScriptableObject
     [SerializeField] protected MechComponent componentType;
     [SerializeField] protected Sprite componentSprite;
     [SerializeField] protected int componentHP;
-    [SerializeField] protected List<MechComponentEffect> componentEffects;
+    [SerializeField] protected List<ActiveFighterEffect> activeMechComponentEffects;
+    [SerializeField] protected List<PassiveFighterEffect> passiveMechComponentEffects;
 
     public MechComponent ComponentType { get => componentType; }
     public Sprite ComponentSprite { get => componentSprite; }
     public int ComponentHP { get => componentHP; }
-    public List<MechComponentEffect> ComponentEffects { get => componentEffects; }
+    public List<ActiveFighterEffect> ActiveComponentEffects { get => activeMechComponentEffects; }
+    public List<PassiveFighterEffect> PassiveComponentEffects { get => passiveMechComponentEffects; }
+
 }
