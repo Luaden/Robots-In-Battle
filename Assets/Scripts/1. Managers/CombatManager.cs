@@ -4,7 +4,8 @@ using UnityEngine;
 
 public class CombatManager : MonoBehaviour
 {
-    [SerializeField] private List<SOCardDataObject> testDeck;
+    [SerializeField] private int energyGainOnTurn;
+    [SerializeField] private int cardDrawOnTurn;
 
     public static CombatManager instance;
 
@@ -21,6 +22,8 @@ public class CombatManager : MonoBehaviour
     private FighterDataObject playerFighter;
     private FighterDataObject opponentFighter;
 
+    public FighterDataObject PlayerFighter { get => playerFighter; set => InitPlayerFighter(value); }
+    public FighterDataObject OpponentFighter { get => opponentFighter; set => InitOpponentFighter(value); }
     public DeckManager DeckManager { get => deckManager; }
     public HandManager HandManager { get => handManager; }
     public PlayerHandUISlotManager PlayerHandSlotManager { get => playerHandSlotManager; }
@@ -30,6 +33,48 @@ public class CombatManager : MonoBehaviour
     public CardUIManager CardUIManager { get => cardUIManager; }
     public MechHUDManager MechHUDManager { get => mechHUDManager; }
     public PopupUIManager PopupUIManager { get => popupUIManager; }
+
+    public void DealDamageToMech(CharacterSelect character, int damage)
+    {
+        if (character == CharacterSelect.Player)
+        {
+            playerFighter.FighterMech.MechCurrentHP -= damage;
+            mechHUDManager.UpdatePlayerHP(playerFighter.FighterMech.MechCurrentHP);
+        }
+        if (character == CharacterSelect.Opponent)
+        {
+            opponentFighter.FighterMech.MechCurrentHP -= damage;
+            mechHUDManager.UpdateOpponentHP(opponentFighter.FighterMech.MechCurrentHP);
+        }
+    }
+
+    public void RemoveEnergyFromMech(CharacterSelect character, int energyToRemove)
+    {
+        if (character == CharacterSelect.Player)
+        {
+            playerFighter.FighterMech.MechCurrentEnergy -= energyToRemove;
+            mechHUDManager.UpdatePlayerEnergy(playerFighter.FighterMech.MechCurrentEnergy);
+        }
+        if (character == CharacterSelect.Opponent)
+        {
+            opponentFighter.FighterMech.MechCurrentEnergy -= energyToRemove;
+            mechHUDManager.UpdateOpponentEnergy(opponentFighter.FighterMech.MechCurrentEnergy);
+        }
+    }
+
+    public void AddEnergyToMech(CharacterSelect character, int energyToAdd)
+    {
+        if (character == CharacterSelect.Player)
+        {
+            playerFighter.FighterMech.MechCurrentEnergy += energyToAdd;
+            mechHUDManager.UpdatePlayerEnergy(playerFighter.FighterMech.MechCurrentEnergy);
+        }
+        if (character == CharacterSelect.Opponent)
+        {
+            opponentFighter.FighterMech.MechCurrentEnergy += energyToAdd;
+            mechHUDManager.UpdateOpponentEnergy(opponentFighter.FighterMech.MechCurrentEnergy);
+        }
+    }
 
     private void Awake()
     {
@@ -48,41 +93,35 @@ public class CombatManager : MonoBehaviour
 
     private void Start()
     {
-       
+        CardPlayManager.OnCombatComplete += StartNewTurn;
     }
 
-    private void OnDisable()
+    private void OnDestroy()
     {
         instance = null;
+        CardPlayManager.OnCombatComplete -= StartNewTurn;
     }
 
-    [ContextMenu("Draw Card Prefab")]
-    public void DrawCardPrefab()
+    private void InitPlayerFighter(FighterDataObject newPlayerFighter)
     {
-        deckManager.SetPlayerDeck(testDeck);
+        playerFighter = newPlayerFighter;
 
-        for (int i = 0; i <= 4; i++)
-            deckManager.DrawPlayerCard();
-
-        deckManager.SetOpponentDeck(testDeck);
-
-        for (int i = 0; i <= 4; i++)
-            deckManager.DrawOpponentCard();
+        mechHUDManager.UpdatePlayerHP(playerFighter.FighterMech.MechMaxHP);
     }
 
-    public FighterDataObject GetFighterData(CharacterSelect mechToGet)
+    private void InitOpponentFighter(FighterDataObject newOpponentFighter)
     {
-        if (mechToGet == CharacterSelect.Player)
-            return playerFighter;
+        opponentFighter = newOpponentFighter;
 
-        return opponentFighter;
+        mechHUDManager.UpdateOpponentHP(opponentFighter.FighterMech.MechMaxHP);
     }
 
-    public void DealDamageToMech(CharacterSelect character, int damage)
+    private void StartNewTurn()
     {
-        if (character == CharacterSelect.Player)
-            mechHUDManager.PlayerHUDBarController.UpdateHealthBar(damage);
-        if (character == CharacterSelect.Opponent)
-            mechHUDManager.OpponentHUDBarController.UpdateHealthBar(damage);
+        deckManager.DrawPlayerCard(cardDrawOnTurn);
+        deckManager.DrawOpponentCard(cardDrawOnTurn);
+
+        AddEnergyToMech(CharacterSelect.Opponent, energyGainOnTurn);
+        AddEnergyToMech(CharacterSelect.Player, energyGainOnTurn);
     }
 }

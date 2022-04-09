@@ -11,5 +11,4 @@ public class HUDBarController : MonoBehaviour
 
     public void UpdateHealthBar(int health) { currentHealthBar.UpdateUI(health); }
     public void UpdateEnergyBar(int energy) { currentEnergyBar.UpdateUI(energy); }
-
 }

@@ -33,9 +33,6 @@ public class AIController : MonoBehaviour
 
     //Queue attack
 
-
-
-
     private void Start()
     {
         ChannelsUISlotManager.OnASlotFilled += BuildCardChannelPairA;
@@ -50,22 +47,68 @@ public class AIController : MonoBehaviour
 
     private void BuildCardChannelPairA()
     {
-        opponentHand = CombatManager.instance.HandManager.OpponentHand.CharacterHand;
-        CardDataObject selectedCard = opponentHand[UnityEngine.Random.Range(0, opponentHand.Count)];
+        if (opponentHand == null)
+            opponentHand = CombatManager.instance.HandManager.OpponentHand.CharacterHand;
+        
+        List<CardDataObject> possibleCards = new List<CardDataObject>();
+        CardDataObject selectedCard;
 
-        attackA = new CardChannelPairObject(selectedCard, GetRandomChannelFromFlag(selectedCard.PossibleChannels));
+        foreach (CardDataObject card in opponentHand)
+            if (card.EnergyCost <= CombatManager.instance.OpponentFighter.FighterMech.MechCurrentEnergy)
+                possibleCards.Add(card);
 
-        CombatManager.instance.ChannelsUISlotManager.OpponentAssignAttackSlot(selectedCard.CardUIObject.GetComponent<CardUIController>(), null);
+        if(possibleCards.Count == 0)
+        {
+            selectedCard = null;
+
+            attackA = new CardChannelPairObject(selectedCard, GetRandomChannelFromFlag(selectedCard.PossibleChannels));
+
+            CombatManager.instance.ChannelsUISlotManager.OpponentAssignAttackSlot(selectedCard.CardUIObject.GetComponent<CardUIController>(),
+                selectedCard.CardUIObject.GetComponent<CardUIController>().CardSlotController);
+        }
+        else
+        {
+            selectedCard = possibleCards[UnityEngine.Random.Range(0, opponentHand.Count)];
+
+            attackA = new CardChannelPairObject(selectedCard, GetRandomChannelFromFlag(selectedCard.PossibleChannels));
+
+            CombatManager.instance.ChannelsUISlotManager.OpponentAssignAttackSlot(selectedCard.CardUIObject.GetComponent<CardUIController>(),
+                selectedCard.CardUIObject.GetComponent<CardUIController>().CardSlotController);
+        }
     }
 
     private void BuildCardChannelPairB()
     {
-        CardDataObject selectedCard = opponentHand[UnityEngine.Random.Range(0, opponentHand.Count)];
+        List<CardDataObject> possibleCards = new List<CardDataObject>();
+        CardDataObject selectedCard;
 
-        attackB = new CardChannelPairObject(selectedCard, GetRandomChannelFromFlag(selectedCard.PossibleChannels));
+        foreach (CardDataObject card in opponentHand)
+            if (card.EnergyCost <= CombatManager.instance.OpponentFighter.FighterMech.MechCurrentEnergy)
+                possibleCards.Add(card);
 
-        CombatManager.instance.ChannelsUISlotManager.OpponentAssignAttackSlot(selectedCard.CardUIObject.GetComponent<CardUIController>(), null);
-        CombatManager.instance.CardPlayManager.BuildOpponentAttackPlan(attackA, attackB);
+        if(possibleCards.Count == 0)
+        {
+            selectedCard = null;
+
+            attackB = new CardChannelPairObject(selectedCard, GetRandomChannelFromFlag(selectedCard.PossibleChannels));
+
+            CombatManager.instance.ChannelsUISlotManager.OpponentAssignAttackSlot(selectedCard.CardUIObject.GetComponent<CardUIController>(),
+                selectedCard.CardUIObject.GetComponent<CardUIController>().CardSlotController);
+
+            CombatManager.instance.CardPlayManager.BuildOpponentAttackPlan(attackA, attackB);
+
+        }
+        else
+        {
+            selectedCard = opponentHand[UnityEngine.Random.Range(0, opponentHand.Count)];
+
+            attackB = new CardChannelPairObject(selectedCard, GetRandomChannelFromFlag(selectedCard.PossibleChannels));
+
+            CombatManager.instance.ChannelsUISlotManager.OpponentAssignAttackSlot(selectedCard.CardUIObject.GetComponent<CardUIController>(),
+                selectedCard.CardUIObject.GetComponent<CardUIController>().CardSlotController);
+
+            CombatManager.instance.CardPlayManager.BuildOpponentAttackPlan(attackA, attackB);
+        }
     }
 
     private Channels GetRandomChannelFromFlag(Channels channel)

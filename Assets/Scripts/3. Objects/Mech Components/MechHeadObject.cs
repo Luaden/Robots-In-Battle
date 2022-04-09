@@ -27,9 +27,12 @@ public class MechHeadObject
         activeComponentEffects = new List<ActiveFighterEffect>();
         passiveComponentEffects = new List<PassiveFighterEffect>();
 
-        foreach (ActiveFighterEffect effect in soHeadScriptableObject.ActiveComponentEffects)
-            activeComponentEffects.Add(effect);
-        foreach (PassiveFighterEffect effect in soHeadScriptableObject.PassiveComponentEffects)
-            passiveComponentEffects.Add(effect);
+        if(soHeadScriptableObject.ActiveComponentEffects != null)
+            foreach (ActiveFighterEffect effect in soHeadScriptableObject.ActiveComponentEffects)
+                activeComponentEffects.Add(effect);
+        
+        if (soHeadScriptableObject.PassiveComponentEffects != null)
+            foreach (PassiveFighterEffect effect in soHeadScriptableObject.PassiveComponentEffects)
+                passiveComponentEffects.Add(effect);
     }
 }

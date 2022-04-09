@@ -17,28 +17,42 @@ public class DeckManager : MonoBehaviour
     {
         opponentDeck.InitDeckList(opponentCardSOs);
         RandomizeCardDeck(opponentDeck);
+
+        Debug.Log("Opponent deck size: " + opponentDeck.CardDeck.Count);
     }
 
-    public void DrawPlayerCard()
+    public void DrawPlayerCard(int amountToDraw = 1)
     {
-        CardDataObject drawnCard = playerDeck.DrawCard();
-
-        if(drawnCard == null)
+        for(int i = 0; i < amountToDraw; i++)
         {
-            Debug.Log("No more cards to draw in player deck.");
-            return;
-        }
+            CardDataObject drawnCard = playerDeck.DrawCard();
 
-        CombatManager.instance.HandManager.AddCardToPlayerHand(drawnCard);
-        CombatManager.instance.CardUIManager.BuildAndDrawPlayerCard(drawnCard);
+            if (drawnCard == null)
+            {
+                Debug.Log("No more cards to draw in player deck.");
+                return;
+            }
+
+            CombatManager.instance.HandManager.AddCardToPlayerHand(drawnCard);
+            CombatManager.instance.CardUIManager.BuildAndDrawPlayerCard(drawnCard);
+        }
     }
 
-    public void DrawOpponentCard()
+    public void DrawOpponentCard(int amountToDraw = 1)
     {
-        CardDataObject drawnCard = opponentDeck.DrawCard();
+        for (int i = 0; i < amountToDraw; i++)
+        {
+            CardDataObject drawnCard = opponentDeck.DrawCard();
 
-        CombatManager.instance.HandManager.AddCardToOpponentHand(drawnCard);
-        CombatManager.instance.CardUIManager.BuildAndDrawOpponentCard(drawnCard);
+            if (drawnCard == null)
+            {
+                Debug.Log("No more cards to draw in player deck.");
+                return;
+            }
+
+            CombatManager.instance.HandManager.AddCardToOpponentHand(drawnCard);
+            CombatManager.instance.CardUIManager.BuildAndDrawOpponentCard(drawnCard);
+        }
     }
 
     public void ReturnCardToPlayerDeck(CardDataObject cardToReturn)

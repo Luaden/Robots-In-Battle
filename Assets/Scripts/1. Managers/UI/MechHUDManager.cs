@@ -4,17 +4,35 @@ using UnityEngine;
 
 public class MechHUDManager : MonoBehaviour
 {
-    private HUDBarController playerHudBarController;
-    private HUDBarController opponentHudBarController;
+    [SerializeField] private HUDBarController playerHudBarController;
+    [SerializeField] private HUDBarController opponentHudBarController;
     //private HUDBuffController hudBuffController;
 
-    public HUDBarController PlayerHUDBarController { get => playerHudBarController; }
-    public HUDBarController OpponentHUDBarController { get => opponentHudBarController; }
     private void Awake()
     {
-        playerHudBarController = transform.Find("Player").GetComponent<HUDBarController>();
-        opponentHudBarController = transform.Find("Opponent").GetComponent<HUDBarController>();
+        //playerHudBarController = FindObjectOfType<HUDBarController>();
+        //opponentHudBarController = FindObjectOfType<HUDBarController>();
 
         //hudBuffController = GetComponentInChildren<HUDBuffController>();
+    }
+
+    public void UpdatePlayerHP(int playerHP)
+    {
+        playerHudBarController.UpdateHealthBar(playerHP);
+    }
+
+    public void UpdatePlayerEnergy(int playerEnergy)
+    {
+        playerHudBarController.UpdateEnergyBar(playerEnergy);
+    }
+
+    public void UpdateOpponentHP(int opponentHP)
+    {
+        opponentHudBarController.UpdateHealthBar(opponentHP);
+    }
+
+    public void UpdateOpponentEnergy(int opponentEnergy)
+    {
+        opponentHudBarController.UpdateEnergyBar(opponentEnergy);
     }
 }

@@ -10,8 +10,8 @@ public class AttackPlanObject
     private CharacterSelect characterOrigin;
     private CharacterSelect characterDestination;
 
-    public CardChannelPairObject cardChannelPairA { get => cardChannelPairA; set => cardChannelPairA = value; }
-    public CardChannelPairObject cardChannelPairB { get => cardChannelPairB; set => cardChannelPairB = value; }
+    public CardChannelPairObject cardChannelPairA { get => cardChannelPairObjectA; set => cardChannelPairObjectA = value; }
+    public CardChannelPairObject cardChannelPairB { get => cardChannelPairObjectB; set => cardChannelPairObjectB = value; }
     public CharacterSelect CharacterOrigin { get => characterOrigin; }
     public CharacterSelect CharacterDestination { get => characterDestination; }
 

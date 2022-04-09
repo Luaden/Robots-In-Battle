@@ -64,6 +64,9 @@ public class ChannelsUISlotManager : BaseSlotManager<CardUIController>
                 
                 cardChannelPairObjectB = new CardChannelPairObject(item.CardData, selectedChannel);
 
+                if (playerAttackSlotA.CurrentSlottedItem != null && playerAttackSlotB.CurrentSlottedItem != null)
+                    CombatManager.instance.CardPlayManager.BuildPlayerAttackPlan(cardChannelPairObjectA, cardChannelPairObjectB);
+
                 OnBSlotFilled?.Invoke();
                 return;
             }
@@ -73,14 +76,13 @@ public class ChannelsUISlotManager : BaseSlotManager<CardUIController>
                 return;
             }
 
-        if (playerAttackSlotA.CurrentSlottedItem != null && playerAttackSlotB.CurrentSlottedItem != null)
-            CombatManager.instance.CardPlayManager.BuildPlayerAttackPlan(cardChannelPairObjectA, cardChannelPairObjectB);
-
         Debug.Log("No slots available in the hand to add a card to. This should not happen and should be stopped before this point.");
     }
 
     public void OpponentAssignAttackSlot(CardUIController item, BaseSlotController<CardUIController> slot)
     {
+        slot.SlotManager.RemoveItemFromCollection(item);
+
         if (opponentAttackSlotA.CurrentSlottedItem == null)
             if (item.CardData.CardType == CardType.Attack || item.CardData.CardType == CardType.Neutral)
             {
@@ -132,6 +134,12 @@ public class ChannelsUISlotManager : BaseSlotManager<CardUIController>
 
     public override void HandleDrop(PointerEventData eventData, CardUIController newData, BaseSlotController<CardUIController> slot)
     {
+        if (newData.CardData.EnergyCost > CombatManager.instance.PlayerFighter.FighterMech.MechCurrentEnergy)
+        {
+            Debug.Log("Not enough energy to use this card.");
+            return;
+        }
+
         selectedChannel = CheckChannelSlot(slot);
 
         if (selectedChannel == Channels.None)

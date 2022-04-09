@@ -7,15 +7,15 @@ public class DamageCalculatorController
     private AttackPlanObject playerAttackPlan;
     private AttackPlanObject opponentAttackPlan;
 
-    public void DetermineABInteraction(AttackPlanObject playerAttackPlan, AttackPlanObject opponentAttackPlan)
+    public void DetermineABInteraction(AttackPlanObject newPlayerAttackPlan, AttackPlanObject newOpponentAttackPlan)
     {
-        this.playerAttackPlan = playerAttackPlan;
-        this.opponentAttackPlan = opponentAttackPlan;
+        playerAttackPlan = new AttackPlanObject(newPlayerAttackPlan.cardChannelPairA, newPlayerAttackPlan.cardChannelPairB, CharacterSelect.Player, CharacterSelect.Opponent);
+        opponentAttackPlan = new AttackPlanObject(newOpponentAttackPlan.cardChannelPairA, newOpponentAttackPlan.cardChannelPairB, CharacterSelect.Opponent, CharacterSelect.Player);
 
-        if (opponentAttackPlan.cardChannelPairB.CardData.CardCategory.HasFlag(CardCategory.Defensive))
+        if (opponentAttackPlan.cardChannelPairB.CardData != null && opponentAttackPlan.cardChannelPairB.CardData.CardCategory.HasFlag(CardCategory.Defensive))
             CalculateDefensiveInteraction(playerAttackPlan.cardChannelPairA, CharacterSelect.Player, opponentAttackPlan.cardChannelPairB);
 
-        if (playerAttackPlan.cardChannelPairB.CardData.CardCategory.HasFlag(CardCategory.Defensive))
+        if (playerAttackPlan.cardChannelPairB.CardData != null && playerAttackPlan.cardChannelPairB.CardData.CardCategory.HasFlag(CardCategory.Defensive))
             CalculateDefensiveInteraction(opponentAttackPlan.cardChannelPairA, CharacterSelect.Opponent, playerAttackPlan.cardChannelPairB);
 
         if (playerAttackPlan.cardChannelPairA != null)
@@ -42,6 +42,12 @@ public class DamageCalculatorController
 
     private void CalculateDefensiveInteraction(CardChannelPairObject offensiveCard, CharacterSelect offensiveCharacter, CardChannelPairObject defensiveCard)
     {
+        if (offensiveCard == null)
+        {
+            //Need some kind of confused block/counter animation?
+            return;
+        }
+
         if (offensiveCard.CardChannel.HasFlag(defensiveCard.CardChannel))
         {
             if (defensiveCard.CardData.CardCategory.HasFlag(CardCategory.Guard))
@@ -77,23 +83,11 @@ public class DamageCalculatorController
     {
         if (offensiveCharacter == CharacterSelect.Player)
         {
-            CombatManager.instance.CardUIManager.DestroyCardUI(playerAttackPlan.cardChannelPairA.CardData);
-            CombatManager.instance.CardUIManager.DestroyCardUI(opponentAttackPlan.cardChannelPairB.CardData);
-
-            ReturnCardToPlayerDeck(playerAttackPlan.cardChannelPairA.CardData);
-            ReturnCardToOpponentDeck(opponentAttackPlan.cardChannelPairB.CardData);
-
             playerAttackPlan.cardChannelPairA = null;
             opponentAttackPlan.cardChannelPairB = null;
         }
         else
         {
-            CombatManager.instance.CardUIManager.DestroyCardUI(playerAttackPlan.cardChannelPairA.CardData);
-            CombatManager.instance.CardUIManager.DestroyCardUI(opponentAttackPlan.cardChannelPairB.CardData);
-
-            ReturnCardToPlayerDeck(playerAttackPlan.cardChannelPairA.CardData);
-            ReturnCardToOpponentDeck(opponentAttackPlan.cardChannelPairB.CardData);
-
             playerAttackPlan.cardChannelPairB = null;
             opponentAttackPlan.cardChannelPairA = null;
         }
@@ -101,30 +95,6 @@ public class DamageCalculatorController
 
     private void ClearAllCards()
     {
-        if (playerAttackPlan.cardChannelPairA != null)
-        {
-            CombatManager.instance.CardUIManager.DestroyCardUI(playerAttackPlan.cardChannelPairA.CardData);
-            ReturnCardToPlayerDeck(playerAttackPlan.cardChannelPairA.CardData);
-        }
-
-        if (playerAttackPlan.cardChannelPairB != null)
-        {
-            CombatManager.instance.CardUIManager.DestroyCardUI(playerAttackPlan.cardChannelPairB.CardData);
-            ReturnCardToPlayerDeck(playerAttackPlan.cardChannelPairB.CardData);
-        }
-
-        if(opponentAttackPlan.cardChannelPairA != null)
-        {
-            CombatManager.instance.CardUIManager.DestroyCardUI(opponentAttackPlan.cardChannelPairA.CardData);
-            ReturnCardToOpponentDeck(opponentAttackPlan.cardChannelPairA.CardData);
-        }
-
-        if(opponentAttackPlan.cardChannelPairB != null)
-        {
-            CombatManager.instance.CardUIManager.DestroyCardUI(opponentAttackPlan.cardChannelPairB.CardData);
-            ReturnCardToOpponentDeck(opponentAttackPlan.cardChannelPairB.CardData);
-        }
-
         playerAttackPlan = null;
         opponentAttackPlan = null;
     }
@@ -132,24 +102,19 @@ public class DamageCalculatorController
     private void CalculateMechDamage(CardChannelPairObject originAttack, CharacterSelect destinationMech)
     {
         Debug.Log(destinationMech + " was attacked!");
+        
         //This is where we would pull our additional buffs/stats from
         //This is where we would check the EffectManager as well
-
-        CombatManager.instance.DealDamageToMech(destinationMech, originAttack.CardData.BaseDamage);
+        
+        if (originAttack.CardData != null)
+        {
+            //Animations for attacks
+            CombatManager.instance.DealDamageToMech(destinationMech, originAttack.CardData.BaseDamage); 
+        }
     }
 
     private void CalculateComponentDamage(CardChannelPairObject originAttack, CharacterSelect destinationMech)
     {
-
-    }
-
-    private void ReturnCardToPlayerDeck(CardDataObject cardToReturn)
-    {
-        CombatManager.instance.DeckManager.ReturnCardToPlayerDeck(cardToReturn);
-    }
-
-    private void ReturnCardToOpponentDeck(CardDataObject cardToReturn)
-    {
-        CombatManager.instance.DeckManager.ReturnCardToOpponentDeck(cardToReturn);
+        //Need to figure out the carddata damage + multiplier and figure out what component we're affecting.
     }
 }

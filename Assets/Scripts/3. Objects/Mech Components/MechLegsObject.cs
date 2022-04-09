@@ -27,9 +27,12 @@ public class MechLegsObject
         activeComponentEffects = new List<ActiveFighterEffect>();
         passiveComponentEffects = new List<PassiveFighterEffect>();
 
-        foreach (ActiveFighterEffect effect in soLegsScriptableObject.ActiveComponentEffects)
-            activeComponentEffects.Add(effect);
-        foreach (PassiveFighterEffect effect in soLegsScriptableObject.PassiveComponentEffects)
-            passiveComponentEffects.Add(effect);
+        if (soLegsScriptableObject.ActiveComponentEffects != null)
+            foreach (ActiveFighterEffect effect in soLegsScriptableObject.ActiveComponentEffects)
+                activeComponentEffects.Add(effect);
+
+        if (soLegsScriptableObject.PassiveComponentEffects != null)
+            foreach (PassiveFighterEffect effect in soLegsScriptableObject.PassiveComponentEffects)
+                passiveComponentEffects.Add(effect);
     }
 }

@@ -12,7 +12,6 @@ public class OpponentHandUISlotManager : BaseSlotManager<CardUIController>
         {
             slot.CurrentSlottedItem = item;
             item.CardSlotController = slot;
-            CombatManager.instance.HandManager.AddCardToOpponentHand(item.CardData);
             return;
         }
 
@@ -21,7 +20,6 @@ public class OpponentHandUISlotManager : BaseSlotManager<CardUIController>
             {
                 slotOption.CurrentSlottedItem = item;
                 item.CardSlotController = slotOption;
-                CombatManager.instance.HandManager.AddCardToOpponentHand(item.CardData);
                 return;
             }
 
@@ -35,7 +33,10 @@ public class OpponentHandUISlotManager : BaseSlotManager<CardUIController>
             {
                 slot.CurrentSlottedItem = null;
                 CombatManager.instance.HandManager.RemoveCardFromOpponentHand(item.CardData);
+                return;
             }
+
+        Debug.Log("Could not find the CardUIController for the item: " + item.CardData.CardName);
     }
 
     public override void HandleDrop(PointerEventData eventData, CardUIController droppedCard, BaseSlotController<CardUIController> slot)
@@ -43,7 +44,6 @@ public class OpponentHandUISlotManager : BaseSlotManager<CardUIController>
         if (droppedCard == null)
         {
             Debug.Log("Could not find appropriate data for slot.");
-            //Tell card to move to previous slot.
             return;
         }
 

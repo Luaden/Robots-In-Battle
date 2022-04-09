@@ -27,9 +27,12 @@ public class MechArmsObject
         activeComponentEffects = new List<ActiveFighterEffect>();
         passiveComponentEffects = new List<PassiveFighterEffect>();
 
-        foreach (ActiveFighterEffect effect in soArmScriptableObject.ActiveComponentEffects)
-            activeComponentEffects.Add(effect);
-        foreach (PassiveFighterEffect effect in soArmScriptableObject.PassiveComponentEffects)
-            passiveComponentEffects.Add(effect);
+        if (soArmScriptableObject.ActiveComponentEffects != null)
+            foreach (ActiveFighterEffect effect in soArmScriptableObject.ActiveComponentEffects)
+                activeComponentEffects.Add(effect);
+
+        if (soArmScriptableObject.PassiveComponentEffects != null)
+            foreach (PassiveFighterEffect effect in soArmScriptableObject.PassiveComponentEffects)
+                passiveComponentEffects.Add(effect);
     }
 }

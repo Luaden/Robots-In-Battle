@@ -16,7 +16,7 @@ public class HUDBar : BaseUIElement<int>
         if (ClearedIfEmpty(primaryData))
             return;
 
-        currentBar.fillAmount -= (float)primaryData / 100;
+        currentBar.fillAmount = (float)primaryData / 100;
     }
 
     protected override bool ClearedIfEmpty(int newData)

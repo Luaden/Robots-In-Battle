@@ -12,6 +12,7 @@ public class HandController
     {
         if (characterHand == null)
             characterHand = new List<CardDataObject>();
+
         characterHand.Add(cardToAdd);
     }
 
@@ -20,7 +21,7 @@ public class HandController
     {
         if (!characterHand.Contains(cardToRemove))
         {
-            Debug.Log(cardToRemove.CardName + " was not found in the player hand!");
+            Debug.Log(cardToRemove.CardName + " was not found in the hand!");
             return;
         }
 
