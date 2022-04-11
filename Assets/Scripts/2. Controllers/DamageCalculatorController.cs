@@ -72,7 +72,9 @@ public class DamageCalculatorController
             {
                 //Attack animation
                 //Guard Animation
+
                 Debug.Log(offensiveCharacter + " was blocked, but this card type currently does nothing on its own.");
+                effectController.EnableDefensiveEffect(defensiveCard);
                 CalculateDamage(offensiveCard, offensiveCharacter == CharacterSelect.Player ? CharacterSelect.Opponent : CharacterSelect.Player);
             }
 
@@ -82,6 +84,7 @@ public class DamageCalculatorController
                 //Counter animation
 
                 Debug.Log(offensiveCharacter + " was countered.");
+                effectController.EnableDefensiveEffect(defensiveCard);
                 CalculateDamage(offensiveCard, offensiveCharacter, true);
             }
         }
