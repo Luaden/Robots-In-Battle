@@ -6,7 +6,7 @@ public class HUDPopupController : MonoBehaviour
 {
     [SerializeField] protected GameObject popupObject;
     private RectTransform rectTransform;
-    public void HandlePopup(List<CardEffectObject> cardEffectObjects,
+    public void HandlePopup(List<SOCardEffectObject> cardEffectObjects,
                             Transform transform,
                             Vector3 cursorPosition)
     {

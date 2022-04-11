@@ -20,7 +20,7 @@ public class CardDataObject
     [SerializeField] private int baseDamage;
 
     [Header("Effect Attributes")]
-    [SerializeField] private List<CardEffectObject> cardEffects;
+    [SerializeField] private List<SOCardEffectObject> cardEffects;
 
     private GameObject cardUIObject;
 
@@ -36,7 +36,7 @@ public class CardDataObject
     public Channels SelectedChannels { get => selectedChannels; set => selectedChannels = value; }
     public int EnergyCost { get => energyCost; }
     public int BaseDamage { get => baseDamage; }
-    public List<CardEffectObject> CardEffects { get => cardEffects; }
+    public List<SOCardEffectObject> CardEffects { get => cardEffects; }
     #endregion
 
     #region Runtime Properties

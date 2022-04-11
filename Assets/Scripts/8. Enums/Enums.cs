@@ -52,19 +52,19 @@ public enum AffectedChannels
 public enum CardEffectTypes
 {
     None = 0,
-    PlayMultipleTimes = 1 << 0,
-    AdditionalElementStacks = 1 << 1,
-    IncreaseOutgoingChannelDamage = 1 << 2,
-    IncreaseOutgoingCardTypeDamage = 1 << 3,
-    ReduceIncomingChannelDamage = 1 << 4, 
-    GainShields = 1 << 5,
-    MultiplyShield = 1 << 6,
-    KeyWordBoost = 1 << 7,
+    PlayMultipleTimes = 1,
+    AdditionalElementStacks = 2,
+    IncreaseOutgoingChannelDamage = 3,
+    IncreaseOutgoingCardTypeDamage = 4,
+    ReduceIncomingChannelDamage = 5, 
+    GainShields = 6,
+    MultiplyShield = 7,
+    KeyWordInitialize = 8,
+    KeyWordExecute = 9
 }
 
 public enum CardKeyWord
 {
-    None = 0,
     Flurry = 1,
 }
 
