@@ -8,14 +8,6 @@ public class MechHUDManager : MonoBehaviour
     [SerializeField] private HUDBarController opponentHudBarController;
     //private HUDBuffController hudBuffController;
 
-    private void Awake()
-    {
-        //playerHudBarController = FindObjectOfType<HUDBarController>();
-        //opponentHudBarController = FindObjectOfType<HUDBarController>();
-
-        //hudBuffController = GetComponentInChildren<HUDBuffController>();
-    }
-
     public void UpdatePlayerHP(int playerHP)
     {
         playerHudBarController.UpdateHealthBar(playerHP);
@@ -34,5 +26,17 @@ public class MechHUDManager : MonoBehaviour
     public void UpdateOpponentEnergy(int opponentEnergy)
     {
         opponentHudBarController.UpdateEnergyBar(opponentEnergy);
+    }
+
+    public void SetPlayerMaxStats(int playerHealth, int playerEnergy)
+    {
+        playerHudBarController.SetHealthBarMax(playerHealth);
+        playerHudBarController.SetEnergyBarMax(playerEnergy);
+    }
+
+    public void SetOpponentMaxStats(int opponentHealth, int opponentEnergy)
+    {
+        opponentHudBarController.SetHealthBarMax(opponentHealth);
+        opponentHudBarController.SetEnergyBarMax(opponentEnergy);
     }
 }

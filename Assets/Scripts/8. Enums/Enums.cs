@@ -1,6 +1,12 @@
 ﻿using System;
 using UnityEngine;
 
+public enum ItemType
+{
+    Card,
+    Component
+}
+
 public enum CardType
 {
     Attack,
@@ -31,13 +37,9 @@ public enum CardCategory
 public enum Channels
 {
     None = 0,
-    High = 1,
-    Mid = 2,
-    Low = 4,
-
-    //HighMid = High | Mid,
-    //HighLow = High | Low,
-    //MidLow = High | Low,
+    High = 1 << 0,
+    Mid = 1 << 1,
+    Low = 1 << 2,
     All = ~0,
 }
 
@@ -49,17 +51,40 @@ public enum AffectedChannels
 
 public enum CardEffectTypes
 {
-    
+    None = 0,
+    PlayMultipleTimes = 1 << 0,
+    AdditionalElementStacks = 1 << 1,
+    IncreaseOutgoingChannelDamage = 1 << 2,
+    IncreaseOutgoingCardTypeDamage = 1 << 3,
+    ReduceIncomingChannelDamage = 1 << 4, 
+    GainShields = 1 << 5,
+    MultiplyShield = 1 << 6,
+    KeyWordBoost = 1 << 7,
 }
 
-public enum ActiveFighterEffectTypes
+public enum CardKeyWord
 {
-
+    None = 0,
+    Flurry = 1,
 }
 
-public enum PassiveFighterEffectTypes
+public enum ElementType
 {
+    None = 0,
+    Fire = 1, // Stacks, damage at end of turn
+    Ice = 2, // Stacks, raises energy cost in channel
+    Plasma = 3, // Stacks, siphons energy at end of turn
+    Acid = 4, // Increases damage dealt to components.
+}
 
+[Flags]
+public enum PilotEffects
+{
+    None = 0,
+    BonusMoney = 1 << 0,
+    EnergyGain = 1 << 1,
+    SelfRepair = 1 << 2,
+    ShopRarity = 1 << 3
 }
 
 public enum EffectTarget
@@ -73,7 +98,8 @@ public enum MechComponent
     Head,
     Torso,
     Arms,
-    Legs
+    Legs,
+    Back
 }
 
 public enum CharacterSelect

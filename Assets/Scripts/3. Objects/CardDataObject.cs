@@ -44,7 +44,7 @@ public class CardDataObject
     #endregion
 
     #region Constructor
-    public CardDataObject(SOCardDataObject data)
+    public CardDataObject(SOItemDataObject data)
     {
         cardName = data.CardName;
         cardDescription = data.CardDescription;
