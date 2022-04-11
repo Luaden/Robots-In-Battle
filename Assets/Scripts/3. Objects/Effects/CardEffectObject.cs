@@ -11,7 +11,7 @@ public class CardEffectObject
     [SerializeField] private int effectDuration;
 
 
-    public CardEffectTypes effectType { get => cardEffect; }
+    public CardEffectTypes EffectType { get => cardEffect; }
     public EffectTarget EffectTarget { get => effectTarget; }
     public int EffectMagnitude { get => effectMagnitude; }
     public int EffectDuration { get => effectDuration; }

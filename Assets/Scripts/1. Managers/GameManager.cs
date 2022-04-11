@@ -4,11 +4,11 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
-    [SerializeField] private SOMechComponent testMechHead;
-    [SerializeField] private SOMechComponent testMechTorso;
-    [SerializeField] private SOMechComponent testMechArms;
-    [SerializeField] private SOMechComponent testMechLegs;
-    [SerializeField] private List<SOCardDataObject> testDeck;
+    [SerializeField] private SOItemDataObject testMechHead;
+    [SerializeField] private SOItemDataObject testMechTorso;
+    [SerializeField] private SOItemDataObject testMechArms;
+    [SerializeField] private SOItemDataObject testMechLegs;
+    [SerializeField] private List<SOItemDataObject> testDeck;
 
     [ContextMenu("Start Game")]
     public void BuildMech()

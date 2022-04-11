@@ -1,11 +1,15 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
 
 public class DamageCalculatorController
 {
     private AttackPlanObject playerAttackPlan;
     private AttackPlanObject opponentAttackPlan;
+    private EffectController effectController;
+
+    public EffectController EffectController { get => effectController; }
 
     public void DetermineABInteraction(AttackPlanObject newPlayerAttackPlan, AttackPlanObject newOpponentAttackPlan)
     {
@@ -34,9 +38,23 @@ public class DamageCalculatorController
         //End turn here
     }
 
-    private void CalculateDamage(CardChannelPairObject originAttack, CharacterSelect destinationMech)
+    private void Start()
     {
-        CalculateMechDamage(originAttack, destinationMech);
+        effectController = new EffectController();
+    }
+
+    private void CalculateDamage(CardChannelPairObject originAttack, CharacterSelect destinationMech, bool counterDamage = false)
+    {
+        foreach(CardEffectObject cardEffect in originAttack.CardData.CardEffects)
+            if(cardEffect.EffectType == CardEffectTypes.PlayMultipleTimes)
+                for(int i = 0; i < cardEffect.EffectMagnitude; i++)
+                {
+                    CalculateMechDamage(originAttack, destinationMech, counterDamage);
+                    CalculateComponentDamage(originAttack, destinationMech);
+                    return;
+                }
+
+        CalculateMechDamage(originAttack, destinationMech, counterDamage);
         CalculateComponentDamage(originAttack, destinationMech);           
     }
 
@@ -54,7 +72,8 @@ public class DamageCalculatorController
             {
                 //Attack animation
                 //Guard Animation
-                Debug.Log(offensiveCharacter + " was blocked.");
+                Debug.Log(offensiveCharacter + " was blocked, but this card type currently does nothing on its own.");
+                CalculateDamage(offensiveCard, offensiveCharacter == CharacterSelect.Player ? CharacterSelect.Opponent : CharacterSelect.Player);
             }
 
             if (defensiveCard.CardData.CardCategory.HasFlag(CardCategory.Counter))
@@ -63,7 +82,7 @@ public class DamageCalculatorController
                 //Counter animation
 
                 Debug.Log(offensiveCharacter + " was countered.");
-                CalculateDamage(offensiveCard, offensiveCharacter);
+                CalculateDamage(offensiveCard, offensiveCharacter, true);
             }
         }
         else
@@ -99,7 +118,7 @@ public class DamageCalculatorController
         opponentAttackPlan = null;
     }
 
-    private void CalculateMechDamage(CardChannelPairObject originAttack, CharacterSelect destinationMech)
+    private void CalculateMechDamage(CardChannelPairObject originAttack, CharacterSelect destinationMech, bool counterDamage = false)
     {
         Debug.Log(destinationMech + " was attacked!");
         
@@ -109,7 +128,9 @@ public class DamageCalculatorController
         if (originAttack.CardData != null)
         {
             //Animations for attacks
-            CombatManager.instance.DealDamageToMech(destinationMech, originAttack.CardData.BaseDamage); 
+            CombatManager.instance.DealDamageToMech(destinationMech, counterDamage == false ? 
+                originAttack.CardData.BaseDamage : 
+                Mathf.RoundToInt(originAttack.CardData.BaseDamage * 1.5f)); 
         }
     }
 

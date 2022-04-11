@@ -1,6 +1,12 @@
 ﻿using System;
 using UnityEngine;
 
+public enum ItemType
+{
+    Card,
+    Component
+}
+
 public enum CardType
 {
     Attack,
@@ -46,12 +52,20 @@ public enum AffectedChannels
 public enum CardEffectTypes
 {
     None = 0,
-    DoubleNextAttack = 1 << 0,
+    PlayMultipleTimes = 1 << 0,
     AdditionalElementStacks = 1 << 1,
     IncreaseOutgoingChannelDamage = 1 << 2,
     IncreaseOutgoingCardTypeDamage = 1 << 3,
-    ReduceIncomingChannelDamage = 1 << 4,
+    ReduceIncomingChannelDamage = 1 << 4, 
     GainShields = 1 << 5,
+    MultiplyShield = 1 << 6,
+    KeyWordBoost = 1 << 7,
+}
+
+public enum CardKeyWord
+{
+    None = 0,
+    Flurry = 1,
 }
 
 public enum ElementType

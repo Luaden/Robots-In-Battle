@@ -36,7 +36,7 @@ public class MechComponentDataObject
     public int ExtraElementStacks { get => extraElementStacks; }
     public int EnergyGainModifier { get => energyGainModifier; }
 
-    public MechComponentDataObject(SOMechComponent sOMechComponent)
+    public MechComponentDataObject(SOItemDataObject sOMechComponent)
     {
         componentName = sOMechComponent.ComponentName;
         componentType = sOMechComponent.ComponentType;
