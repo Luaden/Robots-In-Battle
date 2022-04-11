@@ -6,17 +6,20 @@ using UnityEngine.UI;
 public class HUDBar : BaseUIElement<int>
 {
     private Image currentBar;
+    private int barMax;
+    public int BarMax { get => barMax; set => barMax = value; }
 
     private void Awake()
     {
         currentBar = GetComponent<Image>();
     }
+
     public override void UpdateUI(int primaryData)
     {
         if (ClearedIfEmpty(primaryData))
             return;
 
-        currentBar.fillAmount = (float)primaryData / 100;
+        currentBar.fillAmount = (float)primaryData / barMax;
     }
 
     protected override bool ClearedIfEmpty(int newData)

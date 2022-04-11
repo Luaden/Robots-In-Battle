@@ -25,12 +25,11 @@ public class SOCardDataObject : ScriptableObject
     [SerializeField] private int energyCost;
     [Tooltip("Attacks treat this as damage to deal. Defenses treat this as damage to nullify.")]
     [SerializeField] private int baseDamage;
-    [Tooltip("Converts and treats Base Damage as a percent of the considered target. Attacks will deal percentage of health as damage, " +
-    "defenses will nullify or reflect a percentage of the incoming damage.")]
-    [SerializeField] private bool treatDamageAsPercent;
     [Tooltip("Damage dealt to components is based on base damage in combination with the Component Damage Multiplier. .5 deals 50% of Base Damage to components. " +
     "1.5 will deal base damage plus an additional 50%.")]
     [SerializeField] private int componentDamageMultiplier;
+    [Tooltip("This is the chance for this card to spawn at the shop.")]
+    [Range(1, 100)] [SerializeField] private int chanceToSpawn;
 
     [Header("Effect Attributes")]
     [SerializeField] private List<CardEffectObject> cardEffects;
