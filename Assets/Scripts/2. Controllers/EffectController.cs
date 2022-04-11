@@ -10,24 +10,27 @@ public class EffectController : MonoBehaviour
     //Get defensive reductions with channel
     //Get offensive boosts with channel
 
-    public void LogNewEffect(CardEffectObject cardEffect)
+    public void EnableDefensiveEffect(CardChannelPairObject cardEffect)
     {
-        switch(cardEffect.EffectType)
+        foreach(CardEffectObject effect in cardEffect.CardData.CardEffects)
         {
-            case CardEffectTypes.PlayMultipleTimes:
-                break;
-            case CardEffectTypes.AdditionalElementStacks:
-                break;
-            case CardEffectTypes.GainShields:
-                break;
-            case CardEffectTypes.IncreaseOutgoingCardTypeDamage:
-                break;
-            case CardEffectTypes.IncreaseOutgoingChannelDamage:
-                break;
-            case CardEffectTypes.ReduceIncomingChannelDamage:
-                break;
-            case CardEffectTypes.KeyWordBoost:
-                break;
+            switch (cardEffect.CardData.CardEffects)
+            {
+                case CardEffectTypes.PlayMultipleTimes:
+                    break;
+                case CardEffectTypes.AdditionalElementStacks:
+                    break;
+                case CardEffectTypes.GainShields:
+                    break;
+                case CardEffectTypes.IncreaseOutgoingCardTypeDamage:
+                    break;
+                case CardEffectTypes.IncreaseOutgoingChannelDamage:
+                    break;
+                case CardEffectTypes.ReduceIncomingChannelDamage:
+                    break;
+                case CardEffectTypes.KeyWordBoost:
+                    break;
+            }
         }
 
         //Check if this is new or if this is an addition
