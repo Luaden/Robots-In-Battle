@@ -84,11 +84,22 @@ public class EffectController : MonoBehaviour
 
             //Get Damage Reductions and Modifiers
             damageToReturn = GetCardChannelDamageReduction(attack, damageToReturn, defensiveCharacter);
-            //damageToReturn = GetDamageReducedByShield(attack, damageToReturn, defensiveCharacter);
+            damageToReturn = GetDamageReducedByShield(attack, damageToReturn, defensiveCharacter);
         }
 
-        //Check for component damage reduction.
-        //Return damage.
+        if (defensiveCharacter == CharacterSelect.Player)
+        {
+            //Get Damage Boosts and Modifiers
+            damageToReturn = GetCardCategoryDamageBonus(attack, damageToReturn, defensiveCharacter);
+            damageToReturn = GetCardChannelDamageBonus(attack, damageToReturn, defensiveCharacter);
+            damageToReturn = GetKeyWordDamageBonus(attack, ref damageToReturn, defensiveCharacter);
+            damageToReturn = GetComponentDamageBonus(attack, damageToReturn, defensiveCharacter);
+
+            //Get Damage Reductions and Modifiers
+            damageToReturn = GetCardChannelDamageReduction(attack, damageToReturn, defensiveCharacter);
+            damageToReturn = GetDamageReducedByShield(attack, damageToReturn, defensiveCharacter);
+        }
+
 
         return damageToReturn;
     }
@@ -302,6 +313,7 @@ public class EffectController : MonoBehaviour
             return damageToReturn;
         }
     }
+
     private int GetKeyWordDamageBonus(CardChannelPairObject attack, ref int damageToReturn, CharacterSelect defensiveCharacter)
     {
         CardKeyWord keyWord = CardKeyWord.None;
@@ -430,10 +442,56 @@ public class EffectController : MonoBehaviour
             return damageToReturn;
         }
     }
+    
+    private int GetDamageReducedByShield(CardChannelPairObject attack, int damageToReturn, CharacterSelect defensiveCharacter)
+    {
+        int initialShield;
+
+        if(defensiveCharacter == CharacterSelect.Opponent)
+        {
+            if (opponentFighterEffectObject.ChannelShields.TryGetValue(attack.CardChannel, out initialShield))
+            {
+                int shieldAmount = initialShield;
+
+                shieldAmount -= damageToReturn;
+                damageToReturn = Mathf.RoundToInt(Mathf.Clamp(damageToReturn - initialShield, 0, Mathf.Infinity));
+
+
+                if (shieldAmount <= 0)
+                    opponentFighterEffectObject.ChannelShields.Remove(attack.CardChannel);
+                else
+                    opponentFighterEffectObject.ChannelShields[attack.CardChannel] = shieldAmount;
+
+            }
+
+            return damageToReturn;
+        }
+        else
+        {
+            if (playerFighterEffectObject.ChannelShields.TryGetValue(attack.CardChannel, out initialShield))
+            {
+                int shieldAmount = initialShield;
+
+                shieldAmount -= damageToReturn;
+                damageToReturn = Mathf.RoundToInt(Mathf.Clamp(damageToReturn - initialShield, 0, Mathf.Infinity));
+
+
+                if (shieldAmount <= 0)
+                    playerFighterEffectObject.ChannelShields.Remove(attack.CardChannel);
+                else
+                    playerFighterEffectObject.ChannelShields[attack.CardChannel] = shieldAmount;
+
+               
+            }
+
+            return damageToReturn;
+        }
+    }
 
     private void GainShields(SOCardEffectObject effect, Channels channel, CharacterSelect characterGaining)
     {
         int shieldAmount;
+
         if (characterGaining == CharacterSelect.Player)
         {
             if (playerFighterEffectObject.ChannelShields.TryGetValue(channel, out shieldAmount))
