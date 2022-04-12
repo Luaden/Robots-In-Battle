@@ -65,6 +65,7 @@ public enum CardEffectTypes
 
 public enum CardKeyWord
 {
+    None = 0,
     Flurry = 1,
 }
 

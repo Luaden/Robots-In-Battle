@@ -13,6 +13,7 @@ public class CardEffectObject
 
     public CardEffectTypes EffectType { get => cardEffect; }
     public CardCategory CardTypeToBoost { get => cardCategoryToBoost; }
+    public CardKeyWord CardKeyWord { get => cardKeyWord; }
     public int EffectMagnitude { get => effectMagnitude; set => effectMagnitude = value; }
     public int EffectDuration { get => effectDuration; set => effectDuration = value; }
     public int CurrentTurn { get => currentTurn; set => currentTurn = value; }

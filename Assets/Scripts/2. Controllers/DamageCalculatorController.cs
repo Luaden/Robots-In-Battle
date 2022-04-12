@@ -127,17 +127,25 @@ public class DamageCalculatorController
         Debug.Log(destinationMech + " was attacked!");
 
         //We need to check and account for multiple attacks as well as KeyWordExecutes here.
-        //Maybe through the effectController.GetDamageWithBoost and a function signature change?
 
         //This is where we would pull our additional buffs/stats from
-        //This is where we would check the EffectManager as well
+        int repeatPlay = 1;
+
+        if(originAttack.CardData.CardEffects != null)
+            foreach (SOCardEffectObject effect in originAttack.CardData.CardEffects)
+                if (effect.EffectType == CardEffectTypes.PlayMultipleTimes)
+                    repeatPlay = effect.EffectMagnitude;
 
         if (originAttack.CardData != null)
         {
-            //Animations for attacks
-            CombatManager.instance.DealDamageToMech(destinationMech, counterDamage == false ?
-                originAttack.CardData.BaseDamage :
-                Mathf.RoundToInt(originAttack.CardData.BaseDamage * 1.5f));
+            for (int i = 0; i < repeatPlay; i++)
+            {
+                int damageToDeal = effectController.GetMechDamageWithModifiers(originAttack, destinationMech);
+                
+                //Animations for attacks
+                CombatManager.instance.DealDamageToMech(destinationMech, 
+                    counterDamage == false ? damageToDeal : damageToDeal * Mathf.RoundToInt(CombatManager.instance.CounterDamageMultiplier));
+            }
         }
 
         CalculateComponentDamage(originAttack, destinationMech);

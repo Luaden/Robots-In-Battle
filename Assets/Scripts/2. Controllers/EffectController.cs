@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
 
 public class EffectController : MonoBehaviour
 {
@@ -33,7 +34,7 @@ public class EffectController : MonoBehaviour
                                 AddElementalStacks(effect, MechComponent.Legs, destinationMech);
                                 break;
                             case CardCategory.Special:
-                                AddElementalStacks(effect, MechComponent.Torso, destinationMech);
+                                AddElementalStacks(effect, MechComponent.Head, destinationMech);
                                 break;
                         }
                         break;
@@ -69,9 +70,48 @@ public class EffectController : MonoBehaviour
         //Create or update popup or icon for buff
     }
 
+    public int GetMechDamageWithModifiers(CardChannelPairObject attack, CharacterSelect defensiveCharacter)
+    {
+        int damageToReturn = attack.CardData.BaseDamage;
+
+        if(defensiveCharacter == CharacterSelect.Opponent)
+        {
+            //Get Damage Boosts and Modifiers
+            damageToReturn = GetCardCategoryDamageBonus(attack, damageToReturn, defensiveCharacter);
+            damageToReturn = GetCardChannelDamageBonus(attack, damageToReturn, defensiveCharacter);
+            damageToReturn = GetKeyWordDamageBonus(attack, ref damageToReturn, defensiveCharacter);
+            damageToReturn = GetComponentDamageBonus(attack, damageToReturn, defensiveCharacter);
+
+            //Get Damage Reductions and Modifiers
+            damageToReturn = GetCardChannelDamageReduction(attack, damageToReturn, defensiveCharacter);
+            //damageToReturn = GetDamageReducedByShield(attack, damageToReturn, defensiveCharacter);
+        }
+
+        //Check for component damage reduction.
+        //Return damage.
+
+        return damageToReturn;
+    }
+
+    public int GetComponentDamageWithModifiers(CardChannelPairObject attack, CharacterSelect defensiveCharacter)
+    {
+        int damageToReturn = attack.CardData.BaseDamage;
+        //Check for CardType boost.
+        //Check for ChannelType boost.
+        //Check for KeywordExecute boost.
+        //Check for component damage bonus.
+
+        //Check for channel reductions
+        //Check for shields
+        //Check for component damage reduction.
+        //Return damage.
+
+        return damageToReturn;
+    }
+
     private void Start()
     {
-        CardPlayManager.OnCombatComplete += CheckEffectsAtTurnEnd;
+        CardPlayManager.OnCombatComplete += IncrementEffectsAtTurnEnd;
 
         playerFighterEffectObject = new FighterEffectObject();
         opponentFighterEffectObject = new FighterEffectObject();
@@ -79,17 +119,7 @@ public class EffectController : MonoBehaviour
 
     private void OnDestroy()
     {
-        CardPlayManager.OnCombatComplete -= CheckEffectsAtTurnEnd;
-    }
-
-    private int GetDamageWithReductions(CardChannelPairObject attack, CharacterSelect defensiveCharacter)
-    {
-        return 0;
-    }
-
-    private int GetDamageWithBoost(CardChannelPairObject attack, CharacterSelect offensiveCharacter)
-    {
-        return 0;
+        CardPlayManager.OnCombatComplete -= IncrementEffectsAtTurnEnd;
     }
 
     private void AddElementalStacks(SOCardEffectObject effect, MechComponent component, CharacterSelect characterAdding)
@@ -173,6 +203,234 @@ public class EffectController : MonoBehaviour
         }
     }
 
+    private int GetCardCategoryDamageBonus(CardChannelPairObject attack, int damageToReturn, CharacterSelect defensiveCharacter)
+    {
+        if(defensiveCharacter == CharacterSelect.Opponent)
+        {
+            switch (attack.CardData.CardCategory)
+            {
+                case CardCategory.Punch:
+                    if (playerFighterEffectObject.CardCategoryDamageBonus[CardCategory.Punch] != null)
+                        foreach (CardEffectObject effect in playerFighterEffectObject.CardCategoryDamageBonus[CardCategory.Punch])
+                            damageToReturn += effect.EffectMagnitude;
+                    break;
+                case CardCategory.Kick:
+                    if (playerFighterEffectObject.CardCategoryDamageBonus[CardCategory.Kick] != null)
+                        foreach (CardEffectObject effect in playerFighterEffectObject.CardCategoryDamageBonus[CardCategory.Kick])
+                            damageToReturn += effect.EffectMagnitude;
+                    break;
+                case CardCategory.Special:
+                    if (playerFighterEffectObject.CardCategoryDamageBonus[CardCategory.Special] != null)
+                        foreach (CardEffectObject effect in playerFighterEffectObject.CardCategoryDamageBonus[CardCategory.Special])
+                            damageToReturn += effect.EffectMagnitude;
+                    break;
+            }
+
+            return damageToReturn;
+        }
+        else
+        {
+            switch (attack.CardData.CardCategory)
+            {
+                case CardCategory.Punch:
+                    if (opponentFighterEffectObject.CardCategoryDamageBonus[CardCategory.Punch] != null)
+                        foreach (CardEffectObject effect in opponentFighterEffectObject.CardCategoryDamageBonus[CardCategory.Punch])
+                            damageToReturn += effect.EffectMagnitude;
+                    break;
+                case CardCategory.Kick:
+                    if (opponentFighterEffectObject.CardCategoryDamageBonus[CardCategory.Kick] != null)
+                        foreach (CardEffectObject effect in opponentFighterEffectObject.CardCategoryDamageBonus[CardCategory.Kick])
+                            damageToReturn += effect.EffectMagnitude;
+                    break;
+                case CardCategory.Special:
+                    if (opponentFighterEffectObject.CardCategoryDamageBonus[CardCategory.Special] != null)
+                        foreach (CardEffectObject effect in opponentFighterEffectObject.CardCategoryDamageBonus[CardCategory.Special])
+                            damageToReturn += effect.EffectMagnitude;
+                    break;
+            }
+
+            return damageToReturn;
+        }
+    }
+
+    private int GetCardChannelDamageBonus(CardChannelPairObject attack, int damageToReturn, CharacterSelect defensiveCharacter)
+    {
+        if(defensiveCharacter == CharacterSelect.Opponent)
+        {
+            switch (attack.CardChannel)
+            {
+                case Channels.High:
+                    if (playerFighterEffectObject.ChannelDamageBonus[attack.CardChannel] != null)
+                        foreach (CardEffectObject effect in playerFighterEffectObject.ChannelDamageBonus[attack.CardChannel])
+                            damageToReturn += effect.EffectMagnitude;
+                    break;
+                case Channels.Mid:
+                    if (playerFighterEffectObject.ChannelDamageBonus[attack.CardChannel] != null)
+                        foreach (CardEffectObject effect in playerFighterEffectObject.ChannelDamageBonus[attack.CardChannel])
+                            damageToReturn += effect.EffectMagnitude;
+                    break;
+                case Channels.Low:
+                    if (playerFighterEffectObject.ChannelDamageBonus[attack.CardChannel] != null)
+                        foreach (CardEffectObject effect in playerFighterEffectObject.ChannelDamageBonus[attack.CardChannel])
+                            damageToReturn += effect.EffectMagnitude;
+                    break;
+            }
+
+            return damageToReturn;
+        }
+        else
+        {
+            switch (attack.CardChannel)
+            {
+                case Channels.High:
+                    if (opponentFighterEffectObject.ChannelDamageBonus[attack.CardChannel] != null)
+                        foreach (CardEffectObject effect in opponentFighterEffectObject.ChannelDamageBonus[attack.CardChannel])
+                            damageToReturn += effect.EffectMagnitude;
+                    break;
+                case Channels.Mid:
+                    if (opponentFighterEffectObject.ChannelDamageBonus[attack.CardChannel] != null)
+                        foreach (CardEffectObject effect in opponentFighterEffectObject.ChannelDamageBonus[attack.CardChannel])
+                            damageToReturn += effect.EffectMagnitude;
+                    break;
+                case Channels.Low:
+                    if (opponentFighterEffectObject.ChannelDamageBonus[attack.CardChannel] != null)
+                        foreach (CardEffectObject effect in opponentFighterEffectObject.ChannelDamageBonus[attack.CardChannel])
+                            damageToReturn += effect.EffectMagnitude;
+                    break;
+            }
+
+            return damageToReturn;
+        }
+    }
+    private int GetKeyWordDamageBonus(CardChannelPairObject attack, ref int damageToReturn, CharacterSelect defensiveCharacter)
+    {
+        CardKeyWord keyWord = CardKeyWord.None;
+
+        if (attack.CardData.CardEffects.Select(x => x.EffectType).Contains(CardEffectTypes.KeyWordExecute))
+        {
+            foreach (SOCardEffectObject effect in attack.CardData.CardEffects)
+                if (effect.EffectType == CardEffectTypes.KeyWordExecute)
+                    keyWord = effect.CardKeyWord;
+
+            if(defensiveCharacter == CharacterSelect.Opponent)
+                if (playerFighterEffectObject.KeyWordDuration[keyWord] != null)
+                    foreach (CardEffectObject effect in playerFighterEffectObject.KeyWordDuration[keyWord])
+                        damageToReturn += effect.EffectMagnitude;
+            else
+                if (opponentFighterEffectObject.KeyWordDuration[keyWord] != null)
+                    foreach (CardEffectObject effect in opponentFighterEffectObject.KeyWordDuration[keyWord])
+                        damageToReturn += effect.EffectMagnitude;
+        }
+
+        return damageToReturn;
+    }
+
+    private int GetComponentDamageBonus(CardChannelPairObject attack, int damageToReturn, CharacterSelect defensiveCharacter)
+    {
+        if(defensiveCharacter == CharacterSelect.Opponent)
+        {
+            switch (attack.CardData.CardCategory)
+            {
+                case CardCategory.Punch:
+                    if (CombatManager.instance.PlayerFighter.FighterMech.MechArms.BonusDamageAsPercent)
+                        damageToReturn *= CombatManager.instance.PlayerFighter.FighterMech.MechArms.BonusDamageFromComponent;
+                    else
+                        damageToReturn += CombatManager.instance.PlayerFighter.FighterMech.MechArms.BonusDamageFromComponent;
+                    break;
+                case CardCategory.Kick:
+                    if (CombatManager.instance.PlayerFighter.FighterMech.MechLegs.BonusDamageAsPercent)
+                        damageToReturn *= CombatManager.instance.PlayerFighter.FighterMech.MechLegs.BonusDamageFromComponent;
+                    else
+                        damageToReturn += CombatManager.instance.PlayerFighter.FighterMech.MechLegs.BonusDamageFromComponent;
+                    break;
+                case CardCategory.Special:
+                    if (CombatManager.instance.PlayerFighter.FighterMech.MechLegs.BonusDamageAsPercent)
+                        damageToReturn *= CombatManager.instance.PlayerFighter.FighterMech.MechLegs.BonusDamageFromComponent;
+                    else
+                        damageToReturn += CombatManager.instance.PlayerFighter.FighterMech.MechLegs.BonusDamageFromComponent;
+                    break;
+            }
+
+            return damageToReturn;
+        }
+        else
+        {
+            switch (attack.CardData.CardCategory)
+            {
+                case CardCategory.Punch:
+                    if (CombatManager.instance.OpponentFighter.FighterMech.MechArms.BonusDamageAsPercent)
+                        damageToReturn *= CombatManager.instance.OpponentFighter.FighterMech.MechArms.BonusDamageFromComponent;
+                    else
+                        damageToReturn += CombatManager.instance.OpponentFighter.FighterMech.MechArms.BonusDamageFromComponent;
+                    break;
+                case CardCategory.Kick:
+                    if (CombatManager.instance.OpponentFighter.FighterMech.MechLegs.BonusDamageAsPercent)
+                        damageToReturn *= CombatManager.instance.OpponentFighter.FighterMech.MechLegs.BonusDamageFromComponent;
+                    else
+                        damageToReturn += CombatManager.instance.OpponentFighter.FighterMech.MechLegs.BonusDamageFromComponent;
+                    break;
+                case CardCategory.Special:
+                    if (CombatManager.instance.OpponentFighter.FighterMech.MechLegs.BonusDamageAsPercent)
+                        damageToReturn *= CombatManager.instance.OpponentFighter.FighterMech.MechLegs.BonusDamageFromComponent;
+                    else
+                        damageToReturn += CombatManager.instance.OpponentFighter.FighterMech.MechLegs.BonusDamageFromComponent;
+                    break;
+            }
+
+            return damageToReturn;
+        }
+    }
+
+    private int GetCardChannelDamageReduction(CardChannelPairObject attack, int damageToReturn, CharacterSelect defensiveCharacter)
+    {
+        if(defensiveCharacter == CharacterSelect.Opponent)
+        {
+            switch (attack.CardChannel)
+            {
+                case Channels.High:
+                    if (opponentFighterEffectObject.ChannelDamageReduction[attack.CardChannel] != null)
+                        foreach (CardEffectObject effect in opponentFighterEffectObject.ChannelDamageReduction[attack.CardChannel])
+                            damageToReturn -= effect.EffectMagnitude;
+                    break;
+                case Channels.Mid:
+                    if (opponentFighterEffectObject.ChannelDamageReduction[attack.CardChannel] != null)
+                        foreach (CardEffectObject effect in opponentFighterEffectObject.ChannelDamageReduction[attack.CardChannel])
+                            damageToReturn -= effect.EffectMagnitude;
+                    break;
+                case Channels.Low:
+                    if (opponentFighterEffectObject.ChannelDamageReduction[attack.CardChannel] != null)
+                        foreach (CardEffectObject effect in opponentFighterEffectObject.ChannelDamageReduction[attack.CardChannel])
+                            damageToReturn -= effect.EffectMagnitude;
+                    break;
+            }
+
+            return damageToReturn;
+        }
+        else
+        {
+            switch (attack.CardChannel)
+            {
+                case Channels.High:
+                    if (playerFighterEffectObject.ChannelDamageReduction[attack.CardChannel] != null)
+                        foreach (CardEffectObject effect in playerFighterEffectObject.ChannelDamageReduction[attack.CardChannel])
+                            damageToReturn -= effect.EffectMagnitude;
+                    break;
+                case Channels.Mid:
+                    if (playerFighterEffectObject.ChannelDamageReduction[attack.CardChannel] != null)
+                        foreach (CardEffectObject effect in playerFighterEffectObject.ChannelDamageReduction[attack.CardChannel])
+                            damageToReturn -= effect.EffectMagnitude;
+                    break;
+                case Channels.Low:
+                    if (playerFighterEffectObject.ChannelDamageReduction[attack.CardChannel] != null)
+                        foreach (CardEffectObject effect in playerFighterEffectObject.ChannelDamageReduction[attack.CardChannel])
+                            damageToReturn -= effect.EffectMagnitude;
+                    break;
+            }
+
+            return damageToReturn;
+        }
+    }
+
     private void GainShields(SOCardEffectObject effect, Channels channel, CharacterSelect characterGaining)
     {
         int shieldAmount;
@@ -222,141 +480,174 @@ public class EffectController : MonoBehaviour
 
     private void BoostCardTypeDamage(SOCardEffectObject effect, Channels channel, CharacterSelect characterBoosting)
     {
-        CardEffectObject previousBoost;
+        List<CardEffectObject> previousBoostList = new List<CardEffectObject>();
         CardEffectObject newBoost = new CardEffectObject(effect);
 
         if (characterBoosting == CharacterSelect.Player)
         {
-            if (playerFighterEffectObject.CardCategoryDamageBonus.TryGetValue(effect.CardTypeToBoost, out previousBoost))
+            if (playerFighterEffectObject.CardCategoryDamageBonus[effect.CardTypeToBoost] != null)
             {
-                newBoost.EffectMagnitude += effect.EffectMagnitude;
-                newBoost.EffectDuration += effect.EffectDuration;
-                //We could assign the current turn here the same way to not refresh the duration.
-                //We could also make them a list of effects and track them additively / individually.
+                foreach (CardEffectObject previousEffect in playerFighterEffectObject.CardCategoryDamageBonus[effect.CardTypeToBoost])
+                    previousBoostList.Add(previousEffect);
 
-                playerFighterEffectObject.CardCategoryDamageBonus[effect.CardTypeToBoost] = newBoost;
+                previousBoostList.Add(newBoost);
+                playerFighterEffectObject.CardCategoryDamageBonus[effect.CardTypeToBoost] = previousBoostList;
             }
             else
-                playerFighterEffectObject.CardCategoryDamageBonus.Add(effect.CardTypeToBoost, newBoost);
+            {
+                List<CardEffectObject> newBoostList = new List<CardEffectObject>();
+                newBoostList.Add(newBoost);
+                playerFighterEffectObject.CardCategoryDamageBonus.Add(effect.CardTypeToBoost, newBoostList);
+            }
+                
         }
 
         if (characterBoosting == CharacterSelect.Opponent)
         {
-            if (opponentFighterEffectObject.CardCategoryDamageBonus.TryGetValue(effect.CardTypeToBoost, out previousBoost))
+            if (opponentFighterEffectObject.CardCategoryDamageBonus[effect.CardTypeToBoost] != null)
             {
-                newBoost.EffectMagnitude += effect.EffectMagnitude;
-                newBoost.EffectDuration += effect.EffectDuration;
-                //We could assign the current turn here the same way to not refresh the duration.
-                //We could also make them a list of effects and track them additively / individually.
+                foreach (CardEffectObject previousEffect in opponentFighterEffectObject.CardCategoryDamageBonus[effect.CardTypeToBoost])
+                    previousBoostList.Add(previousEffect);
 
-                opponentFighterEffectObject.CardCategoryDamageBonus[effect.CardTypeToBoost] = newBoost;
+                previousBoostList.Add(newBoost);
+                opponentFighterEffectObject.CardCategoryDamageBonus[effect.CardTypeToBoost] = previousBoostList;
             }
             else
-                opponentFighterEffectObject.CardCategoryDamageBonus.Add(effect.CardTypeToBoost, newBoost);
+            {
+                List<CardEffectObject> newBoostList = new List<CardEffectObject>();
+                newBoostList.Add(newBoost);
+                opponentFighterEffectObject.CardCategoryDamageBonus.Add(effect.CardTypeToBoost, newBoostList);
+            }
         }
     }
 
     private void BoostChannelDamage(SOCardEffectObject effect, Channels channel, CharacterSelect characterBoosting)
     {
-        CardEffectObject previousBoost;
+        List<CardEffectObject> previousBoostList = new List<CardEffectObject>();
         CardEffectObject newBoost = new CardEffectObject(effect);
 
         if (characterBoosting == CharacterSelect.Player)
         {
-            if (playerFighterEffectObject.ChannelDamageBonus.TryGetValue(channel, out previousBoost))
+            if (playerFighterEffectObject.ChannelDamageBonus[channel] != null)
             {
-                newBoost.EffectMagnitude += effect.EffectMagnitude;
-                newBoost.EffectDuration += effect.EffectDuration;
-                //We could assign the current turn here the same way to not refresh the duration.
-                //We could also make them a list of effects and track them additively / individually.
+                foreach (CardEffectObject previousEffect in playerFighterEffectObject.ChannelDamageBonus[channel])
+                    previousBoostList.Add(previousEffect);
 
-                playerFighterEffectObject.ChannelDamageBonus[channel] = newBoost;
+                previousBoostList.Add(newBoost);
+                playerFighterEffectObject.ChannelDamageBonus[channel] = previousBoostList;
             }
             else
-                playerFighterEffectObject.ChannelDamageBonus.Add(channel, newBoost);
+            {
+                List<CardEffectObject> newBoostList = new List<CardEffectObject>();
+                newBoostList.Add(newBoost);
+                playerFighterEffectObject.ChannelDamageBonus.Add(channel, newBoostList);
+            }
         }
 
         if (characterBoosting == CharacterSelect.Opponent)
         {
-            if (opponentFighterEffectObject.ChannelDamageBonus.TryGetValue(channel, out previousBoost))
+            if (opponentFighterEffectObject.ChannelDamageBonus[channel] != null)
             {
-                newBoost.EffectMagnitude += effect.EffectMagnitude;
-                newBoost.EffectDuration += effect.EffectDuration;
-                //We could assign the current turn here the same way to not refresh the duration.
-                //We could also make them a list of effects and track them additively / individually.
+                foreach (CardEffectObject previousEffect in opponentFighterEffectObject.ChannelDamageBonus[channel])
+                    previousBoostList.Add(previousEffect);
 
-                opponentFighterEffectObject.ChannelDamageBonus[channel] = newBoost;
+                previousBoostList.Add(newBoost);
+                opponentFighterEffectObject.ChannelDamageBonus[channel] = previousBoostList;
             }
             else
-                opponentFighterEffectObject.ChannelDamageBonus.Add(channel, newBoost);
+            {
+                List<CardEffectObject> newBoostList = new List<CardEffectObject>();
+                newBoostList.Add(newBoost);
+                opponentFighterEffectObject.ChannelDamageBonus.Add(channel, newBoostList);
+            }
         }
     }
 
     private void ReduceChannelDamage(SOCardEffectObject effect, Channels channel, CharacterSelect characterReducing)
     {
-        CardEffectObject previousReduction;
+        List<CardEffectObject> previousReductionList = new List<CardEffectObject>();
         CardEffectObject newReduction = new CardEffectObject(effect);
 
         if (characterReducing == CharacterSelect.Player)
         {
-            if (playerFighterEffectObject.ChannelDamageReduction.TryGetValue(channel, out previousReduction))
+            if (playerFighterEffectObject.ChannelDamageReduction[channel] != null)
             {
-                newReduction.EffectMagnitude += effect.EffectMagnitude;
-                newReduction.EffectDuration += effect.EffectDuration;
-                //We could assign the current turn here the same way to not refresh the duration.
-                //We could also make them a list of effects and track them additively / individually.
+                foreach (CardEffectObject previousEffect in playerFighterEffectObject.ChannelDamageReduction[channel])
+                    previousReductionList.Add(previousEffect);
 
-                playerFighterEffectObject.ChannelDamageReduction[channel] = newReduction;
+                previousReductionList.Add(newReduction);
+                playerFighterEffectObject.ChannelDamageReduction[channel] = previousReductionList;
             }
             else
-                playerFighterEffectObject.ChannelDamageReduction.Add(channel, newReduction);
+            {
+                List<CardEffectObject> newReductionList = new List<CardEffectObject>();
+                newReductionList.Add(newReduction);
+                playerFighterEffectObject.ChannelDamageReduction.Add(channel, newReductionList);
+            }
         }
 
         if (characterReducing == CharacterSelect.Opponent)
         {
-            if (opponentFighterEffectObject.ChannelDamageBonus.TryGetValue(channel, out previousReduction))
+            if (opponentFighterEffectObject.ChannelDamageReduction[channel] != null)
             {
-                newReduction.EffectMagnitude += effect.EffectMagnitude;
-                newReduction.EffectDuration += effect.EffectDuration;
-                //We could assign the current turn here the same way to not refresh the duration.
-                //We could also make them a list of effects and track them additively / individually.
+                foreach (CardEffectObject previousEffect in opponentFighterEffectObject.ChannelDamageReduction[channel])
+                    previousReductionList.Add(previousEffect);
 
-                opponentFighterEffectObject.ChannelDamageBonus[channel] = newReduction;
+                previousReductionList.Add(newReduction);
+                opponentFighterEffectObject.ChannelDamageReduction[channel] = previousReductionList;
             }
             else
-                opponentFighterEffectObject.ChannelDamageBonus.Add(channel, newReduction);
+            {
+                List<CardEffectObject> newReductionList = new List<CardEffectObject>();
+                newReductionList.Add(newReduction);
+                opponentFighterEffectObject.ChannelDamageReduction.Add(channel, newReductionList);
+            }
         }
     }
 
     private void KeyWordInitialize(SOCardEffectObject effect, Channels channel, CharacterSelect characterPriming)
     {
-        CardEffectObject currentKeyWordEffect;
+        List<CardEffectObject> currentKeyWordEffectList = new List<CardEffectObject>();
         CardEffectObject newKeyWordEffect = new CardEffectObject(effect);
 
         if (characterPriming == CharacterSelect.Player)
         {
-            if (playerFighterEffectObject.KeyWordDuration.TryGetValue(effect.CardKeyWord, out currentKeyWordEffect))
+            if (playerFighterEffectObject.KeyWordDuration[effect.CardKeyWord] != null)
             {
-                newKeyWordEffect.EffectDuration += currentKeyWordEffect.EffectDuration;
-                playerFighterEffectObject.KeyWordDuration[effect.CardKeyWord] = newKeyWordEffect;
+                foreach (CardEffectObject previousEffect in opponentFighterEffectObject.ChannelDamageReduction[channel])
+                    currentKeyWordEffectList.Add(previousEffect);
+
+                currentKeyWordEffectList.Add(newKeyWordEffect);
+                playerFighterEffectObject.KeyWordDuration[effect.CardKeyWord] = currentKeyWordEffectList;
             }
             else
-                playerFighterEffectObject.KeyWordDuration.Add(effect.CardKeyWord, newKeyWordEffect);
+            {
+                List<CardEffectObject> newKeyWordList = new List<CardEffectObject>();
+                newKeyWordList.Add(newKeyWordEffect);
+                playerFighterEffectObject.KeyWordDuration.Add(effect.CardKeyWord, newKeyWordList);
+            }
         }
 
         if (characterPriming == CharacterSelect.Opponent)
         {
-            if (opponentFighterEffectObject.KeyWordDuration.TryGetValue(effect.CardKeyWord, out currentKeyWordEffect))
+            if (opponentFighterEffectObject.KeyWordDuration[effect.CardKeyWord] != null)
             {
-                newKeyWordEffect.EffectDuration += currentKeyWordEffect.EffectDuration;
-                opponentFighterEffectObject.KeyWordDuration[effect.CardKeyWord] = newKeyWordEffect;
+                foreach (CardEffectObject previousEffect in opponentFighterEffectObject.ChannelDamageReduction[channel])
+                    currentKeyWordEffectList.Add(previousEffect);
+
+                currentKeyWordEffectList.Add(newKeyWordEffect);
+                opponentFighterEffectObject.KeyWordDuration[effect.CardKeyWord] = currentKeyWordEffectList;
             }
             else
-                opponentFighterEffectObject.KeyWordDuration.Add(effect.CardKeyWord, newKeyWordEffect);
+            {
+                List<CardEffectObject> newKeyWordList = new List<CardEffectObject>();
+                newKeyWordList.Add(newKeyWordEffect);
+                opponentFighterEffectObject.KeyWordDuration.Add(effect.CardKeyWord, newKeyWordList);
+            }
         }
     }
 
-    private void CheckEffectsAtTurnEnd()
+    private void IncrementEffectsAtTurnEnd()
     {
         //Iterate through elements
         //Clean all other effects out

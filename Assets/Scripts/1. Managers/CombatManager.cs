@@ -6,6 +6,7 @@ public class CombatManager : MonoBehaviour
 {
     [SerializeField] private int mechEnergyGain;
     [SerializeField] private int cardDrawOnTurn;
+    [SerializeField] private float counterDamageMultiplier;
 
     public static CombatManager instance;
 
@@ -35,6 +36,7 @@ public class CombatManager : MonoBehaviour
     public PopupUIManager PopupUIManager { get => popupUIManager; }
 
     public int MechEnergyGain { get => mechEnergyGain; }
+    public float CounterDamageMultiplier { get => counterDamageMultiplier; }
 
     public void DealDamageToMech(CharacterSelect character, int damage)
     {
