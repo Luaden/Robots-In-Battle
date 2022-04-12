@@ -3,23 +3,22 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class ShopItemSlotManager : BaseSlotManager<ShopItemUIController>
+public class ShopCartSlotManager : BaseSlotManager<ShopCartItemController>
 {
-    public override void AddItemToCollection(ShopItemUIController item, BaseSlotController<ShopItemUIController> slot)
+    public override void AddItemToCollection(ShopCartItemController item, BaseSlotController<ShopCartItemController> slot)
     {
         if (slot != null && slot.CurrentSlottedItem == null)
         {
             slot.CurrentSlottedItem = item;
-            item.ShopItemSlotController = slot;
-            
+            item.ShopCartItemSlotController = slot;
             return;
         }
 
-        foreach (BaseSlotController<ShopItemUIController> slotOption in slotList)
+        foreach (BaseSlotController<ShopCartItemController> slotOption in slotList)
             if (slotOption.CurrentSlottedItem == null)
             {
                 slotOption.CurrentSlottedItem = item;
-                item.ShopItemSlotController = slotOption;
+                item.ShopCartItemSlotController = slotOption;
 
                 return;
             }
@@ -27,12 +26,12 @@ public class ShopItemSlotManager : BaseSlotManager<ShopItemUIController>
         Debug.Log("No slots available in the hand to add a card to. This should not happen and should be stopped before this point.");
     }
 
-    public override void AddSlotToList(BaseSlotController<ShopItemUIController> newSlot)
+    public override void AddSlotToList(BaseSlotController<ShopCartItemController> newSlot)
     {
         slotList.Add(newSlot);
     }
 
-    public override void HandleDrop(PointerEventData eventData, ShopItemUIController newData, BaseSlotController<ShopItemUIController> slot)
+    public override void HandleDrop(PointerEventData eventData, ShopCartItemController newData, BaseSlotController<ShopCartItemController> slot)
     {
         if (newData == null)
         {
@@ -41,13 +40,13 @@ public class ShopItemSlotManager : BaseSlotManager<ShopItemUIController>
             return;
         }
 
-        newData.ShopItemSlotController.SlotManager.RemoveItemFromCollection(newData);
+        newData.ShopCartItemSlotController.SlotManager.RemoveItemFromCollection(newData);
         AddItemToCollection(newData, slot);
     }
 
-    public override void RemoveItemFromCollection(ShopItemUIController item)
+    public override void RemoveItemFromCollection(ShopCartItemController item)
     {
-        foreach (ShopItemSlotController slot in slotList)
+        foreach (ShopCartItemSlotController slot in slotList)
             if (slot.CurrentSlottedItem == item)
                 slot.CurrentSlottedItem = null;
     }

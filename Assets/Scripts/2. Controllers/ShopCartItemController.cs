@@ -2,12 +2,15 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
-using UnityEngine.UI;
 
-public class ShopItemUIController : MonoBehaviour, IPointerDownHandler, IPointerUpHandler,
+public class ShopCartItemController : MonoBehaviour, IPointerDownHandler, IPointerUpHandler,
                               IPointerEnterHandler, IPointerExitHandler, IBeginDragHandler,
                               IEndDragHandler, IDragHandler
 {
+    // List of items <IShoppable>
+    // Shopping Cart
+    // creates IShoppableSlots
+
     private bool isPickedUp = false;
     private Transform previousParentObject;
     private float travelSpeed = 450.0f;
@@ -15,24 +18,24 @@ public class ShopItemUIController : MonoBehaviour, IPointerDownHandler, IPointer
     private RectTransform draggableRectTransform;
     private CanvasGroup draggableCanvasGroup;
 
-    private BaseSlotController<ShopItemUIController> shopItemSlotController;
-    public BaseSlotController<ShopItemUIController> ShopItemSlotController 
-    { 
-        get => shopItemSlotController; 
-        set => UpdateItemSlot(value); 
+    private BaseSlotController<ShopCartItemController> shopCartItemSlotController;
+    public BaseSlotController<ShopCartItemController> ShopCartItemSlotController
+    {
+        get => shopCartItemSlotController;
+        set => UpdateItemSlot(value);
     }
-    public Transform PreviousParentObject 
-    { 
-        get => previousParentObject; 
-        set => previousParentObject = value; 
+    public Transform PreviousParentObject
+    {
+        get => previousParentObject;
+        set => previousParentObject = value;
     }
 
 
     public void OnDrag(PointerEventData eventData)
     {
-        shopItemSlotController.HandleDrag(eventData);
+        shopCartItemSlotController.HandleDrag(eventData);
         Debug.Log("dragging");
-        
+
     }
 
     public virtual void OnBeginDrag(PointerEventData eventData)
@@ -52,7 +55,7 @@ public class ShopItemUIController : MonoBehaviour, IPointerDownHandler, IPointer
     public void OnPointerDown(PointerEventData eventData)
     {
         Debug.Log("pressed");
-        transform.SetParent(shopItemSlotController.SlotManager.MainCanvas.transform);
+        transform.SetParent(shopCartItemSlotController.SlotManager.MainCanvas.transform);
     }
 
     public void OnPointerEnter(PointerEventData eventData)
@@ -81,24 +84,23 @@ public class ShopItemUIController : MonoBehaviour, IPointerDownHandler, IPointer
 
     private void MoveToSlot()
     {
-        if (isPickedUp || shopItemSlotController == null)
+        if (isPickedUp || shopCartItemSlotController == null)
             return;
 
         if (transform.parent == null)
             transform.SetParent(previousParentObject);
 
         draggableRectTransform.position =
-            Vector3.MoveTowards(draggableRectTransform.position, 
-            ShopItemSlotController.gameObject.GetComponent<RectTransform>().position, 
+            Vector3.MoveTowards(draggableRectTransform.position,
+            ShopCartItemSlotController.gameObject.GetComponent<RectTransform>().position,
             travelSpeed * Time.deltaTime);
     }
-    private void UpdateItemSlot(BaseSlotController<ShopItemUIController> newSlot)
+
+    private void UpdateItemSlot(BaseSlotController<ShopCartItemController> newSlot)
     {
-        shopItemSlotController = newSlot;
+        shopCartItemSlotController = newSlot;
         transform.SetParent(newSlot.transform);
         previousParentObject = newSlot.transform;
     }
-
-
 
 }
