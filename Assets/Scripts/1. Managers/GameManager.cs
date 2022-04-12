@@ -4,32 +4,30 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
-    [SerializeField] private SOMechComponent testMechHead;
-    [SerializeField] private SOMechComponent testMechTorso;
-    [SerializeField] private SOMechComponent testMechArms;
-    [SerializeField] private SOMechComponent testMechLegs;
-    [SerializeField] private int testMaxHP;
-    [SerializeField] private int testMaxEnergy;
-    [SerializeField] private List<SOCardDataObject> testDeck;
+    [SerializeField] private SOItemDataObject testMechHead;
+    [SerializeField] private SOItemDataObject testMechTorso;
+    [SerializeField] private SOItemDataObject testMechArms;
+    [SerializeField] private SOItemDataObject testMechLegs;
+    [SerializeField] private List<SOItemDataObject> testDeck;
 
     [ContextMenu("Start Game")]
     public void BuildMech()
     {
-        MechHeadObject head = new MechHeadObject(testMechHead);
-        MechTorsoObject torso = new MechTorsoObject(testMechTorso);
-        MechLegsObject legs = new MechLegsObject(testMechLegs);
-        MechArmsObject arms = new MechArmsObject(testMechArms);
+        MechComponentDataObject head = new MechComponentDataObject(testMechHead);
+        MechComponentDataObject torso = new MechComponentDataObject(testMechTorso);
+        MechComponentDataObject legs = new MechComponentDataObject(testMechLegs);
+        MechComponentDataObject arms = new MechComponentDataObject(testMechArms);
 
-        MechObject playerMech = new MechObject(head, torso, arms, legs, testMaxHP, testMaxEnergy);
+        MechObject playerMech = new MechObject(head, torso, arms, legs);
         PilotDataObject playerPilot = new PilotDataObject();
         FighterDataObject playerFighter = new FighterDataObject(playerMech, playerPilot, testDeck);
 
-        head = new MechHeadObject(testMechHead);
-        torso = new MechTorsoObject(testMechTorso);
-        legs = new MechLegsObject(testMechLegs);
-        arms = new MechArmsObject(testMechArms);
+        head = new MechComponentDataObject(testMechHead);
+        torso = new MechComponentDataObject(testMechTorso);
+        legs = new MechComponentDataObject(testMechLegs);
+        arms = new MechComponentDataObject(testMechArms);
 
-        MechObject opponentMech = new MechObject(head, torso, arms, legs, testMaxHP, testMaxEnergy);
+        MechObject opponentMech = new MechObject(head, torso, arms, legs);
         PilotDataObject opponentPilot = new PilotDataObject();
         FighterDataObject opponentFighter = new FighterDataObject(opponentMech, opponentPilot, testDeck);
 

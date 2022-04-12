@@ -4,9 +4,9 @@ using UnityEngine;
 
 public class BuffPopupObject : MonoBehaviour
 {
-    private List<CardEffectObject> PopupDataToDisplay;
+    private List<SOCardEffectObject> PopupDataToDisplay;
 
-    public void Assign(CardEffectObject[] cardEffectObject)
+    public void Assign(SOCardEffectObject[] cardEffectObject)
     {
         
     }

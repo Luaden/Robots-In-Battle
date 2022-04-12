@@ -7,13 +7,13 @@ public class DeckManager : MonoBehaviour
     private DeckController playerDeck;
     private DeckController opponentDeck;
 
-    public void SetPlayerDeck(List<SOCardDataObject> playerCardSOs)
+    public void SetPlayerDeck(List<SOItemDataObject> playerCardSOs)
     {
         playerDeck.InitDeckList(playerCardSOs);
         RandomizeCardDeck(playerDeck);
     }
 
-    public void SetOpponentDeck(List<SOCardDataObject> opponentCardSOs)
+    public void SetOpponentDeck(List<SOItemDataObject> opponentCardSOs)
     {
         opponentDeck.InitDeckList(opponentCardSOs);
         RandomizeCardDeck(opponentDeck);

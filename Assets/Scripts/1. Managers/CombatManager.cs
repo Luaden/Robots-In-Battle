@@ -4,8 +4,9 @@ using UnityEngine;
 
 public class CombatManager : MonoBehaviour
 {
-    [SerializeField] private int energyGainOnTurn;
+    [SerializeField] private int mechEnergyGain;
     [SerializeField] private int cardDrawOnTurn;
+    [SerializeField] private float counterDamageMultiplier;
 
     public static CombatManager instance;
 
@@ -33,6 +34,9 @@ public class CombatManager : MonoBehaviour
     public CardUIManager CardUIManager { get => cardUIManager; }
     public MechHUDManager MechHUDManager { get => mechHUDManager; }
     public PopupUIManager PopupUIManager { get => popupUIManager; }
+
+    public int MechEnergyGain { get => mechEnergyGain; }
+    public float CounterDamageMultiplier { get => counterDamageMultiplier; }
 
     public void DealDamageToMech(CharacterSelect character, int damage)
     {
@@ -106,14 +110,14 @@ public class CombatManager : MonoBehaviour
     {
         playerFighter = newPlayerFighter;
 
-        mechHUDManager.UpdatePlayerHP(playerFighter.FighterMech.MechMaxHP);
+        mechHUDManager.SetPlayerMaxStats(playerFighter.FighterMech.MechMaxHP, playerFighter.FighterMech.MechMaxHP);
     }
 
     private void InitOpponentFighter(FighterDataObject newOpponentFighter)
     {
         opponentFighter = newOpponentFighter;
 
-        mechHUDManager.UpdateOpponentHP(opponentFighter.FighterMech.MechMaxHP);
+        mechHUDManager.SetOpponentMaxStats(opponentFighter.FighterMech.MechMaxHP, opponentFighter.FighterMech.MechMaxEnergy);
     }
 
     private void StartNewTurn()
@@ -121,7 +125,7 @@ public class CombatManager : MonoBehaviour
         deckManager.DrawPlayerCard(cardDrawOnTurn);
         deckManager.DrawOpponentCard(cardDrawOnTurn);
 
-        AddEnergyToMech(CharacterSelect.Opponent, energyGainOnTurn);
-        AddEnergyToMech(CharacterSelect.Player, energyGainOnTurn);
+        AddEnergyToMech(CharacterSelect.Opponent, OpponentFighter.FighterMech.MechEnergyGain);
+        AddEnergyToMech(CharacterSelect.Player, PlayerFighter.FighterMech.MechEnergyGain);
     }
 }

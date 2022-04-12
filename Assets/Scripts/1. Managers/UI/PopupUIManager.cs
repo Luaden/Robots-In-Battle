@@ -34,7 +34,7 @@ public class PopupUIManager : MonoBehaviour
                                           transform,
                                           cursorPosition);
     }
-    public void HandlePopup(List<CardEffectObject> cardEffects,
+    public void HandlePopup(List<SOCardEffectObject> cardEffects,
                             Transform transform,
                             Vector3 cursorPosition)
     {

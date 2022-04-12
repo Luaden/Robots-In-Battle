@@ -2,10 +2,14 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+
 public class DamageCalculatorController
 {
     private AttackPlanObject playerAttackPlan;
     private AttackPlanObject opponentAttackPlan;
+    private EffectController effectController;
+
+    public EffectController EffectController { get => effectController; }
 
     public void DetermineABInteraction(AttackPlanObject newPlayerAttackPlan, AttackPlanObject newOpponentAttackPlan)
     {
@@ -19,25 +23,36 @@ public class DamageCalculatorController
             CalculateDefensiveInteraction(opponentAttackPlan.cardChannelPairA, CharacterSelect.Opponent, playerAttackPlan.cardChannelPairB);
 
         if (playerAttackPlan.cardChannelPairA != null)
-            CalculateDamage(playerAttackPlan.cardChannelPairA, CharacterSelect.Opponent);
+        {
+            effectController.EnableEffects(playerAttackPlan.cardChannelPairA, CharacterSelect.Opponent);
+            CalculateMechDamage(playerAttackPlan.cardChannelPairA, CharacterSelect.Opponent);
+        }
 
         if (opponentAttackPlan.cardChannelPairA != null)
-            CalculateDamage(opponentAttackPlan.cardChannelPairA, CharacterSelect.Player);
+        {
+            effectController.EnableEffects(opponentAttackPlan.cardChannelPairA, CharacterSelect.Player);
+            CalculateMechDamage(opponentAttackPlan.cardChannelPairA, CharacterSelect.Player);
+        }
 
         if (playerAttackPlan.cardChannelPairB != null)
-            CalculateDamage(playerAttackPlan.cardChannelPairB, CharacterSelect.Opponent);
+        {
+            effectController.EnableEffects(playerAttackPlan.cardChannelPairB, CharacterSelect.Opponent);
+            CalculateMechDamage(playerAttackPlan.cardChannelPairB, CharacterSelect.Opponent);
+        }
 
         if (opponentAttackPlan.cardChannelPairB != null)
-            CalculateDamage(opponentAttackPlan.cardChannelPairB, CharacterSelect.Player);
+        {
+            effectController.EnableEffects(opponentAttackPlan.cardChannelPairB, CharacterSelect.Player);
+            CalculateMechDamage(opponentAttackPlan.cardChannelPairB, CharacterSelect.Player);
+        }
 
         ClearAllCards();
         //End turn here
     }
 
-    private void CalculateDamage(CardChannelPairObject originAttack, CharacterSelect destinationMech)
+    private void Start()
     {
-        CalculateMechDamage(originAttack, destinationMech);
-        CalculateComponentDamage(originAttack, destinationMech);           
+        effectController = new EffectController();
     }
 
     private void CalculateDefensiveInteraction(CardChannelPairObject offensiveCard, CharacterSelect offensiveCharacter, CardChannelPairObject defensiveCard)
@@ -54,7 +69,13 @@ public class DamageCalculatorController
             {
                 //Attack animation
                 //Guard Animation
-                Debug.Log(offensiveCharacter + " was blocked.");
+
+                Debug.Log(offensiveCharacter + " was blocked, but this CardType currently does nothing on its own. Defensive effects will now be applied.");
+                effectController.EnableEffects(defensiveCard, offensiveCharacter == CharacterSelect.Player ? CharacterSelect.Opponent : CharacterSelect.Player);
+
+                Debug.Log(offensiveCharacter + " will now apply offensive effects.");
+                //Change this to CalculateMechDamage if effects don't apply to guarded characters.
+                effectController.EnableEffects(offensiveCard, offensiveCharacter == CharacterSelect.Player ? CharacterSelect.Opponent : CharacterSelect.Player);
             }
 
             if (defensiveCard.CardData.CardCategory.HasFlag(CardCategory.Counter))
@@ -62,18 +83,20 @@ public class DamageCalculatorController
                 //Attack animation
                 //Counter animation
 
-                Debug.Log(offensiveCharacter + " was countered.");
-                CalculateDamage(offensiveCard, offensiveCharacter);
+                Debug.Log(offensiveCharacter + " was countered. Their attack will be returned at 150%.");
+                effectController.EnableEffects(defensiveCard, offensiveCharacter == CharacterSelect.Player ? CharacterSelect.Opponent : CharacterSelect.Player);
+                CalculateMechDamage(offensiveCard, offensiveCharacter, true);
             }
         }
         else
         {
+            Debug.Log((offensiveCharacter == CharacterSelect.Player ? CharacterSelect.Opponent : CharacterSelect.Player) + "'s defense was misplaced.");
             Debug.Log(offensiveCharacter + "'s attack made it through!");
 
             if (offensiveCharacter == CharacterSelect.Player)
-                CalculateDamage(offensiveCard, CharacterSelect.Opponent);
+                effectController.EnableEffects(offensiveCard, CharacterSelect.Opponent);
             else
-                CalculateDamage(offensiveCard, CharacterSelect.Player);
+                effectController.EnableEffects(offensiveCard, CharacterSelect.Player);
         }
 
         ClearCardsAfterDefenses(offensiveCharacter);
@@ -99,18 +122,33 @@ public class DamageCalculatorController
         opponentAttackPlan = null;
     }
 
-    private void CalculateMechDamage(CardChannelPairObject originAttack, CharacterSelect destinationMech)
+    private void CalculateMechDamage(CardChannelPairObject originAttack, CharacterSelect destinationMech, bool counterDamage = false)
     {
         Debug.Log(destinationMech + " was attacked!");
-        
+
+        //We need to check and account for multiple attacks as well as KeyWordExecutes here.
+
         //This is where we would pull our additional buffs/stats from
-        //This is where we would check the EffectManager as well
-        
+        int repeatPlay = 1;
+
+        if(originAttack.CardData.CardEffects != null)
+            foreach (SOCardEffectObject effect in originAttack.CardData.CardEffects)
+                if (effect.EffectType == CardEffectTypes.PlayMultipleTimes)
+                    repeatPlay = effect.EffectMagnitude;
+
         if (originAttack.CardData != null)
         {
-            //Animations for attacks
-            CombatManager.instance.DealDamageToMech(destinationMech, originAttack.CardData.BaseDamage); 
+            for (int i = 0; i < repeatPlay; i++)
+            {
+                int damageToDeal = effectController.GetMechDamageWithModifiers(originAttack, destinationMech);
+                
+                //Animations for attacks
+                CombatManager.instance.DealDamageToMech(destinationMech, 
+                    counterDamage == false ? damageToDeal : damageToDeal * Mathf.RoundToInt(CombatManager.instance.CounterDamageMultiplier));
+            }
         }
+
+        CalculateComponentDamage(originAttack, destinationMech);
     }
 
     private void CalculateComponentDamage(CardChannelPairObject originAttack, CharacterSelect destinationMech)

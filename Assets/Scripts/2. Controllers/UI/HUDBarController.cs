@@ -8,7 +8,8 @@ public class HUDBarController : MonoBehaviour
     [SerializeField] protected HUDBar currentHealthBar;
     [SerializeField] protected HUDBar currentEnergyBar;
 
-
+    public void SetHealthBarMax(int maxHealth) { currentHealthBar.BarMax = maxHealth; }
+    public void SetEnergyBarMax(int maxEnergy) { currentEnergyBar.BarMax = maxEnergy; }
     public void UpdateHealthBar(int health) { currentHealthBar.UpdateUI(health); }
     public void UpdateEnergyBar(int energy) { currentEnergyBar.UpdateUI(energy); }
 }
