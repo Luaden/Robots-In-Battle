@@ -5,18 +5,21 @@ using UnityEngine;
 public class FighterEffectObject
 {
     private Dictionary<ElementType, int> elementStacks = new Dictionary<ElementType, int>();
-    private Dictionary<CardCategory, int> cardCategoryDamageBonus = new Dictionary<CardCategory, int>();
-    private Dictionary<Channels, int> channelDamageBonus = new Dictionary<Channels, int>();
-    private Dictionary<Channels, int> channelDamagePercentBonus = new Dictionary<Channels, int>();
-    private Dictionary<Channels, int> channelDamageReduction = new Dictionary<Channels, int>();
-    private Dictionary<Channels, int> channelDamagePercentReduction = new Dictionary<Channels, int>();
+    private Dictionary<CardCategory, List<CardEffectObject>> cardCategoryDamageBonus = new Dictionary<CardCategory, List<CardEffectObject>>();
+    private Dictionary<Channels, List<CardEffectObject>> channelDamageBonus = new Dictionary<Channels, List<CardEffectObject>>();
+    private Dictionary<Channels, List<CardEffectObject>> channelDamagePercentBonus = new Dictionary<Channels, List<CardEffectObject>>();
+    private Dictionary<Channels, List<CardEffectObject>> channelDamageReduction = new Dictionary<Channels, List<CardEffectObject>>();
+    private Dictionary<Channels, List<CardEffectObject>> channelDamagePercentReduction = new Dictionary<Channels, List<CardEffectObject>>();
     private Dictionary<Channels, int> channelShields = new Dictionary<Channels, int>();
+    private Dictionary<CardKeyWord, List<CardEffectObject>> keywordDuration = new Dictionary<CardKeyWord, List<CardEffectObject>>();
 
     public Dictionary<ElementType,int> ElementStacks { get => elementStacks; }
-    public Dictionary<CardCategory, int> CardCategoryDamageBonus { get => cardCategoryDamageBonus; }
-    public Dictionary<Channels, int> ChannelDamageBonus { get => channelDamageBonus; }
-    public Dictionary<Channels, int> ChannelDamagePercentBonus { get => channelDamagePercentBonus; }
-    public Dictionary<Channels, int> ChannelDamageReduction { get => channelDamageReduction; }
-    public Dictionary<Channels, int> ChannelDamagePercentReduction { get => channelDamagePercentReduction; }
+    public Dictionary<CardCategory, List<CardEffectObject>> CardCategoryDamageBonus { get => cardCategoryDamageBonus; }
+    public Dictionary<Channels, List<CardEffectObject>> ChannelDamageBonus { get => channelDamageBonus; }
+    public Dictionary<Channels, List<CardEffectObject>> ChannelDamagePercentBonus { get => channelDamagePercentBonus; }
+    public Dictionary<Channels, List<CardEffectObject>> ChannelDamageReduction { get => channelDamageReduction; }
+    public Dictionary<Channels, List<CardEffectObject>> ChannelDamagePercentReduction { get => channelDamagePercentReduction; }
     public Dictionary<Channels, int> ChannelShields { get => channelShields; }
+    public Dictionary<CardKeyWord, List<CardEffectObject>> KeyWordDuration { get => keywordDuration; }
+
 }

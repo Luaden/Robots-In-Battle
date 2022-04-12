@@ -59,7 +59,7 @@ public class SOItemDataObject : ScriptableObject
 
 
     [Header("Effect Attributes")]
-    [SerializeField] private List<CardEffectObject> cardEffects;
+    [SerializeField] private List<SOCardEffectObject> cardEffects;
 
 
     #region Card Attribute Properties
@@ -91,6 +91,6 @@ public class SOItemDataObject : ScriptableObject
     #endregion
 
     #region Effects
-    public List<CardEffectObject> CardEffects { get => cardEffects; }
+    public List<SOCardEffectObject> CardEffects { get => cardEffects; }
     #endregion
 }

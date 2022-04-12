@@ -33,6 +33,7 @@ public class EditorItemGUI : Editor
     {
         EditorGUILayout.PropertyField(serializedObject.FindProperty("cardBackground"));
         EditorGUILayout.PropertyField(serializedObject.FindProperty("cardCategory"));
+        EditorGUILayout.PropertyField(serializedObject.FindProperty("cardKeyWord"));
         EditorGUILayout.PropertyField(serializedObject.FindProperty("possibleChannels"));
         EditorGUILayout.PropertyField(serializedObject.FindProperty("affectedChannels"));
         EditorGUILayout.PropertyField(serializedObject.FindProperty("energyCost"));
@@ -45,6 +46,7 @@ public class EditorItemGUI : Editor
     {
         EditorGUILayout.PropertyField(serializedObject.FindProperty("cardBackground"));
         EditorGUILayout.PropertyField(serializedObject.FindProperty("cardCategory"));
+        EditorGUILayout.PropertyField(serializedObject.FindProperty("cardKeyWord"));
         EditorGUILayout.PropertyField(serializedObject.FindProperty("possibleChannels"));
         EditorGUILayout.PropertyField(serializedObject.FindProperty("affectedChannels"));
         EditorGUILayout.PropertyField(serializedObject.FindProperty("energyCost"));
@@ -56,6 +58,7 @@ public class EditorItemGUI : Editor
     {
         EditorGUILayout.PropertyField(serializedObject.FindProperty("cardBackground"));
         EditorGUILayout.PropertyField(serializedObject.FindProperty("cardCategory"));
+        EditorGUILayout.PropertyField(serializedObject.FindProperty("cardKeyWord"));
         EditorGUILayout.PropertyField(serializedObject.FindProperty("possibleChannels"));
         EditorGUILayout.PropertyField(serializedObject.FindProperty("affectedChannels"));
         EditorGUILayout.PropertyField(serializedObject.FindProperty("energyCost"));
