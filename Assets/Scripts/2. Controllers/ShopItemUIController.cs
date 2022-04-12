@@ -3,13 +3,19 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class ShopController : MonoBehaviour, IPointerDownHandler, IPointerUpHandler,
+public class ShopItemUIController : MonoBehaviour, IPointerDownHandler, IPointerUpHandler,
                               IPointerEnterHandler, IPointerExitHandler, IBeginDragHandler,
                               IEndDragHandler, IDragHandler
 {
-    // List of items <IShop>
+    // List of items <IShoppable>
     // Shopping Cart
     // creates IShoppableSlots
+
+    private bool isPickedUp = false;
+    private Transform previousParentObject;
+
+    private BaseSlotController<ShopItemUIController> shopItemSlotController;
+    public BaseSlotController<ShopItemUIController> ShopItemSlotController { get => shopItemSlotController; set => UpdateItemSlot(value); }
 
 
     public void OnBeginDrag(PointerEventData eventData)
@@ -19,7 +25,9 @@ public class ShopController : MonoBehaviour, IPointerDownHandler, IPointerUpHand
 
     public void OnDrag(PointerEventData eventData)
     {
+        GetComponent<RectTransform>().position = eventData.position;
         Debug.Log("dragging");
+        
     }
 
     public void OnEndDrag(PointerEventData eventData)
@@ -46,4 +54,12 @@ public class ShopController : MonoBehaviour, IPointerDownHandler, IPointerUpHand
     {
         Debug.Log("released");
     }
+    private void UpdateItemSlot(BaseSlotController<ShopItemUIController> newSlot)
+    {
+        shopItemSlotController = newSlot;
+        transform.SetParent(newSlot.transform);
+        previousParentObject = newSlot.transform;
+    }
+
+
 }
