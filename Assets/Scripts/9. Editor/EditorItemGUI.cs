@@ -33,7 +33,6 @@ public class EditorItemGUI : Editor
     {
         EditorGUILayout.PropertyField(serializedObject.FindProperty("cardBackground"));
         EditorGUILayout.PropertyField(serializedObject.FindProperty("cardCategory"));
-        EditorGUILayout.PropertyField(serializedObject.FindProperty("cardKeyWord"));
         EditorGUILayout.PropertyField(serializedObject.FindProperty("possibleChannels"));
         EditorGUILayout.PropertyField(serializedObject.FindProperty("affectedChannels"));
         EditorGUILayout.PropertyField(serializedObject.FindProperty("energyCost"));
@@ -46,7 +45,6 @@ public class EditorItemGUI : Editor
     {
         EditorGUILayout.PropertyField(serializedObject.FindProperty("cardBackground"));
         EditorGUILayout.PropertyField(serializedObject.FindProperty("cardCategory"));
-        EditorGUILayout.PropertyField(serializedObject.FindProperty("cardKeyWord"));
         EditorGUILayout.PropertyField(serializedObject.FindProperty("possibleChannels"));
         EditorGUILayout.PropertyField(serializedObject.FindProperty("affectedChannels"));
         EditorGUILayout.PropertyField(serializedObject.FindProperty("energyCost"));
@@ -58,7 +56,6 @@ public class EditorItemGUI : Editor
     {
         EditorGUILayout.PropertyField(serializedObject.FindProperty("cardBackground"));
         EditorGUILayout.PropertyField(serializedObject.FindProperty("cardCategory"));
-        EditorGUILayout.PropertyField(serializedObject.FindProperty("cardKeyWord"));
         EditorGUILayout.PropertyField(serializedObject.FindProperty("possibleChannels"));
         EditorGUILayout.PropertyField(serializedObject.FindProperty("affectedChannels"));
         EditorGUILayout.PropertyField(serializedObject.FindProperty("energyCost"));
@@ -111,6 +108,9 @@ public class EditorItemGUI : Editor
         EditorGUILayout.PropertyField(serializedObject.FindProperty("componentHP"));
         EditorGUILayout.PropertyField(serializedObject.FindProperty("componentEnergy"));
         EditorGUILayout.PropertyField(serializedObject.FindProperty("componentElement"));
+
+        EditorGUILayout.Space();
+
         EditorGUILayout.PropertyField(serializedObject.FindProperty("bonusDamageFromComponent"));
         EditorGUILayout.PropertyField(serializedObject.FindProperty("bonusDamageAsPercent"));
         EditorGUILayout.PropertyField(serializedObject.FindProperty("reduceDamageToComponent"));

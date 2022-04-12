@@ -3,13 +3,16 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
 
-public class EffectController : MonoBehaviour
+public class EffectController
 {
     private FighterEffectObject playerFighterEffectObject;
     private FighterEffectObject opponentFighterEffectObject;
 
     public void EnableEffects(CardChannelPairObject cardChannelPair, CharacterSelect destinationMech)
     {
+        if (cardChannelPair.CardData.CardEffects == null)
+            return;
+
         int repeatPlay = 1;
 
         foreach (SOCardEffectObject effect in cardChannelPair.CardData.CardEffects)
@@ -40,27 +43,39 @@ public class EffectController : MonoBehaviour
                         break;
 
                     case CardEffectTypes.GainShields:
-                        GainShields(effect, cardChannelPair.CardChannel, destinationMech == CharacterSelect.Opponent ? CharacterSelect.Player : CharacterSelect.Opponent);
+                        GainShields(effect, cardChannelPair.CardData.AffectedChannels == AffectedChannels.SelectedChannel ?
+                            cardChannelPair.CardChannel : cardChannelPair.CardData.PossibleChannels, 
+                            destinationMech == CharacterSelect.Opponent ? CharacterSelect.Player : CharacterSelect.Opponent);
                         break;
 
                     case CardEffectTypes.MultiplyShield:
-                        MultiplyShields(effect, cardChannelPair.CardChannel, destinationMech == CharacterSelect.Opponent ? CharacterSelect.Player : CharacterSelect.Opponent);
+                        MultiplyShields(effect, cardChannelPair.CardData.AffectedChannels == AffectedChannels.SelectedChannel ?
+                            cardChannelPair.CardChannel : cardChannelPair.CardData.PossibleChannels,
+                            destinationMech == CharacterSelect.Opponent ? CharacterSelect.Player : CharacterSelect.Opponent);
                         break;
 
                     case CardEffectTypes.IncreaseOutgoingCardTypeDamage:
-                        BoostCardTypeDamage(effect, cardChannelPair.CardChannel, destinationMech == CharacterSelect.Opponent ? CharacterSelect.Player : CharacterSelect.Opponent);
+                        BoostCardTypeDamage(effect, cardChannelPair.CardData.AffectedChannels == AffectedChannels.SelectedChannel ?
+                            cardChannelPair.CardChannel : cardChannelPair.CardData.PossibleChannels,
+                            destinationMech == CharacterSelect.Opponent ? CharacterSelect.Player : CharacterSelect.Opponent);
                         break;
 
                     case CardEffectTypes.IncreaseOutgoingChannelDamage:
-                        BoostChannelDamage(effect, cardChannelPair.CardChannel, destinationMech == CharacterSelect.Opponent ? CharacterSelect.Player : CharacterSelect.Opponent);
+                        BoostChannelDamage(effect, cardChannelPair.CardData.AffectedChannels == AffectedChannels.SelectedChannel ?
+                            cardChannelPair.CardChannel : cardChannelPair.CardData.PossibleChannels,
+                            destinationMech == CharacterSelect.Opponent ? CharacterSelect.Player : CharacterSelect.Opponent);
                         break;
 
                     case CardEffectTypes.ReduceIncomingChannelDamage:
-                        ReduceChannelDamage(effect, cardChannelPair.CardChannel, destinationMech == CharacterSelect.Opponent ? CharacterSelect.Player : CharacterSelect.Opponent);
+                        ReduceChannelDamage(effect, cardChannelPair.CardData.AffectedChannels == AffectedChannels.SelectedChannel ?
+                            cardChannelPair.CardChannel : cardChannelPair.CardData.PossibleChannels,
+                            destinationMech == CharacterSelect.Opponent ? CharacterSelect.Player : CharacterSelect.Opponent);
                         break;
 
                     case CardEffectTypes.KeyWordInitialize:
-                        KeyWordInitialize(effect, cardChannelPair.CardChannel, destinationMech == CharacterSelect.Opponent ? CharacterSelect.Player : CharacterSelect.Opponent);
+                        KeyWordInitialize(effect, cardChannelPair.CardData.AffectedChannels == AffectedChannels.SelectedChannel ?
+                            cardChannelPair.CardChannel : cardChannelPair.CardData.PossibleChannels,
+                            destinationMech == CharacterSelect.Opponent ? CharacterSelect.Player : CharacterSelect.Opponent);
                         break;
                     case CardEffectTypes.KeyWordExecute:
                         break;
@@ -84,11 +99,22 @@ public class EffectController : MonoBehaviour
 
             //Get Damage Reductions and Modifiers
             damageToReturn = GetCardChannelDamageReduction(attack, damageToReturn, defensiveCharacter);
-            //damageToReturn = GetDamageReducedByShield(attack, damageToReturn, defensiveCharacter);
+            damageToReturn = GetDamageReducedByShield(attack, damageToReturn, defensiveCharacter);
         }
 
-        //Check for component damage reduction.
-        //Return damage.
+        if (defensiveCharacter == CharacterSelect.Player)
+        {
+            //Get Damage Boosts and Modifiers
+            damageToReturn = GetCardCategoryDamageBonus(attack, damageToReturn, defensiveCharacter);
+            damageToReturn = GetCardChannelDamageBonus(attack, damageToReturn, defensiveCharacter);
+            damageToReturn = GetKeyWordDamageBonus(attack, ref damageToReturn, defensiveCharacter);
+            damageToReturn = GetComponentDamageBonus(attack, damageToReturn, defensiveCharacter);
+
+            //Get Damage Reductions and Modifiers
+            damageToReturn = GetCardChannelDamageReduction(attack, damageToReturn, defensiveCharacter);
+            damageToReturn = GetDamageReducedByShield(attack, damageToReturn, defensiveCharacter);
+        }
+
 
         return damageToReturn;
     }
@@ -108,10 +134,17 @@ public class EffectController : MonoBehaviour
 
         return damageToReturn;
     }
+    
+    private void IncrementEffectsAtTurnEnd()
+    {
+        playerFighterEffectObject.IncrementFighterEffects();
+        opponentFighterEffectObject.IncrementFighterEffects();
+    }
 
-    private void Start()
+    public EffectController()
     {
         CardPlayManager.OnCombatComplete += IncrementEffectsAtTurnEnd;
+        CombatManager.OnDestroyScene += OnDestroy;
 
         playerFighterEffectObject = new FighterEffectObject();
         opponentFighterEffectObject = new FighterEffectObject();
@@ -120,6 +153,7 @@ public class EffectController : MonoBehaviour
     private void OnDestroy()
     {
         CardPlayManager.OnCombatComplete -= IncrementEffectsAtTurnEnd;
+        CombatManager.OnDestroyScene -= OnDestroy;
     }
 
     private void AddElementalStacks(SOCardEffectObject effect, MechComponent component, CharacterSelect characterAdding)
@@ -205,23 +239,25 @@ public class EffectController : MonoBehaviour
 
     private int GetCardCategoryDamageBonus(CardChannelPairObject attack, int damageToReturn, CharacterSelect defensiveCharacter)
     {
+        List<CardEffectObject> previousCardCategoryEffects = new List<CardEffectObject>();
+
         if(defensiveCharacter == CharacterSelect.Opponent)
         {
             switch (attack.CardData.CardCategory)
             {
                 case CardCategory.Punch:
-                    if (playerFighterEffectObject.CardCategoryDamageBonus[CardCategory.Punch] != null)
-                        foreach (CardEffectObject effect in playerFighterEffectObject.CardCategoryDamageBonus[CardCategory.Punch])
+                    if (playerFighterEffectObject.CardCategoryDamageBonus.TryGetValue(CardCategory.Punch, out previousCardCategoryEffects))
+                        foreach (CardEffectObject effect in previousCardCategoryEffects)
                             damageToReturn += effect.EffectMagnitude;
                     break;
                 case CardCategory.Kick:
-                    if (playerFighterEffectObject.CardCategoryDamageBonus[CardCategory.Kick] != null)
-                        foreach (CardEffectObject effect in playerFighterEffectObject.CardCategoryDamageBonus[CardCategory.Kick])
+                    if (playerFighterEffectObject.CardCategoryDamageBonus.TryGetValue(CardCategory.Kick, out previousCardCategoryEffects))
+                        foreach (CardEffectObject effect in previousCardCategoryEffects)
                             damageToReturn += effect.EffectMagnitude;
                     break;
                 case CardCategory.Special:
-                    if (playerFighterEffectObject.CardCategoryDamageBonus[CardCategory.Special] != null)
-                        foreach (CardEffectObject effect in playerFighterEffectObject.CardCategoryDamageBonus[CardCategory.Special])
+                    if (playerFighterEffectObject.CardCategoryDamageBonus.TryGetValue(CardCategory.Special, out previousCardCategoryEffects))
+                        foreach (CardEffectObject effect in previousCardCategoryEffects)
                             damageToReturn += effect.EffectMagnitude;
                     break;
             }
@@ -233,18 +269,18 @@ public class EffectController : MonoBehaviour
             switch (attack.CardData.CardCategory)
             {
                 case CardCategory.Punch:
-                    if (opponentFighterEffectObject.CardCategoryDamageBonus[CardCategory.Punch] != null)
-                        foreach (CardEffectObject effect in opponentFighterEffectObject.CardCategoryDamageBonus[CardCategory.Punch])
+                    if (opponentFighterEffectObject.CardCategoryDamageBonus.TryGetValue(CardCategory.Punch, out previousCardCategoryEffects))
+                        foreach (CardEffectObject effect in previousCardCategoryEffects)
                             damageToReturn += effect.EffectMagnitude;
                     break;
                 case CardCategory.Kick:
-                    if (opponentFighterEffectObject.CardCategoryDamageBonus[CardCategory.Kick] != null)
-                        foreach (CardEffectObject effect in opponentFighterEffectObject.CardCategoryDamageBonus[CardCategory.Kick])
+                    if (opponentFighterEffectObject.CardCategoryDamageBonus.TryGetValue(CardCategory.Kick, out previousCardCategoryEffects))
+                        foreach (CardEffectObject effect in previousCardCategoryEffects)
                             damageToReturn += effect.EffectMagnitude;
                     break;
                 case CardCategory.Special:
-                    if (opponentFighterEffectObject.CardCategoryDamageBonus[CardCategory.Special] != null)
-                        foreach (CardEffectObject effect in opponentFighterEffectObject.CardCategoryDamageBonus[CardCategory.Special])
+                    if (opponentFighterEffectObject.CardCategoryDamageBonus.TryGetValue(CardCategory.Special, out previousCardCategoryEffects))
+                        foreach (CardEffectObject effect in previousCardCategoryEffects)
                             damageToReturn += effect.EffectMagnitude;
                     break;
             }
@@ -255,56 +291,36 @@ public class EffectController : MonoBehaviour
 
     private int GetCardChannelDamageBonus(CardChannelPairObject attack, int damageToReturn, CharacterSelect defensiveCharacter)
     {
-        if(defensiveCharacter == CharacterSelect.Opponent)
+        List<CardEffectObject> previousChannelEffects = new List<CardEffectObject>();
+
+        if (defensiveCharacter == CharacterSelect.Opponent)
         {
-            switch (attack.CardChannel)
+            foreach(Channels channel in GetChannelListFromFlags(attack.CardChannel))
             {
-                case Channels.High:
-                    if (playerFighterEffectObject.ChannelDamageBonus[attack.CardChannel] != null)
-                        foreach (CardEffectObject effect in playerFighterEffectObject.ChannelDamageBonus[attack.CardChannel])
-                            damageToReturn += effect.EffectMagnitude;
-                    break;
-                case Channels.Mid:
-                    if (playerFighterEffectObject.ChannelDamageBonus[attack.CardChannel] != null)
-                        foreach (CardEffectObject effect in playerFighterEffectObject.ChannelDamageBonus[attack.CardChannel])
-                            damageToReturn += effect.EffectMagnitude;
-                    break;
-                case Channels.Low:
-                    if (playerFighterEffectObject.ChannelDamageBonus[attack.CardChannel] != null)
-                        foreach (CardEffectObject effect in playerFighterEffectObject.ChannelDamageBonus[attack.CardChannel])
-                            damageToReturn += effect.EffectMagnitude;
-                    break;
+                if (playerFighterEffectObject.ChannelDamageBonus.TryGetValue(channel, out previousChannelEffects))
+                    foreach (CardEffectObject effect in previousChannelEffects)
+                        damageToReturn += effect.EffectMagnitude;
             }
 
             return damageToReturn;
         }
         else
         {
-            switch (attack.CardChannel)
+            foreach (Channels channel in GetChannelListFromFlags(attack.CardChannel))
             {
-                case Channels.High:
-                    if (opponentFighterEffectObject.ChannelDamageBonus[attack.CardChannel] != null)
-                        foreach (CardEffectObject effect in opponentFighterEffectObject.ChannelDamageBonus[attack.CardChannel])
-                            damageToReturn += effect.EffectMagnitude;
-                    break;
-                case Channels.Mid:
-                    if (opponentFighterEffectObject.ChannelDamageBonus[attack.CardChannel] != null)
-                        foreach (CardEffectObject effect in opponentFighterEffectObject.ChannelDamageBonus[attack.CardChannel])
-                            damageToReturn += effect.EffectMagnitude;
-                    break;
-                case Channels.Low:
-                    if (opponentFighterEffectObject.ChannelDamageBonus[attack.CardChannel] != null)
-                        foreach (CardEffectObject effect in opponentFighterEffectObject.ChannelDamageBonus[attack.CardChannel])
-                            damageToReturn += effect.EffectMagnitude;
-                    break;
+                if (opponentFighterEffectObject.ChannelDamageBonus.TryGetValue(channel, out previousChannelEffects))
+                    foreach (CardEffectObject effect in previousChannelEffects)
+                        damageToReturn += effect.EffectMagnitude;
             }
 
             return damageToReturn;
         }
     }
+
     private int GetKeyWordDamageBonus(CardChannelPairObject attack, ref int damageToReturn, CharacterSelect defensiveCharacter)
     {
         CardKeyWord keyWord = CardKeyWord.None;
+        List<CardEffectObject> previousKeyWordEffects = new List<CardEffectObject>();
 
         if (attack.CardData.CardEffects.Select(x => x.EffectType).Contains(CardEffectTypes.KeyWordExecute))
         {
@@ -313,13 +329,17 @@ public class EffectController : MonoBehaviour
                     keyWord = effect.CardKeyWord;
 
             if(defensiveCharacter == CharacterSelect.Opponent)
-                if (playerFighterEffectObject.KeyWordDuration[keyWord] != null)
-                    foreach (CardEffectObject effect in playerFighterEffectObject.KeyWordDuration[keyWord])
+            {
+                if (playerFighterEffectObject.KeyWordDuration.TryGetValue(keyWord, out previousKeyWordEffects))
+                    foreach (CardEffectObject effect in previousKeyWordEffects)
                         damageToReturn += effect.EffectMagnitude;
+            }
             else
-                if (opponentFighterEffectObject.KeyWordDuration[keyWord] != null)
-                    foreach (CardEffectObject effect in opponentFighterEffectObject.KeyWordDuration[keyWord])
+            {
+                if (opponentFighterEffectObject.KeyWordDuration.TryGetValue(keyWord, out previousKeyWordEffects))
+                    foreach (CardEffectObject effect in previousKeyWordEffects)
                         damageToReturn += effect.EffectMagnitude;
+            }
         }
 
         return damageToReturn;
@@ -327,7 +347,7 @@ public class EffectController : MonoBehaviour
 
     private int GetComponentDamageBonus(CardChannelPairObject attack, int damageToReturn, CharacterSelect defensiveCharacter)
     {
-        if(defensiveCharacter == CharacterSelect.Opponent)
+        if (defensiveCharacter == CharacterSelect.Opponent)
         {
             switch (attack.CardData.CardCategory)
             {
@@ -383,49 +403,75 @@ public class EffectController : MonoBehaviour
 
     private int GetCardChannelDamageReduction(CardChannelPairObject attack, int damageToReturn, CharacterSelect defensiveCharacter)
     {
-        if(defensiveCharacter == CharacterSelect.Opponent)
+        List<CardEffectObject> previousChannelEffects = new List<CardEffectObject>();
+
+        if (defensiveCharacter == CharacterSelect.Opponent)
         {
-            switch (attack.CardChannel)
+            foreach (Channels channel in GetChannelListFromFlags(attack.CardChannel))
             {
-                case Channels.High:
-                    if (opponentFighterEffectObject.ChannelDamageReduction[attack.CardChannel] != null)
-                        foreach (CardEffectObject effect in opponentFighterEffectObject.ChannelDamageReduction[attack.CardChannel])
-                            damageToReturn -= effect.EffectMagnitude;
-                    break;
-                case Channels.Mid:
-                    if (opponentFighterEffectObject.ChannelDamageReduction[attack.CardChannel] != null)
-                        foreach (CardEffectObject effect in opponentFighterEffectObject.ChannelDamageReduction[attack.CardChannel])
-                            damageToReturn -= effect.EffectMagnitude;
-                    break;
-                case Channels.Low:
-                    if (opponentFighterEffectObject.ChannelDamageReduction[attack.CardChannel] != null)
-                        foreach (CardEffectObject effect in opponentFighterEffectObject.ChannelDamageReduction[attack.CardChannel])
-                            damageToReturn -= effect.EffectMagnitude;
-                    break;
+                if (opponentFighterEffectObject.ChannelDamageReduction.TryGetValue(channel, out previousChannelEffects))
+                    foreach (CardEffectObject effect in previousChannelEffects)
+                        damageToReturn -= effect.EffectMagnitude;
             }
 
             return damageToReturn;
         }
         else
         {
-            switch (attack.CardChannel)
+            foreach (Channels channel in GetChannelListFromFlags(attack.CardChannel))
             {
-                case Channels.High:
-                    if (playerFighterEffectObject.ChannelDamageReduction[attack.CardChannel] != null)
-                        foreach (CardEffectObject effect in playerFighterEffectObject.ChannelDamageReduction[attack.CardChannel])
-                            damageToReturn -= effect.EffectMagnitude;
-                    break;
-                case Channels.Mid:
-                    if (playerFighterEffectObject.ChannelDamageReduction[attack.CardChannel] != null)
-                        foreach (CardEffectObject effect in playerFighterEffectObject.ChannelDamageReduction[attack.CardChannel])
-                            damageToReturn -= effect.EffectMagnitude;
-                    break;
-                case Channels.Low:
-                    if (playerFighterEffectObject.ChannelDamageReduction[attack.CardChannel] != null)
-                        foreach (CardEffectObject effect in playerFighterEffectObject.ChannelDamageReduction[attack.CardChannel])
-                            damageToReturn -= effect.EffectMagnitude;
-                    break;
+                if (playerFighterEffectObject.ChannelDamageReduction.TryGetValue(channel, out previousChannelEffects))
+                    foreach (CardEffectObject effect in previousChannelEffects)
+                        damageToReturn -= effect.EffectMagnitude;
             }
+
+            return damageToReturn;
+        }
+    }
+    
+    private int GetDamageReducedByShield(CardChannelPairObject attack, int damageToReturn, CharacterSelect defensiveCharacter)
+    {
+        int initialShield;
+
+        if(defensiveCharacter == CharacterSelect.Opponent)
+        {
+            foreach (Channels channel in GetChannelListFromFlags(attack.CardChannel))
+            {
+                if (opponentFighterEffectObject.ChannelShields.TryGetValue(channel, out initialShield))
+                {
+                    int shieldAmount = initialShield;
+
+                    shieldAmount -= damageToReturn;
+                    damageToReturn = Mathf.RoundToInt(Mathf.Clamp(damageToReturn - initialShield, 0, Mathf.Infinity));
+
+
+                    if (shieldAmount <= 0)
+                        opponentFighterEffectObject.ChannelShields.Remove(channel);
+                    else
+                        opponentFighterEffectObject.ChannelShields[attack.CardChannel] = shieldAmount;
+                }
+            }
+
+            return damageToReturn;
+        }
+        else
+        {
+            foreach (Channels channel in GetChannelListFromFlags(attack.CardChannel))
+            {
+                if (playerFighterEffectObject.ChannelShields.TryGetValue(channel, out initialShield))
+                {
+                    int shieldAmount = initialShield;
+
+                    shieldAmount -= damageToReturn;
+                    damageToReturn = Mathf.RoundToInt(Mathf.Clamp(damageToReturn - initialShield, 0, Mathf.Infinity));
+
+
+                    if (shieldAmount <= 0)
+                        playerFighterEffectObject.ChannelShields.Remove(channel);
+                    else
+                        playerFighterEffectObject.ChannelShields[attack.CardChannel] = shieldAmount;
+                }
+            }                
 
             return damageToReturn;
         }
@@ -434,47 +480,59 @@ public class EffectController : MonoBehaviour
     private void GainShields(SOCardEffectObject effect, Channels channel, CharacterSelect characterGaining)
     {
         int shieldAmount;
+
         if (characterGaining == CharacterSelect.Player)
         {
-            if (playerFighterEffectObject.ChannelShields.TryGetValue(channel, out shieldAmount))
-                playerFighterEffectObject.ChannelShields[channel] =
-                    playerFighterEffectObject.ChannelShields[channel] + effect.EffectMagnitude;
-            else
-                playerFighterEffectObject.ChannelShields.Add(channel, effect.EffectMagnitude);
+            foreach (Channels returnedChannel in GetChannelListFromFlags(channel))
+            {
+                if (playerFighterEffectObject.ChannelShields.TryGetValue(returnedChannel, out shieldAmount))
+                    playerFighterEffectObject.ChannelShields[returnedChannel] =
+                        playerFighterEffectObject.ChannelShields[returnedChannel] + effect.EffectMagnitude;
+                else
+                    playerFighterEffectObject.ChannelShields.Add(returnedChannel, effect.EffectMagnitude);
+            }
+                
         }
 
         if (characterGaining == CharacterSelect.Opponent)
         {
-            if (opponentFighterEffectObject.ChannelShields.TryGetValue(channel, out shieldAmount))
-                opponentFighterEffectObject.ChannelShields[channel] =
-                    opponentFighterEffectObject.ChannelShields[channel] + effect.EffectMagnitude;
-            else
-                opponentFighterEffectObject.ChannelShields.Add(channel, effect.EffectMagnitude);
+            foreach (Channels returnedChannel in GetChannelListFromFlags(channel))
+            {
+                if (opponentFighterEffectObject.ChannelShields.TryGetValue(returnedChannel, out shieldAmount))
+                    opponentFighterEffectObject.ChannelShields[returnedChannel] =
+                        opponentFighterEffectObject.ChannelShields[returnedChannel] + effect.EffectMagnitude;
+                else
+                    opponentFighterEffectObject.ChannelShields.Add(returnedChannel, effect.EffectMagnitude);
+            }
         }
     }
 
     private void MultiplyShields(SOCardEffectObject effect, Channels channel, CharacterSelect characterGaining)
     {
+        int shieldAmount;
+
         if (characterGaining == CharacterSelect.Player)
         {
-            int shieldAmount;
-
-            if (playerFighterEffectObject.ChannelShields.TryGetValue(channel, out shieldAmount))
-                playerFighterEffectObject.ChannelShields[channel] =
-                    playerFighterEffectObject.ChannelShields[channel] * effect.EffectMagnitude;
-            else
-                return;
+            foreach (Channels returnedChannel in GetChannelListFromFlags(channel))
+            {
+                if (playerFighterEffectObject.ChannelShields.TryGetValue(returnedChannel, out shieldAmount))
+                    playerFighterEffectObject.ChannelShields[returnedChannel] =
+                        playerFighterEffectObject.ChannelShields[returnedChannel] * effect.EffectMagnitude;
+                else
+                    return;
+            }
         }
 
         if (characterGaining == CharacterSelect.Opponent)
         {
-            int shieldAmount;
-
-            if (opponentFighterEffectObject.ChannelShields.TryGetValue(channel, out shieldAmount))
-                opponentFighterEffectObject.ChannelShields[channel] =
-                    opponentFighterEffectObject.ChannelShields[channel] * effect.EffectMagnitude;
-            else
-                return;
+            foreach (Channels returnedChannel in GetChannelListFromFlags(channel))
+            {
+                if (opponentFighterEffectObject.ChannelShields.TryGetValue(returnedChannel, out shieldAmount))
+                    opponentFighterEffectObject.ChannelShields[returnedChannel] =
+                        opponentFighterEffectObject.ChannelShields[returnedChannel] * effect.EffectMagnitude;
+                else
+                    return;
+            }
         }
     }
 
@@ -485,11 +543,8 @@ public class EffectController : MonoBehaviour
 
         if (characterBoosting == CharacterSelect.Player)
         {
-            if (playerFighterEffectObject.CardCategoryDamageBonus[effect.CardTypeToBoost] != null)
+            if (playerFighterEffectObject.CardCategoryDamageBonus.TryGetValue(effect.CardTypeToBoost, out previousBoostList))
             {
-                foreach (CardEffectObject previousEffect in playerFighterEffectObject.CardCategoryDamageBonus[effect.CardTypeToBoost])
-                    previousBoostList.Add(previousEffect);
-
                 previousBoostList.Add(newBoost);
                 playerFighterEffectObject.CardCategoryDamageBonus[effect.CardTypeToBoost] = previousBoostList;
             }
@@ -504,11 +559,8 @@ public class EffectController : MonoBehaviour
 
         if (characterBoosting == CharacterSelect.Opponent)
         {
-            if (opponentFighterEffectObject.CardCategoryDamageBonus[effect.CardTypeToBoost] != null)
+            if (opponentFighterEffectObject.CardCategoryDamageBonus.TryGetValue(effect.CardTypeToBoost, out previousBoostList))
             {
-                foreach (CardEffectObject previousEffect in opponentFighterEffectObject.CardCategoryDamageBonus[effect.CardTypeToBoost])
-                    previousBoostList.Add(previousEffect);
-
                 previousBoostList.Add(newBoost);
                 opponentFighterEffectObject.CardCategoryDamageBonus[effect.CardTypeToBoost] = previousBoostList;
             }
@@ -528,37 +580,37 @@ public class EffectController : MonoBehaviour
 
         if (characterBoosting == CharacterSelect.Player)
         {
-            if (playerFighterEffectObject.ChannelDamageBonus[channel] != null)
+            foreach (Channels returnedChannel in GetChannelListFromFlags(channel))
             {
-                foreach (CardEffectObject previousEffect in playerFighterEffectObject.ChannelDamageBonus[channel])
-                    previousBoostList.Add(previousEffect);
-
-                previousBoostList.Add(newBoost);
-                playerFighterEffectObject.ChannelDamageBonus[channel] = previousBoostList;
-            }
-            else
-            {
-                List<CardEffectObject> newBoostList = new List<CardEffectObject>();
-                newBoostList.Add(newBoost);
-                playerFighterEffectObject.ChannelDamageBonus.Add(channel, newBoostList);
+                if (playerFighterEffectObject.ChannelDamageBonus.TryGetValue(returnedChannel, out previousBoostList))
+                {
+                    previousBoostList.Add(newBoost);
+                    playerFighterEffectObject.ChannelDamageBonus[returnedChannel] = previousBoostList;
+                }
+                else
+                {
+                    List<CardEffectObject> newBoostList = new List<CardEffectObject>();
+                    newBoostList.Add(newBoost);
+                    playerFighterEffectObject.ChannelDamageBonus.Add(returnedChannel, newBoostList);
+                }
             }
         }
 
         if (characterBoosting == CharacterSelect.Opponent)
         {
-            if (opponentFighterEffectObject.ChannelDamageBonus[channel] != null)
+            foreach (Channels returnedChannel in GetChannelListFromFlags(channel))
             {
-                foreach (CardEffectObject previousEffect in opponentFighterEffectObject.ChannelDamageBonus[channel])
-                    previousBoostList.Add(previousEffect);
-
-                previousBoostList.Add(newBoost);
-                opponentFighterEffectObject.ChannelDamageBonus[channel] = previousBoostList;
-            }
-            else
-            {
-                List<CardEffectObject> newBoostList = new List<CardEffectObject>();
-                newBoostList.Add(newBoost);
-                opponentFighterEffectObject.ChannelDamageBonus.Add(channel, newBoostList);
+                if (opponentFighterEffectObject.ChannelDamageBonus.TryGetValue(returnedChannel, out previousBoostList))
+                {
+                    previousBoostList.Add(newBoost);
+                    opponentFighterEffectObject.ChannelDamageBonus[returnedChannel] = previousBoostList;
+                }
+                else
+                {
+                    List<CardEffectObject> newBoostList = new List<CardEffectObject>();
+                    newBoostList.Add(newBoost);
+                    opponentFighterEffectObject.ChannelDamageBonus.Add(returnedChannel, newBoostList);
+                }
             }
         }
     }
@@ -570,37 +622,37 @@ public class EffectController : MonoBehaviour
 
         if (characterReducing == CharacterSelect.Player)
         {
-            if (playerFighterEffectObject.ChannelDamageReduction[channel] != null)
+            foreach (Channels returnedChannel in GetChannelListFromFlags(channel))
             {
-                foreach (CardEffectObject previousEffect in playerFighterEffectObject.ChannelDamageReduction[channel])
-                    previousReductionList.Add(previousEffect);
-
-                previousReductionList.Add(newReduction);
-                playerFighterEffectObject.ChannelDamageReduction[channel] = previousReductionList;
-            }
-            else
-            {
-                List<CardEffectObject> newReductionList = new List<CardEffectObject>();
-                newReductionList.Add(newReduction);
-                playerFighterEffectObject.ChannelDamageReduction.Add(channel, newReductionList);
+                if (playerFighterEffectObject.ChannelDamageReduction.TryGetValue(returnedChannel, out previousReductionList))
+                {
+                    previousReductionList.Add(newReduction);
+                    playerFighterEffectObject.ChannelDamageReduction[returnedChannel] = previousReductionList;
+                }
+                else
+                {
+                    List<CardEffectObject> newReductionList = new List<CardEffectObject>();
+                    newReductionList.Add(newReduction);
+                    playerFighterEffectObject.ChannelDamageReduction.Add(returnedChannel, newReductionList);
+                }
             }
         }
 
         if (characterReducing == CharacterSelect.Opponent)
         {
-            if (opponentFighterEffectObject.ChannelDamageReduction[channel] != null)
+            foreach (Channels returnedChannel in GetChannelListFromFlags(channel))
             {
-                foreach (CardEffectObject previousEffect in opponentFighterEffectObject.ChannelDamageReduction[channel])
-                    previousReductionList.Add(previousEffect);
-
-                previousReductionList.Add(newReduction);
-                opponentFighterEffectObject.ChannelDamageReduction[channel] = previousReductionList;
-            }
-            else
-            {
-                List<CardEffectObject> newReductionList = new List<CardEffectObject>();
-                newReductionList.Add(newReduction);
-                opponentFighterEffectObject.ChannelDamageReduction.Add(channel, newReductionList);
+                if (opponentFighterEffectObject.ChannelDamageReduction.TryGetValue(returnedChannel, out previousReductionList))
+                {
+                    previousReductionList.Add(newReduction);
+                    opponentFighterEffectObject.ChannelDamageReduction[returnedChannel] = previousReductionList;
+                }
+                else
+                {
+                    List<CardEffectObject> newReductionList = new List<CardEffectObject>();
+                    newReductionList.Add(newReduction);
+                    opponentFighterEffectObject.ChannelDamageReduction.Add(returnedChannel, newReductionList);
+                }
             }
         }
     }
@@ -612,11 +664,8 @@ public class EffectController : MonoBehaviour
 
         if (characterPriming == CharacterSelect.Player)
         {
-            if (playerFighterEffectObject.KeyWordDuration[effect.CardKeyWord] != null)
+            if (playerFighterEffectObject.KeyWordDuration.TryGetValue(effect.CardKeyWord, out currentKeyWordEffectList))
             {
-                foreach (CardEffectObject previousEffect in opponentFighterEffectObject.ChannelDamageReduction[channel])
-                    currentKeyWordEffectList.Add(previousEffect);
-
                 currentKeyWordEffectList.Add(newKeyWordEffect);
                 playerFighterEffectObject.KeyWordDuration[effect.CardKeyWord] = currentKeyWordEffectList;
             }
@@ -630,11 +679,8 @@ public class EffectController : MonoBehaviour
 
         if (characterPriming == CharacterSelect.Opponent)
         {
-            if (opponentFighterEffectObject.KeyWordDuration[effect.CardKeyWord] != null)
+            if (opponentFighterEffectObject.KeyWordDuration.TryGetValue(effect.CardKeyWord, out currentKeyWordEffectList))
             {
-                foreach (CardEffectObject previousEffect in opponentFighterEffectObject.ChannelDamageReduction[channel])
-                    currentKeyWordEffectList.Add(previousEffect);
-
                 currentKeyWordEffectList.Add(newKeyWordEffect);
                 opponentFighterEffectObject.KeyWordDuration[effect.CardKeyWord] = currentKeyWordEffectList;
             }
@@ -647,9 +693,17 @@ public class EffectController : MonoBehaviour
         }
     }
 
-    private void IncrementEffectsAtTurnEnd()
+    private List<Channels> GetChannelListFromFlags(Channels channelToInterpret)
     {
-        //Iterate through elements
-        //Clean all other effects out
+        List<Channels> channelList = new List<Channels>();
+
+        if (channelToInterpret.HasFlag(Channels.High))
+            channelList.Add(Channels.High);
+        if (channelToInterpret.HasFlag(Channels.Mid))
+            channelList.Add(Channels.Mid);
+        if (channelToInterpret.HasFlag(Channels.Low))
+            channelList.Add(Channels.Low);
+
+        return channelList;
     }
 }
