@@ -14,16 +14,16 @@ public class ShopCartSlotManager : BaseSlotManager<ShopCartItemController>
             return;
         }
 
-        foreach (BaseSlotController<ShopCartItemController> slotOption in slotList)
+/*        foreach (BaseSlotController<ShopCartItemController> slotOption in slotList)
             if (slotOption.CurrentSlottedItem == null)
             {
                 slotOption.CurrentSlottedItem = item;
                 item.ShopCartItemSlotController = slotOption;
 
                 return;
-            }
+            }*/
 
-        Debug.Log("No slots available in the hand to add a card to. This should not happen and should be stopped before this point.");
+        Debug.Log("No slots available to add item to");
     }
 
     public override void AddSlotToList(BaseSlotController<ShopCartItemController> newSlot)
@@ -36,12 +36,9 @@ public class ShopCartSlotManager : BaseSlotManager<ShopCartItemController>
         if (newData == null)
         {
             Debug.Log("Could not find appropriate data for slot.");
-            //Tell card to move to previous slot.
             return;
         }
 
-        Debug.Log(newData);
-        Debug.Log(newData.ShopCartItemSlotController); // does not know, null
         newData.ShopCartItemSlotController.SlotManager.RemoveItemFromCollection(newData);
         AddItemToCollection(newData, slot);
     }

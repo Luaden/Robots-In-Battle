@@ -7,27 +7,37 @@ public class ShopCartItemSlotController : BaseSlotController<ShopCartItemControl
 {
     public override void OnDrop(PointerEventData eventData)
     {
-
-        if (eventData.pointerDrag.GetComponent<ShopCartItemController>() == null)
+        // is this slotted item already occupied?
+        if(this.CurrentSlottedItem == null)
         {
-            if(eventData.pointerDrag.GetComponent<ShopItemUIController>() != null)
+            // is our dragged object not a part of ShopCart?
+            if (eventData.pointerDrag.GetComponent<ShopCartItemController>() == null)
             {
-                ShopCartItemController shopItem = eventData.pointerDrag.AddComponent<ShopCartItemController>();
-                shopItem.ShopCartItemSlotController = this;
+                // is it a ShopItem?
+                if (eventData.pointerDrag.GetComponent<ShopItemUIController>() != null)
+                {
+                    // add the ShopCart component to this object
+                    ShopCartItemController shopItem = eventData.pointerDrag.AddComponent<ShopCartItemController>();
+                    shopItem.ShopCartItemSlotController = this;
 
-                shopItem.GetComponent<ShopItemUIController>().enabled = false;
-                slotManager.HandleDrop(eventData, eventData.pointerDrag.GetComponent<ShopCartItemController>(), this);
+                    slotManager.HandleDrop(eventData, eventData.pointerDrag.GetComponent<ShopCartItemController>(), this);
+                    // turn the shop item component off
+                    shopItem.GetComponent<ShopItemUIController>().enabled = false;
+                }
                 return;
             }
-            return;
-        }
-        if (!eventData.pointerDrag.GetComponent<ShopCartItemController>().enabled)
-        {
-            ShopCartItemController shopItem = eventData.pointerDrag.GetComponent<ShopCartItemController>();
-            shopItem.enabled = true;
+            // does the dragged object have ShopCart but deactivated?
+            if (!eventData.pointerDrag.GetComponent<ShopCartItemController>().enabled)
+            {
+                ShopCartItemController shopCartItem = eventData.pointerDrag.GetComponent<ShopCartItemController>();
+                shopCartItem.enabled = true;
 
-            shopItem.GetComponent<ShopItemUIController>().enabled = false;
-            slotManager.HandleDrop(eventData, eventData.pointerDrag.GetComponent<ShopCartItemController>(), this);
+                slotManager.HandleDrop(eventData, eventData.pointerDrag.GetComponent<ShopCartItemController>(), this);
+
+                ShopItemUIController shopItem = shopCartItem.GetComponent<ShopItemUIController>();
+                shopItem.enabled = false;
+                return;
+            }
             return;
         }
 

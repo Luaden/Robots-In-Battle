@@ -31,12 +31,11 @@ public class ShopCartItemController : MonoBehaviour, IPointerDownHandler, IPoint
     public void OnDrag(PointerEventData eventData)
     {
         shopCartItemSlotController.HandleDrag(eventData);
-        Debug.Log("dragging");
-
     }
 
     public virtual void OnBeginDrag(PointerEventData eventData)
     {
+        shopCartItemSlotController.SlotManager.RemoveItemFromCollection(this);
         isPickedUp = true;
         draggableCanvasGroup.blocksRaycasts = false;
         draggableCanvasGroup.alpha = .6f;
@@ -51,24 +50,20 @@ public class ShopCartItemController : MonoBehaviour, IPointerDownHandler, IPoint
 
     public void OnPointerDown(PointerEventData eventData)
     {
-        Debug.Log("pressed");
         transform.SetParent(shopCartItemSlotController.SlotManager.MainCanvas.transform);
     }
 
     public void OnPointerEnter(PointerEventData eventData)
     {
-        Debug.Log("entered");
     }
 
     public void OnPointerExit(PointerEventData eventData)
     {
-        Debug.Log("exit");
     }
 
     public void OnPointerUp(PointerEventData eventData)
     {
         transform.SetParent(previousParentObject);
-        Debug.Log("released");
     }
 
     private void Awake()
@@ -77,7 +72,10 @@ public class ShopCartItemController : MonoBehaviour, IPointerDownHandler, IPoint
         draggableCanvasGroup = GetComponent<CanvasGroup>();
     }
 
-    private void Update() => MoveToSlot();
+    private void Update()
+    {
+        MoveToSlot();
+    }
 
     private void MoveToSlot()
     {

@@ -8,9 +8,9 @@ public class ShopItemUIController : MonoBehaviour, IPointerDownHandler, IPointer
                               IPointerEnterHandler, IPointerExitHandler, IBeginDragHandler,
                               IEndDragHandler, IDragHandler
 {
-    private bool isPickedUp = false;
-    private Transform previousParentObject;
-    private float travelSpeed = 450.0f;
+    public bool isPickedUp = false;
+    public Transform previousParentObject;
+    public float travelSpeed = 450.0f;
 
     private RectTransform draggableRectTransform;
     private CanvasGroup draggableCanvasGroup;
@@ -31,7 +31,6 @@ public class ShopItemUIController : MonoBehaviour, IPointerDownHandler, IPointer
     public void OnDrag(PointerEventData eventData)
     {
         shopItemUISlotController.HandleDrag(eventData);
-        Debug.Log("dragging");
         
     }
 
@@ -40,6 +39,7 @@ public class ShopItemUIController : MonoBehaviour, IPointerDownHandler, IPointer
         isPickedUp = true;
         draggableCanvasGroup.blocksRaycasts = false;
         draggableCanvasGroup.alpha = .6f;
+        shopItemUISlotController.SlotManager.RemoveItemFromCollection(this);
     }
 
     public virtual void OnEndDrag(PointerEventData eventData)
@@ -51,24 +51,20 @@ public class ShopItemUIController : MonoBehaviour, IPointerDownHandler, IPointer
 
     public void OnPointerDown(PointerEventData eventData)
     {
-        Debug.Log("pressed");
         transform.SetParent(shopItemUISlotController.SlotManager.MainCanvas.transform);
     }
 
     public void OnPointerEnter(PointerEventData eventData)
     {
-        Debug.Log("entered");
     }
 
     public void OnPointerExit(PointerEventData eventData)
     {
-        Debug.Log("exit");
     }
 
     public void OnPointerUp(PointerEventData eventData)
     {
         transform.SetParent(previousParentObject);
-        Debug.Log("released");
     }
 
     private void Awake()
@@ -77,7 +73,10 @@ public class ShopItemUIController : MonoBehaviour, IPointerDownHandler, IPointer
         draggableCanvasGroup = GetComponent<CanvasGroup>();
     }
 
-    private void Update() => MoveToSlot();
+    private void Update()
+    {
+        MoveToSlot();
+    }
 
     private void MoveToSlot()
     {
@@ -87,6 +86,7 @@ public class ShopItemUIController : MonoBehaviour, IPointerDownHandler, IPointer
         if (transform.parent == null)
             transform.SetParent(previousParentObject);
 
+        Debug.Log( this.name + "is moving to slot");
         draggableRectTransform.position =
             Vector3.MoveTowards(draggableRectTransform.position, 
             ShopItemUISlotController.gameObject.GetComponent<RectTransform>().position, 
