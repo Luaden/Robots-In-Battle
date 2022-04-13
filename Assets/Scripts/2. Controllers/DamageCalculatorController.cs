@@ -58,6 +58,7 @@ public class DamageCalculatorController
         if (offensiveCard == null)
         {
             //Need some kind of confused block/counter animation?
+            //Apply defensive effects anyway?
             return;
         }
 

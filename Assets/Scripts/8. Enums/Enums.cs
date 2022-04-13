@@ -60,7 +60,13 @@ public enum CardEffectTypes
     GainShields = 6,
     MultiplyShield = 7,
     KeyWordInitialize = 8,
-    KeyWordExecute = 9
+    KeyWordExecute = 9,
+    GainShieldWithFalloff = 10,
+    //EnergyDestroy = 11,
+    //EnergySiphon = 12,
+    //IncreaseChannelEnergyUse = 13,
+    //IncreaseComponentDamage = 14,
+
 }
 
 public enum CardKeyWord
