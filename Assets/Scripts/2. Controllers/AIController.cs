@@ -6,18 +6,24 @@ using UnityEngine;
 
 public class AIController : MonoBehaviour
 {
-    [Tooltip("A value range between -1 and 1 that represents the AI preference for either offense or defense. " +
-        "A value of -1 means the AI will always use defensive cards unless none are available, whereas a value of 1 means the AI will always use attack cards " +
+    [Tooltip("A value range between 1 and 10 that represents the AI preference for either offense or defense. " +
+        "A value of 1 means the AI will always use defensive cards unless none are available, whereas a value of 10 means the AI will always use attack cards " +
         "unless there are none are available.")]
-    [Range(-1, 1)][SerializeField] private float aggressiveness;
-    [Tooltip("A value range between -1 and 1 that represents the AI preference for raw damage or targeting components. " +
-        "A value of -1 means the AI will primarily target weaker components to break them, whereas a value of 1 means the AI will always prioritize higher " +
+    [Range(1, 10)] [SerializeField] private float aggressiveness;
+    [Tooltip("A value range between 1 and 10 that represents the AI preference for raw damage or targeting components. " +
+        "A value of -10 means the AI will primarily target weaker components to break them, whereas a value of 10 means the AI will always prioritize higher " +
         "base damage for attacks.")]
-    [Range(-1, 1)][SerializeField] private float precision;
-    [Tooltip("A value range between -1 and 1 that represents the AI ability to choose the best option given its other " +
-        "behavioral traits. A value of -1 means that the AI will always randomly pick actions, whereas a value of 1 means that the AI will always choose the " +
-        "best choice that fits its other behavioral traits.")]
-    [Range(-1, 1)][SerializeField] private float intelligence;
+    [Range(1, 10)] [SerializeField] private float precision;
+    [Tooltip("A value range between 1 and 10 that represents the AI ability to choose the best option given its other " +
+        "behavioral traits and battle context. A value of 1 means that the AI will always pick the best action from other behavioral guidances, but will ignore " +
+        "battlefield context such as buffs, debuffs, or shields, whereas a value of 10 means that the AI will value cards that benefit from buffs higher, and  " +
+        "cards that are mitigated lower.")]
+    [Range(1, 10)] [SerializeField] private float battlefieldIntelligence;
+    [Tooltip("A value range between 1 and 10 that represents the AI ability to recognize deck composition and play cards " +
+        "that will benefit from bonuses when those bonuses are available. I.e. KeyWordInit and KeyWordExec, as well as CardCategory buffs such as Punch damage" +
+        "damage buffs when punches are available. A value of 1 means that these contexts are completely ignored while a value of 10 means that cards will be " +
+        "not be played if there is a potential boost available.")]
+    [Range(1, 10)] [SerializeField] private float deckIntelligence;
 
     private List<CardDataObject> opponentHand;
     private CardChannelPairObject attackA;
@@ -119,5 +125,25 @@ public class AIController : MonoBehaviour
         Channels randomChannel = allChannels[random.Next(1, allChannels.Length)];
 
         return randomChannel;
+    }
+
+    private void RankChoicesWithAggressiveness()
+    {
+
+    }
+
+    private void RankChoicesWithPrecision()
+    {
+
+    }
+
+    private void RankChoicesWithIntelligence()
+    {
+
+    }
+
+    private void GetBestCardChoice()
+    {
+
     }
 }
