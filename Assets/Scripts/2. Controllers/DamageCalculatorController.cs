@@ -16,6 +16,9 @@ public class DamageCalculatorController
         playerAttackPlan = new AttackPlanObject(newPlayerAttackPlan.cardChannelPairA, newPlayerAttackPlan.cardChannelPairB, CharacterSelect.Player, CharacterSelect.Opponent);
         opponentAttackPlan = new AttackPlanObject(newOpponentAttackPlan.cardChannelPairA, newOpponentAttackPlan.cardChannelPairB, CharacterSelect.Opponent, CharacterSelect.Player);
 
+        if (effectController == null)
+            effectController = new EffectController();
+
         if (opponentAttackPlan.cardChannelPairB.CardData != null && opponentAttackPlan.cardChannelPairB.CardData.CardCategory.HasFlag(CardCategory.Defensive))
             CalculateDefensiveInteraction(playerAttackPlan.cardChannelPairA, CharacterSelect.Player, opponentAttackPlan.cardChannelPairB);
 
@@ -48,11 +51,6 @@ public class DamageCalculatorController
 
         ClearAllCards();
         //End turn here
-    }
-
-    private void Start()
-    {
-        effectController = new EffectController();
     }
 
     private void CalculateDefensiveInteraction(CardChannelPairObject offensiveCard, CharacterSelect offensiveCharacter, CardChannelPairObject defensiveCard)

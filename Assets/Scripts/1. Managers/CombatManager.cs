@@ -38,6 +38,9 @@ public class CombatManager : MonoBehaviour
     public int MechEnergyGain { get => mechEnergyGain; }
     public float CounterDamageMultiplier { get => counterDamageMultiplier; }
 
+    public delegate void onDestroyScene();
+    public static event onDestroyScene OnDestroyScene;
+
     public void DealDamageToMech(CharacterSelect character, int damage)
     {
         if (character == CharacterSelect.Player)
@@ -102,6 +105,7 @@ public class CombatManager : MonoBehaviour
 
     private void OnDestroy()
     {
+        OnDestroyScene?.Invoke();
         instance = null;
         CardPlayManager.OnCombatComplete -= StartNewTurn;
     }
