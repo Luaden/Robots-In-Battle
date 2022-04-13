@@ -10,7 +10,7 @@ public class ShopItemSlotManager : BaseSlotManager<ShopItemUIController>
         if (slot != null && slot.CurrentSlottedItem == null)
         {
             slot.CurrentSlottedItem = item;
-            item.ShopItemSlotController = slot;
+            item.ShopItemUISlotController = slot;
             
             return;
         }
@@ -19,7 +19,7 @@ public class ShopItemSlotManager : BaseSlotManager<ShopItemUIController>
             if (slotOption.CurrentSlottedItem == null)
             {
                 slotOption.CurrentSlottedItem = item;
-                item.ShopItemSlotController = slotOption;
+                item.ShopItemUISlotController = slotOption;
 
                 return;
             }
@@ -41,7 +41,7 @@ public class ShopItemSlotManager : BaseSlotManager<ShopItemUIController>
             return;
         }
 
-        newData.ShopItemSlotController.SlotManager.RemoveItemFromCollection(newData);
+        newData.ShopItemUISlotController.SlotManager.RemoveItemFromCollection(newData);
         AddItemToCollection(newData, slot);
     }
 

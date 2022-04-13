@@ -15,10 +15,10 @@ public class ShopItemUIController : MonoBehaviour, IPointerDownHandler, IPointer
     private RectTransform draggableRectTransform;
     private CanvasGroup draggableCanvasGroup;
 
-    private BaseSlotController<ShopItemUIController> shopItemSlotController;
-    public BaseSlotController<ShopItemUIController> ShopItemSlotController 
+    private BaseSlotController<ShopItemUIController> shopItemUISlotController;
+    public BaseSlotController<ShopItemUIController> ShopItemUISlotController 
     { 
-        get => shopItemSlotController; 
+        get => shopItemUISlotController; 
         set => UpdateItemSlot(value); 
     }
     public Transform PreviousParentObject 
@@ -30,7 +30,7 @@ public class ShopItemUIController : MonoBehaviour, IPointerDownHandler, IPointer
 
     public void OnDrag(PointerEventData eventData)
     {
-        shopItemSlotController.HandleDrag(eventData);
+        shopItemUISlotController.HandleDrag(eventData);
         Debug.Log("dragging");
         
     }
@@ -52,7 +52,7 @@ public class ShopItemUIController : MonoBehaviour, IPointerDownHandler, IPointer
     public void OnPointerDown(PointerEventData eventData)
     {
         Debug.Log("pressed");
-        transform.SetParent(shopItemSlotController.SlotManager.MainCanvas.transform);
+        transform.SetParent(shopItemUISlotController.SlotManager.MainCanvas.transform);
     }
 
     public void OnPointerEnter(PointerEventData eventData)
@@ -81,7 +81,7 @@ public class ShopItemUIController : MonoBehaviour, IPointerDownHandler, IPointer
 
     private void MoveToSlot()
     {
-        if (isPickedUp || shopItemSlotController == null)
+        if (isPickedUp || shopItemUISlotController == null)
             return;
 
         if (transform.parent == null)
@@ -89,16 +89,13 @@ public class ShopItemUIController : MonoBehaviour, IPointerDownHandler, IPointer
 
         draggableRectTransform.position =
             Vector3.MoveTowards(draggableRectTransform.position, 
-            ShopItemSlotController.gameObject.GetComponent<RectTransform>().position, 
+            ShopItemUISlotController.gameObject.GetComponent<RectTransform>().position, 
             travelSpeed * Time.deltaTime);
     }
     private void UpdateItemSlot(BaseSlotController<ShopItemUIController> newSlot)
     {
-        shopItemSlotController = newSlot;
+        shopItemUISlotController = newSlot;
         transform.SetParent(newSlot.transform);
         previousParentObject = newSlot.transform;
     }
-
-
-
 }

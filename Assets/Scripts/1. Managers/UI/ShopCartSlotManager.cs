@@ -40,6 +40,8 @@ public class ShopCartSlotManager : BaseSlotManager<ShopCartItemController>
             return;
         }
 
+        Debug.Log(newData);
+        Debug.Log(newData.ShopCartItemSlotController); // does not know, null
         newData.ShopCartItemSlotController.SlotManager.RemoveItemFromCollection(newData);
         AddItemToCollection(newData, slot);
     }

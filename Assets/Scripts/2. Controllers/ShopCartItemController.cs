@@ -7,9 +7,6 @@ public class ShopCartItemController : MonoBehaviour, IPointerDownHandler, IPoint
                               IPointerEnterHandler, IPointerExitHandler, IBeginDragHandler,
                               IEndDragHandler, IDragHandler
 {
-    // List of items <IShoppable>
-    // Shopping Cart
-    // creates IShoppableSlots
 
     private bool isPickedUp = false;
     private Transform previousParentObject;

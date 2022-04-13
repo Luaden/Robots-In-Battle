@@ -6,8 +6,8 @@ using UnityEngine.UI;
 public class ShopManager : MonoBehaviour
 {
     // testing
-    private ShopItemSlotManager shopItemSlotManager;
-    private ShopCartSlotManager shopCartSlotManager;
+    [SerializeField] protected ShopItemSlotManager shopItemSlotManager;
+    [SerializeField] protected ShopCartSlotManager shopCartSlotManager;
     [SerializeField] private ShopItemUIController shopItemUIController;
 
     private ShopCartController shoppingCartController;
@@ -22,17 +22,23 @@ public class ShopManager : MonoBehaviour
         // testing
         // do some random calculations of what items to display before adding items to the shop
         for (int i = 0; i < 12; i++)
-            AddItemsToShop();
+            AddItemToShop();
+        AddItemsToCart();
 
         shopItemUIController.gameObject.SetActive(false);
 
     }
 
-    public void AddItemsToShop() // takes in SOItemDataObject
+    public void AddItemToShop() // takes in SOItemDataObject
     {
         GameObject shopItemgameObject = Instantiate(shopItemUIController.gameObject, transform);
         ShopItemUIController shopItemUI = shopItemgameObject.GetComponent<ShopItemUIController>();
 
         shopItemSlotManager.AddItemToCollection(shopItemUI, null);
+    }
+
+    public void AddItemsToCart()
+    {
+
     }
 }
