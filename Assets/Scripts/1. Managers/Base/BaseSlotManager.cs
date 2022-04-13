@@ -8,6 +8,7 @@ public abstract class BaseSlotManager<T> : MonoBehaviour
     [SerializeField] protected Canvas mainCanvas;
     [SerializeField] protected List<BaseSlotController<T>> slotList;
 
+    public List<BaseSlotController<T>> SlotList { get => slotList; }
     public Canvas MainCanvas { get => mainCanvas; }
 
     public virtual void HandleDrag(PointerEventData eventData)
