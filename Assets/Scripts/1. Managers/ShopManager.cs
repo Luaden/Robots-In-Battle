@@ -5,45 +5,31 @@ using UnityEngine.UI;
 
 public class ShopManager : MonoBehaviour
 {
-    [SerializeField] protected ShopItemSlotManager shopItemSlotManager;
-    [SerializeField] protected ShopCartSlotManager shopCartSlotManager;
 
     [SerializeField] protected GameObject inventory;
     [SerializeField] protected GameObject shopWindow;
     [SerializeField] protected GameObject shopCart;
 
-    private ShopCartController shoppingCartController;
-    public ShopCartController ShoppingCartController { get => shoppingCartController; }
+    [SerializeField] protected ShopController shopController;
 
-    // testing
-    private int objectId = 0;
-    [SerializeField] private ShopItemUIController shopItemUIController;
+    [SerializeField] protected ShopCartController shopCartController;
+    public ShopCartController ShopCartController { get => shopCartController; }
+
+    [SerializeField] protected List<SOItemDataObject> itemsToDisplay;
+
 
 
     private void Awake()
     {
-        shopItemSlotManager = FindObjectOfType<ShopItemSlotManager>(true);
-        shopCartSlotManager = FindObjectOfType<ShopCartSlotManager>(true);
-
-        // testing
-        // do some random calculations of what items to display before adding items to the shop
-        for (int i = 0; i < 12; i++)
-        {
-            AddItemToShop();
-            objectId++;
-        }
-
-        shopItemUIController.gameObject.SetActive(false);
-
+        shopController = GetComponent<ShopController>();
+        shopCartController = FindObjectOfType<ShopCartController>();
+        // testing purposes
+        CreateShop();
     }
 
-    public void AddItemToShop() // takes in SOItemDataObject
+    public void CreateShop()
     {
-        GameObject shopItemgameObject = Instantiate(shopItemUIController.gameObject, transform);
-        shopItemgameObject.name = "Item" + objectId; 
-        ShopItemUIController shopItemUI = shopItemgameObject.GetComponent<ShopItemUIController>();
-
-        shopItemSlotManager.AddItemToCollection(shopItemUI, null);
+        shopController.CreateShopWindow(itemsToDisplay, shopWindow.transform);
     }
 
     public void OpenShop()
@@ -61,13 +47,12 @@ public class ShopManager : MonoBehaviour
     
     public void UndoShopping()
     {
-
         List<ShopCartItemController> shopCartItemList = new List<ShopCartItemController>();
-        for(int i = 0; i < shopCartSlotManager.SlotList.Count; i++)
+        ShopCartSlotManager shopCartSlotManager = DowntimeManager.Instance.ShopCartSlotManager;
+        for (int i = 0; i < shopCartSlotManager.SlotList.Count; i++)
         {
             if (shopCartSlotManager.SlotList[i].CurrentSlottedItem != null)
                 shopCartItemList.Add(shopCartSlotManager.SlotList[i].CurrentSlottedItem);
-
         }
 
         shopCart.GetComponent<ShopCartController>().UndoShopping(shopCartItemList.ToArray());

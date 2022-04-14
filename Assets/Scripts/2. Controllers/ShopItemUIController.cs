@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
@@ -8,12 +9,22 @@ public class ShopItemUIController : MonoBehaviour, IPointerDownHandler, IPointer
                               IPointerEnterHandler, IPointerExitHandler, IBeginDragHandler,
                               IEndDragHandler, IDragHandler
 {
+    [SerializeField] protected TMP_Text itemNameText;
+    [SerializeField] protected TMP_Text itemDescriptionText;
+    [SerializeField] protected Image itemImage;
+    [SerializeField] protected TMP_Text timeCostText;
+    [SerializeField] protected TMP_Text currencyCost;
+
+
     public bool isPickedUp = false;
     public Transform previousParentObject;
     public float travelSpeed = 450.0f;
 
     private RectTransform draggableRectTransform;
     private CanvasGroup draggableCanvasGroup;
+
+    private ShopItemUIObject shopItemUIObject;
+    public ShopItemUIObject ShopItemUIObject { get => shopItemUIObject; }
 
     private BaseSlotController<ShopItemUIController> shopItemUISlotController;
     public BaseSlotController<ShopItemUIController> ShopItemUISlotController 
@@ -27,6 +38,17 @@ public class ShopItemUIController : MonoBehaviour, IPointerDownHandler, IPointer
         set => previousParentObject = value; 
     }
 
+    public void InitShopItemUI(ShopItemUIObject shopItemUIObject)
+    {
+        itemNameText.text = shopItemUIObject.ItemName;
+        itemDescriptionText.text = shopItemUIObject.ItemDescription;
+        itemImage.sprite = shopItemUIObject.ItemImage;
+        timeCostText.text = shopItemUIObject.TimeCost.ToString();
+        currencyCost.text = shopItemUIObject.CurrencyCost.ToString();
+
+        this.shopItemUIObject = shopItemUIObject;
+        shopItemUIObject.ShopItemUIController = this.gameObject;
+    }
 
     public void OnDrag(PointerEventData eventData)
     {
@@ -86,7 +108,6 @@ public class ShopItemUIController : MonoBehaviour, IPointerDownHandler, IPointer
         if (transform.parent == null)
             transform.SetParent(previousParentObject);
 
-        Debug.Log( this.name + "is moving to slot");
         draggableRectTransform.position =
             Vector3.MoveTowards(draggableRectTransform.position, 
             ShopItemUISlotController.gameObject.GetComponent<RectTransform>().position, 

@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -5,12 +6,15 @@ using UnityEngine.EventSystems;
 
 public class ShopCartSlotManager : BaseSlotManager<ShopCartItemController>
 {
+    public event Action<BaseSlotController<ShopCartItemController>> onItemAdded;
+    public event Action<BaseSlotController<ShopCartItemController>> onItemRemoved;
     public override void AddItemToCollection(ShopCartItemController item, BaseSlotController<ShopCartItemController> slot)
     {
         if (slot != null && slot.CurrentSlottedItem == null)
         {
             slot.CurrentSlottedItem = item;
             item.ShopCartItemSlotController = slot;
+            onItemAdded(slot);
             return;
         }
 
@@ -38,7 +42,6 @@ public class ShopCartSlotManager : BaseSlotManager<ShopCartItemController>
             Debug.Log("Could not find appropriate data for slot.");
             return;
         }
-
         newData.ShopCartItemSlotController.SlotManager.RemoveItemFromCollection(newData);
         AddItemToCollection(newData, slot);
     }
@@ -47,6 +50,10 @@ public class ShopCartSlotManager : BaseSlotManager<ShopCartItemController>
     {
         foreach (ShopCartItemSlotController slot in slotList)
             if (slot.CurrentSlottedItem == item)
+            {
+                onItemRemoved(slot);
                 slot.CurrentSlottedItem = null;
+            }
     }
+   
 }

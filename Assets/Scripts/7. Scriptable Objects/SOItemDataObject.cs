@@ -90,6 +90,17 @@ public class SOItemDataObject : ScriptableObject
     public int EnergyGainModifier { get => energyGainModifier; }
     #endregion
 
+    #region Item Attribute Properties
+    public ItemType ItemType { get => itemType; }
+    public string ItemName { get => itemName; }
+    public string ItemDescription { get => itemDescription; }
+    public Sprite ItemImage { get => itemImage; }
+    public float TimeCost { get => timeCost; }
+    public float CurrencyCoast { get => currencyCost; }
+    public int ChanceToSpawn { get => chanceToSpawn; }
+
+    #endregion
+
     #region Effects
     public List<SOCardEffectObject> CardEffects { get => cardEffects; }
     #endregion
