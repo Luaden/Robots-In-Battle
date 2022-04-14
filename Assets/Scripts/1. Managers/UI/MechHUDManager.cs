@@ -6,7 +6,6 @@ public class MechHUDManager : MonoBehaviour
 {
     [SerializeField] private HUDBarController playerHudBarController;
     [SerializeField] private HUDBarController opponentHudBarController;
-    //private HUDBuffController hudBuffController;
 
     public void UpdatePlayerHP(int playerHP)
     {

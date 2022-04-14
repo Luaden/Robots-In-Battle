@@ -73,8 +73,8 @@ public class DamageCalculatorController
                 effectController.EnableEffects(defensiveCard, offensiveCharacter == CharacterSelect.Player ? CharacterSelect.Opponent : CharacterSelect.Player);
 
                 Debug.Log(offensiveCharacter + " will now apply offensive effects.");
-                //Change this to CalculateMechDamage if effects don't apply to guarded characters.
                 effectController.EnableEffects(offensiveCard, offensiveCharacter == CharacterSelect.Player ? CharacterSelect.Opponent : CharacterSelect.Player);
+                CalculateMechDamage(offensiveCard, offensiveCharacter == CharacterSelect.Player ? CharacterSelect.Opponent : CharacterSelect.Player);
             }
 
             if (defensiveCard.CardData.CardCategory.HasFlag(CardCategory.Counter))
@@ -82,7 +82,7 @@ public class DamageCalculatorController
                 //Attack animation
                 //Counter animation
 
-                Debug.Log(offensiveCharacter + " was countered. Their attack will be returned at 150%.");
+                Debug.Log(offensiveCharacter + " was countered. Their attack will be returned at " + CombatManager.instance.CounterDamageMultiplier * 100 + "%.");
                 effectController.EnableEffects(defensiveCard, offensiveCharacter == CharacterSelect.Player ? CharacterSelect.Opponent : CharacterSelect.Player);
                 CalculateMechDamage(offensiveCard, offensiveCharacter, true);
             }
