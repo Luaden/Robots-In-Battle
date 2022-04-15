@@ -4,10 +4,12 @@ using UnityEngine;
 
 public class BuffUIManager : MonoBehaviour
 {
-    private BuffUIController playerChannelBuffs;
-    private BuffUIController playerBarBuffs;
-    private BuffUIController opponentChannelBuffs;
-    private BuffUIController opponentBarBuffs;
+    private GlobalBuffUIController playerChannelBuffs;
+    private GlobalBuffUIController playerShields;
+    private GlobalBuffUIController playerBarBuffs;
+    private GlobalBuffUIController opponentChannelBuffs;
+    private GlobalBuffUIController opponentShields;
+    private GlobalBuffUIController opponentBarBuffs;
 
     public void UpdatePlayerBarBuffs()
     {
