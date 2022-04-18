@@ -10,10 +10,17 @@ public class ShopManager : MonoBehaviour
     [SerializeField] protected GameObject shopWindow;
     [SerializeField] protected GameObject shopCart;
 
+    private ShopCartSlotManager shopCartSlotManager;
+    private ShopItemSlotManager shopItemSlotManager;
+    public ShopItemSlotManager ShopItemSlotManager { get => shopItemSlotManager; }
+    public ShopCartSlotManager ShopCartSlotManager { get => shopCartSlotManager; }
+    
+
     [SerializeField] protected ShopController shopController;
 
-    [SerializeField] protected ShopCartController shopCartController;
+    private ShopCartController shopCartController;
     public ShopCartController ShopCartController { get => shopCartController; }
+    
 
     [SerializeField] protected List<SOItemDataObject> itemsToDisplay;
 
@@ -22,13 +29,18 @@ public class ShopManager : MonoBehaviour
     private void Awake()
     {
         shopController = GetComponent<ShopController>();
-        shopCartController = FindObjectOfType<ShopCartController>();
+        shopCartController = GetComponentInChildren<ShopCartController>(true);
+        shopItemSlotManager = GetComponentInChildren<ShopItemSlotManager>(true);
+        shopCartSlotManager = GetComponentInChildren<ShopCartSlotManager>(true);
+
         // testing purposes
         CreateShop();
     }
 
     public void CreateShop()
     {
+        shopWindow.SetActive(true);
+        shopCart.SetActive(true);
         shopController.CreateShopWindow(itemsToDisplay, shopWindow.transform);
     }
 
@@ -48,11 +60,10 @@ public class ShopManager : MonoBehaviour
     public void UndoShopping()
     {
         List<ShopCartItemController> shopCartItemList = new List<ShopCartItemController>();
-        ShopCartSlotManager shopCartSlotManager = DowntimeManager.Instance.ShopCartSlotManager;
-        for (int i = 0; i < shopCartSlotManager.SlotList.Count; i++)
+        for (int i = 0; i < ShopCartSlotManager.SlotList.Count; i++)
         {
-            if (shopCartSlotManager.SlotList[i].CurrentSlottedItem != null)
-                shopCartItemList.Add(shopCartSlotManager.SlotList[i].CurrentSlottedItem);
+            if (ShopCartSlotManager.SlotList[i].CurrentSlottedItem != null)
+                shopCartItemList.Add(ShopCartSlotManager.SlotList[i].CurrentSlottedItem);
         }
 
         shopCart.GetComponent<ShopCartController>().UndoShopping(shopCartItemList.ToArray());

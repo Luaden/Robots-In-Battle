@@ -15,8 +15,8 @@ public class ShopCartController : MonoBehaviour
 
     private void Awake()
     {
-        DowntimeManager.Instance.ShopCartSlotManager.onItemAdded += UpdateAddedItemText;
-        DowntimeManager.Instance.ShopCartSlotManager.onItemRemoved += UpdateRemovedItemText;
+        DowntimeManager.Instance.ShopManager.ShopCartSlotManager.OnItemAdded += UpdateAddedItemText;
+        DowntimeManager.Instance.ShopManager.ShopCartSlotManager.onItemRemoved += UpdateRemovedItemText;
     }
     public void PurchaseItem() 
     {
