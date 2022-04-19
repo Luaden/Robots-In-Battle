@@ -5,8 +5,8 @@ using UnityEngine.UI;
 
 public class HUDBarController : MonoBehaviour
 {
-    [SerializeField] protected HUDBar currentHealthBar;
-    [SerializeField] protected HUDBar currentEnergyBar;
+    [SerializeField] protected HUDBarObject currentHealthBar;
+    [SerializeField] protected HUDBarObject currentEnergyBar;
 
     public void SetHealthBarMax(int maxHealth) { currentHealthBar.BarMax = maxHealth; }
     public void SetEnergyBarMax(int maxEnergy) { currentEnergyBar.BarMax = maxEnergy; }

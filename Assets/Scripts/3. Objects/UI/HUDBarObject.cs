@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class HUDBar : BaseUIElement<int>
+public class HUDBarObject : BaseUIElement<int>
 {
     private Image currentBar;
     private int barMax;
