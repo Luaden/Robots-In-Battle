@@ -50,7 +50,6 @@ public class DamageCalculatorController
         }
 
         ClearAllCards();
-        //End turn here
     }
 
     private void CalculateDefensiveInteraction(CardChannelPairObject offensiveCard, CharacterSelect offensiveCharacter, CardChannelPairObject defensiveCard)
@@ -72,7 +71,6 @@ public class DamageCalculatorController
                 Debug.Log(offensiveCharacter + " was blocked, but this CardType currently does nothing on its own. Defensive effects will now be applied.");
                 effectController.EnableEffects(defensiveCard, offensiveCharacter == CharacterSelect.Player ? CharacterSelect.Opponent : CharacterSelect.Player);
 
-                Debug.Log(offensiveCharacter + " will now apply offensive effects.");
                 effectController.EnableEffects(offensiveCard, offensiveCharacter == CharacterSelect.Player ? CharacterSelect.Opponent : CharacterSelect.Player);
                 CalculateMechDamage(offensiveCard, offensiveCharacter == CharacterSelect.Player ? CharacterSelect.Opponent : CharacterSelect.Player);
             }
@@ -123,11 +121,6 @@ public class DamageCalculatorController
 
     private void CalculateMechDamage(CardChannelPairObject originAttack, CharacterSelect destinationMech, bool counterDamage = false)
     {
-        Debug.Log(destinationMech + " was attacked!");
-
-        //We need to check and account for multiple attacks as well as KeyWordExecutes here.
-
-        //This is where we would pull our additional buffs/stats from
         int repeatPlay = 1;
 
         if(originAttack.CardData.CardEffects != null)

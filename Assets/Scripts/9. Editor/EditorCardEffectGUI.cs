@@ -7,8 +7,8 @@ public class EditorCardEffectGUI : Editor
 
     public override void OnInspectorGUI()
     {
-        SerializedProperty EffectTypeProperty = serializedObject.FindProperty("cardEffect");
-        EditorGUILayout.PropertyField(serializedObject.FindProperty("cardEffect"));
+        SerializedProperty EffectTypeProperty = serializedObject.FindProperty("effectType");
+        EditorGUILayout.PropertyField(serializedObject.FindProperty("effectType"));
 
         EditorGUILayout.Space();
 

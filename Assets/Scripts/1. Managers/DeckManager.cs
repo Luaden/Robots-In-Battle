@@ -17,8 +17,6 @@ public class DeckManager : MonoBehaviour
     {
         opponentDeck.InitDeckList(opponentCardSOs);
         RandomizeCardDeck(opponentDeck);
-
-        Debug.Log("Opponent deck size: " + opponentDeck.CardDeck.Count);
     }
 
     public void DrawPlayerCard(int amountToDraw = 1)
