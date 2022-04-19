@@ -98,9 +98,8 @@ public class EffectController
                 }
             }
         }
-            
 
-        //Create or update popup or icon for buff
+        UpdateFighterBuffs(destinationMech);
     }
 
     public int GetMechDamageWithModifiers(CardChannelPairObject attack, CharacterSelect defensiveCharacter)
@@ -1101,5 +1100,30 @@ public class EffectController
             channelList.Add(Channels.Low);
 
         return channelList;
+    }
+
+    private void UpdateFighterBuffs(CharacterSelect selectedCharacter)
+    {
+        if(selectedCharacter == CharacterSelect.Player)
+        {
+            //This currently doesn't account for decreases in channel damage.
+            CombatManager.instance.BuffUIManager.UpdateChannelDamageBuffs(selectedCharacter, playerFighterEffectObject.ChannelDamageBonus);
+            CombatManager.instance.BuffUIManager.UpdateChannelElementStacks(selectedCharacter, playerFighterEffectObject.IceAcidStacks);
+            CombatManager.instance.BuffUIManager.UpdateChannelShields(selectedCharacter, playerFighterEffectObject.ChannelShields);
+            CombatManager.instance.BuffUIManager.UpdateChannelShieldsFalloff(selectedCharacter, playerFighterEffectObject.ChannelShieldsFalloff);
+            CombatManager.instance.BuffUIManager.UpdateGlobalElementStacks(selectedCharacter, playerFighterEffectObject.FirePlasmaStacks);
+            CombatManager.instance.BuffUIManager.UpdateGlobalCategoryDamageBuffs(selectedCharacter, playerFighterEffectObject.CardCategoryDamageBonus);
+            CombatManager.instance.BuffUIManager.UpdateGlobalKeyWordDamageBuffs(selectedCharacter, playerFighterEffectObject.KeyWordDuration);
+        }
+        else
+        {
+            CombatManager.instance.BuffUIManager.UpdateChannelDamageBuffs(selectedCharacter, opponentFighterEffectObject.ChannelDamageBonus);
+            CombatManager.instance.BuffUIManager.UpdateChannelElementStacks(selectedCharacter, opponentFighterEffectObject.IceAcidStacks);
+            CombatManager.instance.BuffUIManager.UpdateChannelShields(selectedCharacter, opponentFighterEffectObject.ChannelShields);
+            CombatManager.instance.BuffUIManager.UpdateChannelShieldsFalloff(selectedCharacter, opponentFighterEffectObject.ChannelShieldsFalloff);
+            CombatManager.instance.BuffUIManager.UpdateGlobalElementStacks(selectedCharacter, opponentFighterEffectObject.FirePlasmaStacks);
+            CombatManager.instance.BuffUIManager.UpdateGlobalCategoryDamageBuffs(selectedCharacter, opponentFighterEffectObject.CardCategoryDamageBonus);
+            CombatManager.instance.BuffUIManager.UpdateGlobalKeyWordDamageBuffs(selectedCharacter, opponentFighterEffectObject.KeyWordDuration);
+        }
     }
 }

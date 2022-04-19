@@ -19,6 +19,7 @@ public class CombatManager : MonoBehaviour
     private CardUIManager cardUIManager;
     private MechHUDManager mechHUDManager;
     private PopupUIManager popupUIManager;
+    private BuffUIManager buffUIManager;
 
     private FighterDataObject playerFighter;
     private FighterDataObject opponentFighter;
@@ -34,6 +35,7 @@ public class CombatManager : MonoBehaviour
     public CardUIManager CardUIManager { get => cardUIManager; }
     public MechHUDManager MechHUDManager { get => mechHUDManager; }
     public PopupUIManager PopupUIManager { get => popupUIManager; }
+    public BuffUIManager BuffUIManager { get => buffUIManager; }
 
     public int MechEnergyGain { get => mechEnergyGain; }
     public float CounterDamageMultiplier { get => counterDamageMultiplier; }
@@ -96,6 +98,7 @@ public class CombatManager : MonoBehaviour
         cardUIManager = FindObjectOfType<CardUIManager>(true);
         mechHUDManager = FindObjectOfType<MechHUDManager>(true);
         popupUIManager = FindObjectOfType<PopupUIManager>(true);
+        buffUIManager = FindObjectOfType<BuffUIManager>(true);
     }
 
     private void Start()

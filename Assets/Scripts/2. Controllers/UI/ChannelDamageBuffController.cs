@@ -19,7 +19,7 @@ public class ChannelDamageBuffController : BaseUIElement<Dictionary<Channels, Li
 
         List<CardEffectObject> checkValue = new List<CardEffectObject>();
         int damageModifier = 0;
-        int damageModifierTurnCount = 0;
+        //int damageModifierTurnCount = 0;
 
         if (primaryData.TryGetValue(Channels.High, out checkValue))
         {
