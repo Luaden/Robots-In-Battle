@@ -20,6 +20,10 @@ public class EditorCardEffectGUI : Editor
             case (int)CardEffectTypes.GainShields:
                 DisplayMagnitudeAttribute();
                 break;
+            case (int)CardEffectTypes.GainShieldWithFalloff:
+                DisplayMagnitudeAttribute();
+                DisplayFalloff();
+                break;
             case (int)CardEffectTypes.MultiplyShield:
                 DisplayMagnitudeAttribute();
                 break;
@@ -69,5 +73,10 @@ public class EditorCardEffectGUI : Editor
     private void DisplayKeyWordAttribute()
     {
         EditorGUILayout.PropertyField(serializedObject.FindProperty("cardKeyWord"));
+    }
+
+    private void DisplayFalloff()
+    {
+        EditorGUILayout.PropertyField(serializedObject.FindProperty("fallOffPerTurn"));
     }
 }

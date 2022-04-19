@@ -20,6 +20,7 @@ public class EffectController
                 repeatPlay = effect.EffectMagnitude;
 
         for (int i = 0; i < repeatPlay; i++)
+        {
             foreach (SOCardEffectObject effect in cardChannelPair.CardData.CardEffects)
             {
                 switch (effect.EffectType)
@@ -28,23 +29,24 @@ public class EffectController
                         break;
 
                     case CardEffectTypes.AdditionalElementStacks:
-                        switch(cardChannelPair.CardData.CardCategory)
+                        //Adding bonus element stacks from card effects
+                        switch (cardChannelPair.CardData.CardCategory)
                         {
                             case CardCategory.Punch:
-                                AddElementalStacks(effect, MechComponent.Arms, destinationMech);
+                                AddElementalStacks(effect, cardChannelPair.CardChannel, MechComponent.Arms, destinationMech);
                                 break;
                             case CardCategory.Kick:
-                                AddElementalStacks(effect, MechComponent.Legs, destinationMech);
+                                AddElementalStacks(effect, cardChannelPair.CardChannel, MechComponent.Legs, destinationMech);
                                 break;
                             case CardCategory.Special:
-                                AddElementalStacks(effect, MechComponent.Head, destinationMech);
+                                AddElementalStacks(effect, cardChannelPair.CardChannel, MechComponent.Head, destinationMech);
                                 break;
                         }
                         break;
 
                     case CardEffectTypes.GainShields:
                         GainShields(effect, cardChannelPair.CardData.AffectedChannels == AffectedChannels.SelectedChannel ?
-                            cardChannelPair.CardChannel : cardChannelPair.CardData.PossibleChannels, 
+                            cardChannelPair.CardChannel : cardChannelPair.CardData.PossibleChannels,
                             destinationMech == CharacterSelect.Opponent ? CharacterSelect.Player : CharacterSelect.Opponent);
                         break;
 
@@ -80,7 +82,23 @@ public class EffectController
                     case CardEffectTypes.KeyWordExecute:
                         break;
                 }
+
+                //Adding stand alone element stacks from components.
+                switch (cardChannelPair.CardData.CardCategory)
+                {
+                    case CardCategory.Punch:
+                        AddComponentElementStacks(cardChannelPair, MechComponent.Arms, destinationMech);
+                        break;
+                    case CardCategory.Kick:
+                        AddComponentElementStacks(cardChannelPair, MechComponent.Legs, destinationMech);
+                        break;
+                    case CardCategory.Special:
+                        AddComponentElementStacks(cardChannelPair, MechComponent.Head, destinationMech);
+                        break;
+                }
             }
+        }
+            
 
         //Create or update popup or icon for buff
     }
@@ -156,10 +174,8 @@ public class EffectController
         CombatManager.OnDestroyScene -= OnDestroy;
     }
 
-    private void AddElementalStacks(SOCardEffectObject effect, MechComponent component, CharacterSelect characterAdding)
+    private void AddElementalStacks(SOCardEffectObject effect, Channels channel, MechComponent component, CharacterSelect characterAdding)
     {
-        CardEffectObject newEffect = new CardEffectObject(effect);
-        int currentStacks;
         int newStacks = effect.EffectMagnitude;
 
         switch (component)
@@ -171,67 +187,174 @@ public class EffectController
                 break;
 
             case MechComponent.Arms:
-
                 if (characterAdding == CharacterSelect.Player)
                 {
-                    ElementType currentElement = CombatManager.instance.PlayerFighter.FighterMech.MechArms.ComponentElement;
+                    ElementType currentElement = CombatManager.instance.OpponentFighter.FighterMech.MechArms.ComponentElement;
+                    
+                    if (currentElement == ElementType.None)
+                        return;
 
-                    if (playerFighterEffectObject.ElementStacks.TryGetValue(currentElement, out currentStacks))
+                    if(currentElement == ElementType.Fire || currentElement == ElementType.Plasma)
                     {
-                        newStacks += currentStacks;
-                        newStacks += CombatManager.instance.PlayerFighter.FighterMech.MechArms.ExtraElementStacks;
+                        int currentStacks;
 
-                        playerFighterEffectObject.ElementStacks[currentElement] = newStacks;
+                        if (playerFighterEffectObject.FirePlasmaStacks.TryGetValue(currentElement, out currentStacks))
+                        {
+                            newStacks += currentStacks;
+                            playerFighterEffectObject.FirePlasmaStacks[currentElement] = newStacks;
+                        }
+                        else
+                            playerFighterEffectObject.FirePlasmaStacks.Add(currentElement, newStacks);
                     }
-                    else
-                        playerFighterEffectObject.ElementStacks.Add(currentElement, newStacks);
+
+                    if (currentElement == ElementType.Ice || currentElement == ElementType.Acid)
+                    {
+                        List<ElementStackObject> currentStackObject = new List<ElementStackObject>();
+                        
+                        if(playerFighterEffectObject.IceAcidStacks.TryGetValue(channel, out currentStackObject))
+                        {
+                            foreach(ElementStackObject elementStack in currentStackObject)
+                                if (elementStack.ElementType == currentElement)
+                                    elementStack.ElementStacks += newStacks;
+                        }
+                        else
+                        {
+                            ElementStackObject newStackObject = new ElementStackObject();
+                            newStackObject.ElementType = currentElement;
+                            newStackObject.ElementStacks = newStacks;
+                            currentStackObject.Add(newStackObject);
+
+                            playerFighterEffectObject.IceAcidStacks.Add(channel, currentStackObject);
+                        }
+                    }
                 }
 
                 if (characterAdding == CharacterSelect.Opponent)
                 {
-                    ElementType currentElement = CombatManager.instance.OpponentFighter.FighterMech.MechArms.ComponentElement;
+                    ElementType currentElement = CombatManager.instance.PlayerFighter.FighterMech.MechArms.ComponentElement;
 
-                    if (opponentFighterEffectObject.ElementStacks.TryGetValue(currentElement, out currentStacks))
+                    if (currentElement == ElementType.None)
+                        return;
+
+                    if (currentElement == ElementType.Fire || currentElement == ElementType.Plasma)
                     {
-                        newStacks += currentStacks;
-                        newStacks += CombatManager.instance.OpponentFighter.FighterMech.MechArms.ExtraElementStacks;
+                        int currentStacks;
 
-                        opponentFighterEffectObject.ElementStacks[currentElement] = newStacks;
+                        if (opponentFighterEffectObject.FirePlasmaStacks.TryGetValue(currentElement, out currentStacks))
+                        {
+                            newStacks += currentStacks;
+                            opponentFighterEffectObject.FirePlasmaStacks[currentElement] = newStacks;
+                        }
+                        else
+                            opponentFighterEffectObject.FirePlasmaStacks.Add(currentElement, newStacks);
                     }
-                    else
-                        opponentFighterEffectObject.ElementStacks.Add(currentElement, newStacks);
+
+                    if (currentElement == ElementType.Ice || currentElement == ElementType.Acid)
+                    {
+                        List<ElementStackObject> currentStackObject = new List<ElementStackObject>();
+
+                        if (playerFighterEffectObject.IceAcidStacks.TryGetValue(channel, out currentStackObject))
+                        {
+                            foreach (ElementStackObject elementStack in currentStackObject)
+                                if (elementStack.ElementType == currentElement)
+                                    elementStack.ElementStacks += newStacks;
+                        }
+                        else
+                        {
+                            ElementStackObject newStackObject = new ElementStackObject();
+                            newStackObject.ElementType = currentElement;
+                            newStackObject.ElementStacks = newStacks;
+                            currentStackObject.Add(newStackObject);
+
+                            playerFighterEffectObject.IceAcidStacks.Add(channel, currentStackObject);
+                        }
+                    }
                 }
                 break;
 
             case MechComponent.Legs:
                 if (characterAdding == CharacterSelect.Player)
                 {
-                    ElementType currentElement = CombatManager.instance.PlayerFighter.FighterMech.MechLegs.ComponentElement;
+                    ElementType currentElement = CombatManager.instance.OpponentFighter.FighterMech.MechLegs.ComponentElement;
 
-                    if (playerFighterEffectObject.ElementStacks.TryGetValue(currentElement, out currentStacks))
+                    if (currentElement == ElementType.None)
+                        return;
+
+                    if (currentElement == ElementType.Fire || currentElement == ElementType.Plasma)
                     {
-                        newStacks += currentStacks;
-                        newStacks += CombatManager.instance.PlayerFighter.FighterMech.MechLegs.ExtraElementStacks;
+                        int currentStacks;
 
-                        playerFighterEffectObject.ElementStacks[currentElement] = newStacks;
+                        if (playerFighterEffectObject.FirePlasmaStacks.TryGetValue(currentElement, out currentStacks))
+                        {
+                            newStacks += currentStacks;
+                            playerFighterEffectObject.FirePlasmaStacks[currentElement] = newStacks;
+                        }
+                        else
+                            playerFighterEffectObject.FirePlasmaStacks.Add(currentElement, newStacks);
                     }
-                    else
-                        playerFighterEffectObject.ElementStacks.Add(currentElement, newStacks);
+
+                    if (currentElement == ElementType.Ice || currentElement == ElementType.Acid)
+                    {
+                        List<ElementStackObject> currentStackObject = new List<ElementStackObject>();
+
+                        if (playerFighterEffectObject.IceAcidStacks.TryGetValue(channel, out currentStackObject))
+                        {
+                            foreach (ElementStackObject elementStack in currentStackObject)
+                                if (elementStack.ElementType == currentElement)
+                                    elementStack.ElementStacks += newStacks;
+                        }
+                        else
+                        {
+                            ElementStackObject newStackObject = new ElementStackObject();
+                            newStackObject.ElementType = currentElement;
+                            newStackObject.ElementStacks = newStacks;
+                            currentStackObject.Add(newStackObject);
+
+                            playerFighterEffectObject.IceAcidStacks.Add(channel, currentStackObject);
+                        }
+                    }
                 }
 
                 if (characterAdding == CharacterSelect.Opponent)
                 {
-                    ElementType currentElement = CombatManager.instance.OpponentFighter.FighterMech.MechLegs.ComponentElement;
+                    ElementType currentElement = CombatManager.instance.PlayerFighter.FighterMech.MechLegs.ComponentElement;
 
-                    if (opponentFighterEffectObject.ElementStacks.TryGetValue(currentElement, out currentStacks))
+                    if (currentElement == ElementType.None)
+                        return;
+
+                    if (currentElement == ElementType.Fire || currentElement == ElementType.Plasma)
                     {
-                        newStacks += currentStacks;
-                        newStacks += CombatManager.instance.OpponentFighter.FighterMech.MechLegs.ExtraElementStacks;
+                        int currentStacks;
 
-                        opponentFighterEffectObject.ElementStacks[currentElement] = newStacks;
+                        if (opponentFighterEffectObject.FirePlasmaStacks.TryGetValue(currentElement, out currentStacks))
+                        {
+                            newStacks += currentStacks;
+                            opponentFighterEffectObject.FirePlasmaStacks[currentElement] = newStacks;
+                        }
+                        else
+                            opponentFighterEffectObject.FirePlasmaStacks.Add(currentElement, newStacks);
                     }
-                    else
-                        opponentFighterEffectObject.ElementStacks.Add(currentElement, newStacks);
+
+                    if (currentElement == ElementType.Ice || currentElement == ElementType.Acid)
+                    {
+                        List<ElementStackObject> currentStackObject = new List<ElementStackObject>();
+
+                        if (opponentFighterEffectObject.IceAcidStacks.TryGetValue(channel, out currentStackObject))
+                        {
+                            foreach (ElementStackObject elementStack in currentStackObject)
+                                if (elementStack.ElementType == currentElement)
+                                    elementStack.ElementStacks += newStacks;
+                        }
+                        else
+                        {
+                            ElementStackObject newStackObject = new ElementStackObject();
+                            newStackObject.ElementType = currentElement;
+                            newStackObject.ElementStacks = newStacks;
+                            currentStackObject.Add(newStackObject);
+
+                            opponentFighterEffectObject.IceAcidStacks.Add(channel, currentStackObject);
+                        }
+                    }
                 }
                 break;
         }
@@ -692,6 +815,279 @@ public class EffectController
             }
         }
     }
+
+    private void AddComponentElementStacks(CardChannelPairObject cardChannelPair, MechComponent component, CharacterSelect destinationMech)
+    {
+        int newStacks = 1;
+
+        switch (component)
+        {
+            case MechComponent.Head:
+                if (destinationMech == CharacterSelect.Opponent)
+                {
+                    ElementType currentElement = CombatManager.instance.PlayerFighter.FighterMech.MechHead.ComponentElement;
+                    newStacks += CombatManager.instance.PlayerFighter.FighterMech.MechArms.ExtraElementStacks;
+
+                    if (currentElement == ElementType.None)
+                        return;
+
+                    if (currentElement == ElementType.Fire || currentElement == ElementType.Plasma)
+                    {
+                        int currentStacks;
+
+                        if (opponentFighterEffectObject.FirePlasmaStacks.TryGetValue(currentElement, out currentStacks))
+                        {
+                            newStacks += currentStacks;
+                            opponentFighterEffectObject.FirePlasmaStacks[currentElement] = newStacks;
+                        }
+                        else
+                            opponentFighterEffectObject.FirePlasmaStacks.Add(currentElement, newStacks);
+                    }
+
+                    if (currentElement == ElementType.Ice || currentElement == ElementType.Acid)
+                    {
+                        List<ElementStackObject> currentStackObject = new List<ElementStackObject>();
+
+                        if (opponentFighterEffectObject.IceAcidStacks.TryGetValue(cardChannelPair.CardChannel, out currentStackObject))
+                        {
+                            foreach (ElementStackObject elementStack in currentStackObject)
+                                if (elementStack.ElementType == currentElement)
+                                    elementStack.ElementStacks += newStacks;
+                        }
+                        else
+                        {
+                            ElementStackObject newStackObject = new ElementStackObject();
+                            newStackObject.ElementType = currentElement;
+                            newStackObject.ElementStacks = newStacks;
+                            currentStackObject.Add(newStackObject);
+
+                            opponentFighterEffectObject.IceAcidStacks.Add(cardChannelPair.CardChannel, currentStackObject);
+                        }
+                    }
+                }
+
+                if (destinationMech == CharacterSelect.Player)
+                {
+                    ElementType currentElement = CombatManager.instance.OpponentFighter.FighterMech.MechHead.ComponentElement;
+                    newStacks += CombatManager.instance.OpponentFighter.FighterMech.MechArms.ExtraElementStacks;
+
+                    if (currentElement == ElementType.None)
+                        return;
+
+                    if (currentElement == ElementType.Fire || currentElement == ElementType.Plasma)
+                    {
+                        int currentStacks;
+
+                        if (playerFighterEffectObject.FirePlasmaStacks.TryGetValue(currentElement, out currentStacks))
+                        {
+                            newStacks += currentStacks;
+                            opponentFighterEffectObject.FirePlasmaStacks[currentElement] = newStacks;
+                        }
+                        else
+                            playerFighterEffectObject.FirePlasmaStacks.Add(currentElement, newStacks);
+                    }
+
+                    if (currentElement == ElementType.Ice || currentElement == ElementType.Acid)
+                    {
+                        List<ElementStackObject> currentStackObject = new List<ElementStackObject>();
+
+                        if (playerFighterEffectObject.IceAcidStacks.TryGetValue(cardChannelPair.CardChannel, out currentStackObject))
+                        {
+                            foreach (ElementStackObject elementStack in currentStackObject)
+                                if (elementStack.ElementType == currentElement)
+                                    elementStack.ElementStacks += newStacks;
+                        }
+                        else
+                        {
+                            ElementStackObject newStackObject = new ElementStackObject();
+                            newStackObject.ElementType = currentElement;
+                            newStackObject.ElementStacks = newStacks;
+                            currentStackObject.Add(newStackObject);
+
+                            playerFighterEffectObject.IceAcidStacks.Add(cardChannelPair.CardChannel, currentStackObject);
+                        }
+                    }
+                }
+                break;
+
+            case MechComponent.Torso:
+                break;
+
+            case MechComponent.Arms:
+                if (destinationMech == CharacterSelect.Player)
+                {
+                    ElementType currentElement = CombatManager.instance.OpponentFighter.FighterMech.MechArms.ComponentElement;
+                    newStacks += CombatManager.instance.OpponentFighter.FighterMech.MechArms.ExtraElementStacks;
+
+                    if (currentElement == ElementType.None)
+                        return;
+
+                    if (currentElement == ElementType.Fire || currentElement == ElementType.Plasma)
+                    {
+                        int currentStacks;
+
+                        if (playerFighterEffectObject.FirePlasmaStacks.TryGetValue(currentElement, out currentStacks))
+                        {
+                            newStacks += currentStacks;
+                            playerFighterEffectObject.FirePlasmaStacks[currentElement] = newStacks;
+                        }
+                        else
+                            playerFighterEffectObject.FirePlasmaStacks.Add(currentElement, newStacks);
+                    }
+
+                    if (currentElement == ElementType.Ice || currentElement == ElementType.Acid)
+                    {
+                        List<ElementStackObject> currentStackObject = new List<ElementStackObject>();
+
+                        if (playerFighterEffectObject.IceAcidStacks.TryGetValue(cardChannelPair.CardChannel, out currentStackObject))
+                        {
+                            foreach (ElementStackObject elementStack in currentStackObject)
+                                if (elementStack.ElementType == currentElement)
+                                    elementStack.ElementStacks += newStacks;
+                        }
+                        else
+                        {
+                            ElementStackObject newStackObject = new ElementStackObject();
+                            newStackObject.ElementType = currentElement;
+                            newStackObject.ElementStacks = newStacks;
+                            currentStackObject.Add(newStackObject);
+                            playerFighterEffectObject.IceAcidStacks.Add(cardChannelPair.CardChannel, currentStackObject);
+                        }
+                    }
+                }
+
+                if (destinationMech == CharacterSelect.Opponent)
+                {
+                    ElementType currentElement = CombatManager.instance.PlayerFighter.FighterMech.MechArms.ComponentElement;
+                    newStacks += CombatManager.instance.PlayerFighter.FighterMech.MechArms.ExtraElementStacks;
+
+                    if (currentElement == ElementType.None)
+                        return;
+
+                    if (currentElement == ElementType.Fire || currentElement == ElementType.Plasma)
+                    {
+                        int currentStacks;
+
+                        if (opponentFighterEffectObject.FirePlasmaStacks.TryGetValue(currentElement, out currentStacks))
+                        {
+                            newStacks += currentStacks;
+                            opponentFighterEffectObject.FirePlasmaStacks[currentElement] = newStacks;
+                        }
+                        else
+                            opponentFighterEffectObject.FirePlasmaStacks.Add(currentElement, newStacks);
+                    }
+
+                    if (currentElement == ElementType.Ice || currentElement == ElementType.Acid)
+                    {
+                        List<ElementStackObject> currentStackObject = new List<ElementStackObject>();
+
+                        if (opponentFighterEffectObject.IceAcidStacks.TryGetValue(cardChannelPair.CardChannel, out currentStackObject))
+                        {
+                            foreach (ElementStackObject elementStack in currentStackObject)
+                                if (elementStack.ElementType == currentElement)
+                                    elementStack.ElementStacks += newStacks;
+                        }
+                        else
+                        {
+                            ElementStackObject newStackObject = new ElementStackObject();
+                            newStackObject.ElementType = currentElement;
+                            newStackObject.ElementStacks = newStacks;
+                            currentStackObject.Add(newStackObject);
+
+                            opponentFighterEffectObject.IceAcidStacks.Add(cardChannelPair.CardChannel, currentStackObject);
+                        }
+                    }
+                }
+                break;
+
+            case MechComponent.Legs:
+                if (destinationMech == CharacterSelect.Player)
+                {
+                    ElementType currentElement = CombatManager.instance.OpponentFighter.FighterMech.MechLegs.ComponentElement;
+                    newStacks += CombatManager.instance.OpponentFighter.FighterMech.MechLegs.ExtraElementStacks;
+
+                    if (currentElement == ElementType.None)
+                        return;
+
+                    if (currentElement == ElementType.Fire || currentElement == ElementType.Plasma)
+                    {
+                        int currentStacks;
+
+                        if (playerFighterEffectObject.FirePlasmaStacks.TryGetValue(currentElement, out currentStacks))
+                        {
+                            newStacks += currentStacks;
+                            playerFighterEffectObject.FirePlasmaStacks[currentElement] = newStacks;
+                        }
+                        else
+                            playerFighterEffectObject.FirePlasmaStacks.Add(currentElement, newStacks);
+                    }
+
+                    if (currentElement == ElementType.Ice || currentElement == ElementType.Acid)
+                    {
+                        List<ElementStackObject> currentStackObject = new List<ElementStackObject>();
+
+                        if (playerFighterEffectObject.IceAcidStacks.TryGetValue(cardChannelPair.CardChannel, out currentStackObject))
+                        {
+                            foreach (ElementStackObject elementStack in currentStackObject)
+                                if (elementStack.ElementType == currentElement)
+                                    elementStack.ElementStacks += newStacks;
+                        }
+                        else
+                        {
+                            ElementStackObject newStackObject = new ElementStackObject();
+                            newStackObject.ElementType = currentElement;
+                            newStackObject.ElementStacks = newStacks;
+                            currentStackObject.Add(newStackObject);
+                            playerFighterEffectObject.IceAcidStacks.Add(cardChannelPair.CardChannel, currentStackObject);
+                        }
+                    }
+                }
+
+                if (destinationMech == CharacterSelect.Opponent)
+                {
+                    ElementType currentElement = CombatManager.instance.PlayerFighter.FighterMech.MechLegs.ComponentElement;
+                    newStacks += CombatManager.instance.PlayerFighter.FighterMech.MechLegs.ExtraElementStacks;
+
+                    if (currentElement == ElementType.None)
+                        return;
+
+                    if (currentElement == ElementType.Fire || currentElement == ElementType.Plasma)
+                    {
+                        int currentStacks;
+
+                        if (opponentFighterEffectObject.FirePlasmaStacks.TryGetValue(currentElement, out currentStacks))
+                        {
+                            newStacks += currentStacks;
+                            opponentFighterEffectObject.FirePlasmaStacks[currentElement] = newStacks;
+                        }
+                        else
+                            opponentFighterEffectObject.FirePlasmaStacks.Add(currentElement, newStacks);
+                    }
+
+                    if (currentElement == ElementType.Ice || currentElement == ElementType.Acid)
+                    {
+                        List<ElementStackObject> currentStackObject = new List<ElementStackObject>();
+
+                        if (opponentFighterEffectObject.IceAcidStacks.TryGetValue(cardChannelPair.CardChannel, out currentStackObject))
+                        {
+                            foreach (ElementStackObject elementStack in currentStackObject)
+                                if (elementStack.ElementType == currentElement)
+                                    elementStack.ElementStacks += newStacks;
+                        }
+                        else
+                        {
+                            ElementStackObject newStackObject = new ElementStackObject();
+                            newStackObject.ElementType = currentElement;
+                            newStackObject.ElementStacks = newStacks;
+                            currentStackObject.Add(newStackObject);
+                            opponentFighterEffectObject.IceAcidStacks.Add(cardChannelPair.CardChannel, currentStackObject);
+                        }
+                    }
+                }
+                break;
+        }
+    }
+
 
     private List<Channels> GetChannelListFromFlags(Channels channelToInterpret)
     {

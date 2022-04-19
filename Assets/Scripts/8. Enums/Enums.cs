@@ -53,20 +53,24 @@ public enum CardEffectTypes
 {
     None = 0,
     PlayMultipleTimes = 1,
-    AdditionalElementStacks = 2,
-    IncreaseOutgoingChannelDamage = 3,
-    IncreaseOutgoingCardTypeDamage = 4,
-    ReduceIncomingChannelDamage = 5, 
-    GainShields = 6,
-    MultiplyShield = 7,
-    KeyWordInitialize = 8,
+    AdditionalElementStacks = 2, 
+    IncreaseOutgoingChannelDamage = 3, //Channel buff
+    IncreaseOutgoingCardTypeDamage = 4, //Global buff
+    ReduceIncomingChannelDamage = 5,  //Channel buff
+    GainShields = 6,  //Channel buff
+    MultiplyShield = 7, 
+    KeyWordInitialize = 8, //Global buff
     KeyWordExecute = 9,
-    GainShieldWithFalloff = 10,
+    GainShieldWithFalloff = 10, //Channel buff
     //EnergyDestroy = 11,
-    //EnergySiphon = 12,
-    //IncreaseChannelEnergyUse = 13,
-    //IncreaseComponentDamage = 14,
-
+    [InspectorName(null)]
+    Fire = 11, // Global buff
+    [InspectorName(null)]
+    Plasma = 12, // Global buff
+    [InspectorName(null)]
+    Ice = 13, // Channel buff
+    [InspectorName(null)]
+    Acid = 14, // Channel buff
 }
 
 public enum CardKeyWord
@@ -78,10 +82,11 @@ public enum CardKeyWord
 public enum ElementType
 {
     None = 0,
-    Fire = 1, // Stacks, damage at end of turn
+    Fire = 1, // Stacks, damage at end of turn 
     Ice = 2, // Stacks, raises energy cost in channel
     Plasma = 3, // Stacks, siphons energy at end of turn
-    Acid = 4, // Increases damage dealt to components.
+    Acid = 4, // Increases damage dealt to components. 
+    //Void = 5, //Stacks,  nullifies elements
 }
 
 [Flags]
