@@ -17,6 +17,7 @@ public class TestPlaceholderAnimations : MonoBehaviour
         Kick();
         Win();
         Lose();
+        Counter();
     }
 
     private void Punch()
@@ -51,5 +52,14 @@ public class TestPlaceholderAnimations : MonoBehaviour
         {
             anim.SetBool("isLosing", true);
         }
+    }
+
+    private void Counter()
+    {
+        if (Input.GetKey(KeyCode.C))
+        {
+            anim.SetBool("isCountering", true);
+        }
+        else anim.SetBool("isCountering", false);
     }
 }
