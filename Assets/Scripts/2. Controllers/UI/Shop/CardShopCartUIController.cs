@@ -1,11 +1,11 @@
 using System.Collections;
 using System.Collections.Generic;
-using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using TMPro;
 using UnityEngine.UI;
 
-public class ShopItemUIController : MonoBehaviour, IPointerDownHandler, IPointerUpHandler,
+public class CardShopCartUIController : MonoBehaviour, IPointerDownHandler, IPointerUpHandler,
                               IPointerEnterHandler, IPointerExitHandler, IBeginDragHandler,
                               IEndDragHandler, IDragHandler
 {
@@ -26,19 +26,19 @@ public class ShopItemUIController : MonoBehaviour, IPointerDownHandler, IPointer
     private ShopItemUIObject shopItemUIObject;
     public ShopItemUIObject ShopItemUIObject { get => shopItemUIObject; }
 
-    private BaseSlotController<ShopItemUIController> shopItemUISlotController;
-    public BaseSlotController<ShopItemUIController> ShopItemUISlotController 
-    { 
-        get => shopItemUISlotController; 
-        set => UpdateItemSlot(value); 
+    private BaseSlotController<CardShopCartUIController> cardShopCartSlotController;
+    public BaseSlotController<CardShopCartUIController> CardShopCartSlotController
+    {
+        get => cardShopCartSlotController;
+        set => UpdateItemSlot(value);
     }
-    public Transform PreviousParentObject 
-    { 
-        get => previousParentObject; 
-        set => previousParentObject = value; 
+    public Transform PreviousParentObject
+    {
+        get => previousParentObject;
+        set => previousParentObject = value;
     }
 
-    public void InitShopItemUI(ShopItemUIObject shopItemUIObject)
+    public void InitUI(ShopItemUIObject shopItemUIObject)
     {
         itemNameText.text = shopItemUIObject.ItemName;
         itemDescriptionText.text = shopItemUIObject.ItemDescription;
@@ -52,8 +52,8 @@ public class ShopItemUIController : MonoBehaviour, IPointerDownHandler, IPointer
 
     public void OnDrag(PointerEventData eventData)
     {
-        shopItemUISlotController.HandleDrag(eventData);
-        
+        cardShopCartSlotController.HandleDrag(eventData);
+
     }
 
     public virtual void OnBeginDrag(PointerEventData eventData)
@@ -61,7 +61,7 @@ public class ShopItemUIController : MonoBehaviour, IPointerDownHandler, IPointer
         isPickedUp = true;
         draggableCanvasGroup.blocksRaycasts = false;
         draggableCanvasGroup.alpha = .6f;
-        shopItemUISlotController.SlotManager.RemoveItemFromCollection(this);
+        cardShopCartSlotController.SlotManager.RemoveItemFromCollection(this);
     }
 
     public virtual void OnEndDrag(PointerEventData eventData)
@@ -73,7 +73,7 @@ public class ShopItemUIController : MonoBehaviour, IPointerDownHandler, IPointer
 
     public void OnPointerDown(PointerEventData eventData)
     {
-        transform.SetParent(shopItemUISlotController.SlotManager.MainCanvas.transform);
+        transform.SetParent(cardShopCartSlotController.SlotManager.MainCanvas.transform);
     }
 
     public void OnPointerEnter(PointerEventData eventData)
@@ -102,20 +102,20 @@ public class ShopItemUIController : MonoBehaviour, IPointerDownHandler, IPointer
 
     private void MoveToSlot()
     {
-        if (isPickedUp || shopItemUISlotController == null)
+        if (isPickedUp || cardShopCartSlotController == null)
             return;
 
         if (transform.parent == null)
             transform.SetParent(previousParentObject);
 
         draggableRectTransform.position =
-            Vector3.MoveTowards(draggableRectTransform.position, 
-            ShopItemUISlotController.gameObject.GetComponent<RectTransform>().position, 
+            Vector3.MoveTowards(draggableRectTransform.position,
+            CardShopCartSlotController.gameObject.GetComponent<RectTransform>().position,
             travelSpeed * Time.deltaTime);
     }
-    private void UpdateItemSlot(BaseSlotController<ShopItemUIController> newSlot)
+    private void UpdateItemSlot(BaseSlotController<CardShopCartUIController> newSlot)
     {
-        shopItemUISlotController = newSlot;
+        cardShopCartSlotController = newSlot;
         transform.SetParent(newSlot.transform);
         previousParentObject = newSlot.transform;
     }
