@@ -151,10 +151,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 6523045}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ee6096a680bf4204ea46de6a8b0cc328, type: 3}
+  m_Script: {fileID: 11500000, guid: 137754e4c9d286d46b0b1753e3dd6318, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  slotManager: {fileID: 467409195}
 --- !u!114 &6523047
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -710,10 +709,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 103374917}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ee6096a680bf4204ea46de6a8b0cc328, type: 3}
+  m_Script: {fileID: 11500000, guid: 137754e4c9d286d46b0b1753e3dd6318, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  slotManager: {fileID: 467409195}
 --- !u!114 &103374919
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -799,10 +797,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 104646582}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ee6096a680bf4204ea46de6a8b0cc328, type: 3}
+  m_Script: {fileID: 11500000, guid: 137754e4c9d286d46b0b1753e3dd6318, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  slotManager: {fileID: 467409195}
 --- !u!114 &104646584
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -877,7 +874,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &116009281
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1022,10 +1019,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 121374615}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ee6096a680bf4204ea46de6a8b0cc328, type: 3}
+  m_Script: {fileID: 11500000, guid: 137754e4c9d286d46b0b1753e3dd6318, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  slotManager: {fileID: 467409195}
 --- !u!114 &121374617
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1395,10 +1391,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 227925918}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ee6096a680bf4204ea46de6a8b0cc328, type: 3}
+  m_Script: {fileID: 11500000, guid: 137754e4c9d286d46b0b1753e3dd6318, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  slotManager: {fileID: 467409195}
 --- !u!114 &227925920
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1467,9 +1462,8 @@ GameObject:
   - component: {fileID: 233945582}
   - component: {fileID: 233945585}
   - component: {fileID: 233945584}
-  - component: {fileID: 233945583}
   m_Layer: 5
-  m_Name: Shopping Cart Panel (1)
+  m_Name: Component Shop Cart Window Panel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1499,20 +1493,6 @@ RectTransform:
   m_AnchoredPosition: {x: 200, y: 0}
   m_SizeDelta: {x: 320, y: 880}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &233945583
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 233945581}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3485ae754031f8743998c27224aeaf0b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  timeCostText: {fileID: 1339815145}
-  currencyCostText: {fileID: 116009282}
 --- !u!114 &233945584
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1687,10 +1667,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 262115094}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ee6096a680bf4204ea46de6a8b0cc328, type: 3}
+  m_Script: {fileID: 11500000, guid: 137754e4c9d286d46b0b1753e3dd6318, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  slotManager: {fileID: 467409195}
 --- !u!114 &262115097
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1739,9 +1718,6 @@ GameObject:
   m_Component:
   - component: {fileID: 268333864}
   - component: {fileID: 268333866}
-  - component: {fileID: 268333867}
-  - component: {fileID: 268333865}
-  - component: {fileID: 268333868}
   m_Layer: 5
   m_Name: ShopManager
   m_TagString: Untagged
@@ -1768,19 +1744,6 @@ RectTransform:
   m_AnchoredPosition: {x: -461, y: 0}
   m_SizeDelta: {x: 920, y: 880}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &268333865
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 268333863}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f64bd52f87b61ac4ab2374d14e7e78ad, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  ItemPrefab: {fileID: 1854817566}
 --- !u!222 &268333866
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -1789,41 +1752,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 268333863}
   m_CullTransparentMesh: 1
---- !u!114 &268333867
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 268333863}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d351083219ef2f247958398665b7e881, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  inventory: {fileID: 2144534517}
-  shopWindow: {fileID: 1826352712}
-  shopCart: {fileID: 1017154731}
-  shopController: {fileID: 268333868}
-  itemsToDisplay:
-  - {fileID: 11400000, guid: 1021cc3def782bf46b277e9696163310, type: 2}
-  - {fileID: 11400000, guid: 50b59589bc696c2488c10626a10ae51b, type: 2}
-  - {fileID: 11400000, guid: 69b3ab4e028c26245b79289c19dd371f, type: 2}
-  - {fileID: 11400000, guid: ab6d96c767279a64b885db25a2c1771b, type: 2}
-  - {fileID: 11400000, guid: 92faa34d8139c5c47895abf0201b3e2f, type: 2}
---- !u!114 &268333868
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 268333863}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fced690bccd46fd42a2e24d1e39832e2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  shopItemUIBuildController: {fileID: 268333865}
 --- !u!1 &270898154
 GameObject:
   m_ObjectHideFlags: 0
@@ -2303,7 +2231,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &381903063
 RectTransform:
   m_ObjectHideFlags: 0
@@ -2592,7 +2520,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 268333867}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: ShopManager, Assembly-CSharp
         m_MethodName: OpenShop
         m_Mode: 1
@@ -2706,29 +2634,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 467409193}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 52c186c35aa448646be9a3306aa147f3, type: 3}
+  m_Script: {fileID: 11500000, guid: 7278284ca6d84d5459d14060a82d4c03, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mainCanvas: {fileID: 637645134}
-  slotList:
-  - {fileID: 1935172336}
-  - {fileID: 227925919}
-  - {fileID: 6523046}
-  - {fileID: 1385094759}
-  - {fileID: 103374918}
-  - {fileID: 750173100}
-  - {fileID: 1131086636}
-  - {fileID: 979137156}
-  - {fileID: 1615454914}
-  - {fileID: 912199869}
-  - {fileID: 1560550188}
-  - {fileID: 121374616}
-  - {fileID: 919683610}
-  - {fileID: 104646583}
-  - {fileID: 1407450018}
-  - {fileID: 740449193}
-  - {fileID: 1956283137}
-  - {fileID: 262115096}
 --- !u!114 &467409196
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2929,7 +2837,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 268333867}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: ShopManager, Assembly-CSharp
         m_MethodName: OpenInventory
         m_Mode: 1
@@ -3151,7 +3059,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 268333867}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: ShopManager, Assembly-CSharp
         m_MethodName: OpenInventory
         m_Mode: 1
@@ -3621,10 +3529,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 740449192}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ee6096a680bf4204ea46de6a8b0cc328, type: 3}
+  m_Script: {fileID: 11500000, guid: 137754e4c9d286d46b0b1753e3dd6318, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  slotManager: {fileID: 467409195}
 --- !u!114 &740449194
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3710,10 +3617,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 750173099}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ee6096a680bf4204ea46de6a8b0cc328, type: 3}
+  m_Script: {fileID: 11500000, guid: 137754e4c9d286d46b0b1753e3dd6318, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  slotManager: {fileID: 467409195}
 --- !u!114 &750173101
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3943,7 +3849,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 268333867}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: ShopManager, Assembly-CSharp
         m_MethodName: UndoShopping
         m_Mode: 1
@@ -4076,7 +3982,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &774293940
 RectTransform:
   m_ObjectHideFlags: 0
@@ -4678,7 +4584,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 268333867}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: ShopManager, Assembly-CSharp
         m_MethodName: OpenShop
         m_Mode: 1
@@ -5095,10 +5001,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 911152516}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4d1d3a3d078aeab47a35564fb0185628, type: 3}
+  m_Script: {fileID: 11500000, guid: ae6bec8aa043c5e44ae314e97b4aa587, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  slotManager: {fileID: 1097288378}
 --- !u!114 &911152518
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5184,10 +5089,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 912199868}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ee6096a680bf4204ea46de6a8b0cc328, type: 3}
+  m_Script: {fileID: 11500000, guid: 137754e4c9d286d46b0b1753e3dd6318, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  slotManager: {fileID: 467409195}
 --- !u!114 &912199870
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5273,10 +5177,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 919683609}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ee6096a680bf4204ea46de6a8b0cc328, type: 3}
+  m_Script: {fileID: 11500000, guid: 137754e4c9d286d46b0b1753e3dd6318, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  slotManager: {fileID: 467409195}
 --- !u!114 &919683611
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5526,10 +5429,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 979137155}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ee6096a680bf4204ea46de6a8b0cc328, type: 3}
+  m_Script: {fileID: 11500000, guid: 137754e4c9d286d46b0b1753e3dd6318, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  slotManager: {fileID: 467409195}
 --- !u!114 &979137157
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5871,16 +5773,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 1097288376}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 48ed8ac60e0c43f4299689833b9caffd, type: 3}
+  m_Script: {fileID: 11500000, guid: 298369a4e561097419faf873c20900e7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mainCanvas: {fileID: 637645134}
-  slotList:
-  - {fileID: 1489123552}
-  - {fileID: 911152517}
-  - {fileID: 1405612011}
-  - {fileID: 2049355367}
-  - {fileID: 1579363884}
 --- !u!114 &1097288379
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6086,13 +5981,14 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1130174387}
+  - component: {fileID: 1130174388}
   m_Layer: 0
   m_Name: ComponentShopManager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1130174387
 Transform:
   m_ObjectHideFlags: 0
@@ -6111,6 +6007,23 @@ Transform:
   m_Father: {fileID: 627032202}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1130174388
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1130174386}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 954e3cdb7061e2948b75e0fbb163a65c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  inventory: {fileID: 0}
+  shopVendorWindow: {fileID: 0}
+  shopCartWindow: {fileID: 0}
+  cardShopController: {fileID: 0}
+  itemsToDisplay: []
 --- !u!1 &1130847552
 GameObject:
   m_ObjectHideFlags: 0
@@ -6228,10 +6141,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 1131086635}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ee6096a680bf4204ea46de6a8b0cc328, type: 3}
+  m_Script: {fileID: 11500000, guid: 137754e4c9d286d46b0b1753e3dd6318, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  slotManager: {fileID: 467409195}
 --- !u!114 &1131086637
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7015,7 +6927,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1339815144
 RectTransform:
   m_ObjectHideFlags: 0
@@ -7402,10 +7314,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 1385094758}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ee6096a680bf4204ea46de6a8b0cc328, type: 3}
+  m_Script: {fileID: 11500000, guid: 137754e4c9d286d46b0b1753e3dd6318, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  slotManager: {fileID: 467409195}
 --- !u!114 &1385094760
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7567,10 +7478,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 1405612010}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4d1d3a3d078aeab47a35564fb0185628, type: 3}
+  m_Script: {fileID: 11500000, guid: ae6bec8aa043c5e44ae314e97b4aa587, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  slotManager: {fileID: 1097288378}
 --- !u!114 &1405612012
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7656,10 +7566,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 1407450017}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ee6096a680bf4204ea46de6a8b0cc328, type: 3}
+  m_Script: {fileID: 11500000, guid: 137754e4c9d286d46b0b1753e3dd6318, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  slotManager: {fileID: 467409195}
 --- !u!114 &1407450019
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8020,10 +7929,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 1489123551}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4d1d3a3d078aeab47a35564fb0185628, type: 3}
+  m_Script: {fileID: 11500000, guid: ae6bec8aa043c5e44ae314e97b4aa587, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  slotManager: {fileID: 1097288378}
 --- !u!114 &1489123553
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8243,10 +8151,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 1560550187}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ee6096a680bf4204ea46de6a8b0cc328, type: 3}
+  m_Script: {fileID: 11500000, guid: 137754e4c9d286d46b0b1753e3dd6318, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  slotManager: {fileID: 467409195}
 --- !u!114 &1560550189
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8351,10 +8258,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 1579363882}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4d1d3a3d078aeab47a35564fb0185628, type: 3}
+  m_Script: {fileID: 11500000, guid: ae6bec8aa043c5e44ae314e97b4aa587, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  slotManager: {fileID: 1097288378}
 --- !u!114 &1579363885
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8500,10 +8406,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 1615454913}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ee6096a680bf4204ea46de6a8b0cc328, type: 3}
+  m_Script: {fileID: 11500000, guid: 137754e4c9d286d46b0b1753e3dd6318, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  slotManager: {fileID: 467409195}
 --- !u!114 &1615454915
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8733,7 +8638,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 268333867}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: ShopManager, Assembly-CSharp
         m_MethodName: UndoShopping
         m_Mode: 1
@@ -9875,10 +9780,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 1935172335}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ee6096a680bf4204ea46de6a8b0cc328, type: 3}
+  m_Script: {fileID: 11500000, guid: 137754e4c9d286d46b0b1753e3dd6318, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  slotManager: {fileID: 467409195}
 --- !u!114 &1935172337
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9964,10 +9868,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 1956283136}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ee6096a680bf4204ea46de6a8b0cc328, type: 3}
+  m_Script: {fileID: 11500000, guid: 137754e4c9d286d46b0b1753e3dd6318, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  slotManager: {fileID: 467409195}
 --- !u!114 &1956283138
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10053,10 +9956,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 2049355366}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4d1d3a3d078aeab47a35564fb0185628, type: 3}
+  m_Script: {fileID: 11500000, guid: ae6bec8aa043c5e44ae314e97b4aa587, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  slotManager: {fileID: 1097288378}
 --- !u!114 &2049355368
 MonoBehaviour:
   m_ObjectHideFlags: 0

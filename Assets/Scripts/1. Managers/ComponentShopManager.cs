@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CardShopManager : MonoBehaviour
+public class ComponentShopManager : MonoBehaviour
 {
     [SerializeField] protected GameObject inventory;
     [SerializeField] protected GameObject shopVendorWindow;
@@ -58,14 +58,14 @@ public class CardShopManager : MonoBehaviour
 
     public void UndoShopping()
     {
-/*        List<ShopCartItemController> shopCartItemList = new List<ShopCartItemController>();
+        /*List<ShopCartItemController> shopCartItemList = new List<ShopCartItemController>();
         for (int i = 0; i < CardShopCartSlotManager.SlotList.Count; i++)
         {
             if (CardShopCartSlotManager.SlotList[i].CurrentSlottedItem != null)
             {
 
             }
-                //shopCartItemList.Add(CardShopCartSlotManager.SlotList[i].CurrentSlottedItem);
+            //shopCartItemList.Add(CardShopCartSlotManager.SlotList[i].CurrentSlottedItem);
         }
 
         shopCartWindow.GetComponent<ShopCartController>().UndoShopping(shopCartItemList.ToArray());*/

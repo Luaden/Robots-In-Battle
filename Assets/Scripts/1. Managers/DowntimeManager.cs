@@ -7,17 +7,12 @@ public class DowntimeManager : MonoBehaviour
     private static DowntimeManager instance;
 
     private CardShopManager cardShopManager;
-    //private ComponentShopManager componentShopManager;
+    private ComponentShopManager componentShopManager;
 
     public static DowntimeManager Instance { get { return instance; } }
     public CardShopManager CardShopManager { get => cardShopManager; }
-    //public ComponentShopManager ComponentShopManager { get => componentShopManager; }
+    public ComponentShopManager ComponentShopManager { get => componentShopManager; }
 
-
-
-    // old
-    private ShopManager shopManager;
-    public ShopManager ShopManager { get => shopManager; }
 
     private void Awake()
     {
@@ -30,9 +25,5 @@ public class DowntimeManager : MonoBehaviour
 
         cardShopManager = GetComponentInChildren<CardShopManager>(true);
 
-
-
-        // old
-        shopManager = GetComponentInChildren<ShopManager>(true);
     }
 }
