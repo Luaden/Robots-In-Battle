@@ -10,14 +10,14 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 36bc40fa79bff934fb1579cc2f9655ef, type: 3}
-  m_Name: Stomp
+  m_Name: Flurry of Kicks 1
   m_EditorClassIdentifier: 
   itemType: 0
-  itemName: Stomp
+  itemName: Flurry of Kicks
   itemDescription: 
   itemImage: {fileID: 0}
-  timeCost: 1
-  currencyCost: 1
+  timeCost: 0
+  currencyCost: 0
   chanceToSpawn: 1
   componentType: 0
   componentHP: 0
@@ -34,7 +34,9 @@ MonoBehaviour:
   cardCategory: 2
   possibleChannels: 6
   affectedChannels: 0
-  energyCost: 6
-  baseDamage: 8
+  energyCost: 3
+  baseDamage: 3
   componentDamageMultiplier: 0
-  cardEffects: []
+  cardEffects:
+  - {fileID: 11400000, guid: 09bbe70af9f68ca48b8b8d0c17fcccab, type: 2}
+  - {fileID: 11400000, guid: b23a6b39ba39e8947b812507dc2493be, type: 2}
