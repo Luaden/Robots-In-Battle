@@ -5,6 +5,12 @@ using UnityEngine;
 public class TestPlaceholderAnimations : MonoBehaviour
 {
     public Animator anim;
+
+    public void DoAThing()
+    {
+
+    }
+
     void Start()
     {
         anim = gameObject.GetComponent<Animator>();

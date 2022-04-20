@@ -65,31 +65,20 @@ public class DamageCalculatorController
         {
             if (defensiveCard.CardData.CardCategory.HasFlag(CardCategory.Guard))
             {
-                //Attack animation
-                //Guard Animation
+                effectController.EnableEffects(defensiveCard, GetOtherMech(offensiveCharacter));
 
-                Debug.Log(offensiveCharacter + " was blocked, but this CardType currently does nothing on its own. Defensive effects will now be applied.");
-                effectController.EnableEffects(defensiveCard, offensiveCharacter == CharacterSelect.Player ? CharacterSelect.Opponent : CharacterSelect.Player);
-
-                effectController.EnableEffects(offensiveCard, offensiveCharacter == CharacterSelect.Player ? CharacterSelect.Opponent : CharacterSelect.Player);
-                CalculateMechDamage(offensiveCard, offensiveCharacter == CharacterSelect.Player ? CharacterSelect.Opponent : CharacterSelect.Player);
+                effectController.EnableEffects(offensiveCard, GetOtherMech(offensiveCharacter));
+                CalculateMechDamage(offensiveCard, GetOtherMech(offensiveCharacter), false, true);
             }
 
             if (defensiveCard.CardData.CardCategory.HasFlag(CardCategory.Counter))
             {
-                //Attack animation
-                //Counter animation
-
-                Debug.Log(offensiveCharacter + " was countered. Their attack will be returned at " + CombatManager.instance.CounterDamageMultiplier * 100 + "%.");
-                effectController.EnableEffects(defensiveCard, offensiveCharacter == CharacterSelect.Player ? CharacterSelect.Opponent : CharacterSelect.Player);
+                effectController.EnableEffects(defensiveCard, GetOtherMech(offensiveCharacter));
                 CalculateMechDamage(offensiveCard, offensiveCharacter, true);
             }
         }
         else
         {
-            Debug.Log((offensiveCharacter == CharacterSelect.Player ? CharacterSelect.Opponent : CharacterSelect.Player) + "'s defense was misplaced.");
-            Debug.Log(offensiveCharacter + "'s attack made it through!");
-
             if (offensiveCharacter == CharacterSelect.Player)
                 effectController.EnableEffects(offensiveCard, CharacterSelect.Opponent);
             else
@@ -119,7 +108,12 @@ public class DamageCalculatorController
         opponentAttackPlan = null;
     }
 
-    private void CalculateMechDamage(CardChannelPairObject originAttack, CharacterSelect destinationMech, bool counterDamage = false)
+    private CharacterSelect GetOtherMech(CharacterSelect firstMech)
+    {
+        return firstMech == CharacterSelect.Player ? CharacterSelect.Opponent : CharacterSelect.Player;
+    }
+
+    private void CalculateMechDamage(CardChannelPairObject originAttack, CharacterSelect destinationMech, bool counterDamage = false, bool guardDamage = false)
     {
         int repeatPlay = 1;
 
@@ -134,13 +128,29 @@ public class DamageCalculatorController
             {
                 int damageToDeal = effectController.GetMechDamageWithModifiers(originAttack, destinationMech);
                 
-                //Animations for attacks
-                CombatManager.instance.DealDamageToMech(destinationMech, 
-                    counterDamage == false ? damageToDeal : damageToDeal * Mathf.RoundToInt(CombatManager.instance.CounterDamageMultiplier));
+                if(counterDamage)
+                {
+                    CombatManager.instance.MechAnimationManager.SetMechAnimation(destinationMech, AnimationType.Counter, 
+                        GetOtherMech(destinationMech), CombatManager.instance.MechAnimationManager.GetAnimationFromCategory(originAttack.CardData.CardCategory));
+                    CombatManager.instance.DealDamageToMech(destinationMech, damageToDeal * Mathf.RoundToInt(CombatManager.instance.CounterDamageMultiplier));
+                    CalculateComponentDamage(originAttack, destinationMech);
+                }
+                else if(guardDamage)
+                {
+                    CombatManager.instance.MechAnimationManager.SetMechAnimation(destinationMech, AnimationType.Counter,
+                        GetOtherMech(destinationMech), CombatManager.instance.MechAnimationManager.GetAnimationFromCategory(originAttack.CardData.CardCategory));
+                    CombatManager.instance.DealDamageToMech(destinationMech, damageToDeal * Mathf.RoundToInt(CombatManager.instance.GuardDamageReductionMultiplier));
+                    CalculateComponentDamage(originAttack, destinationMech);
+                }
+                else
+                {
+                    CombatManager.instance.MechAnimationManager.SetMechAnimation(destinationMech, AnimationType.Damaged,
+                        GetOtherMech(destinationMech), CombatManager.instance.MechAnimationManager.GetAnimationFromCategory(originAttack.CardData.CardCategory));
+                    CombatManager.instance.DealDamageToMech(destinationMech, damageToDeal);
+                    CalculateComponentDamage(originAttack, destinationMech);
+                }
             }
         }
-
-        CalculateComponentDamage(originAttack, destinationMech);
     }
 
     private void CalculateComponentDamage(CardChannelPairObject originAttack, CharacterSelect destinationMech)
