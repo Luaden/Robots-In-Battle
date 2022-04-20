@@ -464,9 +464,6 @@ public class EffectController
                 foreach(CardEffectObject effect in removalKeyWordEffects)
                     if(previousKeyWordEffects.Contains(effect))
                         previousKeyWordEffects.Remove(effect);
-
-                if (playerFighterEffectObject.KeyWordDuration[keyWord].Count <= 0)
-                    playerFighterEffectObject.KeyWordDuration.Remove(keyWord);
             }
             else
             {
@@ -480,10 +477,6 @@ public class EffectController
                 foreach (CardEffectObject effect in removalKeyWordEffects)
                     if (previousKeyWordEffects.Contains(effect))
                         previousKeyWordEffects.Remove(effect);
-
-                if (playerFighterEffectObject.KeyWordDuration[keyWord].Count <= 0)
-                    playerFighterEffectObject.KeyWordDuration.Remove(keyWord);
-
             }
         }
 
