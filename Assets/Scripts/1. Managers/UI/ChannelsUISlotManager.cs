@@ -115,7 +115,6 @@ public class ChannelsUISlotManager : BaseSlotManager<CardUIController>
         if (opponentAttackSlotB.CurrentSlottedItem == null)
             if (item.CardData.CardType == CardType.Defense || item.CardData.CardType == CardType.Neutral)
             {
-                Debug.Log(item.CardData.CardName + " is being added to slot B.");
                 opponentAttackSlotB.CurrentSlottedItem = item;
                 item.CardSlotController = opponentAttackSlotB;
 

@@ -55,6 +55,9 @@ public class AIController : MonoBehaviour
 
     private void BuildCardChannelPairA()
     {
+        if (attackA != null)
+            return;
+
         opponentHand = CombatManager.instance.HandManager.OpponentHand.CharacterHand;
         
         List<CardDataObject> possibleCards = new List<CardDataObject>();
@@ -70,7 +73,7 @@ public class AIController : MonoBehaviour
         {
             selectedCard = null;
 
-            attackA = new CardChannelPairObject(selectedCard, GetRandomChannelFromFlag(selectedCard.PossibleChannels));
+            attackA = new CardChannelPairObject(selectedCard, Channels.None);
 
             CombatManager.instance.ChannelsUISlotManager.OpponentAssignAttackSlot(selectedCard.CardUIObject.GetComponent<CardUIController>(),
                 selectedCard.CardUIObject.GetComponent<CardUIController>().CardSlotController);
@@ -88,6 +91,9 @@ public class AIController : MonoBehaviour
 
     private void BuildCardChannelPairB()
     {
+        if (attackB != null)
+            return;
+
         opponentHand = CombatManager.instance.HandManager.OpponentHand.CharacterHand;
 
         List<CardDataObject> possibleCards = new List<CardDataObject>();
@@ -102,7 +108,7 @@ public class AIController : MonoBehaviour
         {
             selectedCard = null;
 
-            attackB = new CardChannelPairObject(selectedCard, GetRandomChannelFromFlag(selectedCard.PossibleChannels));
+            attackB = new CardChannelPairObject(selectedCard, Channels.None);
 
             CombatManager.instance.ChannelsUISlotManager.OpponentAssignAttackSlot(selectedCard.CardUIObject.GetComponent<CardUIController>(),
                 selectedCard.CardUIObject.GetComponent<CardUIController>().CardSlotController);
