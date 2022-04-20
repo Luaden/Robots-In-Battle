@@ -19,6 +19,7 @@ public class TestPlaceholderAnimations : MonoBehaviour
         Lose();
         Counter();
         Guard();
+        Damage();
     }
 
     private void Punch()
@@ -71,5 +72,14 @@ public class TestPlaceholderAnimations : MonoBehaviour
             anim.SetBool("isGuarding", true);
         }
         else anim.SetBool("isGuarding", false);
+    }
+
+    private void Damage()
+    {
+        if (Input.GetKey(KeyCode.D))
+        {
+            anim.SetBool("isDamaged", true);
+        }
+        else anim.SetBool("isDamaged", false);
     }
 }
