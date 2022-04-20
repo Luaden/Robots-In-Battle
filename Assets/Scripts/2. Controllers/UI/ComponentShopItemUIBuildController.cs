@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ShopItemUIBuildController : MonoBehaviour
+public class ComponentShopItemUIBuildController : MonoBehaviour
 {
     [SerializeField] private GameObject ItemPrefab;
     public void BuildAndDisplayItemUI(ShopItemUIObject shopItem, Transform startPoint)

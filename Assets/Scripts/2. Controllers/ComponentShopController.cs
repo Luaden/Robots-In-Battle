@@ -5,7 +5,7 @@ using UnityEngine;
 public class ComponentShopController : MonoBehaviour
 {
     private List<ShopItemUIObject> shopItemList;
-    [SerializeField] protected ShopItemUIBuildController shopItemUIBuildController;
+    [SerializeField] protected ComponentShopItemUIBuildController shopItemUIBuildController;
     public void CreateShopWindow(List<SOItemDataObject> itemsToDisplay, Transform startPoint)
     {
         shopItemList = new List<ShopItemUIObject>();
