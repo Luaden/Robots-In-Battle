@@ -33,7 +33,11 @@ public class GameManager : MonoBehaviour
         FighterDataObject opponentFighter = new FighterDataObject(opponentMech, opponentPilot, testDeck);
 
         CombatManager.instance.PlayerFighter = playerFighter;
+        CombatManager.instance.MechHUDManager.UpdatePlayerHP(playerFighter.FighterMech.MechCurrentHP);
+        CombatManager.instance.MechHUDManager.UpdatePlayerEnergy(playerFighter.FighterMech.MechCurrentEnergy);
         CombatManager.instance.OpponentFighter = opponentFighter;
+        CombatManager.instance.MechHUDManager.UpdateOpponentHP(opponentFighter.FighterMech.MechCurrentHP);
+        CombatManager.instance.MechHUDManager.UpdateOpponentEnergy(opponentFighter.FighterMech.MechCurrentEnergy);
 
         DrawCardPrefab();
     }
