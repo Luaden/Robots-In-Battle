@@ -8,35 +8,36 @@ public class ComponentShopManager : MonoBehaviour
     [SerializeField] protected GameObject shopVendorWindow;
     [SerializeField] protected GameObject shopCartWindow;
 
+    protected ComponentShopController componentShopController;
     private ComponentShopCartSlotManager componentShopCartSlotManager;
     private ComponentShopVendorSlotManager componentShopVendorSlotManager;
 
     public ComponentShopVendorSlotManager ComponentShopVendorSlotManager { get => componentShopVendorSlotManager; }
     public ComponentShopCartSlotManager ComponentShopCartSlotManager { get => componentShopCartSlotManager; }
 
-
-    [SerializeField] protected ComponentShopController componentShopController;
-
     [SerializeField] protected List<SOItemDataObject> itemsToDisplay;
-
-
-
-    private void Awake()
-    {
-        componentShopController = GetComponentInChildren<ComponentShopController>();
-        componentShopVendorSlotManager = GetComponentInChildren<ComponentShopVendorSlotManager>(true);
-        componentShopCartSlotManager = GetComponentInChildren<ComponentShopCartSlotManager>(true);
-
-        // testing purposes
-        CreateShop();
-    }
 
     public void CreateShop()
     {
-        componentShopController.CreateShopWindow(itemsToDisplay, shopVendorWindow.transform);
+        componentShopController = GetComponentInChildren<ComponentShopController>(true);
+        componentShopVendorSlotManager = GetComponentInChildren<ComponentShopVendorSlotManager>(true);
+        componentShopCartSlotManager = GetComponentInChildren<ComponentShopCartSlotManager>(true);
+
+        componentShopController.InitializeShop(itemsToDisplay, shopVendorWindow.transform);
     }
 
-    public void OpenShop()
+    public void OpenAndClose()
+    {
+        bool active = gameObject.activeInHierarchy;
+        gameObject.SetActive(!active);
+    }
+
+    public void UpdateItemsToDisplay(List<SOItemDataObject> sOItemDataObjects)
+    {
+        itemsToDisplay = sOItemDataObjects;
+    }
+
+/*    public void OpenShop()
     {
         inventory.SetActive(false);
         shopVendorWindow.SetActive(true);
@@ -47,10 +48,5 @@ public class ComponentShopManager : MonoBehaviour
         shopVendorWindow.SetActive(false);
         shopCartWindow.SetActive(false);
         inventory.SetActive(true);
-    }
-
-    public void UpdateItemsToDisplay(List<SOItemDataObject> sOItemDataObjects)
-    {
-        itemsToDisplay = sOItemDataObjects;
-    }
+    }*/
 }

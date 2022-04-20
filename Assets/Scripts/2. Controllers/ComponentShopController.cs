@@ -6,7 +6,7 @@ public class ComponentShopController : MonoBehaviour
 {
     private List<ShopItemUIObject> shopItemList;
     [SerializeField] protected ComponentShopItemUIBuildController shopItemUIBuildController;
-    public void CreateShopWindow(List<SOItemDataObject> itemsToDisplay, Transform startPoint)
+    public void InitializeShop(List<SOItemDataObject> itemsToDisplay, Transform startPoint)
     {
         shopItemList = new List<ShopItemUIObject>();
         foreach (SOItemDataObject item in itemsToDisplay)

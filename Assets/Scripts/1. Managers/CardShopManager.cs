@@ -8,42 +8,36 @@ public class CardShopManager : MonoBehaviour
     [SerializeField] protected GameObject shopVendorWindow;
     [SerializeField] protected GameObject shopCartWindow;
 
+    protected CardShopController cardShopController;
     private CardShopCartSlotManager cardShopCartSlotManager;
     private CardShopVendorSlotManager cardShopVendorSlotManager;
 
     public CardShopVendorSlotManager CardShopVendorSlotManager { get => cardShopVendorSlotManager; }
     public CardShopCartSlotManager CardShopCartSlotManager { get => cardShopCartSlotManager; }
 
-
-    [SerializeField] protected CardShopController cardShopController;
-
-    //private ShopCartController shopCartController;
-    //public ShopCartController ShopCartController { get => shopCartController; }
-
-
     [SerializeField] protected List<SOItemDataObject> itemsToDisplay;
-
-
-
-    private void Awake()
-    {
-        cardShopController = GetComponentInChildren<CardShopController>();
-        //shopCartController = GetComponentInChildren<ShopCartController>(true);*/
-        cardShopVendorSlotManager = GetComponentInChildren<CardShopVendorSlotManager>(true);
-        cardShopCartSlotManager = GetComponentInChildren<CardShopCartSlotManager>(true);
-
-        // testing purposes
-        CreateShop();
-    }
 
     public void CreateShop()
     {
-        shopVendorWindow.SetActive(true);
-        shopCartWindow.SetActive(true);
-        cardShopController.CreateShopWindow(itemsToDisplay, shopVendorWindow.transform);
+        cardShopController = GetComponentInChildren<CardShopController>();
+        cardShopVendorSlotManager = GetComponentInChildren<CardShopVendorSlotManager>(true);
+        cardShopCartSlotManager = GetComponentInChildren<CardShopCartSlotManager>(true);
+
+        cardShopController.InitializeShop(itemsToDisplay, shopVendorWindow.transform);
     }
 
-    public void OpenShop()
+    public void OpenAndClose()
+    {
+        bool active = gameObject.activeInHierarchy;
+        gameObject.SetActive(!active);
+    }
+
+    public void UpdateItemsToDisplay(List<SOItemDataObject> sOItemDataObjects)
+    {
+        itemsToDisplay = sOItemDataObjects;
+    }
+
+/*    public void OpenShop()
     {
         inventory.SetActive(false);
         shopVendorWindow.SetActive(true);
@@ -54,22 +48,5 @@ public class CardShopManager : MonoBehaviour
         shopVendorWindow.SetActive(false);
         shopCartWindow.SetActive(false);
         inventory.SetActive(true);
-    }
-
-    public void UpdateItemsToDisplay(List<SOItemDataObject> sOItemDataObjects) => itemsToDisplay = sOItemDataObjects;
-
-    public void UndoShopping()
-    {
-/*        List<ShopCartItemController> shopCartItemList = new List<ShopCartItemController>();
-        for (int i = 0; i < CardShopCartSlotManager.SlotList.Count; i++)
-        {
-            if (CardShopCartSlotManager.SlotList[i].CurrentSlottedItem != null)
-            {
-
-            }
-                //shopCartItemList.Add(CardShopCartSlotManager.SlotList[i].CurrentSlottedItem);
-        }
-
-        shopCartWindow.GetComponent<ShopCartController>().UndoShopping(shopCartItemList.ToArray());*/
-    }
+    }*/
 }
