@@ -4,41 +4,69 @@ using UnityEngine;
 
 public class FighterEffectObject
 {
-    private Dictionary<ElementType, int> elementStacks = new Dictionary<ElementType, int>();
-    private Dictionary<CardCategory, List<CardEffectObject>> cardCategoryDamageBonus = new Dictionary<CardCategory, List<CardEffectObject>>();
+    private Dictionary<Channels, List<ElementStackObject>> iceAcidStacks = new Dictionary<Channels, List<ElementStackObject>>();
     private Dictionary<Channels, List<CardEffectObject>> channelDamageBonus = new Dictionary<Channels, List<CardEffectObject>>();
-    private Dictionary<Channels, List<CardEffectObject>> channelDamagePercentBonus = new Dictionary<Channels, List<CardEffectObject>>();
     private Dictionary<Channels, List<CardEffectObject>> channelDamageReduction = new Dictionary<Channels, List<CardEffectObject>>();
-    private Dictionary<Channels, List<CardEffectObject>> channelDamagePercentReduction = new Dictionary<Channels, List<CardEffectObject>>();
+    private Dictionary<Channels, List<ChannelShieldFalloffObject>> channelShieldFalloff = new Dictionary<Channels, List<ChannelShieldFalloffObject>>();
     private Dictionary<Channels, int> channelShields = new Dictionary<Channels, int>();
+    private Dictionary<ElementType, int> firePlasmaStacks = new Dictionary<ElementType, int>();
     private Dictionary<CardKeyWord, List<CardEffectObject>> keywordDuration = new Dictionary<CardKeyWord, List<CardEffectObject>>();
+    private Dictionary<CardCategory, List<CardEffectObject>> cardCategoryDamageBonus = new Dictionary<CardCategory, List<CardEffectObject>>();
 
-    public Dictionary<ElementType,int> ElementStacks { get => elementStacks; }
+    public Dictionary<Channels, List<ElementStackObject>> IceAcidStacks { get => iceAcidStacks; }
+    public Dictionary<ElementType, int> FirePlasmaStacks { get => firePlasmaStacks; }
     public Dictionary<CardCategory, List<CardEffectObject>> CardCategoryDamageBonus { get => cardCategoryDamageBonus; }
     public Dictionary<Channels, List<CardEffectObject>> ChannelDamageBonus { get => channelDamageBonus; }
-    public Dictionary<Channels, List<CardEffectObject>> ChannelDamagePercentBonus { get => channelDamagePercentBonus; }
     public Dictionary<Channels, List<CardEffectObject>> ChannelDamageReduction { get => channelDamageReduction; }
-    public Dictionary<Channels, List<CardEffectObject>> ChannelDamagePercentReduction { get => channelDamagePercentReduction; }
     public Dictionary<Channels, int> ChannelShields { get => channelShields; }
+    public Dictionary<Channels, List<ChannelShieldFalloffObject>> ChannelShieldsFalloff { get => channelShieldFalloff; }
     public Dictionary<CardKeyWord, List<CardEffectObject>> KeyWordDuration { get => keywordDuration; }
 
     public void IncrementFighterEffects()
     {
-        ReduceElementStacks(ElementStacks);
+        ReduceElementStacks(IceAcidStacks);
+        ReduceElementStacks(FirePlasmaStacks);
         ReduceCategoryDamageBonusEffects(CardCategoryDamageBonus);
         ReduceChannelEffects(ChannelDamageBonus);
         ReduceKeyWordEffects(KeyWordDuration);
         ReduceChannelEffects(ChannelDamageReduction);
     }
 
+    private void ReduceElementStacks(Dictionary<Channels, List<ElementStackObject>> elementDict)
+    {
+        List<KeyValuePair<Channels, List<ElementStackObject>>> elementKVPairList = new List<KeyValuePair<Channels, List<ElementStackObject>>>();
+
+        foreach (KeyValuePair<Channels, List<ElementStackObject>> pair in elementDict)
+        {
+            List<ElementStackObject> newElementStackList = new List<ElementStackObject>();
+
+            foreach (ElementStackObject elementStack in elementDict[pair.Key])
+            {
+                ElementStackObject newStacks = new ElementStackObject();
+
+                newStacks.ElementType = elementStack.ElementType;
+                newStacks.ElementStacks = elementStack.ElementStacks - 1;
+
+                if (newStacks.ElementStacks > 0)
+                    newElementStackList.Add(newStacks);
+            }
+
+            elementDict[pair.Key] = newElementStackList;
+        }
+
+        //Update buff popups
+    }
+
     private void ReduceElementStacks(Dictionary<ElementType, int> elementDict)
     {
         List<KeyValuePair<ElementType, int>> elementKVPairList = new List<KeyValuePair<ElementType, int>>();
-
+        int newStacks;
         foreach (KeyValuePair<ElementType, int> pair in elementDict)
         {
-            //Deal damage
-            elementDict[pair.Key] = pair.Value - 1;
+            //Deal damage or steal energy (get rid of all stacks of plasma)
+            newStacks = pair.Value - 1;
+
+            elementDict[pair.Key] = newStacks;
 
             if (elementDict[pair.Key] == 0)
                 elementKVPairList.Add(pair);

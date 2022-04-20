@@ -15,11 +15,16 @@ public class TestPlaceholderAnimations : MonoBehaviour
     {
         Punch();
         Kick();
+        Win();
+        Lose();
+        Counter();
+        Guard();
+        Damage();
     }
 
     private void Punch()
     {
-        if (Input.GetKey(KeyCode.W))
+        if (Input.GetKey(KeyCode.P))
         {
             anim.SetBool("isPunching", true);
         }
@@ -28,10 +33,53 @@ public class TestPlaceholderAnimations : MonoBehaviour
 
     private void Kick()
     {
-        if (Input.GetKey(KeyCode.E))
+        if (Input.GetKey(KeyCode.K))
         {
             anim.SetBool("isKicking", true);
         }
         else anim.SetBool("isKicking", false);
+    }
+
+    private void Win()
+    {
+        if (Input.GetKey(KeyCode.W))
+        {
+            anim.SetBool("isWinning", true);
+        }
+    }
+
+    private void Lose()
+    {
+        if (Input.GetKey(KeyCode.L))
+        {
+            anim.SetBool("isLosing", true);
+        }
+    }
+
+    private void Counter()
+    {
+        if (Input.GetKey(KeyCode.C))
+        {
+            anim.SetBool("isCountering", true);
+        }
+        else anim.SetBool("isCountering", false);
+    }
+
+    private void Guard()
+    {
+        if (Input.GetKey(KeyCode.G))
+        {
+            anim.SetBool("isGuarding", true);
+        }
+        else anim.SetBool("isGuarding", false);
+    }
+
+    private void Damage()
+    {
+        if (Input.GetKey(KeyCode.D))
+        {
+            anim.SetBool("isDamaged", true);
+        }
+        else anim.SetBool("isDamaged", false);
     }
 }

@@ -7,8 +7,8 @@ public class EditorCardEffectGUI : Editor
 
     public override void OnInspectorGUI()
     {
-        SerializedProperty EffectTypeProperty = serializedObject.FindProperty("cardEffect");
-        EditorGUILayout.PropertyField(serializedObject.FindProperty("cardEffect"));
+        SerializedProperty EffectTypeProperty = serializedObject.FindProperty("effectType");
+        EditorGUILayout.PropertyField(serializedObject.FindProperty("effectType"));
 
         EditorGUILayout.Space();
 
@@ -19,6 +19,10 @@ public class EditorCardEffectGUI : Editor
                 break;
             case (int)CardEffectTypes.GainShields:
                 DisplayMagnitudeAttribute();
+                break;
+            case (int)CardEffectTypes.GainShieldWithFalloff:
+                DisplayMagnitudeAttribute();
+                DisplayFalloff();
                 break;
             case (int)CardEffectTypes.MultiplyShield:
                 DisplayMagnitudeAttribute();
@@ -69,5 +73,10 @@ public class EditorCardEffectGUI : Editor
     private void DisplayKeyWordAttribute()
     {
         EditorGUILayout.PropertyField(serializedObject.FindProperty("cardKeyWord"));
+    }
+
+    private void DisplayFalloff()
+    {
+        EditorGUILayout.PropertyField(serializedObject.FindProperty("fallOffPerTurn"));
     }
 }

@@ -5,13 +5,15 @@ using UnityEngine;
 public class DowntimeManager : MonoBehaviour
 {
     private static DowntimeManager instance;
-    private ShopManager shopManager;
-/*    private ShopCartSlotManager shopCartSlotManager;
-    private ShopItemSlotManager shopItemSlotManager;*/
+
+    private CardShopManager cardShopManager;
+    private ComponentShopManager componentShopManager;
+
     public static DowntimeManager Instance { get { return instance; } }
-    public ShopManager ShopManager { get => shopManager; }
-/*    public ShopCartSlotManager ShopCartSlotManager { get => shopCartSlotManager; }
-    public ShopItemSlotManager ShopItemSlotManager { get => shopItemSlotManager; }*/
+    public CardShopManager CardShopManager { get => cardShopManager; }
+    public ComponentShopManager ComponentShopManager { get => componentShopManager; }
+
+
     private void Awake()
     {
         if(instance != this && instance != null)
@@ -21,8 +23,8 @@ public class DowntimeManager : MonoBehaviour
         }
         instance = this;
 
-        shopManager = GetComponentInChildren<ShopManager>(true);
-/*        shopItemSlotManager = FindObjectOfType<ShopItemSlotManager>(true);
-        shopCartSlotManager = FindObjectOfType<ShopCartSlotManager>(true);*/
+        cardShopManager = GetComponentInChildren<CardShopManager>(true);
+        componentShopManager = GetComponentInChildren<ComponentShopManager>(true);
+
     }
 }

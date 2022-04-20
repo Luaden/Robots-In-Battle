@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 
 [System.Serializable]
 public class CardEffectObject
@@ -9,7 +10,7 @@ public class CardEffectObject
     private int effectMagnitude;
     private int effectDuration;
     private int currentTurn = 0;
-
+    private int effectFallOffPerTurn = 0;
 
     public CardEffectTypes EffectType { get => cardEffect; }
     public CardCategory CardTypeToBoost { get => cardCategoryToBoost; }
@@ -17,13 +18,18 @@ public class CardEffectObject
     public int EffectMagnitude { get => effectMagnitude; set => effectMagnitude = value; }
     public int EffectDuration { get => effectDuration; set => effectDuration = value; }
     public int CurrentTurn { get => currentTurn; set => currentTurn = value; }
+    public int EffectFallOffPerTurn { get => effectFallOffPerTurn; }
 
-    public CardEffectObject(SOCardEffectObject sOCardEffect)
+    public CardEffectObject(SOCardEffectObject sOCardEffect = null)
     {
-        cardEffect = sOCardEffect.EffectType;
-        cardCategoryToBoost = sOCardEffect.CardTypeToBoost;
-        cardKeyWord = sOCardEffect.CardKeyWord;
-        effectMagnitude = sOCardEffect.EffectMagnitude;
-        effectDuration = sOCardEffect.EffectDuration;
+        if(sOCardEffect != null)
+        {
+            cardEffect = sOCardEffect.EffectType;
+            cardCategoryToBoost = sOCardEffect.CardTypeToBoost;
+            cardKeyWord = sOCardEffect.CardKeyWord;
+            effectMagnitude = sOCardEffect.EffectMagnitude;
+            effectDuration = sOCardEffect.EffectDuration;
+            effectFallOffPerTurn = sOCardEffect.EffectFallOffPerTurn;
+        }
     }
 }
