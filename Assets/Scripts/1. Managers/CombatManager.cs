@@ -7,7 +7,8 @@ public class CombatManager : MonoBehaviour
     [SerializeField] private int mechEnergyGain;
     [SerializeField] private int cardDrawOnTurn;
     [SerializeField] private float counterDamageMultiplier;
-    [SerializeField] private float guardDamageReductionMultiplier;
+    [SerializeField] private float guardDamageMultiplier;
+    [SerializeField] private GameObject winLossPanel;
 
     public static CombatManager instance;
 
@@ -42,7 +43,7 @@ public class CombatManager : MonoBehaviour
 
     public int MechEnergyGain { get => mechEnergyGain; }
     public float CounterDamageMultiplier { get => counterDamageMultiplier; }
-    public float GuardDamageReductionMultiplier { get => guardDamageReductionMultiplier; }
+    public float GuardDamageMultiplier { get => guardDamageMultiplier; }
 
     public delegate void onDestroyScene();
     public static event onDestroyScene OnDestroyScene;
@@ -59,6 +60,8 @@ public class CombatManager : MonoBehaviour
             opponentFighter.FighterMech.MechCurrentHP -= damage;
             mechHUDManager.UpdateOpponentHP(opponentFighter.FighterMech.MechCurrentHP);
         }
+
+        CheckForWinLoss();
     }
 
     public void RemoveEnergyFromMech(CharacterSelect character, int energyToRemove)
@@ -139,5 +142,20 @@ public class CombatManager : MonoBehaviour
 
         AddEnergyToMech(CharacterSelect.Opponent, OpponentFighter.FighterMech.MechEnergyGain);
         AddEnergyToMech(CharacterSelect.Player, PlayerFighter.FighterMech.MechEnergyGain);
+    }
+
+    private void CheckForWinLoss()
+    {
+        if (playerFighter.FighterMech.MechCurrentHP <= 0)
+        {
+            winLossPanel.SetActive(true);
+            MechAnimationManager.SetMechAnimation(CharacterSelect.Player, AnimationType.Lose, CharacterSelect.Opponent, AnimationType.Win);
+        }
+        if (opponentFighter.FighterMech.MechCurrentHP <= 0)
+        {
+            winLossPanel.SetActive(true);
+            MechAnimationManager.SetMechAnimation(CharacterSelect.Player, AnimationType.Win, CharacterSelect.Opponent, AnimationType.Lose);
+        }
+
     }
 }

@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
@@ -37,7 +38,7 @@ public class GameManager : MonoBehaviour
         DrawCardPrefab();
     }
 
-    public void DrawCardPrefab()
+    private void DrawCardPrefab()
     {
         CombatManager.instance.DeckManager.SetPlayerDeck(testDeck);
 
@@ -48,5 +49,10 @@ public class GameManager : MonoBehaviour
 
         for (int i = 0; i <= 4; i++)
             CombatManager.instance.DeckManager.DrawOpponentCard();
+    }
+
+    public void ReloadScene()
+    {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 }

@@ -139,7 +139,7 @@ public class DamageCalculatorController
                 {
                     CombatManager.instance.MechAnimationManager.SetMechAnimation(destinationMech, AnimationType.Counter,
                         GetOtherMech(destinationMech), CombatManager.instance.MechAnimationManager.GetAnimationFromCategory(originAttack.CardData.CardCategory));
-                    CombatManager.instance.DealDamageToMech(destinationMech, damageToDeal * Mathf.RoundToInt(CombatManager.instance.GuardDamageReductionMultiplier));
+                    CombatManager.instance.DealDamageToMech(destinationMech, damageToDeal * Mathf.RoundToInt(CombatManager.instance.GuardDamageMultiplier));
                     CalculateComponentDamage(originAttack, destinationMech);
                 }
                 else
