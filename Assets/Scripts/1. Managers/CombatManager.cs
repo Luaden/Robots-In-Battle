@@ -7,6 +7,7 @@ public class CombatManager : MonoBehaviour
     [SerializeField] private int mechEnergyGain;
     [SerializeField] private int cardDrawOnTurn;
     [SerializeField] private float counterDamageMultiplier;
+    [SerializeField] private float guardDamageReductionMultiplier;
 
     public static CombatManager instance;
 
@@ -20,6 +21,7 @@ public class CombatManager : MonoBehaviour
     private MechHUDManager mechHUDManager;
     private PopupUIManager popupUIManager;
     private BuffUIManager buffUIManager;
+    private MechAnimationManager mechAnimationManager;
 
     private FighterDataObject playerFighter;
     private FighterDataObject opponentFighter;
@@ -36,9 +38,11 @@ public class CombatManager : MonoBehaviour
     public MechHUDManager MechHUDManager { get => mechHUDManager; }
     public PopupUIManager PopupUIManager { get => popupUIManager; }
     public BuffUIManager BuffUIManager { get => buffUIManager; }
+    public MechAnimationManager MechAnimationManager { get => mechAnimationManager; }
 
     public int MechEnergyGain { get => mechEnergyGain; }
     public float CounterDamageMultiplier { get => counterDamageMultiplier; }
+    public float GuardDamageReductionMultiplier { get => guardDamageReductionMultiplier; }
 
     public delegate void onDestroyScene();
     public static event onDestroyScene OnDestroyScene;
@@ -99,6 +103,7 @@ public class CombatManager : MonoBehaviour
         mechHUDManager = FindObjectOfType<MechHUDManager>(true);
         popupUIManager = FindObjectOfType<PopupUIManager>(true);
         buffUIManager = FindObjectOfType<BuffUIManager>(true);
+        mechAnimationManager = FindObjectOfType<MechAnimationManager>(true);
     }
 
     private void Start()

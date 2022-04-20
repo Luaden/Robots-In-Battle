@@ -33,6 +33,19 @@ public enum CardCategory
     All = ~0
 }
 
+public enum AnimationType
+{
+    Idle,
+    Punch,
+    Kick,
+    Special,
+    Guard,
+    Counter,
+    Damaged,
+    Win,
+    Lose,
+}
+
 [Flags]
 public enum Channels
 {
