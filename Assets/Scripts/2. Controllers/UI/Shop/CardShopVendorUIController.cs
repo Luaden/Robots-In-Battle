@@ -2,23 +2,34 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using TMPro;
+using UnityEngine.UI;
 
-public class ShopCartItemController : MonoBehaviour, IPointerDownHandler, IPointerUpHandler,
+public class CardShopVendorUIController : MonoBehaviour, IPointerDownHandler, IPointerUpHandler,
                               IPointerEnterHandler, IPointerExitHandler, IBeginDragHandler,
                               IEndDragHandler, IDragHandler
 {
+    [SerializeField] protected TMP_Text itemNameText;
+    [SerializeField] protected TMP_Text itemDescriptionText;
+    [SerializeField] protected Image itemImage;
+    [SerializeField] protected TMP_Text timeCostText;
+    [SerializeField] protected TMP_Text currencyCost;
 
-    private bool isPickedUp = false;
-    private Transform previousParentObject;
-    private float travelSpeed = 450.0f;
+
+    public bool isPickedUp = false;
+    public Transform previousParentObject;
+    public float travelSpeed = 450.0f;
 
     private RectTransform draggableRectTransform;
     private CanvasGroup draggableCanvasGroup;
 
-    private BaseSlotController<ShopCartItemController> shopCartItemSlotController;
-    public BaseSlotController<ShopCartItemController> ShopCartItemSlotController
+    private ShopItemUIObject shopItemUIObject;
+    public ShopItemUIObject ShopItemUIObject { get => shopItemUIObject; }
+
+    private BaseSlotController<CardShopVendorUIController> cardShopVendorSlotController;
+    public BaseSlotController<CardShopVendorUIController> CardShopVendorSlotController
     {
-        get => shopCartItemSlotController;
+        get => cardShopVendorSlotController;
         set => UpdateItemSlot(value);
     }
     public Transform PreviousParentObject
@@ -27,18 +38,30 @@ public class ShopCartItemController : MonoBehaviour, IPointerDownHandler, IPoint
         set => previousParentObject = value;
     }
 
+    public void InitUI(ShopItemUIObject shopItemUIObject)
+    {
+        itemNameText.text = shopItemUIObject.ItemName;
+        itemDescriptionText.text = shopItemUIObject.ItemDescription;
+        itemImage.sprite = shopItemUIObject.ItemImage;
+        timeCostText.text = shopItemUIObject.TimeCost.ToString();
+        currencyCost.text = shopItemUIObject.CurrencyCost.ToString();
+
+        this.shopItemUIObject = shopItemUIObject;
+        shopItemUIObject.ShopItemUIController = this.gameObject;
+    }
 
     public void OnDrag(PointerEventData eventData)
     {
-        shopCartItemSlotController.HandleDrag(eventData);
+        cardShopVendorSlotController.HandleDrag(eventData);
+
     }
 
     public virtual void OnBeginDrag(PointerEventData eventData)
     {
-        shopCartItemSlotController.SlotManager.RemoveItemFromCollection(this);
         isPickedUp = true;
         draggableCanvasGroup.blocksRaycasts = false;
         draggableCanvasGroup.alpha = .6f;
+        cardShopVendorSlotController.SlotManager.RemoveItemFromCollection(this);
     }
 
     public virtual void OnEndDrag(PointerEventData eventData)
@@ -50,7 +73,7 @@ public class ShopCartItemController : MonoBehaviour, IPointerDownHandler, IPoint
 
     public void OnPointerDown(PointerEventData eventData)
     {
-        transform.SetParent(shopCartItemSlotController.SlotManager.MainCanvas.transform);
+        transform.SetParent(cardShopVendorSlotController.SlotManager.MainCanvas.transform);
     }
 
     public void OnPointerEnter(PointerEventData eventData)
@@ -79,7 +102,7 @@ public class ShopCartItemController : MonoBehaviour, IPointerDownHandler, IPoint
 
     private void MoveToSlot()
     {
-        if (isPickedUp || shopCartItemSlotController == null)
+        if (isPickedUp || cardShopVendorSlotController == null)
             return;
 
         if (transform.parent == null)
@@ -87,15 +110,13 @@ public class ShopCartItemController : MonoBehaviour, IPointerDownHandler, IPoint
 
         draggableRectTransform.position =
             Vector3.MoveTowards(draggableRectTransform.position,
-            ShopCartItemSlotController.gameObject.GetComponent<RectTransform>().position,
+            CardShopVendorSlotController.gameObject.GetComponent<RectTransform>().position,
             travelSpeed * Time.deltaTime);
     }
-
-    private void UpdateItemSlot(BaseSlotController<ShopCartItemController> newSlot)
+    private void UpdateItemSlot(BaseSlotController<CardShopVendorUIController> newSlot)
     {
-        shopCartItemSlotController = newSlot;
+        cardShopVendorSlotController = newSlot;
         transform.SetParent(newSlot.transform);
         previousParentObject = newSlot.transform;
     }
-
 }

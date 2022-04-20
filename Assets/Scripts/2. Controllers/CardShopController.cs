@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ShopController : MonoBehaviour
+public class CardShopController : MonoBehaviour
 {
     private List<ShopItemUIObject> shopItemList;
     [SerializeField] protected ShopItemUIBuildController shopItemUIBuildController;
@@ -21,6 +21,4 @@ public class ShopController : MonoBehaviour
             }
         }
     }
-
-
 }
