@@ -12,10 +12,10 @@ public class ShopItemUIBuildController : MonoBehaviour
         shopItemUIGameObject.transform.position = startPoint.position;
 
         shopItem.ShopItemUIController = shopItemUIGameObject;
-        CardShopVendorUIController cardShopUIController = shopItemUIGameObject.GetComponent<CardShopVendorUIController>();
+        ComponentShopVendorUIController componentShopUIController = shopItemUIGameObject.GetComponent<ComponentShopVendorUIController>();
 
-        cardShopUIController.InitUI(shopItem);
-        DowntimeManager.Instance.CardShopManager.CardShopVendorSlotManager.AddItemToCollection(cardShopUIController, null);
+        componentShopUIController.InitUI(shopItem);
+        DowntimeManager.Instance.ComponentShopManager.ComponentShopVendorSlotManager.AddItemToCollection(componentShopUIController, null);
 
         shopItemUIGameObject.SetActive(true);
     }

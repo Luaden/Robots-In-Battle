@@ -8,18 +8,14 @@ public class ComponentShopManager : MonoBehaviour
     [SerializeField] protected GameObject shopVendorWindow;
     [SerializeField] protected GameObject shopCartWindow;
 
-    private CardShopCartSlotManager cardShopCartSlotManager;
-    private CardShopVendorSlotManager cardShopVendorSlotManager;
+    private ComponentShopCartSlotManager componentShopCartSlotManager;
+    private ComponentShopVendorSlotManager componentShopVendorSlotManager;
 
-    public CardShopVendorSlotManager CardShopVendorSlotManager { get => cardShopVendorSlotManager; }
-    public CardShopCartSlotManager CardShopCartSlotManager { get => cardShopCartSlotManager; }
+    public ComponentShopVendorSlotManager ComponentShopVendorSlotManager { get => componentShopVendorSlotManager; }
+    public ComponentShopCartSlotManager ComponentShopCartSlotManager { get => componentShopCartSlotManager; }
 
 
-    [SerializeField] protected CardShopController cardShopController;
-
-    //private ShopCartController shopCartController;
-    //public ShopCartController ShopCartController { get => shopCartController; }
-
+    [SerializeField] protected ComponentShopController componentShopController;
 
     [SerializeField] protected List<SOItemDataObject> itemsToDisplay;
 
@@ -27,10 +23,9 @@ public class ComponentShopManager : MonoBehaviour
 
     private void Awake()
     {
-        cardShopController = GetComponentInChildren<CardShopController>();
-        //shopCartController = GetComponentInChildren<ShopCartController>(true);*/
-        cardShopVendorSlotManager = GetComponentInChildren<CardShopVendorSlotManager>(true);
-        cardShopCartSlotManager = GetComponentInChildren<CardShopCartSlotManager>(true);
+        componentShopController = GetComponentInChildren<ComponentShopController>();
+        componentShopVendorSlotManager = GetComponentInChildren<ComponentShopVendorSlotManager>(true);
+        componentShopCartSlotManager = GetComponentInChildren<ComponentShopCartSlotManager>(true);
 
         // testing purposes
         CreateShop();
@@ -40,7 +35,7 @@ public class ComponentShopManager : MonoBehaviour
     {
         shopVendorWindow.SetActive(true);
         shopCartWindow.SetActive(true);
-        cardShopController.CreateShopWindow(itemsToDisplay, shopVendorWindow.transform);
+        componentShopController.CreateShopWindow(itemsToDisplay, shopVendorWindow.transform);
     }
 
     public void OpenShop()
