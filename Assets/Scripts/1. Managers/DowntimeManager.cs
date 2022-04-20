@@ -24,6 +24,7 @@ public class DowntimeManager : MonoBehaviour
         instance = this;
 
         cardShopManager = GetComponentInChildren<CardShopManager>(true);
+        componentShopManager = GetComponentInChildren<ComponentShopManager>(true);
 
     }
 }
