@@ -12,15 +12,6 @@ public class ComponentShopCartSlotManager : BaseSlotManager<ComponentShopCartUIC
             item.ComponentShopSlotUIController = slot;
             slot.CurrentSlottedItem = item;
         }
-
-        foreach (BaseSlotController<ComponentShopCartUIController> slotOption in slotList)
-            if (slotOption.CurrentSlottedItem == null)
-            {
-                slotOption.CurrentSlottedItem = item;
-                item.ComponentShopSlotUIController = slotOption;
-
-                return;
-            }
     }
 
     public override void AddSlotToList(BaseSlotController<ComponentShopCartUIController> newSlot)
