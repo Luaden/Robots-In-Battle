@@ -26,5 +26,8 @@ public class DowntimeManager : MonoBehaviour
         cardShopManager = GetComponentInChildren<CardShopManager>(true);
         componentShopManager = GetComponentInChildren<ComponentShopManager>(true);
 
+        Instance.CardShopManager.CreateShop();
+        Instance.ComponentShopManager.CreateShop();
+
     }
 }

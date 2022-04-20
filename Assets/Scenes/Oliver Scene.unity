@@ -2212,17 +2212,17 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1130174386}
-        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
-        m_MethodName: SetActive
-        m_Mode: 6
+      - m_Target: {fileID: 996366713}
+        m_TargetAssemblyTypeName: CardShopManager, Assembly-CSharp
+        m_MethodName: OpenAndClose
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
-          m_BoolArgument: 0
+          m_BoolArgument: 1
         m_CallState: 2
 --- !u!114 &427547617
 MonoBehaviour:
@@ -4970,22 +4970,10 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1130174386}
-        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
-        m_MethodName: SetActive
-        m_Mode: 6
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 1
-        m_CallState: 2
-      - m_Target: {fileID: 996366711}
-        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
-        m_MethodName: SetActive
-        m_Mode: 6
+      - m_Target: {fileID: 1130174388}
+        m_TargetAssemblyTypeName: ComponentShopManager, Assembly-CSharp
+        m_MethodName: OpenAndClose
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -5321,13 +5309,13 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: 
-        m_MethodName: 
+      - m_Target: {fileID: 1599826697}
+        m_TargetAssemblyTypeName: ComponentShopController, Assembly-CSharp
+        m_MethodName: PurchaseItem
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: 
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
@@ -5382,7 +5370,6 @@ GameObject:
   - component: {fileID: 869697134}
   - component: {fileID: 869697137}
   - component: {fileID: 869697136}
-  - component: {fileID: 869697135}
   m_Layer: 5
   m_Name: Item (Component)
   m_TagString: Untagged
@@ -5414,26 +5401,6 @@ RectTransform:
   m_AnchoredPosition: {x: 477, y: 383}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &869697135
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 869697133}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: beccdbd3bb2de61499252808290184d7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  itemNameText: {fileID: 569576616}
-  itemDescriptionText: {fileID: 810358493}
-  itemImage: {fileID: 2011613293}
-  timeCostText: {fileID: 463718220}
-  currencyCost: {fileID: 921640219}
-  isPickedUp: 0
-  previousParentObject: {fileID: 0}
-  travelSpeed: 450
 --- !u!225 &869697136
 CanvasGroup:
   m_ObjectHideFlags: 0
@@ -10237,13 +10204,13 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: 
-        m_MethodName: 
+      - m_Target: {fileID: 1320992562}
+        m_TargetAssemblyTypeName: CardShopController, Assembly-CSharp
+        m_MethodName: PurchaseItem
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: 
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
@@ -10719,7 +10686,6 @@ GameObject:
   - component: {fileID: 2050487815}
   - component: {fileID: 2050487818}
   - component: {fileID: 2050487817}
-  - component: {fileID: 2050487816}
   m_Layer: 5
   m_Name: Item (Card)
   m_TagString: Untagged
@@ -10751,26 +10717,6 @@ RectTransform:
   m_AnchoredPosition: {x: 477, y: 383}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &2050487816
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2050487814}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e3e5b50bc6fefc041a9d5974230af6e8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  itemNameText: {fileID: 1734926012}
-  itemDescriptionText: {fileID: 577241846}
-  itemImage: {fileID: 1782531091}
-  timeCostText: {fileID: 577503411}
-  currencyCost: {fileID: 1257214194}
-  isPickedUp: 0
-  previousParentObject: {fileID: 0}
-  travelSpeed: 450
 --- !u!225 &2050487817
 CanvasGroup:
   m_ObjectHideFlags: 0

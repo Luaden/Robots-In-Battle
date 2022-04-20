@@ -25,7 +25,39 @@ public class CardShopController : MonoBehaviour
     public void PurchaseItem()
     {
         // check resources of player- time/money
-        // if enough, send to inventory
+        // if enough, send to inventory, remove resources from playerdata/inventory
+        // if not, warn -> not enough time/money available
+
+        List<CardShopCartUIController> shopCartItemList = new List<CardShopCartUIController>();
+        for (int i = 0; i < DowntimeManager.Instance.CardShopManager.CardShopCartSlotManager.SlotList.Count; i++)
+        {
+            if (DowntimeManager.Instance.CardShopManager.CardShopCartSlotManager.SlotList[i].CurrentSlottedItem != null)
+            {
+                shopCartItemList.Add(DowntimeManager.Instance.CardShopManager.CardShopCartSlotManager.SlotList[i].CurrentSlottedItem);
+            }
+        }
+
+        float currencycost = 0;
+        float timecost = 0;
+
+        foreach(CardShopCartUIController shopCartUI in shopCartItemList)
+        {
+            currencycost += shopCartUI.ShopItemUIObject.CurrencyCost;
+            timecost += shopCartUI.ShopItemUIObject.TimeCost;
+        }
+
+        Debug.Log("currency cost: " + currencycost);
+        Debug.Log("time cost: " + timecost);
+
+/*        if (currencycost <= FindObjectOfType<PlayerDataObject>().CurrencyToSpend)
+            foreach (ShopItemUIObject item in shopItemList)
+            {
+                //playerdata.AcquireItem(item)
+            }
+        else
+            UndoCart();*/
+
+
     }
 
     public void UndoCart()
