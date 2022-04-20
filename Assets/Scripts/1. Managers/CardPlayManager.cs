@@ -8,6 +8,8 @@ public class CardPlayManager : MonoBehaviour
     private AttackPlanObject opponentAttackPlan;
 
     private DamageCalculatorController damageCalculator;
+    
+    public AttackPlanObject PlayerAttackPlan { get => playerAttackPlan; }
 
     public delegate void onCombatComplete();
     public static event onCombatComplete OnCombatComplete;
@@ -22,13 +24,16 @@ public class CardPlayManager : MonoBehaviour
     {
         AttackPlanObject attackPlan = new AttackPlanObject(cardChannelPairObjectA, cardChannelPairObjectB, CharacterSelect.Opponent, CharacterSelect.Player);
         opponentAttackPlan = attackPlan;
-
-        if (playerAttackPlan != null && opponentAttackPlan != null)
-            damageCalculator.DetermineABInteraction(playerAttackPlan, opponentAttackPlan);
         
         //Call for energy consumption here.
         
-        ClearAttackPlans();
+    }
+
+    public void PlayCards()
+    {
+        damageCalculator.DetermineABInteraction(playerAttackPlan, opponentAttackPlan);
+
+        ClearAttackPlans();   
     }
 
 
@@ -51,7 +56,7 @@ public class CardPlayManager : MonoBehaviour
 
 
 
-        playerAttackPlan = null;
+        playerAttackPlan = new AttackPlanObject(null, null, CharacterSelect.Player, CharacterSelect.Opponent);
         opponentAttackPlan = null;
 
         OnCombatComplete?.Invoke();
@@ -60,5 +65,6 @@ public class CardPlayManager : MonoBehaviour
     private void Start()
     {
         damageCalculator = new DamageCalculatorController();
+        playerAttackPlan = new AttackPlanObject(null, null, CharacterSelect.Player, CharacterSelect.Opponent);
     }
 }

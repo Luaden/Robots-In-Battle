@@ -60,7 +60,8 @@ public class AIController : MonoBehaviour
         CardDataObject selectedCard;
 
         foreach (CardDataObject card in opponentHand)
-            if (card.EnergyCost <= CombatManager.instance.OpponentFighter.FighterMech.MechCurrentEnergy)
+            if (card.EnergyCost <= CombatManager.instance.OpponentFighter.FighterMech.MechCurrentEnergy && 
+                (card.CardType == CardType.Attack || card.CardType == CardType.Neutral))
                 possibleCards.Add(card);
 
         if(possibleCards.Count == 0)
@@ -89,10 +90,11 @@ public class AIController : MonoBehaviour
         CardDataObject selectedCard;
 
         foreach (CardDataObject card in opponentHand)
-            if (card.EnergyCost <= CombatManager.instance.OpponentFighter.FighterMech.MechCurrentEnergy)
+            if (card.EnergyCost <= CombatManager.instance.OpponentFighter.FighterMech.MechCurrentEnergy &&
+                (card.CardType == CardType.Defense || card.CardType == CardType.Neutral))
                 possibleCards.Add(card);
 
-        if(possibleCards.Count == 0)
+        if (possibleCards.Count == 0)
         {
             selectedCard = null;
 

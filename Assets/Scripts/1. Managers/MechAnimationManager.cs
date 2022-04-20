@@ -43,7 +43,7 @@ public class MechAnimationManager : MonoBehaviour
                 return AnimationType.Counter;
         }
 
-        return AnimationType.Damaged;
+        return AnimationType.Idle;
     }
 
     private void Update()

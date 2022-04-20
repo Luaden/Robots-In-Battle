@@ -41,6 +41,7 @@ public class ChannelsUISlotManager : BaseSlotManager<CardUIController>
                     item.CardData.SelectedChannels = selectedChannel;
 
                 cardChannelPairObjectA = new CardChannelPairObject(item.CardData, selectedChannel);
+                CombatManager.instance.CardPlayManager.PlayerAttackPlan.cardChannelPairA = cardChannelPairObjectA;
 
                 OnASlotFilled?.Invoke();
                 return;
@@ -63,9 +64,7 @@ public class ChannelsUISlotManager : BaseSlotManager<CardUIController>
                     item.CardData.SelectedChannels = selectedChannel; 
                 
                 cardChannelPairObjectB = new CardChannelPairObject(item.CardData, selectedChannel);
-
-                if (playerAttackSlotA.CurrentSlottedItem != null && playerAttackSlotB.CurrentSlottedItem != null)
-                    CombatManager.instance.CardPlayManager.BuildPlayerAttackPlan(cardChannelPairObjectA, cardChannelPairObjectB);
+                CombatManager.instance.CardPlayManager.PlayerAttackPlan.cardChannelPairB = cardChannelPairObjectB;
 
                 OnBSlotFilled?.Invoke();
                 return;
