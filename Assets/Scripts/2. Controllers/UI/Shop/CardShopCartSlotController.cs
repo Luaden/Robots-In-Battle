@@ -11,34 +11,24 @@ public class CardShopCartSlotController : BaseSlotController<CardShopCartUIContr
         if (this.CurrentSlottedItem != null)
             return;
 
-        // is our dragged object not a part of ShopCart?
         if (eventData.pointerDrag.GetComponent<CardShopCartUIController>() == null)
         {
-            // is it a ShopItem?
-            if (eventData.pointerDrag.GetComponent<CardShopVendorUIController>() != null)
-            {
-                // add the ShopCart component to this object
-                CardShopCartUIController item = eventData.pointerDrag.AddComponent<CardShopCartUIController>();
-                item.CardShopCartSlotController = this;
-
-                slotManager.HandleDrop(eventData, eventData.pointerDrag.GetComponent<CardShopCartUIController>(), this);
-                // turn the shop item component off
-                item.GetComponent<CardShopVendorUIController>().enabled = false;
-            }
+            Debug.Log("Item was dropped in a slot that does not fit it.");
+            return;
         }
 
-        // does the dragged object have ShopCart but deactivated?
-        if (!eventData.pointerDrag.GetComponent<CardShopCartUIController>().enabled)
-        {
-            CardShopCartUIController shopCartItem = eventData.pointerDrag.GetComponent<CardShopCartUIController>();
-            shopCartItem.enabled = true;
+        CardShopCartUIController shopCartItem = eventData.pointerDrag.GetComponent<CardShopCartUIController>();
 
-            slotManager.HandleDrop(eventData, eventData.pointerDrag.GetComponent<CardShopCartUIController>(), this);
+        // does the dragged object have ShopCart but deactivated?
+        if (!shopCartItem.enabled)
+        {
+            shopCartItem.enabled = true;
+            shopCartItem.CardShopCartSlotController = this;
 
             CardShopVendorUIController shopItem = shopCartItem.GetComponent<CardShopVendorUIController>();
             shopItem.enabled = false;
         }
 
-        slotManager.HandleDrop(eventData, eventData.pointerDrag.GetComponent<CardShopCartUIController>(), this);
+        slotManager.HandleDrop(eventData, shopCartItem, this);
     }
 }

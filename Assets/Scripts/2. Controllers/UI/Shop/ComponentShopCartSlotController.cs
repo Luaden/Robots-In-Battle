@@ -11,34 +11,24 @@ public class ComponentShopCartSlotController : BaseSlotController<ComponentShopC
         if (this.CurrentSlottedItem != null)
             return;
 
-        // is our dragged object not a part of ShopCart?
         if (eventData.pointerDrag.GetComponent<ComponentShopCartUIController>() == null)
         {
-            // is it a ShopItem?
-            if (eventData.pointerDrag.GetComponent<ComponentShopVendorUIController>() != null)
-            {
-                // add the ShopCart component to this object
-                ComponentShopCartUIController item = eventData.pointerDrag.AddComponent<ComponentShopCartUIController>();
-                item.ComponentShopSlotUIController = this;
-
-                slotManager.HandleDrop(eventData, eventData.pointerDrag.GetComponent<ComponentShopCartUIController>(), this);
-                // turn the shop item component off
-                item.GetComponent<ComponentShopVendorUIController>().enabled = false;
-            }
+            Debug.Log("Item was dropped in a slot that does not fit it.");
+            return;
         }
+
+        ComponentShopCartUIController shopCartItem = eventData.pointerDrag.GetComponent<ComponentShopCartUIController>();
 
         // does the dragged object have ShopCart but deactivated?
-        if (!eventData.pointerDrag.GetComponent<ComponentShopCartUIController>().enabled)
+        if (!shopCartItem.enabled)
         {
-            ComponentShopCartUIController shopCartItem = eventData.pointerDrag.GetComponent<ComponentShopCartUIController>();
             shopCartItem.enabled = true;
+            shopCartItem.ComponentShopSlotUIController = this;
 
-            slotManager.HandleDrop(eventData, eventData.pointerDrag.GetComponent<ComponentShopCartUIController>(), this);
-
-            ComponentShopVendorUIController shopItem = shopCartItem.GetComponent<ComponentShopVendorUIController>();
-            shopItem.enabled = false;
+            ComponentShopVendorUIController vendorItem = shopCartItem.GetComponent<ComponentShopVendorUIController>();
+            vendorItem.enabled = false;
         }
 
-        slotManager.HandleDrop(eventData, eventData.pointerDrag.GetComponent<ComponentShopCartUIController>(), this);
+        slotManager.HandleDrop(eventData, shopCartItem, this);
     }
 }
