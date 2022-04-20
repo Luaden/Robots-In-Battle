@@ -56,6 +56,8 @@ public class CardShopManager : MonoBehaviour
         inventory.SetActive(true);
     }
 
+    public void UpdateItemsToDisplay(List<SOItemDataObject> sOItemDataObjects) => itemsToDisplay = sOItemDataObjects;
+
     public void UndoShopping()
     {
 /*        List<ShopCartItemController> shopCartItemList = new List<ShopCartItemController>();

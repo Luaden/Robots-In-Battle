@@ -282,9 +282,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 'Shop
-
-'
+  m_Text: Cards
 --- !u!222 &19245904
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -1339,7 +1337,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &233945582
 RectTransform:
   m_ObjectHideFlags: 0
@@ -2144,12 +2142,12 @@ GameObject:
   - component: {fileID: 427547617}
   - component: {fileID: 427547616}
   m_Layer: 5
-  m_Name: Shop Button
+  m_Name: CardShop Button
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &427547615
 RectTransform:
   m_ObjectHideFlags: 0
@@ -2162,7 +2160,7 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 19245902}
-  m_Father: {fileID: 1130174387}
+  m_Father: {fileID: 637645135}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
@@ -2214,10 +2212,22 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: ShopManager, Assembly-CSharp
-        m_MethodName: OpenShop
-        m_Mode: 1
+      - m_Target: {fileID: 996366711}
+        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+        m_MethodName: SetActive
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
+        m_CallState: 2
+      - m_Target: {fileID: 1130174386}
+        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+        m_MethodName: SetActive
+        m_Mode: 6
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -2634,7 +2644,7 @@ RectTransform:
   m_Children:
   - {fileID: 829888753}
   m_Father: {fileID: 996366712}
-  m_RootOrder: 4
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -2990,7 +3000,7 @@ RectTransform:
   m_Children:
   - {fileID: 1934039746}
   m_Father: {fileID: 1130174387}
-  m_RootOrder: 4
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -3577,6 +3587,8 @@ RectTransform:
   - {fileID: 627032202}
   - {fileID: 770283053}
   - {fileID: 1455563896}
+  - {fileID: 427547615}
+  - {fileID: 833011063}
   - {fileID: 869697134}
   - {fileID: 2050487815}
   m_Father: {fileID: 0}
@@ -4101,9 +4113,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: ShopManager, Assembly-CSharp
-        m_MethodName: UndoShopping
+      - m_Target: {fileID: 1599826697}
+        m_TargetAssemblyTypeName: ComponentShopController, Assembly-CSharp
+        m_MethodName: UndoCart
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -4900,12 +4912,12 @@ GameObject:
   - component: {fileID: 833011065}
   - component: {fileID: 833011064}
   m_Layer: 5
-  m_Name: Shop Button
+  m_Name: ComponentShop Button
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &833011063
 RectTransform:
   m_ObjectHideFlags: 0
@@ -4914,16 +4926,16 @@ RectTransform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 833011062}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: -1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1708119171}
-  m_Father: {fileID: 996366712}
-  m_RootOrder: 3
+  m_Father: {fileID: 637645135}
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -340, y: -468}
+  m_AnchoredPosition: {x: -574, y: -468}
   m_SizeDelta: {x: 160, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &833011064
@@ -4970,10 +4982,22 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: ShopManager, Assembly-CSharp
-        m_MethodName: OpenShop
-        m_Mode: 1
+      - m_Target: {fileID: 1130174386}
+        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+        m_MethodName: SetActive
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
+        m_CallState: 2
+      - m_Target: {fileID: 996366711}
+        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+        m_MethodName: SetActive
+        m_Mode: 6
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -5395,7 +5419,7 @@ RectTransform:
   - {fileID: 463718219}
   - {fileID: 921640218}
   m_Father: {fileID: 637645135}
-  m_RootOrder: 3
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -6127,7 +6151,6 @@ RectTransform:
   - {fileID: 1320992560}
   - {fileID: 1826352713}
   - {fileID: 1017154732}
-  - {fileID: 833011063}
   - {fileID: 491028699}
   m_Father: {fileID: 627032202}
   m_RootOrder: 0
@@ -6617,7 +6640,6 @@ Transform:
   - {fileID: 1599826695}
   - {fileID: 1399959562}
   - {fileID: 233945582}
-  - {fileID: 427547615}
   - {fileID: 570623210}
   m_Father: {fileID: 627032202}
   m_RootOrder: 1
@@ -8072,7 +8094,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1399959562
 RectTransform:
   m_ObjectHideFlags: 0
@@ -9254,9 +9276,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: ShopManager, Assembly-CSharp
-        m_MethodName: UndoShopping
+      - m_Target: {fileID: 1320992562}
+        m_TargetAssemblyTypeName: CardShopController, Assembly-CSharp
+        m_MethodName: UndoCart
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -9538,9 +9560,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 'Shop
-
-'
+  m_Text: Components
 --- !u!222 &1708119173
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -10738,7 +10758,7 @@ RectTransform:
   - {fileID: 577503410}
   - {fileID: 1257214193}
   m_Father: {fileID: 637645135}
-  m_RootOrder: 4
+  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}

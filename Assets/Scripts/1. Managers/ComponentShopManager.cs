@@ -33,8 +33,6 @@ public class ComponentShopManager : MonoBehaviour
 
     public void CreateShop()
     {
-        shopVendorWindow.SetActive(true);
-        shopCartWindow.SetActive(true);
         componentShopController.CreateShopWindow(itemsToDisplay, shopVendorWindow.transform);
     }
 
@@ -51,18 +49,8 @@ public class ComponentShopManager : MonoBehaviour
         inventory.SetActive(true);
     }
 
-    public void UndoShopping()
+    public void UpdateItemsToDisplay(List<SOItemDataObject> sOItemDataObjects)
     {
-        /*List<ShopCartItemController> shopCartItemList = new List<ShopCartItemController>();
-        for (int i = 0; i < CardShopCartSlotManager.SlotList.Count; i++)
-        {
-            if (CardShopCartSlotManager.SlotList[i].CurrentSlottedItem != null)
-            {
-
-            }
-            //shopCartItemList.Add(CardShopCartSlotManager.SlotList[i].CurrentSlottedItem);
-        }
-
-        shopCartWindow.GetComponent<ShopCartController>().UndoShopping(shopCartItemList.ToArray());*/
+        itemsToDisplay = sOItemDataObjects;
     }
 }

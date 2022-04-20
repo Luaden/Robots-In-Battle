@@ -21,4 +21,37 @@ public class CardShopController : MonoBehaviour
             }
         }
     }
+
+    public void PurchaseItem()
+    {
+        // check resources of player- time/money
+        // if enough, send to inventory
+    }
+
+    public void UndoCart()
+    {
+        List<CardShopCartUIController> shopCartItemList = new List<CardShopCartUIController>();
+        for (int i = 0; i < DowntimeManager.Instance.CardShopManager.CardShopCartSlotManager.SlotList.Count; i++)
+        {
+            if (DowntimeManager.Instance.CardShopManager.CardShopCartSlotManager.SlotList[i].CurrentSlottedItem != null)
+            {
+                shopCartItemList.Add(DowntimeManager.Instance.CardShopManager.CardShopCartSlotManager.SlotList[i].CurrentSlottedItem);
+
+            }
+        }
+
+        foreach (CardShopCartUIController cartItem in shopCartItemList)
+        {
+            cartItem.CardShopCartSlotController.SlotManager.RemoveItemFromCollection(cartItem);
+            CardShopVendorUIController vendorItem = cartItem.GetComponent<CardShopVendorUIController>();
+
+            vendorItem.transform.SetParent(vendorItem.PreviousParentObject);
+            cartItem.enabled = false;
+            vendorItem.enabled = true;
+            vendorItem.isPickedUp = false;
+
+        }
+
+    }
+
 }
