@@ -12,7 +12,7 @@ public class FighterDataObject
     private int resistanceModifier;
 
     public MechObject FighterMech { get => fighterMech; }
-    public List<SOItemDataObject> FighterDeck { get => fighterDeck; }
+    public List<SOItemDataObject> FighterDeck { get => fighterDeck; set => fighterDeck = value; }
     public PilotDataObject FighterPilot { get => fighterPilot; }
 
     public FighterDataObject(MechObject mech, PilotDataObject pilot, List<SOItemDataObject> deck)
