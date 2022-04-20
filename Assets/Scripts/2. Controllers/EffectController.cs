@@ -10,6 +10,9 @@ public class EffectController
 
     public void EnableEffects(CardChannelPairObject cardChannelPair, CharacterSelect destinationMech)
     {
+        if (cardChannelPair == null || cardChannelPair.CardData == null)
+            return;
+
         if (cardChannelPair.CardData.CardEffects == null)
             return;
 

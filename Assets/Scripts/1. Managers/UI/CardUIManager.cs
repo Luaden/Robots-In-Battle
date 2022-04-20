@@ -23,7 +23,6 @@ public class CardUIManager : MonoBehaviour
 
     public void DestroyCardUI(CardDataObject cardToReturn)
     {
-        //If we wanted an animation for the card here, this is where we'd do it.
         Destroy(cardToReturn.CardUIObject);
     }
 

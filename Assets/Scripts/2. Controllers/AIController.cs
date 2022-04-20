@@ -43,24 +43,26 @@ public class AIController : MonoBehaviour
     {
         ChannelsUISlotManager.OnASlotFilled += BuildCardChannelPairA;
         ChannelsUISlotManager.OnBSlotFilled += BuildCardChannelPairB;
+        CardPlayManager.OnCombatStart += FinalCheck;
     }
 
     private void OnDestroy()
     {
         ChannelsUISlotManager.OnASlotFilled -= BuildCardChannelPairA;
         ChannelsUISlotManager.OnBSlotFilled -= BuildCardChannelPairB;
+        CardPlayManager.OnCombatStart -= FinalCheck;
     }
 
     private void BuildCardChannelPairA()
     {
-        if (opponentHand == null)
-            opponentHand = CombatManager.instance.HandManager.OpponentHand.CharacterHand;
+        opponentHand = CombatManager.instance.HandManager.OpponentHand.CharacterHand;
         
         List<CardDataObject> possibleCards = new List<CardDataObject>();
         CardDataObject selectedCard;
 
         foreach (CardDataObject card in opponentHand)
-            if (card.EnergyCost <= CombatManager.instance.OpponentFighter.FighterMech.MechCurrentEnergy)
+            if (card.EnergyCost <= CombatManager.instance.OpponentFighter.FighterMech.MechCurrentEnergy && 
+                (card.CardType == CardType.Attack || card.CardType == CardType.Neutral))
                 possibleCards.Add(card);
 
         if(possibleCards.Count == 0)
@@ -85,14 +87,17 @@ public class AIController : MonoBehaviour
 
     private void BuildCardChannelPairB()
     {
+        opponentHand = CombatManager.instance.HandManager.OpponentHand.CharacterHand;
+
         List<CardDataObject> possibleCards = new List<CardDataObject>();
         CardDataObject selectedCard;
 
         foreach (CardDataObject card in opponentHand)
-            if (card.EnergyCost <= CombatManager.instance.OpponentFighter.FighterMech.MechCurrentEnergy)
+            if (card.EnergyCost <= CombatManager.instance.OpponentFighter.FighterMech.MechCurrentEnergy &&
+                (card.CardType == CardType.Defense || card.CardType == CardType.Neutral))
                 possibleCards.Add(card);
 
-        if(possibleCards.Count == 0)
+        if (possibleCards.Count == 0)
         {
             selectedCard = null;
 
@@ -100,9 +105,6 @@ public class AIController : MonoBehaviour
 
             CombatManager.instance.ChannelsUISlotManager.OpponentAssignAttackSlot(selectedCard.CardUIObject.GetComponent<CardUIController>(),
                 selectedCard.CardUIObject.GetComponent<CardUIController>().CardSlotController);
-
-            CombatManager.instance.CardPlayManager.BuildOpponentAttackPlan(attackA, attackB);
-
         }
         else
         {
@@ -112,9 +114,21 @@ public class AIController : MonoBehaviour
 
             CombatManager.instance.ChannelsUISlotManager.OpponentAssignAttackSlot(selectedCard.CardUIObject.GetComponent<CardUIController>(),
                 selectedCard.CardUIObject.GetComponent<CardUIController>().CardSlotController);
-
-            CombatManager.instance.CardPlayManager.BuildOpponentAttackPlan(attackA, attackB);
         }
+    }
+
+    private void FinalCheck()
+    {
+        if (attackA == null)
+            BuildCardChannelPairA();
+
+        if (attackB == null)
+            BuildCardChannelPairB();
+
+        CombatManager.instance.CardPlayManager.BuildOpponentAttackPlan(attackA, attackB);
+
+        attackA = null;
+        attackB = null;
     }
 
     private Channels GetRandomChannelFromFlag(Channels channel)

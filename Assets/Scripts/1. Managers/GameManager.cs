@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
@@ -32,12 +33,16 @@ public class GameManager : MonoBehaviour
         FighterDataObject opponentFighter = new FighterDataObject(opponentMech, opponentPilot, testDeck);
 
         CombatManager.instance.PlayerFighter = playerFighter;
+        CombatManager.instance.MechHUDManager.UpdatePlayerHP(playerFighter.FighterMech.MechCurrentHP);
+        CombatManager.instance.MechHUDManager.UpdatePlayerEnergy(playerFighter.FighterMech.MechCurrentEnergy);
         CombatManager.instance.OpponentFighter = opponentFighter;
+        CombatManager.instance.MechHUDManager.UpdateOpponentHP(opponentFighter.FighterMech.MechCurrentHP);
+        CombatManager.instance.MechHUDManager.UpdateOpponentEnergy(opponentFighter.FighterMech.MechCurrentEnergy);
 
         DrawCardPrefab();
     }
 
-    public void DrawCardPrefab()
+    private void DrawCardPrefab()
     {
         CombatManager.instance.DeckManager.SetPlayerDeck(testDeck);
 
@@ -48,5 +53,11 @@ public class GameManager : MonoBehaviour
 
         for (int i = 0; i <= 4; i++)
             CombatManager.instance.DeckManager.DrawOpponentCard();
+
+    }
+
+    public void ReloadScene()
+    {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 }
