@@ -10,6 +10,7 @@ public class PlayerHandUISlotManager : BaseSlotManager<CardUIController>
     {
         if (slot != null && slot.CurrentSlottedItem == null)
         {
+            CombatManager.instance.HandManager.AddCardToPlayerHand(item.CardData);
             slot.CurrentSlottedItem = item;
             item.CardSlotController = slot;
             return;
@@ -18,6 +19,7 @@ public class PlayerHandUISlotManager : BaseSlotManager<CardUIController>
         foreach (BaseSlotController<CardUIController> slotOption in slotList)
             if (slotOption.CurrentSlottedItem == null)
             {
+                CombatManager.instance.HandManager.AddCardToPlayerHand(item.CardData);
                 slotOption.CurrentSlottedItem = item;
                 item.CardSlotController = slotOption;
                 return;

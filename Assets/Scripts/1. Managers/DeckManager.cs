@@ -31,7 +31,6 @@ public class DeckManager : MonoBehaviour
                 return;
             }
 
-            CombatManager.instance.HandManager.AddCardToPlayerHand(drawnCard);
             CombatManager.instance.CardUIManager.BuildAndDrawPlayerCard(drawnCard);
         }
     }
@@ -48,7 +47,6 @@ public class DeckManager : MonoBehaviour
                 return;
             }
 
-            CombatManager.instance.HandManager.AddCardToOpponentHand(drawnCard);
             CombatManager.instance.CardUIManager.BuildAndDrawOpponentCard(drawnCard);
         }
     }
