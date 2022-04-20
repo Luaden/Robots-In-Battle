@@ -50,4 +50,9 @@ public class MechObject
         mechEnergyGain += arms.EnergyGainModifier;
         mechEnergyGain += legs.EnergyGainModifier;
     }
+
+    public MechComponentDataObject ReplaceComponent(SOItemDataObject newMechComponent)
+    {
+        return null;
+    }
 }
