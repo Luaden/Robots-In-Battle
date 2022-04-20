@@ -49,6 +49,7 @@ public class GameManager : MonoBehaviour
 
         for (int i = 0; i <= 4; i++)
             CombatManager.instance.DeckManager.DrawOpponentCard();
+
     }
 
     public void ReloadScene()

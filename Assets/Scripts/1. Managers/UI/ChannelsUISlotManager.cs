@@ -14,6 +14,7 @@ public class ChannelsUISlotManager : BaseSlotManager<CardUIController>
     [SerializeField] private BaseSlotController<CardUIController> opponentAttackSlotA;
     [SerializeField] private BaseSlotController<CardUIController> opponentAttackSlotB;
 
+    [SerializeField] private GameObject SkipASlotButton;
 
     private CardChannelPairObject cardChannelPairObjectA;
     private CardChannelPairObject cardChannelPairObjectB;
@@ -42,7 +43,7 @@ public class ChannelsUISlotManager : BaseSlotManager<CardUIController>
 
                 cardChannelPairObjectA = new CardChannelPairObject(item.CardData, selectedChannel);
                 CombatManager.instance.CardPlayManager.PlayerAttackPlan.cardChannelPairA = cardChannelPairObjectA;
-
+                SkipASlotButton.SetActive(false);
                 OnASlotFilled?.Invoke();
                 return;
             }
@@ -76,6 +77,16 @@ public class ChannelsUISlotManager : BaseSlotManager<CardUIController>
             }
 
         Debug.Log("No slots available in the hand to add a card to. This should not happen and should be stopped before this point.");
+    }
+
+    public void SkipASlot()
+    {
+        CombatManager.instance.CardPlayManager.PlayerAttackPlan.cardChannelPairA = 
+            new CardChannelPairObject(null, Channels.None);
+
+        OnASlotFilled?.Invoke();
+
+        SkipASlotButton.SetActive(false);
     }
 
     public void OpponentAssignAttackSlot(CardUIController item, BaseSlotController<CardUIController> slot)

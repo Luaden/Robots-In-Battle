@@ -19,10 +19,12 @@ public class DamageCalculatorController
         if (effectController == null)
             effectController = new EffectController();
 
-        if (opponentAttackPlan.cardChannelPairB.CardData != null && opponentAttackPlan.cardChannelPairB.CardData.CardCategory.HasFlag(CardCategory.Defensive))
+        if (opponentAttackPlan.cardChannelPairB != null && opponentAttackPlan.cardChannelPairB.CardData.CardCategory.HasFlag(CardCategory.Defensive) &&
+            playerAttackPlan.cardChannelPairA != null && playerAttackPlan.cardChannelPairA.CardData != null)
             CalculateDefensiveInteraction(playerAttackPlan.cardChannelPairA, CharacterSelect.Player, opponentAttackPlan.cardChannelPairB);
 
-        if (playerAttackPlan.cardChannelPairB.CardData != null && playerAttackPlan.cardChannelPairB.CardData.CardCategory.HasFlag(CardCategory.Defensive))
+        if (playerAttackPlan.cardChannelPairB != null && playerAttackPlan.cardChannelPairB.CardData.CardCategory.HasFlag(CardCategory.Defensive) && 
+            opponentAttackPlan.cardChannelPairA != null && opponentAttackPlan.cardChannelPairA.CardData != null)
             CalculateDefensiveInteraction(opponentAttackPlan.cardChannelPairA, CharacterSelect.Opponent, playerAttackPlan.cardChannelPairB);
 
         if (playerAttackPlan.cardChannelPairA != null)
@@ -54,13 +56,6 @@ public class DamageCalculatorController
 
     private void CalculateDefensiveInteraction(CardChannelPairObject offensiveCard, CharacterSelect offensiveCharacter, CardChannelPairObject defensiveCard)
     {
-        if (offensiveCard == null)
-        {
-            //Need some kind of confused block/counter animation?
-            //Apply defensive effects anyway?
-            return;
-        }
-
         if (offensiveCard.CardChannel.HasFlag(defensiveCard.CardChannel))
         {
             if (defensiveCard.CardData.CardCategory.HasFlag(CardCategory.Guard))
@@ -115,6 +110,9 @@ public class DamageCalculatorController
 
     private void CalculateMechDamage(CardChannelPairObject originAttack, CharacterSelect destinationMech, bool counterDamage = false, bool guardDamage = false)
     {
+        if (originAttack == null || originAttack.CardData == null)
+            return;
+
         int repeatPlay = 1;
 
         if(originAttack.CardData.CardEffects != null)

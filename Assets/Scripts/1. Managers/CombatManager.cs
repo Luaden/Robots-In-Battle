@@ -5,7 +5,6 @@ using UnityEngine;
 public class CombatManager : MonoBehaviour
 {
     [SerializeField] private int mechEnergyGain;
-    [SerializeField] private int cardDrawOnTurn;
     [SerializeField] private float counterDamageMultiplier;
     [SerializeField] private float guardDamageMultiplier;
     [SerializeField] private GameObject winLossPanel;
@@ -137,8 +136,8 @@ public class CombatManager : MonoBehaviour
 
     private void StartNewTurn()
     {
-        deckManager.DrawPlayerCard(cardDrawOnTurn);
-        deckManager.DrawOpponentCard(cardDrawOnTurn);
+        deckManager.DrawPlayerCard(5 - HandManager.PlayerHand.CharacterHand.Count);
+        deckManager.DrawOpponentCard(5 - HandManager.OpponentHand.CharacterHand.Count);
 
         AddEnergyToMech(CharacterSelect.Opponent, OpponentFighter.FighterMech.MechEnergyGain);
         AddEnergyToMech(CharacterSelect.Player, PlayerFighter.FighterMech.MechEnergyGain);
