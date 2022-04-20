@@ -443,6 +443,8 @@ public class EffectController
     {
         CardKeyWord keyWord = CardKeyWord.None;
         List<CardEffectObject> previousKeyWordEffects = new List<CardEffectObject>();
+        List<CardEffectObject> removalKeyWordEffects = new List<CardEffectObject>();
+
 
         if (attack.CardData.CardEffects.Select(x => x.EffectType).Contains(CardEffectTypes.KeyWordExecute))
         {
@@ -454,13 +456,27 @@ public class EffectController
             {
                 if (playerFighterEffectObject.KeyWordDuration.TryGetValue(keyWord, out previousKeyWordEffects))
                     foreach (CardEffectObject effect in previousKeyWordEffects)
+                    {
                         damageToReturn += effect.EffectMagnitude;
+                        removalKeyWordEffects.Add(effect);
+                    }
+
+                foreach(CardEffectObject effect in removalKeyWordEffects)
+                    if(previousKeyWordEffects.Contains(effect))
+                        previousKeyWordEffects.Remove(effect);
             }
             else
             {
                 if (opponentFighterEffectObject.KeyWordDuration.TryGetValue(keyWord, out previousKeyWordEffects))
                     foreach (CardEffectObject effect in previousKeyWordEffects)
+                    {
                         damageToReturn += effect.EffectMagnitude;
+                        removalKeyWordEffects.Add(effect);
+                    }
+
+                foreach (CardEffectObject effect in removalKeyWordEffects)
+                    if (previousKeyWordEffects.Contains(effect))
+                        previousKeyWordEffects.Remove(effect);
             }
         }
 
