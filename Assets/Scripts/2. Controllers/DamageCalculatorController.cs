@@ -56,7 +56,7 @@ public class DamageCalculatorController
 
     private void CalculateDefensiveInteraction(CardChannelPairObject offensiveCard, CharacterSelect offensiveCharacter, CardChannelPairObject defensiveCard)
     {
-        if (offensiveCard.CardChannel.HasFlag(defensiveCard.CardChannel))
+        if (offensiveCard.CardChannel.HasFlag(defensiveCard.CardChannel) || defensiveCard.CardChannel.HasFlag(offensiveCard.CardChannel))
         {
             if (defensiveCard.CardData.CardCategory.HasFlag(CardCategory.Guard))
             {
@@ -108,44 +108,44 @@ public class DamageCalculatorController
         return firstMech == CharacterSelect.Player ? CharacterSelect.Opponent : CharacterSelect.Player;
     }
 
-    private void CalculateMechDamage(CardChannelPairObject originAttack, CharacterSelect destinationMech, bool counterDamage = false, bool guardDamage = false)
+    private void CalculateMechDamage(CardChannelPairObject offensiveAttack, CharacterSelect defensiveMech, bool counterDamage = false, bool guardDamage = false)
     {
-        if (originAttack == null || originAttack.CardData == null)
+        if (offensiveAttack == null || offensiveAttack.CardData == null)
             return;
 
         int repeatPlay = 1;
 
-        if(originAttack.CardData.CardEffects != null)
-            foreach (SOCardEffectObject effect in originAttack.CardData.CardEffects)
+        if(offensiveAttack.CardData.CardEffects != null)
+            foreach (SOCardEffectObject effect in offensiveAttack.CardData.CardEffects)
                 if (effect.EffectType == CardEffectTypes.PlayMultipleTimes)
                     repeatPlay = effect.EffectMagnitude;
 
-        if (originAttack.CardData != null)
+        if (offensiveAttack.CardData != null)
         {
             for (int i = 0; i < repeatPlay; i++)
             {
-                int damageToDeal = effectController.GetMechDamageWithModifiers(originAttack, destinationMech);
+                int damageToDeal = effectController.GetMechDamageWithModifiers(offensiveAttack, defensiveMech);
                 
                 if(counterDamage)
                 {
-                    CombatManager.instance.MechAnimationManager.SetMechAnimation(destinationMech, AnimationType.Counter, 
-                        GetOtherMech(destinationMech), CombatManager.instance.MechAnimationManager.GetAnimationFromCategory(originAttack.CardData.CardCategory));
-                    CombatManager.instance.DealDamageToMech(destinationMech, damageToDeal * Mathf.RoundToInt(CombatManager.instance.CounterDamageMultiplier));
-                    CalculateComponentDamage(originAttack, destinationMech);
+                    CombatManager.instance.MechAnimationManager.SetMechAnimation(defensiveMech, AnimationType.Counter, 
+                        GetOtherMech(defensiveMech), CombatManager.instance.MechAnimationManager.GetAnimationFromCategory(offensiveAttack.CardData.CardCategory));
+                    CombatManager.instance.DealDamageToMech(defensiveMech, damageToDeal * Mathf.RoundToInt(CombatManager.instance.CounterDamageMultiplier));
+                    CalculateComponentDamage(offensiveAttack, defensiveMech);
                 }
                 else if(guardDamage)
                 {
-                    CombatManager.instance.MechAnimationManager.SetMechAnimation(destinationMech, AnimationType.Counter,
-                        GetOtherMech(destinationMech), CombatManager.instance.MechAnimationManager.GetAnimationFromCategory(originAttack.CardData.CardCategory));
-                    CombatManager.instance.DealDamageToMech(destinationMech, damageToDeal * Mathf.RoundToInt(CombatManager.instance.GuardDamageMultiplier));
-                    CalculateComponentDamage(originAttack, destinationMech);
+                    CombatManager.instance.MechAnimationManager.SetMechAnimation(defensiveMech, AnimationType.Guard,
+                        GetOtherMech(defensiveMech), CombatManager.instance.MechAnimationManager.GetAnimationFromCategory(offensiveAttack.CardData.CardCategory));
+                    CombatManager.instance.DealDamageToMech(defensiveMech, damageToDeal * Mathf.RoundToInt(CombatManager.instance.GuardDamageMultiplier));
+                    CalculateComponentDamage(offensiveAttack, defensiveMech);
                 }
                 else
                 {
-                    CombatManager.instance.MechAnimationManager.SetMechAnimation(destinationMech, AnimationType.Damaged,
-                        GetOtherMech(destinationMech), CombatManager.instance.MechAnimationManager.GetAnimationFromCategory(originAttack.CardData.CardCategory));
-                    CombatManager.instance.DealDamageToMech(destinationMech, damageToDeal);
-                    CalculateComponentDamage(originAttack, destinationMech);
+                    CombatManager.instance.MechAnimationManager.SetMechAnimation(defensiveMech, AnimationType.Damaged,
+                        GetOtherMech(defensiveMech), CombatManager.instance.MechAnimationManager.GetAnimationFromCategory(offensiveAttack.CardData.CardCategory));
+                    CombatManager.instance.DealDamageToMech(defensiveMech, damageToDeal);
+                    CalculateComponentDamage(offensiveAttack, defensiveMech);
                 }
             }
         }

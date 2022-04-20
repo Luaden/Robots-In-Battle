@@ -61,9 +61,10 @@ public class AIController : MonoBehaviour
         CardDataObject selectedCard;
 
         foreach (CardDataObject card in opponentHand)
-            if (card.EnergyCost <= CombatManager.instance.OpponentFighter.FighterMech.MechCurrentEnergy && 
-                (card.CardType == CardType.Attack || card.CardType == CardType.Neutral))
-                possibleCards.Add(card);
+            if (card.EnergyCost <= CombatManager.instance.OpponentFighter.FighterMech.MechCurrentEnergy)
+                if(card.CardType == CardType.Attack || card.CardType == CardType.Neutral)
+                    possibleCards.Add(card);
+
 
         if(possibleCards.Count == 0)
         {
@@ -76,7 +77,7 @@ public class AIController : MonoBehaviour
         }
         else
         {
-            selectedCard = possibleCards[UnityEngine.Random.Range(0, opponentHand.Count)];
+            selectedCard = possibleCards[UnityEngine.Random.Range(0, possibleCards.Count)];
 
             attackA = new CardChannelPairObject(selectedCard, GetRandomChannelFromFlag(selectedCard.PossibleChannels));
 
@@ -93,9 +94,9 @@ public class AIController : MonoBehaviour
         CardDataObject selectedCard;
 
         foreach (CardDataObject card in opponentHand)
-            if (card.EnergyCost <= CombatManager.instance.OpponentFighter.FighterMech.MechCurrentEnergy &&
-                (card.CardType == CardType.Defense || card.CardType == CardType.Neutral))
-                possibleCards.Add(card);
+            if (card.EnergyCost <= CombatManager.instance.OpponentFighter.FighterMech.MechCurrentEnergy)
+                if (card.CardType == CardType.Defense || card.CardType == CardType.Neutral)
+                    possibleCards.Add(card);
 
         if (possibleCards.Count == 0)
         {
@@ -108,7 +109,7 @@ public class AIController : MonoBehaviour
         }
         else
         {
-            selectedCard = opponentHand[UnityEngine.Random.Range(0, opponentHand.Count)];
+            selectedCard = possibleCards[UnityEngine.Random.Range(0, possibleCards.Count)];
 
             attackB = new CardChannelPairObject(selectedCard, GetRandomChannelFromFlag(selectedCard.PossibleChannels));
 
