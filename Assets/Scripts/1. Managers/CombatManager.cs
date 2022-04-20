@@ -53,14 +53,16 @@ public class CombatManager : MonoBehaviour
         {
             playerFighter.FighterMech.MechCurrentHP -= damage;
             mechHUDManager.UpdatePlayerHP(playerFighter.FighterMech.MechCurrentHP);
+            CheckForWinLoss();
         }
+
         if (character == CharacterSelect.Opponent)
         {
             opponentFighter.FighterMech.MechCurrentHP -= damage;
             mechHUDManager.UpdateOpponentHP(opponentFighter.FighterMech.MechCurrentHP);
+            CheckForWinLoss();
         }
 
-        CheckForWinLoss();
     }
 
     public void RemoveEnergyFromMech(CharacterSelect character, int energyToRemove)

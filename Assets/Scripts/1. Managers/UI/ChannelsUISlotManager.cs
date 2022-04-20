@@ -115,6 +115,7 @@ public class ChannelsUISlotManager : BaseSlotManager<CardUIController>
         if (opponentAttackSlotB.CurrentSlottedItem == null)
             if (item.CardData.CardType == CardType.Defense || item.CardData.CardType == CardType.Neutral)
             {
+                Debug.Log(item.CardData.CardName + " is being added to slot B.");
                 opponentAttackSlotB.CurrentSlottedItem = item;
                 item.CardSlotController = opponentAttackSlotB;
 
@@ -127,7 +128,7 @@ public class ChannelsUISlotManager : BaseSlotManager<CardUIController>
             }
             else
             {
-                Debug.Log("This card is not the correct type for Slot B. Slot A must be an Defense or Neutral Card Type.");
+                Debug.Log(item.CardData.CardName + " is not the correct type for Slot B. Slot A must be an Defense or Neutral Card Type.");
                 return;
             }
 
@@ -180,12 +181,6 @@ public class ChannelsUISlotManager : BaseSlotManager<CardUIController>
             item.CardData.SelectedChannels = Channels.None;
             return;
         }
-    }
-
-    public void ClearChannelUICards()
-    {
-        RemoveItemFromCollection(playerAttackSlotA.CurrentSlottedItem);
-        RemoveItemFromCollection(playerAttackSlotB.CurrentSlottedItem);
     }
 
     private Channels CheckChannelSlot(BaseSlotController<CardUIController> slotToCheck)
