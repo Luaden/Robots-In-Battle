@@ -1,5 +1,5 @@
 using UnityEditor;
-
+#if UNITY_EDITOR
 [CustomEditor(typeof(SOCardEffectObject))]
 public class EditorCardEffectGUI : Editor
 {
@@ -80,3 +80,4 @@ public class EditorCardEffectGUI : Editor
         EditorGUILayout.PropertyField(serializedObject.FindProperty("fallOffPerTurn"));
     }
 }
+#endif
