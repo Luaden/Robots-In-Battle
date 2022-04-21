@@ -6,7 +6,7 @@ using UnityEngine.UI;
 [CreateAssetMenu(fileName = "NewCardEffect", menuName = "Card Effects/New Card Effect", order = 0)]
 public class SOCardEffectObject : ScriptableObject
 {
-    [Header("General Effect AttributesS")]
+    [Header("General Effect Attributes")]
     [SerializeField] private CardEffectTypes effectType;
     [SerializeField] private CardCategory cardTypeToBoost = CardCategory.None;
     [SerializeField] private CardKeyWord cardKeyWord = CardKeyWord.None;
