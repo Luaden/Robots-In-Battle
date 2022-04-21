@@ -12,8 +12,7 @@ public class CardDataObject
 
     [Header("Card Attributes")]
     [SerializeField] private CardType cardType;
-    [SerializeField] private AttackType attackType;
-    [SerializeField] private DefenseType defenseType;
+    [SerializeField] private CardCategory cardCategory;
     [SerializeField] private Channels possibleChannels;
     [SerializeField] private AffectedChannels affectedChannels;
     [SerializeField] private Channels selectedChannels;
@@ -21,7 +20,7 @@ public class CardDataObject
     [SerializeField] private int baseDamage;
 
     [Header("Effect Attributes")]
-    [SerializeField] private List<CardEffectObject> cardEffects;
+    [SerializeField] private List<SOCardEffectObject> cardEffects;
 
     private GameObject cardUIObject;
 
@@ -31,14 +30,13 @@ public class CardDataObject
     public Sprite CardForeground { get => cardImage; }
     public Sprite CardBackground { get => cardBackground; }
     public CardType CardType { get => cardType; }
-    public AttackType AttackType { get => attackType; }
-    public DefenseType DefenseType { get => defenseType; }
+    public CardCategory CardCategory { get => cardCategory; }
     public Channels PossibleChannels { get => possibleChannels; }
     public AffectedChannels AffectedChannels { get => affectedChannels; }
-    public Channels SelectedChannels { get => selectedChannels; }
+    public Channels SelectedChannels { get => selectedChannels; set => selectedChannels = value; }
     public int EnergyCost { get => energyCost; }
     public int BaseDamage { get => baseDamage; }
-    public List<CardEffectObject> CardEffects { get => cardEffects; }
+    public List<SOCardEffectObject> CardEffects { get => cardEffects; }
     #endregion
 
     #region Runtime Properties
@@ -46,7 +44,7 @@ public class CardDataObject
     #endregion
 
     #region Constructor
-    public CardDataObject(SOCardDataObject data)
+    public CardDataObject(SOItemDataObject data)
     {
         cardName = data.CardName;
         cardDescription = data.CardDescription;
@@ -54,8 +52,7 @@ public class CardDataObject
         cardBackground = data.CardBackground;
         
         cardType = data.CardType;
-        attackType = data.AttackType;
-        defenseType = data.DefenseType;
+        cardCategory = data.CardCategory;
         possibleChannels = data.PossibleChannels;
         affectedChannels = data.AffectedChannels;
         selectedChannels = Channels.None;

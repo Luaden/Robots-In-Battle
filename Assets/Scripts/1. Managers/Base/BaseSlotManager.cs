@@ -6,7 +6,10 @@ using UnityEngine.EventSystems;
 public abstract class BaseSlotManager<T> : MonoBehaviour
 {
     [SerializeField] protected Canvas mainCanvas;
-    protected List<BaseSlotController<T>> slotList;
+    [SerializeField] protected List<BaseSlotController<T>> slotList;
+
+    public List<BaseSlotController<T>> SlotList { get => slotList; }
+    public Canvas MainCanvas { get => mainCanvas; }
 
     public virtual void HandleDrag(PointerEventData eventData)
     {
@@ -16,6 +19,6 @@ public abstract class BaseSlotManager<T> : MonoBehaviour
     public abstract void HandleDrop(PointerEventData eventData, T newData, BaseSlotController<T> slot);
 
     public abstract void RemoveItemFromCollection(T item);
-    public abstract void AddItemToCollection(T item);
+    public abstract void AddItemToCollection(T item, BaseSlotController<T> slot);
     public abstract void AddSlotToList(BaseSlotController<T> newSlot);
 }

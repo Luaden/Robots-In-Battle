@@ -9,13 +9,13 @@ public class DeckController
 
     public List<CardDataObject> CardDeck { get => cardDeck; set => cardDeck = value; }
 
-    public void InitDeckList(List<SOCardDataObject> newDeckSO)
+    public void InitDeckList(List<SOItemDataObject> newDeckSO)
     {
         cardDeck = new List<CardDataObject>();
 
         CardDataObject newCard;
 
-        foreach (SOCardDataObject newCardSO in newDeckSO)
+        foreach (SOItemDataObject newCardSO in newDeckSO)
         {
             newCard = new CardDataObject(newCardSO);
             AddCardToBottom(newCard);

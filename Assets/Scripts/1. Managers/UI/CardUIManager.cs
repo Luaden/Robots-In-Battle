@@ -21,6 +21,11 @@ public class CardUIManager : MonoBehaviour
         cardUIBuildController.BuildAndDrawOpponentCard(cardToDraw, opponentDeckTransform);
     }
 
+    public void DestroyCardUI(CardDataObject cardToReturn)
+    {
+        Destroy(cardToReturn.CardUIObject);
+    }
+
     private void Awake()
     {
         cardUIBuildController = FindObjectOfType<CardUIBuildController>(true);

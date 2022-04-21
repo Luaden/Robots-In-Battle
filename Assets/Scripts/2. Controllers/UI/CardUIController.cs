@@ -5,7 +5,7 @@ using UnityEngine.UI;
 using UnityEngine.EventSystems;
 using TMPro;
 
-public class CardUIController : MonoBehaviour, IPointerDownHandler, IPointerEnterHandler, IPointerExitHandler, IBeginDragHandler, IEndDragHandler, IDragHandler
+public class CardUIController : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, IPointerEnterHandler, IPointerExitHandler, IBeginDragHandler, IEndDragHandler, IDragHandler
 {
     [Header("Card Attributes")]
     [SerializeField] private Image cardBackground;
@@ -22,12 +22,16 @@ public class CardUIController : MonoBehaviour, IPointerDownHandler, IPointerEnte
 
     [Header("Interaction Attributes")]
     [SerializeField] private float travelSpeed;
+    private Transform previousParentObject;
 
     private CardDataObject cardData;
     private BaseSlotController<CardUIController> cardSlotController;
+    
     private bool isPickedUp = false;
+    private Vector2 originPosition;
 
     public CardDataObject CardData { get => cardData; }
+    public Transform PreviousParentObject { get => previousParentObject; set => previousParentObject = value; }
     public BaseSlotController<CardUIController> CardSlotController { get => cardSlotController; set => UpdateCardSlot(value); }
 
     public void InitCardUI(CardDataObject newCardData)
@@ -47,17 +51,22 @@ public class CardUIController : MonoBehaviour, IPointerDownHandler, IPointerEnte
 
     public virtual void OnPointerEnter(PointerEventData eventData)
     {
-        //throw new System.NotImplementedException();
+        CombatManager.instance.PopupUIManager.HandlePopup(cardData, transform, eventData.position);
     }
 
     public virtual void OnPointerExit(PointerEventData eventData)
     {
-        //throw new System.NotImplementedException();
+        CombatManager.instance.PopupUIManager.InactivatePopup();
     }
 
     public virtual void OnPointerDown(PointerEventData eventData)
     {
-        //throw new System.NotImplementedException();
+        transform.SetParent(cardSlotController.SlotManager.MainCanvas.transform);
+    }
+
+    public void OnPointerUp(PointerEventData eventData)
+    {
+        transform.SetParent(previousParentObject);
     }
 
     public virtual void OnBeginDrag(PointerEventData eventData)
@@ -89,13 +98,17 @@ public class CardUIController : MonoBehaviour, IPointerDownHandler, IPointerEnte
         if (isPickedUp || cardSlotController == null)
             return;
 
+        if (transform.parent == null)
+            transform.SetParent(PreviousParentObject);
+
         draggableRectTransform.position = 
-            Vector2.Lerp(draggableRectTransform.position, CardSlotController.gameObject.GetComponent<RectTransform>().position, travelSpeed * Time.deltaTime);
+            Vector3.MoveTowards(draggableRectTransform.position, CardSlotController.gameObject.GetComponent<RectTransform>().position, travelSpeed * Time.deltaTime);
     }
 
     private void UpdateCardSlot(BaseSlotController<CardUIController> newSlot)
     {
         cardSlotController = newSlot;
         transform.SetParent(newSlot.transform);
+        previousParentObject = newSlot.transform;
     }
 }

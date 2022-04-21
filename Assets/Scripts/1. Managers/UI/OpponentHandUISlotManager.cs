@@ -6,14 +6,20 @@ using UnityEngine.EventSystems;
 
 public class OpponentHandUISlotManager : BaseSlotManager<CardUIController>
 {
-    public override void AddItemToCollection(CardUIController item)
+    public override void AddItemToCollection(CardUIController item, BaseSlotController<CardUIController> slot)
     {
-        foreach (CardUISlotController slot in slotList)
-            if (slot.CurrentSlottedItem == null)
+        if(slot != null && slot.CurrentSlottedItem == null)
+        {
+            slot.CurrentSlottedItem = item;
+            item.CardSlotController = slot;
+            return;
+        }
+
+        foreach (BaseSlotController<CardUIController> slotOption in slotList)
+            if (slotOption.CurrentSlottedItem == null)
             {
-                slot.CurrentSlottedItem = item;
-                item.CardSlotController = slot;
-                CombatManager.instance.HandManager.AddCardToOpponentHand(item.CardData);
+                slotOption.CurrentSlottedItem = item;
+                item.CardSlotController = slotOption;
                 return;
             }
 
@@ -27,7 +33,10 @@ public class OpponentHandUISlotManager : BaseSlotManager<CardUIController>
             {
                 slot.CurrentSlottedItem = null;
                 CombatManager.instance.HandManager.RemoveCardFromOpponentHand(item.CardData);
+                return;
             }
+
+        Debug.Log("Could not find the CardUIController for the item: " + item.CardData.CardName);
     }
 
     public override void HandleDrop(PointerEventData eventData, CardUIController droppedCard, BaseSlotController<CardUIController> slot)
@@ -35,12 +44,11 @@ public class OpponentHandUISlotManager : BaseSlotManager<CardUIController>
         if (droppedCard == null)
         {
             Debug.Log("Could not find appropriate data for slot.");
-            //Tell card to move to previous slot.
             return;
         }
 
         droppedCard.CardSlotController.SlotManager.RemoveItemFromCollection(droppedCard);
-        AddItemToCollection(droppedCard);
+        AddItemToCollection(droppedCard, slot);
     }
 
     public override void AddSlotToList(BaseSlotController<CardUIController> newSlot)
@@ -50,7 +58,7 @@ public class OpponentHandUISlotManager : BaseSlotManager<CardUIController>
 
     private void Awake()
     {
-        slotList = new List<BaseSlotController<CardUIController>>();
+        //slotList = new List<BaseSlotController<CardUIController>>();
     }
 }
 

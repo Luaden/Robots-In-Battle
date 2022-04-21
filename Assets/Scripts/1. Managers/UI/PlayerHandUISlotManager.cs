@@ -6,14 +6,20 @@ using UnityEngine.EventSystems;
 
 public class PlayerHandUISlotManager : BaseSlotManager<CardUIController>
 {
-    public override void AddItemToCollection(CardUIController item)
+    public override void AddItemToCollection(CardUIController item, BaseSlotController<CardUIController> slot)
     {
-        foreach(CardUISlotController slot in slotList)
-            if (slot.CurrentSlottedItem == null)
+        if (slot != null && slot.CurrentSlottedItem == null)
+        {
+            slot.CurrentSlottedItem = item;
+            item.CardSlotController = slot;
+            return;
+        }
+
+        foreach (BaseSlotController<CardUIController> slotOption in slotList)
+            if (slotOption.CurrentSlottedItem == null)
             {
-                slot.CurrentSlottedItem = item;
-                item.CardSlotController = slot;
-                CombatManager.instance.HandManager.AddCardToPlayerHand(item.CardData);
+                slotOption.CurrentSlottedItem = item;
+                item.CardSlotController = slotOption;
                 return;
             }
 
@@ -40,7 +46,7 @@ public class PlayerHandUISlotManager : BaseSlotManager<CardUIController>
         }
 
         droppedCard.CardSlotController.SlotManager.RemoveItemFromCollection(droppedCard);
-        AddItemToCollection(droppedCard);
+        AddItemToCollection(droppedCard, slot);
     }
 
     public override void AddSlotToList(BaseSlotController<CardUIController> newSlot)
@@ -50,6 +56,6 @@ public class PlayerHandUISlotManager : BaseSlotManager<CardUIController>
 
     private void Awake()
     {
-        slotList = new List<BaseSlotController<CardUIController>>();
+        //slotList = new List<BaseSlotController<CardUIController>>();
     }
 }
