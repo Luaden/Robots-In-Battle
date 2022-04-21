@@ -34,10 +34,7 @@ public class BuffUIManager : MonoBehaviour
             playerChannelShieldsController.UpdateUI(channelIntShieldDict);
 
         if (character == CharacterSelect.Opponent)
-        {
             opponentChannelShieldsController.UpdateUI(channelIntShieldDict);
-            Debug.Log("Updating shields UI for " + character);
-        }
     }
 
     public void UpdateChannelShieldsFalloff(CharacterSelect character, Dictionary<Channels, List<ChannelShieldFalloffObject>> channelShieldFalloffDict)
