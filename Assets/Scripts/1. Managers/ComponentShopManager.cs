@@ -17,13 +17,19 @@ public class ComponentShopManager : MonoBehaviour
 
     [SerializeField] protected List<SOItemDataObject> itemsToDisplay;
 
+
+    public void AddToShop(ShopItemCollectionObject collectionObject)
+    {
+        foreach (SOItemDataObject dataObject in collectionObject.ItemsInCollection)
+            itemsToDisplay.Add(dataObject);
+    }
     public void CreateShop()
     {
         componentShopController = GetComponentInChildren<ComponentShopController>(true);
         componentShopVendorSlotManager = GetComponentInChildren<ComponentShopVendorSlotManager>(true);
         componentShopCartSlotManager = GetComponentInChildren<ComponentShopCartSlotManager>(true);
 
-        componentShopController.InitializeShop(itemsToDisplay, shopVendorWindow.transform);
+        //componentShopController.InitializeShop(itemsToDisplay, shopVendorWindow.transform);
     }
 
     public void OpenAndClose()
@@ -36,17 +42,4 @@ public class ComponentShopManager : MonoBehaviour
     {
         itemsToDisplay = sOItemDataObjects;
     }
-
-/*    public void OpenShop()
-    {
-        inventory.SetActive(false);
-        shopVendorWindow.SetActive(true);
-        shopCartWindow.SetActive(true);
-    }
-    public void OpenInventory()
-    {
-        shopVendorWindow.SetActive(false);
-        shopCartWindow.SetActive(false);
-        inventory.SetActive(true);
-    }*/
 }

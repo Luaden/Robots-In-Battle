@@ -6,6 +6,7 @@ public class CardShopController : MonoBehaviour
 {
     private List<ShopItemUIObject> shopItemList;
     [SerializeField] protected CardShopItemUIBuildController shopItemUIBuildController;
+
     public void InitializeShop(List<SOItemDataObject> itemsToDisplay, Transform startPoint)
     {
         shopItemList = new List<ShopItemUIObject>();
@@ -52,6 +53,7 @@ public class CardShopController : MonoBehaviour
 /*        if (currencycost <= FindObjectOfType<PlayerDataObject>().CurrencyToSpend)
             foreach (ShopItemUIObject item in shopItemList)
             {
+                // somewhere where we will add the items to the player
                 //playerdata.AcquireItem(item)
             }
         else

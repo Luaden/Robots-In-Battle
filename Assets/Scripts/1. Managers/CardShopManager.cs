@@ -17,6 +17,12 @@ public class CardShopManager : MonoBehaviour
 
     [SerializeField] protected List<SOItemDataObject> itemsToDisplay;
 
+    public void AddToShop(ShopItemCollectionObject collectionObject)
+    {
+        foreach (SOItemDataObject dataObject in collectionObject.ItemsInCollection)
+            itemsToDisplay.Add(dataObject);
+    }
+
     public void CreateShop()
     {
         cardShopController = GetComponentInChildren<CardShopController>();
@@ -37,16 +43,4 @@ public class CardShopManager : MonoBehaviour
         itemsToDisplay = sOItemDataObjects;
     }
 
-/*    public void OpenShop()
-    {
-        inventory.SetActive(false);
-        shopVendorWindow.SetActive(true);
-        shopCartWindow.SetActive(true);
-    }
-    public void OpenInventory()
-    {
-        shopVendorWindow.SetActive(false);
-        shopCartWindow.SetActive(false);
-        inventory.SetActive(true);
-    }*/
 }
