@@ -492,20 +492,33 @@ public class EffectController
         return damageToReturn;
     }
 
-    public int GetFlurryBonus(CharacterSelect characterToCheck)
-    {
-        int flurryBonus = 1;
+    //public int GetFlurryBonus(CharacterSelect characterToCheck)
+    //{
+    //    int flurryBonus = 1;
 
-        if (characterToCheck == CharacterSelect.Player)
-            if (playerFighterEffectObject.KeyWordDuration.ContainsKey(CardKeyWord.Flurry))
-            {
-                List<CardEffectObject> flurryBonuses = new List<CardEffectObject>();
-                flurryBonus = playerFighterEffectObject.KeyWordDuration[CardKeyWord.Flurry];
-                return true;
-            }
-                return true;
+    //    if (characterToCheck == CharacterSelect.Player)
+    //        if (playerFighterEffectObject.KeyWordDuration.ContainsKey(CardKeyWord.Flurry))
+    //        {
+    //            List<CardEffectObject> flurryBonuses = new List<CardEffectObject>();
+    //            List<CardEffectObject> removalKeyWordEffects = new List<CardEffectObject>();
 
-    }
+    //            if (playerFighterEffectObject.KeyWordDuration.TryGetValue(CardKeyWord.Flurry, out flurryBonuses))
+    //                foreach (CardEffectObject effect in flurryBonuses)
+    //                {
+    //                    flurryBonus += effect.EffectMagnitude;
+    //                    removalKeyWordEffects.Add(effect);
+    //                }
+
+    //            foreach (CardEffectObject effect in removalKeyWordEffects)
+    //                if (flurryBonuses.Contains(effect))
+    //                    flurryBonuses.Remove(effect);
+
+    //            flurryBonus = playerFighterEffectObject.KeyWordDuration[CardKeyWord.Flurry];
+    //            return true;
+    //        }
+    //            return true;
+
+    //}
 
     private int GetComponentDamageBonus(CardChannelPairObject attack, int damageToReturn, CharacterSelect defensiveCharacter)
     {
