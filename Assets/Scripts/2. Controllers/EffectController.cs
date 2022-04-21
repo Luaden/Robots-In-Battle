@@ -71,10 +71,9 @@ public class EffectController
                             destinationMech == CharacterSelect.Opponent ? CharacterSelect.Player : CharacterSelect.Opponent);
                         break;
 
-                    case CardEffectTypes.ReduceIncomingChannelDamage:
+                    case CardEffectTypes.ReduceOutgoingChannelDamage:
                         ReduceChannelDamage(effect, cardChannelPair.CardData.AffectedChannels == AffectedChannels.SelectedChannel ?
-                            cardChannelPair.CardChannel : cardChannelPair.CardData.PossibleChannels,
-                            destinationMech == CharacterSelect.Opponent ? CharacterSelect.Player : CharacterSelect.Opponent);
+                            cardChannelPair.CardChannel : cardChannelPair.CardData.PossibleChannels, destinationMech);
                         break;
 
                     case CardEffectTypes.KeyWordInitialize:
@@ -97,6 +96,18 @@ public class EffectController
                         break;
                     case CardCategory.Special:
                         AddComponentElementStacks(cardChannelPair, MechComponent.Head, destinationMech);
+                        break;
+                    case CardCategory.None:
+                        break;
+                    case CardCategory.Guard:
+                        break;
+                    case CardCategory.Counter:
+                        break;
+                    case CardCategory.Offensive:
+                        break;
+                    case CardCategory.Defensive:
+                        break;
+                    case CardCategory.All:
                         break;
                 }
             }
@@ -468,8 +479,7 @@ public class EffectController
                     if(previousKeyWordEffects.Contains(effect))
                         previousKeyWordEffects.Remove(effect);
 
-                if (playerFighterEffectObject.KeyWordDuration[keyWord].Count == 0)
-                    playerFighterEffectObject.KeyWordDuration.Remove(keyWord);
+                playerFighterEffectObject.KeyWordDuration[keyWord] = previousKeyWordEffects;
             }
             else
             {
@@ -484,8 +494,7 @@ public class EffectController
                     if (previousKeyWordEffects.Contains(effect))
                         previousKeyWordEffects.Remove(effect);
 
-                if (opponentFighterEffectObject.KeyWordDuration[keyWord].Count == 0)
-                    opponentFighterEffectObject.KeyWordDuration.Remove(keyWord);
+                opponentFighterEffectObject.KeyWordDuration[keyWord] = previousKeyWordEffects;
             }
         }
 
@@ -654,6 +663,7 @@ public class EffectController
 
     private void GainShields(SOCardEffectObject effect, Channels channel, CharacterSelect characterGaining)
     {
+        Debug.Log("Adding shields to " + characterGaining);
         int shieldAmount;
 
         if (characterGaining == CharacterSelect.Player)
@@ -680,6 +690,8 @@ public class EffectController
                     opponentFighterEffectObject.ChannelShields.Add(returnedChannel, effect.EffectMagnitude);
             }
         }
+
+        UpdateFighterBuffs(characterGaining);
     }
 
     private void MultiplyShields(SOCardEffectObject effect, Channels channel, CharacterSelect characterGaining)
@@ -790,12 +802,12 @@ public class EffectController
         }
     }
 
-    private void ReduceChannelDamage(SOCardEffectObject effect, Channels channel, CharacterSelect characterReducing)
+    private void ReduceChannelDamage(SOCardEffectObject effect, Channels channel, CharacterSelect characterDamageBeingReduced)
     {
         List<CardEffectObject> previousReductionList = new List<CardEffectObject>();
         CardEffectObject newReduction = new CardEffectObject(effect);
 
-        if (characterReducing == CharacterSelect.Player)
+        if (characterDamageBeingReduced == CharacterSelect.Player)
         {
             foreach (Channels returnedChannel in GetChannelListFromFlags(channel))
             {
@@ -813,7 +825,7 @@ public class EffectController
             }
         }
 
-        if (characterReducing == CharacterSelect.Opponent)
+        if (characterDamageBeingReduced == CharacterSelect.Opponent)
         {
             foreach (Channels returnedChannel in GetChannelListFromFlags(channel))
             {
@@ -841,6 +853,12 @@ public class EffectController
         {
             if (playerFighterEffectObject.KeyWordDuration.TryGetValue(effect.CardKeyWord, out currentKeyWordEffectList))
             {
+                if (currentKeyWordEffectList == null)
+                    Debug.Log("CurrentKeyWordEffectList uninitialized.");
+
+                if (newKeyWordEffect == null)
+                    Debug.Log("NewKeyWordEffect is null.");
+
                 currentKeyWordEffectList.Add(newKeyWordEffect);
                 playerFighterEffectObject.KeyWordDuration[effect.CardKeyWord] = currentKeyWordEffectList;
             }

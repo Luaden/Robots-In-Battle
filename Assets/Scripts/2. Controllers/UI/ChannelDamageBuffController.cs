@@ -27,7 +27,7 @@ public class ChannelDamageBuffController : BaseUIElement<Dictionary<Channels, Li
             {
                 if (effect.EffectType == CardEffectTypes.IncreaseOutgoingChannelDamage)
                     damageModifier += effect.EffectMagnitude;
-                if (effect.EffectType == CardEffectTypes.ReduceIncomingChannelDamage)
+                if (effect.EffectType == CardEffectTypes.ReduceOutgoingChannelDamage)
                     damageModifier -= effect.EffectMagnitude;
             }
 
@@ -41,7 +41,7 @@ public class ChannelDamageBuffController : BaseUIElement<Dictionary<Channels, Li
             {
                 if (effect.EffectType == CardEffectTypes.IncreaseOutgoingChannelDamage)
                     damageModifier += effect.EffectMagnitude;
-                if (effect.EffectType == CardEffectTypes.ReduceIncomingChannelDamage)
+                if (effect.EffectType == CardEffectTypes.ReduceOutgoingChannelDamage)
                     damageModifier -= effect.EffectMagnitude;
             }
 
@@ -55,7 +55,7 @@ public class ChannelDamageBuffController : BaseUIElement<Dictionary<Channels, Li
             {
                 if (effect.EffectType == CardEffectTypes.IncreaseOutgoingChannelDamage)
                     damageModifier += effect.EffectMagnitude;
-                if (effect.EffectType == CardEffectTypes.ReduceIncomingChannelDamage)
+                if (effect.EffectType == CardEffectTypes.ReduceOutgoingChannelDamage)
                     damageModifier -= effect.EffectMagnitude;
             }
 

@@ -85,6 +85,9 @@ public class FighterEffectObject
 
         foreach (KeyValuePair<CardCategory, List<CardEffectObject>> pair in cardCategoryDict)
         {
+            if (pair.Value == null)
+                continue;
+
             foreach (CardEffectObject effect in pair.Value)
             {
                 effect.CurrentTurn++;
@@ -120,6 +123,9 @@ public class FighterEffectObject
 
         foreach (KeyValuePair<Channels, List<CardEffectObject>> pair in channelDamageDict)
         {
+            if (pair.Value == null)
+                continue;
+
             foreach (CardEffectObject effect in pair.Value)
             {
                 effect.CurrentTurn++;
@@ -149,6 +155,9 @@ public class FighterEffectObject
 
         foreach (KeyValuePair<CardKeyWord, List<CardEffectObject>> pair in keyWordDict)
         {
+            if (pair.Value == null)
+                continue;
+
             foreach (CardEffectObject effect in pair.Value)
             {
                 effect.CurrentTurn++;

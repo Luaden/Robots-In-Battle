@@ -47,6 +47,16 @@ public class GlobalKeyWordBuffController : BaseUIElement<Dictionary<CardKeyWord,
         {
             flurryBuffText.text = null;
             flurryBuff.SetActive(false);
+
+            return true;
+        }
+
+        if(checkValue == null || checkValue.Count == 0)
+        {
+            flurryBuffText.text = null;
+            flurryBuff.SetActive(false);
+
+            return true;
         }
 
         return false;

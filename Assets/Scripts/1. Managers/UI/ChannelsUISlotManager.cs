@@ -91,6 +91,9 @@ public class ChannelsUISlotManager : BaseSlotManager<CardUIController>
 
     public void OpponentAssignAttackSlot(CardUIController item, BaseSlotController<CardUIController> slot)
     {
+        if (item == null || slot == null)
+            return;
+
         slot.SlotManager.RemoveItemFromCollection(item);
 
         if (opponentAttackSlotA.CurrentSlottedItem == null)

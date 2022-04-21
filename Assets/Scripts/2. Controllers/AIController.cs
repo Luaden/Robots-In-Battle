@@ -75,8 +75,7 @@ public class AIController : MonoBehaviour
 
             attackA = new CardChannelPairObject(selectedCard, Channels.None);
 
-            CombatManager.instance.ChannelsUISlotManager.OpponentAssignAttackSlot(selectedCard.CardUIObject.GetComponent<CardUIController>(),
-                selectedCard.CardUIObject.GetComponent<CardUIController>().CardSlotController);
+            CombatManager.instance.ChannelsUISlotManager.OpponentAssignAttackSlot(null, null);
         }
         else
         {
@@ -110,8 +109,7 @@ public class AIController : MonoBehaviour
 
             attackB = new CardChannelPairObject(selectedCard, Channels.None);
 
-            CombatManager.instance.ChannelsUISlotManager.OpponentAssignAttackSlot(selectedCard.CardUIObject.GetComponent<CardUIController>(),
-                selectedCard.CardUIObject.GetComponent<CardUIController>().CardSlotController);
+            CombatManager.instance.ChannelsUISlotManager.OpponentAssignAttackSlot(null, null);
         }
         else
         {

@@ -69,7 +69,7 @@ public enum CardEffectTypes
     AdditionalElementStacks = 2, 
     IncreaseOutgoingChannelDamage = 3, //Channel buff
     IncreaseOutgoingCardTypeDamage = 4, //Global buff
-    ReduceIncomingChannelDamage = 5,  //Channel buff
+    ReduceOutgoingChannelDamage = 5,  //Channel buff
     GainShields = 6,  //Channel buff
     MultiplyShield = 7, 
     KeyWordInitialize = 8, //Global buff

@@ -46,7 +46,7 @@ public class EditorCardEffectGUI : Editor
             case (int)CardEffectTypes.PlayMultipleTimes:
                 DisplayMagnitudeAttribute();
                 break;
-            case (int)CardEffectTypes.ReduceIncomingChannelDamage:
+            case (int)CardEffectTypes.ReduceOutgoingChannelDamage:
                 DisplayMagnitudeAttribute();
                 DisplayDurationAttribute();
                 break;
