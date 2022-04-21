@@ -5,6 +5,7 @@ using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
+    #region Playtesting
     [SerializeField] private SOItemDataObject testMechHead;
     [SerializeField] private SOItemDataObject testMechTorso;
     [SerializeField] private SOItemDataObject testMechArms;
@@ -55,9 +56,33 @@ public class GameManager : MonoBehaviour
             CombatManager.instance.DeckManager.DrawOpponentCard();
 
     }
+    #endregion
+
+    private PlayerDataObject playerData;
+
+    public static GameManager instance;
+
+    public PlayerDataObject PlayerData { get => playerData; set => playerData = value; }
+    
 
     public void ReloadScene()
     {
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+    }
+
+    private void Awake()
+    {
+        if (instance != null && instance != this)
+            Destroy(this);
+        else
+        {
+            instance = this;
+            DontDestroyOnLoad(this);
+        }
+    }
+
+    private void Start()
+    {
+        
     }
 }
