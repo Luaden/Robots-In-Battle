@@ -8,6 +8,8 @@ public class PlayerDataObject : MonoBehaviour
     private List<CardDataObject> playerDeck;
     private List<MechComponentDataObject> playerMech;
     private List<MechComponentDataObject> playerInventory;
+    //We need to save map data here as well as the position of the player on the map.
+    //We need to store the win/loss record here as well maybe?
 
     private float timeLeftToSpend;
     private float currencyToSpend;
