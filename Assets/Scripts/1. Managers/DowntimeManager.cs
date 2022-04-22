@@ -30,8 +30,8 @@ public class DowntimeManager : MonoBehaviour
         cardShopManager = GetComponentInChildren<CardShopManager>(true);
         componentShopManager = GetComponentInChildren<ComponentShopManager>(true);
         shopCollectionRandomizeManager = GetComponentInChildren<ShopCollectionRandomizeManager>(true);
-        mechBuilderController = GetComponent<MechBuilderController>();
-        deckBuilderController = GetComponent<DeckBuilderController>();
+        mechBuilderController = new MechBuilderController();
+        deckBuilderController = new DeckBuilderController();
 
         instance.CardShopManager.InitializeShop();
         instance.ComponentShopManager.InitializeShop();
