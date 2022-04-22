@@ -34,11 +34,11 @@ public class ComponentShopManager : MonoBehaviour
 
         foreach (SOShopItemCollectionObject collection in shopCollectionObjects)
         {
-            DowntimeManager.Instance.ShopCollectionRandomizeManager.InitList();
-            DowntimeManager.Instance.ShopCollectionRandomizeManager.AddToComponentShopCollectionList(collection);
+            DowntimeManager.instance.ShopCollectionRandomizeManager.InitList();
+            DowntimeManager.instance.ShopCollectionRandomizeManager.AddToComponentShopCollectionList(collection);
         }
 
-        DowntimeManager.Instance.ShopCollectionRandomizeManager.RandomizeShopItemCollection();
+        DowntimeManager.instance.ShopCollectionRandomizeManager.RandomizeShopItemCollection();
 
         if(itemsToDisplay.Count <= 0)
         {

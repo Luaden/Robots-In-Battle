@@ -30,11 +30,11 @@ public class CardShopController : MonoBehaviour
         // if not, warn -> not enough time/money available
 
         List<CardShopCartUIController> shopCartItemList = new List<CardShopCartUIController>();
-        for (int i = 0; i < DowntimeManager.Instance.CardShopManager.CardShopCartSlotManager.SlotList.Count; i++)
+        for (int i = 0; i < DowntimeManager.instance.CardShopManager.CardShopCartSlotManager.SlotList.Count; i++)
         {
-            if (DowntimeManager.Instance.CardShopManager.CardShopCartSlotManager.SlotList[i].CurrentSlottedItem != null)
+            if (DowntimeManager.instance.CardShopManager.CardShopCartSlotManager.SlotList[i].CurrentSlottedItem != null)
             {
-                shopCartItemList.Add(DowntimeManager.Instance.CardShopManager.CardShopCartSlotManager.SlotList[i].CurrentSlottedItem);
+                shopCartItemList.Add(DowntimeManager.instance.CardShopManager.CardShopCartSlotManager.SlotList[i].CurrentSlottedItem);
             }
         }
 
@@ -65,11 +65,11 @@ public class CardShopController : MonoBehaviour
     public void UndoCart()
     {
         List<CardShopCartUIController> shopCartItemList = new List<CardShopCartUIController>();
-        for (int i = 0; i < DowntimeManager.Instance.CardShopManager.CardShopCartSlotManager.SlotList.Count; i++)
+        for (int i = 0; i < DowntimeManager.instance.CardShopManager.CardShopCartSlotManager.SlotList.Count; i++)
         {
-            if (DowntimeManager.Instance.CardShopManager.CardShopCartSlotManager.SlotList[i].CurrentSlottedItem != null)
+            if (DowntimeManager.instance.CardShopManager.CardShopCartSlotManager.SlotList[i].CurrentSlottedItem != null)
             {
-                shopCartItemList.Add(DowntimeManager.Instance.CardShopManager.CardShopCartSlotManager.SlotList[i].CurrentSlottedItem);
+                shopCartItemList.Add(DowntimeManager.instance.CardShopManager.CardShopCartSlotManager.SlotList[i].CurrentSlottedItem);
 
             }
         }

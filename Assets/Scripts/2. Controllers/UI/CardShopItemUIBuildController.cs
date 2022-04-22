@@ -24,7 +24,7 @@ public class CardShopItemUIBuildController : MonoBehaviour
 
         cardShopCartUIController.enabled = false;
 
-        DowntimeManager.Instance.CardShopManager.CardShopVendorSlotManager.AddItemToCollection(cardShopVendorUIController, null);
+        DowntimeManager.instance.CardShopManager.CardShopVendorSlotManager.AddItemToCollection(cardShopVendorUIController, null);
 
         shopItemUIGameObject.SetActive(true);
     }

@@ -42,8 +42,8 @@ public class ShopCollectionRandomizeController : MonoBehaviour
 
         }
 
-        DowntimeManager.Instance.ComponentShopManager.AddToShop(componentShopItemCollectionObjects);
-        DowntimeManager.Instance.CardShopManager.AddToShop(cardShopItemCollectionObjects);
+        DowntimeManager.instance.ComponentShopManager.AddToShop(componentShopItemCollectionObjects);
+        DowntimeManager.instance.CardShopManager.AddToShop(cardShopItemCollectionObjects);
 
     }
 }
