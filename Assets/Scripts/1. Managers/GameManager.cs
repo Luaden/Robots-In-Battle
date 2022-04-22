@@ -57,10 +57,13 @@ public class GameManager : MonoBehaviour
 
     }
     #endregion
+
+    private InventoryManager inventoryManager;
     private PlayerDataObject playerData;
 
     public static GameManager instance;
 
+    public InventoryManager InventoryController { get => inventoryManager; }
     public PlayerDataObject PlayerData { get => playerData; set => playerData = value; }
     
 
@@ -95,5 +98,6 @@ public class GameManager : MonoBehaviour
 
         //Need default deck and default mech stored here.
         playerData = new PlayerDataObject();
+        MechObject newMech = DowntimeManager.instance.MechBuilderController.BuildNewMech(starterMechHead, starterMechTorso, starterMechArms, starterMechLegs);
     }
 }

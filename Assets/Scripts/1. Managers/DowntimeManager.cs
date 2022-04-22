@@ -4,15 +4,13 @@ using UnityEngine;
 
 public class DowntimeManager : MonoBehaviour
 {
-    private static DowntimeManager instance;
-
     private CardShopManager cardShopManager;
     private ComponentShopManager componentShopManager;
     private ShopCollectionRandomizeManager shopCollectionRandomizeManager;
     private MechBuilderController mechBuilderController;
     private DeckBuilderController deckBuilderController;
 
-    public static DowntimeManager Instance { get { return instance; } }
+    public static DowntimeManager instance;
     public CardShopManager CardShopManager { get => cardShopManager; }
     public ComponentShopManager ComponentShopManager { get => componentShopManager; }
     public ShopCollectionRandomizeManager ShopCollectionRandomizeManager { get => shopCollectionRandomizeManager; }
@@ -35,8 +33,8 @@ public class DowntimeManager : MonoBehaviour
         mechBuilderController = GetComponent<MechBuilderController>();
         deckBuilderController = GetComponent<DeckBuilderController>();
 
-        Instance.CardShopManager.InitializeShop();
-        Instance.ComponentShopManager.InitializeShop();
+        instance.CardShopManager.InitializeShop();
+        instance.ComponentShopManager.InitializeShop();
 
     }
 }

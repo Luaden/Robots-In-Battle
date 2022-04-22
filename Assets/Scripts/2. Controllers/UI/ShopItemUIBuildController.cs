@@ -15,7 +15,7 @@ public class ShopItemUIBuildController : MonoBehaviour
         ComponentShopVendorUIController componentShopUIController = shopItemUIGameObject.GetComponent<ComponentShopVendorUIController>();
 
         componentShopUIController.InitUI(shopItem);
-        DowntimeManager.Instance.ComponentShopManager.ComponentShopVendorSlotManager.AddItemToCollection(componentShopUIController, null);
+        DowntimeManager.instance.ComponentShopManager.ComponentShopVendorSlotManager.AddItemToCollection(componentShopUIController, null);
 
         shopItemUIGameObject.SetActive(true);
     }

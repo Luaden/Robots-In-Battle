@@ -29,11 +29,11 @@ public class ComponentShopController : MonoBehaviour
         // if not, warn -> not enough time/money available
 
         List<ComponentShopCartUIController> shopCartItemList = new List<ComponentShopCartUIController>();
-        for (int i = 0; i < DowntimeManager.Instance.ComponentShopManager.ComponentShopCartSlotManager.SlotList.Count; i++)
+        for (int i = 0; i < DowntimeManager.instance.ComponentShopManager.ComponentShopCartSlotManager.SlotList.Count; i++)
         {
-            if (DowntimeManager.Instance.ComponentShopManager.ComponentShopCartSlotManager.SlotList[i].CurrentSlottedItem != null)
+            if (DowntimeManager.instance.ComponentShopManager.ComponentShopCartSlotManager.SlotList[i].CurrentSlottedItem != null)
             {
-                shopCartItemList.Add(DowntimeManager.Instance.ComponentShopManager.ComponentShopCartSlotManager.SlotList[i].CurrentSlottedItem);
+                shopCartItemList.Add(DowntimeManager.instance.ComponentShopManager.ComponentShopCartSlotManager.SlotList[i].CurrentSlottedItem);
             }
         }
 
@@ -62,11 +62,11 @@ public class ComponentShopController : MonoBehaviour
     public void UndoCart()
     {
         List<ComponentShopCartUIController> shopCartItemList = new List<ComponentShopCartUIController>();
-        for (int i = 0; i < DowntimeManager.Instance.ComponentShopManager.ComponentShopCartSlotManager.SlotList.Count; i++)
+        for (int i = 0; i < DowntimeManager.instance.ComponentShopManager.ComponentShopCartSlotManager.SlotList.Count; i++)
         {
-            if (DowntimeManager.Instance.ComponentShopManager.ComponentShopCartSlotManager.SlotList[i].CurrentSlottedItem != null)
+            if (DowntimeManager.instance.ComponentShopManager.ComponentShopCartSlotManager.SlotList[i].CurrentSlottedItem != null)
             {
-               shopCartItemList.Add(DowntimeManager.Instance.ComponentShopManager.ComponentShopCartSlotManager.SlotList[i].CurrentSlottedItem);
+               shopCartItemList.Add(DowntimeManager.instance.ComponentShopManager.ComponentShopCartSlotManager.SlotList[i].CurrentSlottedItem);
         
             }
         }

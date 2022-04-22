@@ -4,15 +4,18 @@ using UnityEngine;
 
 public class InventoryController : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    public void AddItemToInventory(SOItemDataObject mechComponent)
     {
-        
+
     }
 
-    // Update is called once per frame
-    void Update()
+    public void AddItemToInventory(MechComponentDataObject mechComponent)
     {
-        
+
+    }
+
+    public void RemoveItemFromInventory()
+    {
+
     }
 }

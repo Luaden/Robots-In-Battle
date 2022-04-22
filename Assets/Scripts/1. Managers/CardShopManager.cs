@@ -41,11 +41,11 @@ public class CardShopManager : MonoBehaviour
 
         foreach(SOShopItemCollectionObject collection in shopCollectionObjects)
         {
-            DowntimeManager.Instance.ShopCollectionRandomizeManager.InitList();
-            DowntimeManager.Instance.ShopCollectionRandomizeManager.AddToCardShopCollectionList(collection);
+            DowntimeManager.instance.ShopCollectionRandomizeManager.InitList();
+            DowntimeManager.instance.ShopCollectionRandomizeManager.AddToCardShopCollectionList(collection);
         }
         
-        DowntimeManager.Instance.ShopCollectionRandomizeManager.RandomizeShopItemCollection();
+        DowntimeManager.instance.ShopCollectionRandomizeManager.RandomizeShopItemCollection();
 
         cardShopController.SelectItemsToDisplay(itemsToDisplay, shopVendorWindow.transform);
     }
