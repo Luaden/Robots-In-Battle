@@ -109,6 +109,6 @@ public class GameManager : MonoBehaviour
         List<CardDataObject> newDeck = deckBuilderController.BuildDeck(starterDeck);
 
         playerData.PlayerDeck = newDeck;
-        playerData.PlayerMech = newMech;
+        //playerData.PlayerMech = newMech;
     }
 }

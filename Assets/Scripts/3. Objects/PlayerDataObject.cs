@@ -17,7 +17,7 @@ public class PlayerDataObject : MonoBehaviour
     public float TimeLeftToSpend { get => timeLeftToSpend; set => timeLeftToSpend = value; }
     public float CurrencyToSpend { get => currencyToSpend; set => currencyToSpend = value; }
     public List<CardDataObject> PlayerDeck { get => playerDeck; set => playerDeck = value; }
-    public MechObject PlayerMech { get => playerMech; set => PlayerMechComponentCheck(value);  }
+    public MechObject PlayerMech { get => playerMech; }//set => PlayerMechComponentCheck(value);  }
     public List<MechComponentDataObject> PlayerInventory { get => playerInventory; set => playerInventory = value; }
 
     private void PlayerMechComponentCheck(List<MechComponentDataObject> mechParts)
@@ -59,6 +59,6 @@ public class PlayerDataObject : MonoBehaviour
             return;
         }
 
-        playerMech = mechParts;
+        //playerMech = mechParts;
     }
 }
