@@ -7,7 +7,7 @@ public class CardShopController : MonoBehaviour
     private List<ShopItemUIObject> shopItemList;
     [SerializeField] protected CardShopItemUIBuildController shopItemUIBuildController;
 
-    public void InitializeShop(List<SOItemDataObject> itemsToDisplay, Transform startPoint)
+    public void SelectItemsToDisplay(List<SOItemDataObject> itemsToDisplay, Transform startPoint)
     {
         shopItemList = new List<ShopItemUIObject>();
         foreach (SOItemDataObject item in itemsToDisplay)

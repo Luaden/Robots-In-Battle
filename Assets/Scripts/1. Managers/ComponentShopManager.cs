@@ -14,7 +14,8 @@ public class ComponentShopManager : MonoBehaviour
     public ComponentShopVendorSlotManager ComponentShopVendorSlotManager { get => componentShopVendorSlotManager; }
     public ComponentShopCartSlotManager ComponentShopCartSlotManager { get => componentShopCartSlotManager; }
 
-    [SerializeField] protected List<SOItemDataObject> itemsToDisplay;
+    private List<SOItemDataObject> itemsToDisplay;
+    [SerializeField] protected List<SOShopItemCollectionObject> shopCollectionObjects;
 
     public void AddToShop(List<SOShopItemCollectionObject> collections)
     {
@@ -22,14 +23,29 @@ public class ComponentShopManager : MonoBehaviour
             foreach (SOItemDataObject item in collection.ItemsInCollection)
                 itemsToDisplay.Add(item);
     }
+    // should only be called once everytime we change to downtime
     public void InitializeShop()
     {
         componentShopController = GetComponentInChildren<ComponentShopController>(true);
         componentShopVendorSlotManager = GetComponentInChildren<ComponentShopVendorSlotManager>(true);
         componentShopCartSlotManager = GetComponentInChildren<ComponentShopCartSlotManager>(true);
 
+        itemsToDisplay = new List<SOItemDataObject>();
 
-        //componentShopController.InitializeShop(itemsToDisplay, shopVendorWindow.transform);
+        foreach (SOShopItemCollectionObject collection in shopCollectionObjects)
+        {
+            DowntimeManager.Instance.ShopCollectionRandomizeManager.InitList();
+            DowntimeManager.Instance.ShopCollectionRandomizeManager.AddToComponentShopCollectionList(collection);
+        }
+
+        DowntimeManager.Instance.ShopCollectionRandomizeManager.RandomizeShopItemCollection();
+
+        if(itemsToDisplay.Count <= 0)
+        {
+            Debug.Log("missing items to display : ComponentShopManager");
+            return;
+        }
+        componentShopController.InitializeShop(itemsToDisplay, shopVendorWindow.transform);
     }
 
     public void OpenAndClose()

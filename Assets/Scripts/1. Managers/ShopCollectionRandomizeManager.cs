@@ -15,4 +15,14 @@ public class ShopCollectionRandomizeManager : MonoBehaviour
     {
         shopCollectionController.AddToCardShopCollectionList(item);
     }
+
+    public void RandomizeShopItemCollection()
+    {
+        shopCollectionController.RandomizeShopItemCollection();
+    }
+
+    public void InitList()
+    {
+        shopCollectionController.InitList();
+    }
 }

@@ -15,25 +15,39 @@ public class CardShopManager : MonoBehaviour
     public CardShopVendorSlotManager CardShopVendorSlotManager { get => cardShopVendorSlotManager; }
     public CardShopCartSlotManager CardShopCartSlotManager { get => cardShopCartSlotManager; }
 
-    [SerializeField] protected List<SOItemDataObject> itemsToDisplay;
+    private List<SOItemDataObject> itemsToDisplay;
     [SerializeField] protected List<SOShopItemCollectionObject> shopCollectionObjects;
 
     public void AddToShop(List<SOShopItemCollectionObject> collections)
     {
+
         foreach (SOShopItemCollectionObject collection in collections)
+        {
             foreach (SOItemDataObject item in collection.ItemsInCollection)
+            {
                 itemsToDisplay.Add(item);
+            }
+        }
     }
 
+    // should only be called once everytime we change to downtime
     public void InitializeShop()
     {
         cardShopController = GetComponentInChildren<CardShopController>();
         cardShopVendorSlotManager = GetComponentInChildren<CardShopVendorSlotManager>(true);
         cardShopCartSlotManager = GetComponentInChildren<CardShopCartSlotManager>(true);
 
+        itemsToDisplay = new List<SOItemDataObject>();
 
+        foreach(SOShopItemCollectionObject collection in shopCollectionObjects)
+        {
+            DowntimeManager.Instance.ShopCollectionRandomizeManager.InitList();
+            DowntimeManager.Instance.ShopCollectionRandomizeManager.AddToCardShopCollectionList(collection);
+        }
+        
+        DowntimeManager.Instance.ShopCollectionRandomizeManager.RandomizeShopItemCollection();
 
-        cardShopController.InitializeShop(itemsToDisplay, shopVendorWindow.transform);
+        cardShopController.SelectItemsToDisplay(itemsToDisplay, shopVendorWindow.transform);
     }
 
     public void OpenAndClose()
