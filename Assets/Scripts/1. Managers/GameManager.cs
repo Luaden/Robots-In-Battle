@@ -21,21 +21,13 @@ public class GameManager : MonoBehaviour
     [ContextMenu("Start Game")]
     public void BuildMech()
     {
-        MechComponentDataObject head = new MechComponentDataObject(starterMechHead);
-        MechComponentDataObject torso = new MechComponentDataObject(starterMechTorso);
-        MechComponentDataObject legs = new MechComponentDataObject(starterMechLegs);
-        MechComponentDataObject arms = new MechComponentDataObject(starterMechArms);
-
-        MechObject playerMech = new MechObject(head, torso, arms, legs);
+        MechObject playerMech = mechBuilderController.BuildNewMech(starterMechHead, starterMechTorso, starterMechArms, starterMechLegs);
         PilotDataObject playerPilot = new PilotDataObject();
         FighterDataObject playerFighter = new FighterDataObject(playerMech, playerPilot, deckBuilderController.BuildDeck(starterDeck));
 
-        head = new MechComponentDataObject(starterMechHead);
-        torso = new MechComponentDataObject(starterMechTorso);
-        legs = new MechComponentDataObject(starterMechLegs);
-        arms = new MechComponentDataObject(starterMechArms);
 
-        MechObject opponentMech = new MechObject(head, torso, arms, legs);
+
+        MechObject opponentMech = mechBuilderController.BuildNewMech(starterMechHead, starterMechTorso, starterMechArms, starterMechLegs);
         PilotDataObject opponentPilot = new PilotDataObject();
         FighterDataObject opponentFighter = new FighterDataObject(opponentMech, opponentPilot, deckBuilderController.BuildDeck(starterDeck));
 
@@ -103,12 +95,11 @@ public class GameManager : MonoBehaviour
             return;
         }
 
-        //Need default deck and default mech stored here.
         playerData = new PlayerDataObject();
         MechObject newMech = mechBuilderController.BuildNewMech(starterMechHead, starterMechTorso, starterMechArms, starterMechLegs);
         List<CardDataObject> newDeck = deckBuilderController.BuildDeck(starterDeck);
 
         playerData.PlayerDeck = newDeck;
-        //playerData.PlayerMech = newMech;
+        playerData.PlayerMech = newMech;
     }
 }

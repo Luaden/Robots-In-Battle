@@ -38,6 +38,8 @@ public class MechComponentDataObject
 
     public MechComponentDataObject(SOItemDataObject sOMechComponent)
     {
+        if (sOMechComponent == null)
+            Debug.Log("No SO given.");
         componentName = sOMechComponent.ComponentName;
         componentType = sOMechComponent.ComponentType;
         componentElement = sOMechComponent.ComponentElement;
