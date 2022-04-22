@@ -6,32 +6,32 @@ using UnityEngine.SceneManagement;
 public class GameManager : MonoBehaviour
 {
     #region Playtesting
-    [SerializeField] private SOItemDataObject testMechHead;
-    [SerializeField] private SOItemDataObject testMechTorso;
-    [SerializeField] private SOItemDataObject testMechArms;
-    [SerializeField] private SOItemDataObject testMechLegs;
-    [SerializeField] private List<SOItemDataObject> testDeck;
+    [SerializeField] private SOItemDataObject starterMechHead;
+    [SerializeField] private SOItemDataObject starterMechTorso;
+    [SerializeField] private SOItemDataObject starterMechArms;
+    [SerializeField] private SOItemDataObject starterMechLegs;
+    [SerializeField] private List<SOItemDataObject> starterDeck;
 
     [ContextMenu("Start Game")]
     public void BuildMech()
     {
-        MechComponentDataObject head = new MechComponentDataObject(testMechHead);
-        MechComponentDataObject torso = new MechComponentDataObject(testMechTorso);
-        MechComponentDataObject legs = new MechComponentDataObject(testMechLegs);
-        MechComponentDataObject arms = new MechComponentDataObject(testMechArms);
+        MechComponentDataObject head = new MechComponentDataObject(starterMechHead);
+        MechComponentDataObject torso = new MechComponentDataObject(starterMechTorso);
+        MechComponentDataObject legs = new MechComponentDataObject(starterMechLegs);
+        MechComponentDataObject arms = new MechComponentDataObject(starterMechArms);
 
         MechObject playerMech = new MechObject(head, torso, arms, legs);
         PilotDataObject playerPilot = new PilotDataObject();
-        FighterDataObject playerFighter = new FighterDataObject(playerMech, playerPilot, testDeck);
+        FighterDataObject playerFighter = new FighterDataObject(playerMech, playerPilot, starterDeck);
 
-        head = new MechComponentDataObject(testMechHead);
-        torso = new MechComponentDataObject(testMechTorso);
-        legs = new MechComponentDataObject(testMechLegs);
-        arms = new MechComponentDataObject(testMechArms);
+        head = new MechComponentDataObject(starterMechHead);
+        torso = new MechComponentDataObject(starterMechTorso);
+        legs = new MechComponentDataObject(starterMechLegs);
+        arms = new MechComponentDataObject(starterMechArms);
 
         MechObject opponentMech = new MechObject(head, torso, arms, legs);
         PilotDataObject opponentPilot = new PilotDataObject();
-        FighterDataObject opponentFighter = new FighterDataObject(opponentMech, opponentPilot, testDeck);
+        FighterDataObject opponentFighter = new FighterDataObject(opponentMech, opponentPilot, starterDeck);
 
         CombatManager.instance.PlayerFighter = playerFighter;
         CombatManager.instance.MechHUDManager.UpdatePlayerHP(playerFighter.FighterMech.MechCurrentHP);
@@ -45,19 +45,18 @@ public class GameManager : MonoBehaviour
 
     private void DrawCardPrefab()
     {
-        CombatManager.instance.DeckManager.SetPlayerDeck(testDeck);
+        CombatManager.instance.DeckManager.SetPlayerDeck(starterDeck);
 
         for (int i = 0; i <= 4; i++)
             CombatManager.instance.DeckManager.DrawPlayerCard();
 
-        CombatManager.instance.DeckManager.SetOpponentDeck(testDeck);
+        CombatManager.instance.DeckManager.SetOpponentDeck(starterDeck);
 
         for (int i = 0; i <= 4; i++)
             CombatManager.instance.DeckManager.DrawOpponentCard();
 
     }
     #endregion
-
     private PlayerDataObject playerData;
 
     public static GameManager instance;
@@ -84,5 +83,17 @@ public class GameManager : MonoBehaviour
     private void Start()
     {
         
+    }
+
+    public void LoadPlayer(PlayerDataObject playerDataObject = null)
+    {
+        if (playerDataObject != null)
+        {
+            playerData = playerDataObject;
+            return;
+        }
+
+        //Need default deck and default mech stored here.
+        playerData = new PlayerDataObject();
     }
 }
