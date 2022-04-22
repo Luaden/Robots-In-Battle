@@ -5,6 +5,12 @@ using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
+    private MechBuilderController mechBuilderController;
+    private DeckBuilderController deckBuilderController;
+
+    public MechBuilderController MechBuilderController { get => mechBuilderController; }
+    public DeckBuilderController DeckBuilderController { get => deckBuilderController; }
+
     #region Playtesting
     [SerializeField] private SOItemDataObject starterMechHead;
     [SerializeField] private SOItemDataObject starterMechTorso;
@@ -22,7 +28,7 @@ public class GameManager : MonoBehaviour
 
         MechObject playerMech = new MechObject(head, torso, arms, legs);
         PilotDataObject playerPilot = new PilotDataObject();
-        FighterDataObject playerFighter = new FighterDataObject(playerMech, playerPilot, starterDeck);
+        FighterDataObject playerFighter = new FighterDataObject(playerMech, playerPilot, deckBuilderController.BuildDeck(starterDeck));
 
         head = new MechComponentDataObject(starterMechHead);
         torso = new MechComponentDataObject(starterMechTorso);
@@ -31,7 +37,7 @@ public class GameManager : MonoBehaviour
 
         MechObject opponentMech = new MechObject(head, torso, arms, legs);
         PilotDataObject opponentPilot = new PilotDataObject();
-        FighterDataObject opponentFighter = new FighterDataObject(opponentMech, opponentPilot, starterDeck);
+        FighterDataObject opponentFighter = new FighterDataObject(opponentMech, opponentPilot, deckBuilderController.BuildDeck(starterDeck));
 
         CombatManager.instance.PlayerFighter = playerFighter;
         CombatManager.instance.MechHUDManager.UpdatePlayerHP(playerFighter.FighterMech.MechCurrentHP);
@@ -85,7 +91,8 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
-        
+        mechBuilderController = new MechBuilderController();
+        deckBuilderController = new DeckBuilderController();
     }
 
     public void LoadPlayer(PlayerDataObject playerDataObject = null)
@@ -98,6 +105,10 @@ public class GameManager : MonoBehaviour
 
         //Need default deck and default mech stored here.
         playerData = new PlayerDataObject();
-        MechObject newMech = DowntimeManager.instance.MechBuilderController.BuildNewMech(starterMechHead, starterMechTorso, starterMechArms, starterMechLegs);
+        MechObject newMech = mechBuilderController.BuildNewMech(starterMechHead, starterMechTorso, starterMechArms, starterMechLegs);
+        List<CardDataObject> newDeck = deckBuilderController.BuildDeck(starterDeck);
+
+        playerData.PlayerDeck = newDeck;
+        playerData.PlayerMech = newMech;
     }
 }
