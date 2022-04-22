@@ -16,18 +16,22 @@ public class CardShopManager : MonoBehaviour
     public CardShopCartSlotManager CardShopCartSlotManager { get => cardShopCartSlotManager; }
 
     [SerializeField] protected List<SOItemDataObject> itemsToDisplay;
+    [SerializeField] protected List<SOShopItemCollectionObject> shopCollectionObjects;
 
-    public void AddToShop(ShopItemCollectionObject collectionObject)
+    public void AddToShop(List<SOShopItemCollectionObject> collections)
     {
-        foreach (SOItemDataObject dataObject in collectionObject.ItemsInCollection)
-            itemsToDisplay.Add(dataObject);
+        foreach (SOShopItemCollectionObject collection in collections)
+            foreach (SOItemDataObject item in collection.ItemsInCollection)
+                itemsToDisplay.Add(item);
     }
 
-    public void CreateShop()
+    public void InitializeShop()
     {
         cardShopController = GetComponentInChildren<CardShopController>();
         cardShopVendorSlotManager = GetComponentInChildren<CardShopVendorSlotManager>(true);
         cardShopCartSlotManager = GetComponentInChildren<CardShopCartSlotManager>(true);
+
+
 
         cardShopController.InitializeShop(itemsToDisplay, shopVendorWindow.transform);
     }

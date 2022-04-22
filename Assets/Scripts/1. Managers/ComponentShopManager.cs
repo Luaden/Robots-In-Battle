@@ -11,23 +11,23 @@ public class ComponentShopManager : MonoBehaviour
     protected ComponentShopController componentShopController;
     private ComponentShopCartSlotManager componentShopCartSlotManager;
     private ComponentShopVendorSlotManager componentShopVendorSlotManager;
-
     public ComponentShopVendorSlotManager ComponentShopVendorSlotManager { get => componentShopVendorSlotManager; }
     public ComponentShopCartSlotManager ComponentShopCartSlotManager { get => componentShopCartSlotManager; }
 
     [SerializeField] protected List<SOItemDataObject> itemsToDisplay;
 
-
-    public void AddToShop(ShopItemCollectionObject collectionObject)
+    public void AddToShop(List<SOShopItemCollectionObject> collections)
     {
-        foreach (SOItemDataObject dataObject in collectionObject.ItemsInCollection)
-            itemsToDisplay.Add(dataObject);
+        foreach (SOShopItemCollectionObject collection in collections)
+            foreach (SOItemDataObject item in collection.ItemsInCollection)
+                itemsToDisplay.Add(item);
     }
-    public void CreateShop()
+    public void InitializeShop()
     {
         componentShopController = GetComponentInChildren<ComponentShopController>(true);
         componentShopVendorSlotManager = GetComponentInChildren<ComponentShopVendorSlotManager>(true);
         componentShopCartSlotManager = GetComponentInChildren<ComponentShopCartSlotManager>(true);
+
 
         //componentShopController.InitializeShop(itemsToDisplay, shopVendorWindow.transform);
     }

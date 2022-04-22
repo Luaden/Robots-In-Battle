@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "New Collection", menuName = "Cards or Components/New Collection")]
-public class ShopItemCollectionObject : ScriptableObject
+public class SOShopItemCollectionObject : ScriptableObject
 {
     [SerializeField] protected ItemType itemType;
     [SerializeField] protected List<SOItemDataObject> itemsInCollection;

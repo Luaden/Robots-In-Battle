@@ -4,31 +4,36 @@ using UnityEngine;
 
 public class ShopCollectionRandomizeController : MonoBehaviour
 {
-    protected List<ShopItemCollectionObject> componentShopItemCollectionObjects;
-    protected List<ShopItemCollectionObject> cardShopItemCollectionObjects;
+    protected List<SOShopItemCollectionObject> componentShopItemCollectionObjects;
+    protected List<SOShopItemCollectionObject> cardShopItemCollectionObjects;
 
-    public void AddToComponentShopCollectionList(ShopItemCollectionObject item)
+    // gets called first to add the CollectionObjects to a list, which gets sent to their respective shopmanagers Add to Shop
+    public void AddToComponentShopCollectionList(SOShopItemCollectionObject collection)
     {
-        if(item != null && item.CollectionType == ItemType.Component)
-            componentShopItemCollectionObjects.Add(item);
+        if(collection != null && collection.CollectionType == ItemType.Component)
+            componentShopItemCollectionObjects.Add(collection);
     }
-    public void AddToCardShopCollectionList(ShopItemCollectionObject item)
+    public void AddToCardShopCollectionList(SOShopItemCollectionObject collection)
     {
-        if (item != null && item.CollectionType == ItemType.Card)
-            componentShopItemCollectionObjects.Add(item);
+        if (collection != null && collection.CollectionType == ItemType.Card)
+            componentShopItemCollectionObjects.Add(collection);
     }
     public void RandomizeShopItemCollection()
     {
-        List<ShopItemCollectionObject> shopCollectionToSend = new List<ShopItemCollectionObject>();
-        foreach (ShopItemCollectionObject collection in componentShopItemCollectionObjects)
+        // needs to have AddToComponentShopCollectionList to have been performed before this gets called
+        // and AddToCardCollectionList
+        // test
+        int playerFights = 3;
+        List<SOShopItemCollectionObject> shopCollectionToSend = new List<SOShopItemCollectionObject>();
+        foreach (SOShopItemCollectionObject collection in componentShopItemCollectionObjects)
         {
-            //if (collection.FightsBeforeAppearance >= PlayerDataObject.Fights)
+            if (collection.FightsBeforeAppearance <= playerFights)
                 shopCollectionToSend.Add(collection);
 
         }
 
-        //DowntimeManager.Instance.ComponentShopManager.AddToShop(componentShopItemCollectionObjects);
-        //DowntimeManager.Instance.CardShopManager.AddToShop(cardShopItemCollectionObjects);
+        DowntimeManager.Instance.ComponentShopManager.AddToShop(componentShopItemCollectionObjects);
+        DowntimeManager.Instance.CardShopManager.AddToShop(cardShopItemCollectionObjects);
 
     }
 }
