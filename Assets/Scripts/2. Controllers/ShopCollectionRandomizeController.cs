@@ -7,7 +7,12 @@ public class ShopCollectionRandomizeController : MonoBehaviour
     protected List<SOShopItemCollectionObject> componentShopItemCollectionObjects;
     protected List<SOShopItemCollectionObject> cardShopItemCollectionObjects;
 
-    // gets called first to add the CollectionObjects to a list, which gets sent to their respective shopmanagers Add to Shop
+    public void InitList()
+    { 
+        componentShopItemCollectionObjects = new List<SOShopItemCollectionObject>();
+        cardShopItemCollectionObjects = new List<SOShopItemCollectionObject>();
+    }
+
     public void AddToComponentShopCollectionList(SOShopItemCollectionObject collection)
     {
         if(collection != null && collection.CollectionType == ItemType.Component)
@@ -16,15 +21,20 @@ public class ShopCollectionRandomizeController : MonoBehaviour
     public void AddToCardShopCollectionList(SOShopItemCollectionObject collection)
     {
         if (collection != null && collection.CollectionType == ItemType.Card)
-            componentShopItemCollectionObjects.Add(collection);
+            cardShopItemCollectionObjects.Add(collection);
     }
     public void RandomizeShopItemCollection()
     {
-        // needs to have AddToComponentShopCollectionList to have been performed before this gets called
-        // and AddToCardCollectionList
-        // test
         int playerFights = 3;
         List<SOShopItemCollectionObject> shopCollectionToSend = new List<SOShopItemCollectionObject>();
+        foreach (SOShopItemCollectionObject collection in cardShopItemCollectionObjects)
+        {
+            if (collection.FightsBeforeAppearance <= playerFights)
+            {
+                shopCollectionToSend.Add(collection);
+            }
+
+        }
         foreach (SOShopItemCollectionObject collection in componentShopItemCollectionObjects)
         {
             if (collection.FightsBeforeAppearance <= playerFights)
