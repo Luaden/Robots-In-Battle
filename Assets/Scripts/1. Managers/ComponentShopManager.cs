@@ -11,19 +11,25 @@ public class ComponentShopManager : MonoBehaviour
     protected ComponentShopController componentShopController;
     private ComponentShopCartSlotManager componentShopCartSlotManager;
     private ComponentShopVendorSlotManager componentShopVendorSlotManager;
-
     public ComponentShopVendorSlotManager ComponentShopVendorSlotManager { get => componentShopVendorSlotManager; }
     public ComponentShopCartSlotManager ComponentShopCartSlotManager { get => componentShopCartSlotManager; }
 
     [SerializeField] protected List<SOItemDataObject> itemsToDisplay;
 
-    public void CreateShop()
+    public void AddToShop(List<SOShopItemCollectionObject> collections)
+    {
+        foreach (SOShopItemCollectionObject collection in collections)
+            foreach (SOItemDataObject item in collection.ItemsInCollection)
+                itemsToDisplay.Add(item);
+    }
+    public void InitializeShop()
     {
         componentShopController = GetComponentInChildren<ComponentShopController>(true);
         componentShopVendorSlotManager = GetComponentInChildren<ComponentShopVendorSlotManager>(true);
         componentShopCartSlotManager = GetComponentInChildren<ComponentShopCartSlotManager>(true);
 
-        componentShopController.InitializeShop(itemsToDisplay, shopVendorWindow.transform);
+
+        //componentShopController.InitializeShop(itemsToDisplay, shopVendorWindow.transform);
     }
 
     public void OpenAndClose()
@@ -36,17 +42,4 @@ public class ComponentShopManager : MonoBehaviour
     {
         itemsToDisplay = sOItemDataObjects;
     }
-
-/*    public void OpenShop()
-    {
-        inventory.SetActive(false);
-        shopVendorWindow.SetActive(true);
-        shopCartWindow.SetActive(true);
-    }
-    public void OpenInventory()
-    {
-        shopVendorWindow.SetActive(false);
-        shopCartWindow.SetActive(false);
-        inventory.SetActive(true);
-    }*/
 }
