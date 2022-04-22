@@ -12,5 +12,8 @@ public class InventoryManager : MonoBehaviour
     //private InventoryItemSlotController;
 
     // List<Items>
-    protected InventoryController InventoryController { get => inventoryController; }
+
+    public void AddItemToInventory(SOItemDataObject mechComponent) => inventoryController.AddItemToInventory(mechComponent);
+
+    public void AddItemToInventory(MechComponentDataObject mechComponent) => inventoryController.AddItemToInventory(mechComponent);
 }

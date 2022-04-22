@@ -15,15 +15,39 @@ public class CardShopManager : MonoBehaviour
     public CardShopVendorSlotManager CardShopVendorSlotManager { get => cardShopVendorSlotManager; }
     public CardShopCartSlotManager CardShopCartSlotManager { get => cardShopCartSlotManager; }
 
-    [SerializeField] protected List<SOItemDataObject> itemsToDisplay;
+    private List<SOItemDataObject> itemsToDisplay;
+    [SerializeField] protected List<SOShopItemCollectionObject> shopCollectionObjects;
 
-    public void CreateShop()
+    public void AddToShop(List<SOShopItemCollectionObject> collections)
+    {
+
+        foreach (SOShopItemCollectionObject collection in collections)
+        {
+            foreach (SOItemDataObject item in collection.ItemsInCollection)
+            {
+                itemsToDisplay.Add(item);
+            }
+        }
+    }
+
+    // should only be called once everytime we change to downtime
+    public void InitializeShop()
     {
         cardShopController = GetComponentInChildren<CardShopController>();
         cardShopVendorSlotManager = GetComponentInChildren<CardShopVendorSlotManager>(true);
         cardShopCartSlotManager = GetComponentInChildren<CardShopCartSlotManager>(true);
 
-        cardShopController.InitializeShop(itemsToDisplay, shopVendorWindow.transform);
+        itemsToDisplay = new List<SOItemDataObject>();
+
+        foreach(SOShopItemCollectionObject collection in shopCollectionObjects)
+        {
+            DowntimeManager.instance.ShopCollectionRandomizeManager.InitList();
+            DowntimeManager.instance.ShopCollectionRandomizeManager.AddToCardShopCollectionList(collection);
+        }
+        
+        DowntimeManager.instance.ShopCollectionRandomizeManager.RandomizeShopItemCollection();
+
+        cardShopController.SelectItemsToDisplay(itemsToDisplay, shopVendorWindow.transform);
     }
 
     public void OpenAndClose()
@@ -37,16 +61,4 @@ public class CardShopManager : MonoBehaviour
         itemsToDisplay = sOItemDataObjects;
     }
 
-/*    public void OpenShop()
-    {
-        inventory.SetActive(false);
-        shopVendorWindow.SetActive(true);
-        shopCartWindow.SetActive(true);
-    }
-    public void OpenInventory()
-    {
-        shopVendorWindow.SetActive(false);
-        shopCartWindow.SetActive(false);
-        inventory.SetActive(true);
-    }*/
 }

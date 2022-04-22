@@ -6,7 +6,8 @@ public class CardShopController : MonoBehaviour
 {
     private List<ShopItemUIObject> shopItemList;
     [SerializeField] protected CardShopItemUIBuildController shopItemUIBuildController;
-    public void InitializeShop(List<SOItemDataObject> itemsToDisplay, Transform startPoint)
+
+    public void SelectItemsToDisplay(List<SOItemDataObject> itemsToDisplay, Transform startPoint)
     {
         shopItemList = new List<ShopItemUIObject>();
         foreach (SOItemDataObject item in itemsToDisplay)
@@ -29,11 +30,11 @@ public class CardShopController : MonoBehaviour
         // if not, warn -> not enough time/money available
 
         List<CardShopCartUIController> shopCartItemList = new List<CardShopCartUIController>();
-        for (int i = 0; i < DowntimeManager.Instance.CardShopManager.CardShopCartSlotManager.SlotList.Count; i++)
+        for (int i = 0; i < DowntimeManager.instance.CardShopManager.CardShopCartSlotManager.SlotList.Count; i++)
         {
-            if (DowntimeManager.Instance.CardShopManager.CardShopCartSlotManager.SlotList[i].CurrentSlottedItem != null)
+            if (DowntimeManager.instance.CardShopManager.CardShopCartSlotManager.SlotList[i].CurrentSlottedItem != null)
             {
-                shopCartItemList.Add(DowntimeManager.Instance.CardShopManager.CardShopCartSlotManager.SlotList[i].CurrentSlottedItem);
+                shopCartItemList.Add(DowntimeManager.instance.CardShopManager.CardShopCartSlotManager.SlotList[i].CurrentSlottedItem);
             }
         }
 
@@ -52,6 +53,7 @@ public class CardShopController : MonoBehaviour
 /*        if (currencycost <= FindObjectOfType<PlayerDataObject>().CurrencyToSpend)
             foreach (ShopItemUIObject item in shopItemList)
             {
+                // somewhere where we will add the items to the player
                 //playerdata.AcquireItem(item)
             }
         else
@@ -63,11 +65,11 @@ public class CardShopController : MonoBehaviour
     public void UndoCart()
     {
         List<CardShopCartUIController> shopCartItemList = new List<CardShopCartUIController>();
-        for (int i = 0; i < DowntimeManager.Instance.CardShopManager.CardShopCartSlotManager.SlotList.Count; i++)
+        for (int i = 0; i < DowntimeManager.instance.CardShopManager.CardShopCartSlotManager.SlotList.Count; i++)
         {
-            if (DowntimeManager.Instance.CardShopManager.CardShopCartSlotManager.SlotList[i].CurrentSlottedItem != null)
+            if (DowntimeManager.instance.CardShopManager.CardShopCartSlotManager.SlotList[i].CurrentSlottedItem != null)
             {
-                shopCartItemList.Add(DowntimeManager.Instance.CardShopManager.CardShopCartSlotManager.SlotList[i].CurrentSlottedItem);
+                shopCartItemList.Add(DowntimeManager.instance.CardShopManager.CardShopCartSlotManager.SlotList[i].CurrentSlottedItem);
 
             }
         }

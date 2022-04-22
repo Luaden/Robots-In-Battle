@@ -1,4 +1,5 @@
 using UnityEditor;
+
 #if UNITY_EDITOR
 [CustomEditor(typeof(SOCardEffectObject))]
 public class EditorCardEffectGUI : Editor

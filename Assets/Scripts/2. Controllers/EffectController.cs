@@ -663,7 +663,6 @@ public class EffectController
 
     private void GainShields(SOCardEffectObject effect, Channels channel, CharacterSelect characterGaining)
     {
-        Debug.Log("Adding shields to " + characterGaining);
         int shieldAmount;
 
         if (characterGaining == CharacterSelect.Player)

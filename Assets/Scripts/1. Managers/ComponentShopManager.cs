@@ -11,18 +11,40 @@ public class ComponentShopManager : MonoBehaviour
     protected ComponentShopController componentShopController;
     private ComponentShopCartSlotManager componentShopCartSlotManager;
     private ComponentShopVendorSlotManager componentShopVendorSlotManager;
-
     public ComponentShopVendorSlotManager ComponentShopVendorSlotManager { get => componentShopVendorSlotManager; }
     public ComponentShopCartSlotManager ComponentShopCartSlotManager { get => componentShopCartSlotManager; }
 
-    [SerializeField] protected List<SOItemDataObject> itemsToDisplay;
+    private List<SOItemDataObject> itemsToDisplay;
+    [SerializeField] protected List<SOShopItemCollectionObject> shopCollectionObjects;
 
-    public void CreateShop()
+    public void AddToShop(List<SOShopItemCollectionObject> collections)
+    {
+        foreach (SOShopItemCollectionObject collection in collections)
+            foreach (SOItemDataObject item in collection.ItemsInCollection)
+                itemsToDisplay.Add(item);
+    }
+    // should only be called once everytime we change to downtime
+    public void InitializeShop()
     {
         componentShopController = GetComponentInChildren<ComponentShopController>(true);
         componentShopVendorSlotManager = GetComponentInChildren<ComponentShopVendorSlotManager>(true);
         componentShopCartSlotManager = GetComponentInChildren<ComponentShopCartSlotManager>(true);
 
+        itemsToDisplay = new List<SOItemDataObject>();
+
+        foreach (SOShopItemCollectionObject collection in shopCollectionObjects)
+        {
+            DowntimeManager.instance.ShopCollectionRandomizeManager.InitList();
+            DowntimeManager.instance.ShopCollectionRandomizeManager.AddToComponentShopCollectionList(collection);
+        }
+
+        DowntimeManager.instance.ShopCollectionRandomizeManager.RandomizeShopItemCollection();
+
+        if(itemsToDisplay.Count <= 0)
+        {
+            Debug.Log("missing items to display : ComponentShopManager");
+            return;
+        }
         componentShopController.InitializeShop(itemsToDisplay, shopVendorWindow.transform);
     }
 
@@ -36,17 +58,4 @@ public class ComponentShopManager : MonoBehaviour
     {
         itemsToDisplay = sOItemDataObjects;
     }
-
-/*    public void OpenShop()
-    {
-        inventory.SetActive(false);
-        shopVendorWindow.SetActive(true);
-        shopCartWindow.SetActive(true);
-    }
-    public void OpenInventory()
-    {
-        shopVendorWindow.SetActive(false);
-        shopCartWindow.SetActive(false);
-        inventory.SetActive(true);
-    }*/
 }

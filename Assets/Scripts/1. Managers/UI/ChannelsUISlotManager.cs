@@ -41,6 +41,8 @@ public class ChannelsUISlotManager : BaseSlotManager<CardUIController>
                 else
                     item.CardData.SelectedChannels = selectedChannel;
 
+                Debug.Log("Player selected " + item.CardData.CardName + " for their A Slot.");
+
                 cardChannelPairObjectA = new CardChannelPairObject(item.CardData, selectedChannel);
                 CombatManager.instance.CardPlayManager.PlayerAttackPlan.cardChannelPairA = cardChannelPairObjectA;
                 SkipASlotButton.SetActive(false);
@@ -49,7 +51,8 @@ public class ChannelsUISlotManager : BaseSlotManager<CardUIController>
             }
             else
             {
-                Debug.Log("This card is not the correct type for Slot A. Slot A must be an Attack or Neutral Card Type.");
+                Debug.Log(item.CardData.CardName + " is not the correct type for Slot B. Slot A must be an Defense or Neutral Card Type but it is a " 
+                    + item.CardData.CardType + " card.");
                 return;
             }
 
@@ -62,8 +65,10 @@ public class ChannelsUISlotManager : BaseSlotManager<CardUIController>
                 if (item.CardData.AffectedChannels == AffectedChannels.AllPossibleChannels)
                     item.CardData.SelectedChannels = item.CardData.PossibleChannels;
                 else
-                    item.CardData.SelectedChannels = selectedChannel; 
-                
+                    item.CardData.SelectedChannels = selectedChannel;
+
+                Debug.Log("Player selected " + item.CardData.CardName + " for their B Slot.");
+
                 cardChannelPairObjectB = new CardChannelPairObject(item.CardData, selectedChannel);
                 CombatManager.instance.CardPlayManager.PlayerAttackPlan.cardChannelPairB = cardChannelPairObjectB;
 
@@ -72,7 +77,8 @@ public class ChannelsUISlotManager : BaseSlotManager<CardUIController>
             }
             else
             {
-                Debug.Log("This card is not the correct type for Slot B. Slot A must be an Defense or Neutral Card Type.");
+                Debug.Log(item.CardData.CardName + " is not the correct type for Slot B. Slot A must be an Defense or Neutral Card Type but it is a " 
+                    + item.CardData.CardType + " card.");
                 return;
             }
 
@@ -107,11 +113,13 @@ public class ChannelsUISlotManager : BaseSlotManager<CardUIController>
                 else
                     item.CardData.SelectedChannels = selectedChannel;
 
+                Debug.Log("Opponent selected " + item.CardData.CardName + " for their B Slot.");
                 return;
             }
             else
             {
-                Debug.Log("This card is not the correct type for Slot A. Slot A must be an Attack or Neutral Card Type.");
+                Debug.Log(item.CardData.CardName + " is not the correct type for Slot B. Slot A must be an Defense or Neutral Card Type but it is a "
+                    + item.CardData.CardType + " card.");
                 return;
             }
 
@@ -124,13 +132,16 @@ public class ChannelsUISlotManager : BaseSlotManager<CardUIController>
                 if (item.CardData.AffectedChannels == AffectedChannels.AllPossibleChannels)
                     item.CardData.SelectedChannels = item.CardData.PossibleChannels;
                 else
-                    item.CardData.SelectedChannels = selectedChannel; 
+                    item.CardData.SelectedChannels = selectedChannel;
+
+                Debug.Log("Opponent selected " + item.CardData.CardName + " for their B Slot.");
 
                 return;
             }
             else
             {
-                Debug.Log(item.CardData.CardName + " is not the correct type for Slot B. Slot A must be an Defense or Neutral Card Type.");
+                Debug.Log(item.CardData.CardName + " is not the correct type for Slot B. Slot A must be an Defense or Neutral Card Type but it is a "
+                    + item.CardData.CardType + " card.");
                 return;
             }
 

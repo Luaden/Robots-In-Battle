@@ -24,7 +24,7 @@ public class ComponentShopItemUIBuildController : MonoBehaviour
 
         componentShopCartUIController.enabled = false;
 
-        DowntimeManager.Instance.ComponentShopManager.ComponentShopVendorSlotManager.AddItemToCollection(componentShopVendorUIController, null);
+        DowntimeManager.instance.ComponentShopManager.ComponentShopVendorSlotManager.AddItemToCollection(componentShopVendorUIController, null);
 
         shopItemUIGameObject.SetActive(true);
     }

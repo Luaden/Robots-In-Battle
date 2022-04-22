@@ -51,8 +51,64 @@ public class MechObject
         mechEnergyGain += legs.EnergyGainModifier;
     }
 
-    public MechComponentDataObject ReplaceComponent(SOItemDataObject newMechComponent)
+    public MechComponentDataObject ReplaceComponent(MechComponentDataObject newComponent)
     {
+        MechComponentDataObject oldComponent;
+
+        switch (newComponent.ComponentType)
+        {
+            case MechComponent.Head:
+                oldComponent = mechHead;
+                mechHead = newComponent;
+
+                RemoveMechHPByComponent(oldComponent);
+                AddMechHPByComponent(newComponent);
+
+                return oldComponent;
+
+            case MechComponent.Torso:
+                oldComponent = mechTorso;
+                mechTorso = newComponent;
+
+                RemoveMechHPByComponent(oldComponent);
+                AddMechHPByComponent(newComponent);
+                
+                return oldComponent;
+
+            case MechComponent.Arms:
+                oldComponent = mechArms;
+                mechArms = newComponent;
+
+                RemoveMechHPByComponent(oldComponent);
+                AddMechHPByComponent(newComponent);
+
+                return oldComponent;
+
+            case MechComponent.Legs:
+                oldComponent = mechLegs;
+                mechLegs = newComponent;
+
+                RemoveMechHPByComponent(oldComponent);
+                AddMechHPByComponent(newComponent);
+
+                return oldComponent;
+               
+            case MechComponent.Back:
+                return null;
+        }
+
         return null;
+    }
+
+    private void RemoveMechHPByComponent(MechComponentDataObject componentRemoved)
+    {
+        mechMaxHP -= componentRemoved.ComponentMaxHP;
+        mechCurrentHP -= componentRemoved.ComponentCurrentHP;
+    }
+
+    private void AddMechHPByComponent(MechComponentDataObject componentAdded)
+    {
+        mechMaxHP -= componentAdded.ComponentMaxHP;
+        mechCurrentHP -= componentAdded.ComponentCurrentHP;
     }
 }
