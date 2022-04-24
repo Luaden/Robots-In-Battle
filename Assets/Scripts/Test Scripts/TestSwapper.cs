@@ -1,21 +1,21 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Experimental.U2D.Animation;
+
 using System.Linq;
 
 public class TestSwapper : MonoBehaviour
 {
     [SerializeField]
-    private SpriteLibrary spriteLibrary = default;
+    private UnityEngine.U2D.Animation.SpriteLibrary spriteLibrary = default;
 
     [SerializeField]
-    private SpriteResolver targetResolver = default;
+    private UnityEngine.U2D.Animation.SpriteResolver targetResolver = default;
 
     [SerializeField]
     private string targetCategory = default;
 
-    private SpriteLibraryAsset LibraryAsset => spriteLibrary.spriteLibraryAsset;
+    private UnityEngine.U2D.Animation.SpriteLibraryAsset LibraryAsset => spriteLibrary.spriteLibraryAsset;
 
     
    public void InjectCustom (Sprite customSprite)
