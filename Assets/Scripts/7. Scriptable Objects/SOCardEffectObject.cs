@@ -13,7 +13,10 @@ public class SOCardEffectObject : ScriptableObject
     [SerializeField] private int effectMagnitude = 0;
     [SerializeField] private int effectDuration = 0;
     [SerializeField] private int fallOffPerTurn = 1;
-
+    
+    #region EditorGUI
+    [SerializeField] private bool showAllStats;
+    #endregion
 
     public CardEffectTypes EffectType { get => effectType; }
     public CardCategory CardTypeToBoost { get => cardTypeToBoost; }

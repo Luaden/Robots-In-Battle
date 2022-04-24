@@ -113,7 +113,7 @@ public class ChannelsUISlotManager : BaseSlotManager<CardUIController>
                 else
                     item.CardData.SelectedChannels = selectedChannel;
 
-                Debug.Log("Opponent selected " + item.CardData.CardName + " for their B Slot.");
+                Debug.Log("Opponent selected " + item.CardData.CardName + " for their A Slot.");
                 return;
             }
             else

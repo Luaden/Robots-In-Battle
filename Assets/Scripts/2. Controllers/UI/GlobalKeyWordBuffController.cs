@@ -21,10 +21,7 @@ public class GlobalKeyWordBuffController : BaseUIElement<Dictionary<CardKeyWord,
             int categoryTurnCount = 0;
 
             foreach (CardEffectObject cardEffect in checkValue)
-            {
-                if (cardEffect.EffectDuration > categoryTurnCount)
-                    categoryTurnCount = cardEffect.EffectDuration;
-            }
+                categoryTurnCount += cardEffect.EffectMagnitude;
 
             flurryBuffText.text = categoryTurnCount.ToString();
             flurryBuff.SetActive(true);
