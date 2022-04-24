@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class PlayerDataObject : MonoBehaviour
 {
-    private List<CardDataObject> playerDeck;
+    private List<SOItemDataObject> playerDeck;
     private MechObject playerMech;
     private List<MechComponentDataObject> playerInventory;
     //We need to save map data here as well as the position of the player on the map.
@@ -16,8 +16,7 @@ public class PlayerDataObject : MonoBehaviour
 
     public float TimeLeftToSpend { get => timeLeftToSpend; set => timeLeftToSpend = value; }
     public float CurrencyToSpend { get => currencyToSpend; set => currencyToSpend = value; }
-    public List<CardDataObject> PlayerDeck { get => playerDeck; set => playerDeck = value; }
+    public List<SOItemDataObject> PlayerDeck { get => playerDeck; set => playerDeck = value; }
     public MechObject PlayerMech { get => playerMech; set => playerMech = value;  }
     public List<MechComponentDataObject> PlayerInventory { get => playerInventory; set => playerInventory = value; }
-
 }
