@@ -545,7 +545,6 @@ public class EffectController
                     foreach (CardEffectObject effect in flurryBonuses)
                     {
                         flurryBonus += effect.EffectMagnitude;
-                        Debug.Log("Flurry Bonus: " + flurryBonus);
                         removalKeyWordEffects.Add(effect);
                     }
 
@@ -880,7 +879,6 @@ public class EffectController
 
     private void KeyWordInitialize(SOCardEffectObject effect, Channels channel, CharacterSelect characterPriming)
     {
-        Debug.Log("Adding flurry bonus.");
         List<CardEffectObject> currentKeyWordEffectList = new List<CardEffectObject>();
         CardEffectObject newKeyWordEffect = new CardEffectObject(effect);
 
