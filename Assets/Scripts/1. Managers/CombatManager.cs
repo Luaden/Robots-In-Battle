@@ -11,7 +11,7 @@ public class CombatManager : MonoBehaviour
 
     public static CombatManager instance;
 
-    private DeckManager deckManager;
+    private CombatDeckManager deckManager;
     private HandManager handManager;
     private PlayerHandUISlotManager playerHandSlotManager;
     private OpponentHandUISlotManager opponentHandSlotManager;
@@ -28,7 +28,7 @@ public class CombatManager : MonoBehaviour
 
     public FighterDataObject PlayerFighter { get => playerFighter; set => InitPlayerFighter(value); }
     public FighterDataObject OpponentFighter { get => opponentFighter; set => InitOpponentFighter(value); }
-    public DeckManager DeckManager { get => deckManager; }
+    public CombatDeckManager DeckManager { get => deckManager; }
     public HandManager HandManager { get => handManager; }
     public PlayerHandUISlotManager PlayerHandSlotManager { get => playerHandSlotManager; }
     public OpponentHandUISlotManager OpponentHandSlotManager { get => opponentHandSlotManager; }
@@ -97,7 +97,7 @@ public class CombatManager : MonoBehaviour
     {
         instance = this;
 
-        deckManager = FindObjectOfType<DeckManager>(true);
+        deckManager = FindObjectOfType<CombatDeckManager>(true);
         handManager = FindObjectOfType<HandManager>(true);
         playerHandSlotManager = FindObjectOfType<PlayerHandUISlotManager>(true);
         opponentHandSlotManager = FindObjectOfType<OpponentHandUISlotManager>(true);
