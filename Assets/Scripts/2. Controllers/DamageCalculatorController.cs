@@ -151,7 +151,7 @@ public class DamageCalculatorController
                 if (effect.EffectType == CardEffectTypes.PlayMultipleTimes)
                     repeatPlay = effect.EffectMagnitude;
 
-                if (effect.EffectType == CardEffectTypes.KeyWordInitialize && effect.CardKeyWord == CardKeyWord.Flurry)
+                if (effect.EffectType == CardEffectTypes.KeyWord && effect.CardKeyWord == CardKeyWord.Flurry)
                     repeatPlay += effectController.GetFlurryBonus(GetOtherMech(defensiveMech));
             }
 

@@ -23,7 +23,7 @@ public class EffectController
             if (effect.EffectType == CardEffectTypes.PlayMultipleTimes)
                 repeatPlay += effect.EffectMagnitude;
 
-            if (effect.EffectType == CardEffectTypes.KeyWordInitialize && effect.CardKeyWord == CardKeyWord.Flurry)
+            if (effect.EffectType == CardEffectTypes.KeyWord && effect.CardKeyWord == CardKeyWord.Flurry)
                 repeatPlay += GetFlurryBonus(destinationMech == CharacterSelect.Opponent ? CharacterSelect.Player : CharacterSelect.Opponent);
         }
 
@@ -82,7 +82,7 @@ public class EffectController
                             cardChannelPair.CardChannel : cardChannelPair.CardData.PossibleChannels, destinationMech);
                         break;
 
-                    case CardEffectTypes.KeyWordInitialize:
+                    case CardEffectTypes.KeyWord:
                         KeyWordInitialize(effect, cardChannelPair.CardData.AffectedChannels == AffectedChannels.SelectedChannel ?
                             cardChannelPair.CardChannel : cardChannelPair.CardData.PossibleChannels,
                             destinationMech == CharacterSelect.Opponent ? CharacterSelect.Player : CharacterSelect.Opponent);
@@ -467,10 +467,10 @@ public class EffectController
         List<CardEffectObject> removalKeyWordEffects = new List<CardEffectObject>();
 
 
-        if (attack.CardData.CardEffects.Select(x => x.EffectType).Contains(CardEffectTypes.KeyWordExecute))
+        if (attack.CardData.CardEffects.Select(x => x.EffectType).Contains(CardEffectTypes.KeyWord))
         {
             foreach (SOCardEffectObject effect in attack.CardData.CardEffects)
-                if (effect.EffectType == CardEffectTypes.KeyWordExecute)
+                if (effect.EffectType == CardEffectTypes.KeyWord)
                     keyWord = effect.CardKeyWord;
 
             if(defensiveCharacter == CharacterSelect.Opponent)

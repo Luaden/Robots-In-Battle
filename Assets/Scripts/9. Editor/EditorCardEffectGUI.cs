@@ -49,13 +49,10 @@ public class EditorCardEffectGUI : Editor
                     DisplayMagnitudeAttribute();
                     DisplayDurationAttribute();
                     break;
-                case (int)CardEffectTypes.KeyWordInitialize:
+                case (int)CardEffectTypes.KeyWord:
                     DisplayKeyWordAttribute();
                     DisplayMagnitudeAttribute();
                     DisplayDurationAttribute();
-                    break;
-                case (int)CardEffectTypes.KeyWordExecute:
-                    DisplayKeyWordAttribute();
                     break;
                 case (int)CardEffectTypes.PlayMultipleTimes:
                     DisplayMagnitudeAttribute();
