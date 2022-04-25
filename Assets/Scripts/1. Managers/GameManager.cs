@@ -6,10 +6,15 @@ using UnityEngine.SceneManagement;
 public class GameManager : MonoBehaviour
 {
     private MechBuilderController mechBuilderController;
-    private DeckBuilderController deckBuilderController;
+    private InventoryController inventoryController;
+    private PlayerDataObject playerData;
 
+    public static GameManager instance;
+
+    public InventoryController InventoryController { get => inventoryController; }
     public MechBuilderController MechBuilderController { get => mechBuilderController; }
-    public DeckBuilderController DeckBuilderController { get => deckBuilderController; }
+    public PlayerDataObject PlayerData { get => playerData; set => playerData = value; }
+
 
     #region Playtesting
     [SerializeField] private SOItemDataObject starterMechHead;
@@ -21,23 +26,15 @@ public class GameManager : MonoBehaviour
     [ContextMenu("Start Game")]
     public void BuildMech()
     {
-        MechComponentDataObject head = new MechComponentDataObject(starterMechHead);
-        MechComponentDataObject torso = new MechComponentDataObject(starterMechTorso);
-        MechComponentDataObject legs = new MechComponentDataObject(starterMechLegs);
-        MechComponentDataObject arms = new MechComponentDataObject(starterMechArms);
-
-        MechObject playerMech = new MechObject(head, torso, arms, legs);
+        mechBuilderController.BuildNewPlayerMech(starterMechHead, starterMechTorso, starterMechArms, starterMechLegs);
         PilotDataObject playerPilot = new PilotDataObject();
-        FighterDataObject playerFighter = new FighterDataObject(playerMech, playerPilot, deckBuilderController.BuildDeck(starterDeck));
+        FighterDataObject playerFighter = new FighterDataObject(PlayerData.PlayerMech, playerPilot, starterDeck);
 
-        head = new MechComponentDataObject(starterMechHead);
-        torso = new MechComponentDataObject(starterMechTorso);
-        legs = new MechComponentDataObject(starterMechLegs);
-        arms = new MechComponentDataObject(starterMechArms);
 
-        MechObject opponentMech = new MechObject(head, torso, arms, legs);
+
+        MechObject opponentMech = mechBuilderController.BuildNewMech(starterMechHead, starterMechTorso, starterMechArms, starterMechLegs);
         PilotDataObject opponentPilot = new PilotDataObject();
-        FighterDataObject opponentFighter = new FighterDataObject(opponentMech, opponentPilot, deckBuilderController.BuildDeck(starterDeck));
+        FighterDataObject opponentFighter = new FighterDataObject(opponentMech, opponentPilot, starterDeck);
 
         CombatManager.instance.PlayerFighter = playerFighter;
         CombatManager.instance.MechHUDManager.UpdatePlayerHP(playerFighter.FighterMech.MechCurrentHP);
@@ -63,16 +60,7 @@ public class GameManager : MonoBehaviour
 
     }
     #endregion
-
-    private InventoryManager inventoryManager;
-    private PlayerDataObject playerData;
-
-    public static GameManager instance;
-
-    public InventoryManager InventoryController { get => inventoryManager; }
-    public PlayerDataObject PlayerData { get => playerData; set => playerData = value; }
     
-
     public void ReloadScene()
     {
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
@@ -92,7 +80,6 @@ public class GameManager : MonoBehaviour
     private void Start()
     {
         mechBuilderController = new MechBuilderController();
-        deckBuilderController = new DeckBuilderController();
     }
 
     public void LoadPlayer(PlayerDataObject playerDataObject = null)
@@ -103,12 +90,10 @@ public class GameManager : MonoBehaviour
             return;
         }
 
-        //Need default deck and default mech stored here.
         playerData = new PlayerDataObject();
         MechObject newMech = mechBuilderController.BuildNewMech(starterMechHead, starterMechTorso, starterMechArms, starterMechLegs);
-        List<CardDataObject> newDeck = deckBuilderController.BuildDeck(starterDeck);
 
-        playerData.PlayerDeck = newDeck;
-        //playerData.PlayerMech = newMech;
+        playerData.PlayerDeck = starterDeck;
+        playerData.PlayerMech = newMech;
     }
 }

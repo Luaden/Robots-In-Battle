@@ -16,20 +16,29 @@ public class MechBuilderController
         return newMech;
     }
 
-    public void SwapMechPart(MechObject currentMech, MechComponentDataObject newComponent)
+    public void BuildNewPlayerMech(SOItemDataObject mechHead, SOItemDataObject mechTorso, SOItemDataObject mechArms, SOItemDataObject mechLegs)
     {
-        MechComponentDataObject oldComponent;
+        MechComponentDataObject head = new MechComponentDataObject(mechHead);
+        MechComponentDataObject torso = new MechComponentDataObject(mechTorso);
+        MechComponentDataObject legs = new MechComponentDataObject(mechArms);
+        MechComponentDataObject arms = new MechComponentDataObject(mechLegs);
+        MechObject newMech = new MechObject(head, torso, arms, legs);
 
-        oldComponent = currentMech.ReplaceComponent(newComponent);
-        GameManager.instance.InventoryController.AddItemToInventory(oldComponent);
+        GameManager.instance.PlayerData.PlayerMech = newMech;
     }
 
-    public void SwapMechPart(MechObject currentMech, SOItemDataObject SOMechComponentDataObject)
+    public void SwapPlayerMechPart(SOItemDataObject SOMechComponentDataObject)
     {
         MechComponentDataObject newComponent = new MechComponentDataObject(SOMechComponentDataObject);
+
+        SwapPlayerMechPart(newComponent);
+    }
+
+    public void SwapPlayerMechPart(MechComponentDataObject newComponent)
+    {
         MechComponentDataObject oldComponent;
 
-        oldComponent = currentMech.ReplaceComponent(newComponent);
+        oldComponent = GameManager.instance.PlayerData.PlayerMech.ReplaceComponent(newComponent);
         GameManager.instance.InventoryController.AddItemToInventory(oldComponent);
     }
 }

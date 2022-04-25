@@ -17,6 +17,12 @@ public class DeckController
 
         foreach (SOItemDataObject newCardSO in newDeckSO)
         {
+            if(newCardSO.ItemType != ItemType.Card)
+            {
+                Debug.Log(newCardSO.ItemName + " was found in the deck, but it is not a Card ItemType. Was this a mistake or is this item classified incorrectly?");
+                continue;
+            }
+
             newCard = new CardDataObject(newCardSO);
             AddCardToBottom(newCard);
         }

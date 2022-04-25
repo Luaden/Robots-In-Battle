@@ -10,48 +10,62 @@ public class EditorCardEffectGUI : Editor
     {
         SerializedProperty EffectTypeProperty = serializedObject.FindProperty("effectType");
         EditorGUILayout.PropertyField(serializedObject.FindProperty("effectType"));
+        SerializedProperty ShowAllStatsProperty = serializedObject.FindProperty("showAllStats");
+        EditorGUILayout.PropertyField(serializedObject.FindProperty("showAllStats"));
 
         EditorGUILayout.Space();
 
-        switch (EffectTypeProperty.enumValueIndex)
+        if(ShowAllStatsProperty.boolValue)
         {
-            case (int)CardEffectTypes.AdditionalElementStacks:
-                DisplayMagnitudeAttribute();
-                break;
-            case (int)CardEffectTypes.GainShields:
-                DisplayMagnitudeAttribute();
-                break;
-            case (int)CardEffectTypes.GainShieldWithFalloff:
-                DisplayMagnitudeAttribute();
-                DisplayFalloff();
-                break;
-            case (int)CardEffectTypes.MultiplyShield:
-                DisplayMagnitudeAttribute();
-                break;
-            case (int)CardEffectTypes.IncreaseOutgoingCardTypeDamage:
-                DisplayCardTypeAttribute();
-                DisplayMagnitudeAttribute();
-                DisplayDurationAttribute();
-                break;
-            case (int)CardEffectTypes.IncreaseOutgoingChannelDamage:
-                DisplayMagnitudeAttribute();
-                DisplayDurationAttribute();
-                break;
-            case (int)CardEffectTypes.KeyWordInitialize:
-                DisplayKeyWordAttribute();
-                DisplayMagnitudeAttribute();
-                break;
-            case (int)CardEffectTypes.KeyWordExecute:
-                DisplayKeyWordAttribute();
-                break;
-            case (int)CardEffectTypes.PlayMultipleTimes:
-                DisplayMagnitudeAttribute();
-                break;
-            case (int)CardEffectTypes.ReduceOutgoingChannelDamage:
-                DisplayMagnitudeAttribute();
-                DisplayDurationAttribute();
-                break;
+            DisplayCardTypeAttribute();
+            DisplayDurationAttribute();
+            DisplayMagnitudeAttribute();
+            DisplayKeyWordAttribute();
+            DisplayFalloff();
         }
+        else
+        {
+            switch (EffectTypeProperty.enumValueIndex)
+            {
+                case (int)CardEffectTypes.AdditionalElementStacks:
+                    DisplayMagnitudeAttribute();
+                    break;
+                case (int)CardEffectTypes.GainShields:
+                    DisplayMagnitudeAttribute();
+                    break;
+                case (int)CardEffectTypes.GainShieldWithFalloff:
+                    DisplayMagnitudeAttribute();
+                    DisplayFalloff();
+                    break;
+                case (int)CardEffectTypes.MultiplyShield:
+                    DisplayMagnitudeAttribute();
+                    break;
+                case (int)CardEffectTypes.IncreaseOutgoingCardTypeDamage:
+                    DisplayCardTypeAttribute();
+                    DisplayMagnitudeAttribute();
+                    DisplayDurationAttribute();
+                    break;
+                case (int)CardEffectTypes.IncreaseOutgoingChannelDamage:
+                    DisplayMagnitudeAttribute();
+                    DisplayDurationAttribute();
+                    break;
+                case (int)CardEffectTypes.KeyWordInitialize:
+                    DisplayKeyWordAttribute();
+                    DisplayMagnitudeAttribute();
+                    DisplayDurationAttribute();
+                    break;
+                case (int)CardEffectTypes.KeyWordExecute:
+                    DisplayKeyWordAttribute();
+                    break;
+                case (int)CardEffectTypes.PlayMultipleTimes:
+                    DisplayMagnitudeAttribute();
+                    break;
+                case (int)CardEffectTypes.ReduceOutgoingChannelDamage:
+                    DisplayMagnitudeAttribute();
+                    DisplayDurationAttribute();
+                    break;
+            }
+        }        
 
         serializedObject.ApplyModifiedProperties();
     }
