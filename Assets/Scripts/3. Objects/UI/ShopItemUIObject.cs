@@ -13,7 +13,7 @@ public class ShopItemUIObject
     private int chanceToSpawn;
 
     private GameObject shopItemUIController;
-    public GameObject ShopItemUIController { get => shopItemUIController; set => shopItemUIController = value; }
+    private SOItemDataObject soItemDataObject;
 
     public ItemType ItemType { get => itemType; }
     public string ItemName { get => itemName; }
@@ -22,8 +22,9 @@ public class ShopItemUIObject
     public float TimeCost { get => timeCost; }
     public float CurrencyCost { get => currencyCost; }
     public int ChanceToSpawn { get => chanceToSpawn; }
+    public GameObject ShopItemUIController { get => shopItemUIController; set => shopItemUIController = value; }
+    public SOItemDataObject SOItemDataObject { get => soItemDataObject; }
 
-    SOItemDataObject soItemDataObject;
     public ShopItemUIObject(SOItemDataObject soItemDataObject)
     {
         this.itemType = soItemDataObject.ItemType;
