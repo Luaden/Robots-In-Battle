@@ -76,7 +76,6 @@ public class DamageCalculatorController
         
         if (defensiveCard.CardData.CardCategory.HasFlag(CardCategory.Guard))
         {
-            //Needs to account for flurry
             effectController.EnableEffects(defensiveCard, offensiveCharacter);
 
             if (offensiveCard.CardChannel.HasFlag(defensiveCard.CardChannel) || defensiveCard.CardChannel.HasFlag(offensiveCard.CardChannel))
