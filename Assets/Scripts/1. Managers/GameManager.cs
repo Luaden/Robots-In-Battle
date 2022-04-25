@@ -26,6 +26,7 @@ public class GameManager : MonoBehaviour
     [ContextMenu("Start Game")]
     public void BuildMech()
     {
+        LoadPlayer();
         mechBuilderController.BuildNewPlayerMech(starterMechHead, starterMechTorso, starterMechArms, starterMechLegs);
         PilotDataObject playerPilot = new PilotDataObject();
         FighterDataObject playerFighter = new FighterDataObject(PlayerData.PlayerMech, playerPilot, starterDeck);
@@ -79,6 +80,7 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
+        inventoryController = new InventoryController();
         mechBuilderController = new MechBuilderController();
     }
 

@@ -146,6 +146,11 @@ public class AIController : MonoBehaviour
         return randomChannel;
     }
 
+    private void GetCurrentHandPossibleAttacks()
+    {
+
+    }
+
     private void RankChoicesWithAggressiveness()
     {
 
@@ -156,7 +161,12 @@ public class AIController : MonoBehaviour
 
     }
 
-    private void RankChoicesWithIntelligence()
+    private void RankChoicesWithBattlefieldIntel()
+    {
+
+    }
+
+    private void RankChoicesWithDeckIntel()
     {
 
     }
