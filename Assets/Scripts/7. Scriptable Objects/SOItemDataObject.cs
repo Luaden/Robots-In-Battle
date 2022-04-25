@@ -14,7 +14,7 @@ public class SOItemDataObject : ScriptableObject
     [Tooltip("Time cost to implement the item into the player mech or deck.")]
     [SerializeField] private float timeCost;
     [Tooltip("Cost of the item in the shop.")]
-    [SerializeField] private float currencyCost;
+    [SerializeField] private int currencyCost;
     [Tooltip("This is the chance for this card to spawn at the shop.")]
     [Range(1, 100)] [SerializeField] private int chanceToSpawn;
     
@@ -96,7 +96,7 @@ public class SOItemDataObject : ScriptableObject
     public string ItemDescription { get => itemDescription; }
     public Sprite ItemImage { get => itemImage; }
     public float TimeCost { get => timeCost; }
-    public float CurrencyCoast { get => currencyCost; }
+    public int CurrencyCost { get => currencyCost; }
     public int ChanceToSpawn { get => chanceToSpawn; }
 
     #endregion
