@@ -1,24 +1,36 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class CardShopController : MonoBehaviour
 {
     private List<ShopItemUIObject> shopItemList;
     [SerializeField] protected CardShopItemUIBuildController shopItemUIBuildController;
 
-    public void SelectItemsToDisplay(List<SOItemDataObject> itemsToDisplay, Transform startPoint)
+    public void SelectItemsToDisplay(List<SOItemDataObject> itemsToDisplay)
     {
         shopItemList = new List<ShopItemUIObject>();
-        foreach (SOItemDataObject item in itemsToDisplay)
+        for(int i = 0; i < itemsToDisplay.Count; i++)
         {
             int minimumChance = Random.Range(1, 101);
-            if (minimumChance < item.ChanceToSpawn)
+            if (minimumChance < itemsToDisplay[i].ChanceToSpawn)
             {
-                ShopItemUIObject shopItem = new ShopItemUIObject(item);
+                ShopItemUIObject shopItem = new ShopItemUIObject(itemsToDisplay[i]);
                 shopItemList.Add(shopItem);
 
-                shopItemUIBuildController.BuildAndDisplayItemUI(shopItem, startPoint);
+                GameObject slotGO = new GameObject(name: "Slot " + i, typeof(CardShopVendorSlotController), typeof(Image));
+
+                CardShopVendorSlotController addedSlot = slotGO.GetComponent<CardShopVendorSlotController>();
+
+                CardShopVendorSlotManager slotManager = DowntimeManager.instance.CardShopManager.CardShopVendorSlotManager;
+
+                addedSlot.SetSlotManager(slotManager);
+                slotManager.AddSlotToList(addedSlot);
+
+                slotGO.transform.SetParent(slotManager.transform);
+
+                shopItemUIBuildController.BuildAndDisplayItemUI(shopItem, addedSlot);
             }
         }
     }
@@ -35,7 +47,6 @@ public class CardShopController : MonoBehaviour
         }
 
         float currencycost = 0;
-        float timecost = 0;
 
         foreach(CardShopCartUIController shopCartUI in shopCartItemList)
             currencycost += shopCartUI.ShopItemUIObject.CurrencyCost;

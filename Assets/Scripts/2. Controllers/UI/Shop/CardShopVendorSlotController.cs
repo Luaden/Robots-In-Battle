@@ -5,6 +5,10 @@ using UnityEngine.EventSystems;
 
 public class CardShopVendorSlotController : BaseSlotController<CardShopVendorUIController>
 {
+    public void SetSlotManager(BaseSlotManager<CardShopVendorUIController> slotManager) 
+    {
+        this.slotManager = slotManager;
+    }
     public override void OnDrop(PointerEventData eventData)
     {
         if (eventData.pointerDrag.GetComponent<CardShopVendorUIController>() == null)
