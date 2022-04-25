@@ -5,6 +5,10 @@ using UnityEngine.EventSystems;
 
 public class ComponentShopCartSlotController : BaseSlotController<ComponentShopCartUIController>
 {
+    public void SetSlotManager(BaseSlotManager<ComponentShopCartUIController> slotManager)
+    {
+        this.slotManager = slotManager;
+    }
     public override void OnDrop(PointerEventData eventData)
     {
         // is this slotted item already occupied?

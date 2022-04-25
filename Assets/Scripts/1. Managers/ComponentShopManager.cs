@@ -45,7 +45,7 @@ public class ComponentShopManager : MonoBehaviour
             Debug.Log("missing items to display : ComponentShopManager");
             return;
         }
-        componentShopController.InitializeShop(itemsToDisplay, shopVendorWindow.transform);
+        componentShopController.InitializeShop(itemsToDisplay);
     }
 
     public void OpenAndClose()

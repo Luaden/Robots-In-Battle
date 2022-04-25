@@ -5,11 +5,11 @@ using UnityEngine;
 public class ComponentShopItemUIBuildController : MonoBehaviour
 {
     [SerializeField] private GameObject ItemPrefab;
-    public void BuildAndDisplayItemUI(ShopItemUIObject shopItem, Transform startPoint)
+    public void BuildAndDisplayItemUI(ShopItemUIObject shopItem, ComponentShopVendorSlotController slot)
     {
         GameObject shopItemUIGameObject;
         shopItemUIGameObject = Instantiate(ItemPrefab, transform);
-        shopItemUIGameObject.transform.position = startPoint.position;
+        shopItemUIGameObject.transform.position = slot.transform.position;
 
         shopItem.ShopItemUIController = shopItemUIGameObject;
 
@@ -24,7 +24,7 @@ public class ComponentShopItemUIBuildController : MonoBehaviour
 
         componentShopCartUIController.enabled = false;
 
-        DowntimeManager.instance.ComponentShopManager.ComponentShopVendorSlotManager.AddItemToCollection(componentShopVendorUIController, null);
+        DowntimeManager.instance.ComponentShopManager.ComponentShopVendorSlotManager.AddItemToCollection(componentShopVendorUIController, slot);
 
         shopItemUIGameObject.SetActive(true);
     }

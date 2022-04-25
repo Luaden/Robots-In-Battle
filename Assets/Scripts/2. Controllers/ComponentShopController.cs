@@ -1,23 +1,35 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class ComponentShopController : MonoBehaviour
 {
     private List<ShopItemUIObject> shopItemList;
     [SerializeField] protected ComponentShopItemUIBuildController shopItemUIBuildController;
-    public void InitializeShop(List<SOItemDataObject> itemsToDisplay, Transform startPoint)
+    public void InitializeShop(List<SOItemDataObject> itemsToDisplay)
     {
         shopItemList = new List<ShopItemUIObject>();
-        foreach (SOItemDataObject item in itemsToDisplay)
+        for (int i = 0; i < itemsToDisplay.Count; i++)
         {
             int minimumChance = Random.Range(1, 101);
-            if (minimumChance < item.ChanceToSpawn)
+            if (minimumChance < itemsToDisplay[i].ChanceToSpawn)
             {
-                ShopItemUIObject shopItem = new ShopItemUIObject(item);
+                ShopItemUIObject shopItem = new ShopItemUIObject(itemsToDisplay[i]);
                 shopItemList.Add(shopItem);
 
-                shopItemUIBuildController.BuildAndDisplayItemUI(shopItem, startPoint);
+                GameObject slotGO = new GameObject(name: "Slot " + i, typeof(ComponentShopVendorSlotController), typeof(Image));
+
+                ComponentShopVendorSlotController addedSlot = slotGO.GetComponent<ComponentShopVendorSlotController>();
+
+                ComponentShopVendorSlotManager slotManager = DowntimeManager.instance.ComponentShopManager.ComponentShopVendorSlotManager;
+
+                addedSlot.SetSlotManager(slotManager);
+                slotManager.AddSlotToList(addedSlot);
+
+                slotGO.transform.SetParent(slotManager.transform);
+
+                shopItemUIBuildController.BuildAndDisplayItemUI(shopItem, addedSlot);
             }
         }
     }
