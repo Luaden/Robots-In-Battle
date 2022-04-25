@@ -24,10 +24,6 @@ public class ComponentShopController : MonoBehaviour
 
     public void PurchaseItem()
     {
-        // check resources of player- time/money
-        // if enough, send to inventory, remove resources from playerdata/inventory
-        // if not, warn -> not enough time/money available
-
         List<ComponentShopCartUIController> shopCartItemList = new List<ComponentShopCartUIController>();
         for (int i = 0; i < DowntimeManager.instance.ComponentShopManager.ComponentShopCartSlotManager.SlotList.Count; i++)
         {
@@ -46,16 +42,33 @@ public class ComponentShopController : MonoBehaviour
             timecost += shopCartUI.ShopItemUIObject.TimeCost;
         }
 
-        Debug.Log("currency cost: " + currencycost);
-        Debug.Log("time cost: " + timecost);
+        #region Debugging
+        Debug.Log("cart total currency cost: " + currencycost);
+        Debug.Log("cart total time cost: " + timecost);
+        Debug.Log("--playerdata--");
+        Debug.Log("currency: " + GameManager.instance.PlayerData.CurrencyToSpend);
+        Debug.Log("time left to spend: " + GameManager.instance.PlayerData.TimeLeftToSpend);
+        #endregion
 
-        /*        if (currencycost <= FindObjectOfType<PlayerDataObject>().CurrencyToSpend)
-                    foreach (ShopItemUIObject item in shopItemList)
-                    {
-                        //playerdata.AcquireItem(item)
-                    }
-                else
-                    UndoCart();*/
+
+        if (currencycost <= GameManager.instance.PlayerData.CurrencyToSpend &&
+            timecost <= GameManager.instance.PlayerData.TimeLeftToSpend)
+        {
+            foreach(ComponentShopCartUIController cartItem in shopCartItemList)
+            {
+                GameManager.instance.InventoryController.AddItemToInventory(cartItem.ShopItemUIObject.SOItemDataObject);
+                RemoveItemFromSlot(cartItem);
+
+            }
+
+            GameManager.instance.PlayerData.CurrencyToSpend -= currencycost;
+            GameManager.instance.PlayerData.TimeLeftToSpend -= timecost;
+        }
+        else
+        {
+            Debug.Log("not enough currency or time for the items in the cart");
+            UndoCart();
+        }
 
     }
 
@@ -82,6 +95,11 @@ public class ComponentShopController : MonoBehaviour
             vendorItem.isPickedUp = false;
 
         }
+    }
+    public void RemoveItemFromSlot(ComponentShopCartUIController cartItem)
+    {
+        cartItem.ComponentShopSlotUIController.SlotManager.RemoveItemFromCollection(cartItem);
+        Destroy(cartItem.gameObject);
     }
 
 }
