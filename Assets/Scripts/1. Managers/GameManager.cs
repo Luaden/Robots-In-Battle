@@ -80,6 +80,7 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
+        inventoryController = new InventoryController();
         mechBuilderController = new MechBuilderController();
     }
 
