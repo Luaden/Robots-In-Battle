@@ -54,21 +54,21 @@ public class CardShopController : MonoBehaviour
         #region Debugging
         Debug.Log("cart total currency cost: " + currencycost);
         Debug.Log("--playerdata--");
-        Debug.Log("currency: " + GameManager.instance.PlayerData.CurrencyToSpend);
+        Debug.Log("currency: " + GameManager.instance.PlayerBankController.GetPlayerCurrency());
         #endregion
 
 
-        if (currencycost <= GameManager.instance.PlayerData.CurrencyToSpend)
+        if (currencycost <= GameManager.instance.PlayerBankController.GetPlayerCurrency())
         {
             foreach (CardShopCartUIController cartItem in shopCartItemList)
             {
                 //add item to deck?
-                GameManager.instance.DowntimeInventoryController.AddItemToInventory(cartItem.ShopItemUIObject.SOItemDataObject);
+                GameManager.instance.PlayerInventoryController.AddItemToInventory(cartItem.ShopItemUIObject.SOItemDataObject);
                 RemoveItemFromSlot(cartItem);
 
             }
 
-            GameManager.instance.PlayerData.CurrencyToSpend -= currencycost;
+            GameManager.instance.PlayerBankController.SpendPlayerCurrency((int)currencycost);
         }
         else
         {
