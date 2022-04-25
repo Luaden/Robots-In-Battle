@@ -47,7 +47,7 @@ public class ComponentShopController : MonoBehaviour
             }
         }
 
-        float currencyCost = 0;
+        int currencyCost = 0;
         float timeCost = 0;
 
         foreach (ComponentShopCartUIController shopCartUI in shopCartItemList)
@@ -57,6 +57,7 @@ public class ComponentShopController : MonoBehaviour
         }
 
         #region Debugging
+        Debug.Log("--costs of cart items--");
         Debug.Log("cart total currency cost: " + currencyCost);
         Debug.Log("cart total time cost: " + timeCost);
         Debug.Log("--playerdata--");
@@ -74,13 +75,13 @@ public class ComponentShopController : MonoBehaviour
                 RemoveItemFromSlot(cartItem);
 
             }
-            GameManager.instance.PlayerBankController.SpendPlayerCurrency((int)currencyCost);
-            GameManager.instance.PlayerBankController.SpendPlayerTime((int)timeCost);
+            GameManager.instance.PlayerBankController.SpendPlayerCurrency(currencyCost);
+            GameManager.instance.PlayerBankController.SpendPlayerTime(timeCost);
         }
         else
         {
             Debug.Log("not enough currency or time for the items in the cart");
-            UndoCart();
+            //UndoCart();
         }
 
     }

@@ -48,12 +48,13 @@ public class CardShopController : MonoBehaviour
             }
         }
 
-        float currencycost = 0;
+        int currencycost = 0;
 
         foreach(CardShopCartUIController shopCartUI in shopCartItemList)
             currencycost += shopCartUI.ShopItemUIObject.CurrencyCost;
 
         #region Debugging
+        Debug.Log("--costs of cart items--");
         Debug.Log("cart total currency cost: " + currencycost);
         Debug.Log("--playerdata--");
         Debug.Log("currency: " + GameManager.instance.PlayerBankController.GetPlayerCurrency());
@@ -64,18 +65,16 @@ public class CardShopController : MonoBehaviour
         {
             foreach (CardShopCartUIController cartItem in shopCartItemList)
             {
-                //add item to deck?
-                GameManager.instance.PlayerInventoryController.AddItemToInventory(cartItem.ShopItemUIObject.SOItemDataObject);
+                GameManager.instance.PlayerDeckController.AddCardToPlayerDeck(cartItem.ShopItemUIObject.SOItemDataObject);
                 RemoveItemFromSlot(cartItem);
-
             }
 
-            GameManager.instance.PlayerBankController.SpendPlayerCurrency((int)currencycost);
+            GameManager.instance.PlayerBankController.SpendPlayerCurrency(currencycost);
         }
         else
         {
             Debug.Log("not enough currency or time for the items in the cart");
-            UndoCart();
+            //UndoCart();
         }
 
 
@@ -88,7 +87,6 @@ public class CardShopController : MonoBehaviour
             if (DowntimeManager.instance.CardShopManager.CardShopCartSlotManager.SlotList[i].CurrentSlottedItem != null)
             {
                 shopCartItemList.Add(DowntimeManager.instance.CardShopManager.CardShopCartSlotManager.SlotList[i].CurrentSlottedItem);
-
             }
         }
 
