@@ -28,7 +28,9 @@ public class CardShopController : MonoBehaviour
                 addedSlot.SetSlotManager(slotManager);
                 slotManager.AddSlotToList(addedSlot);
 
+                Vector3 scale = slotGO.transform.localScale;
                 slotGO.transform.SetParent(slotManager.transform);
+                slotGO.transform.localScale = scale;
 
                 shopItemUIBuildController.BuildAndDisplayItemUI(shopItem, addedSlot);
             }
