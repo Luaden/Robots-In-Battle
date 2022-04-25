@@ -63,7 +63,7 @@ public class CardShopController : MonoBehaviour
             foreach (CardShopCartUIController cartItem in shopCartItemList)
             {
                 //add item to deck?
-                GameManager.instance.InventoryController.AddItemToInventory(cartItem.ShopItemUIObject.SOItemDataObject);
+                GameManager.instance.DowntimeInventoryController.AddItemToInventory(cartItem.ShopItemUIObject.SOItemDataObject);
                 RemoveItemFromSlot(cartItem);
 
             }

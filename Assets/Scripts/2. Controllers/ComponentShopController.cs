@@ -56,7 +56,7 @@ public class ComponentShopController : MonoBehaviour
         {
             foreach(ComponentShopCartUIController cartItem in shopCartItemList)
             {
-                GameManager.instance.InventoryController.AddItemToInventory(cartItem.ShopItemUIObject.SOItemDataObject);
+                GameManager.instance.DowntimeInventoryController.AddItemToInventory(cartItem.ShopItemUIObject.SOItemDataObject);
                 RemoveItemFromSlot(cartItem);
 
             }
