@@ -35,7 +35,7 @@ public class DamageCalculatorController
             }
         }
 
-        if (playerAttackPlan.cardChannelPairA != null)
+        if (playerAttackPlan.cardChannelPairA != null && playerAttackPlan.cardChannelPairA.CardData != null)
         {
             Debug.Log("Player Attack A.");
             CalculateMechDamage(playerAttackPlan.cardChannelPairA, CharacterSelect.Opponent);
@@ -43,7 +43,7 @@ public class DamageCalculatorController
             effectController.EnableEffects(playerAttackPlan.cardChannelPairA, CharacterSelect.Opponent);
         }
 
-        if (opponentAttackPlan.cardChannelPairA != null)
+        if (opponentAttackPlan.cardChannelPairA != null && opponentAttackPlan.cardChannelPairA.CardData != null)
         {
             Debug.Log("Player Attack B.");
             CalculateMechDamage(opponentAttackPlan.cardChannelPairA, CharacterSelect.Player);
@@ -51,7 +51,7 @@ public class DamageCalculatorController
             effectController.EnableEffects(opponentAttackPlan.cardChannelPairA, CharacterSelect.Player);
         }
 
-        if (playerAttackPlan.cardChannelPairB != null)
+        if (playerAttackPlan.cardChannelPairB != null && playerAttackPlan.cardChannelPairB.CardData != null)
         {
             Debug.Log("Opponent Attack A.");
             CalculateMechDamage(playerAttackPlan.cardChannelPairB, CharacterSelect.Opponent);
@@ -59,7 +59,7 @@ public class DamageCalculatorController
             effectController.EnableEffects(playerAttackPlan.cardChannelPairB, CharacterSelect.Opponent);
         }
 
-        if (opponentAttackPlan.cardChannelPairB != null)
+        if (opponentAttackPlan.cardChannelPairB != null && opponentAttackPlan.cardChannelPairB.CardData != null)
         {
             Debug.Log("Opponent Attack B.");
             CalculateMechDamage(opponentAttackPlan.cardChannelPairB, CharacterSelect.Player);
