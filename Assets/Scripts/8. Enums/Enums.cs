@@ -62,28 +62,25 @@ public enum AffectedChannels
     AllPossibleChannels
 }
 
+[Flags]
 public enum CardEffectTypes
 {
     None = 0,
-    PlayMultipleTimes = 1,
-    AdditionalElementStacks = 2, 
-    IncreaseOutgoingChannelDamage = 3, //Channel buff
-    IncreaseOutgoingCardTypeDamage = 4, //Global buff
-    ReduceOutgoingChannelDamage = 5,  //Channel buff
-    GainShields = 6,  //Channel buff
-    MultiplyShield = 7, 
-    KeyWordInitialize = 8, //Global buff
-    KeyWordExecute = 9,
-    GainShieldWithFalloff = 10, //Channel buff
-    //EnergyDestroy = 11,
+    PlayMultipleTimes = 1 << 0,
+    AdditionalElementStacks = 1 << 1, 
+    IncreaseOutgoingChannelDamage = 1 << 2, 
+    IncreaseOutgoingCardTypeDamage = 1 << 3,
+    ReduceOutgoingChannelDamage = 1 << 4,
+    GainShields = 1 << 5,
+    MultiplyShield =  1 << 6, 
+    KeyWord = 1 << 7,
+    GainShieldWithFalloff = 1 << 8,
+    EnergyDestroy = 1 << 9,
+
     [InspectorName(null)]
-    Fire = 11, // Global buff
+    Defensive = GainShields | MultiplyShield | ReduceOutgoingChannelDamage | GainShieldWithFalloff,
     [InspectorName(null)]
-    Plasma = 12, // Global buff
-    [InspectorName(null)]
-    Ice = 13, // Channel buff
-    [InspectorName(null)]
-    Acid = 14, // Channel buff
+    Offensive = AdditionalElementStacks | IncreaseOutgoingCardTypeDamage | KeyWord
 }
 
 public enum CardKeyWord
