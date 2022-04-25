@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [System.Serializable]
-public class DeckController
+public class CombatDeckController
 {
     [SerializeField] private List<CardDataObject> cardDeck;
 

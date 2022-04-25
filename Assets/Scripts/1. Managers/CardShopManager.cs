@@ -47,7 +47,7 @@ public class CardShopManager : MonoBehaviour
         
         DowntimeManager.instance.ShopCollectionRandomizeManager.RandomizeShopItemCollection();
 
-        cardShopController.SelectItemsToDisplay(itemsToDisplay, shopVendorWindow.transform);
+        cardShopController.SelectItemsToDisplay(itemsToDisplay);
     }
 
     public void OpenAndClose()

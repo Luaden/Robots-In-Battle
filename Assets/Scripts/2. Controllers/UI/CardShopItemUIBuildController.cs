@@ -5,11 +5,11 @@ using UnityEngine;
 public class CardShopItemUIBuildController : MonoBehaviour
 {
     [SerializeField] private GameObject ItemPrefab;
-    public void BuildAndDisplayItemUI(ShopItemUIObject shopItem, Transform startPoint)
+    public void BuildAndDisplayItemUI(ShopItemUIObject shopItem, CardShopVendorSlotController slot)
     {
         GameObject shopItemUIGameObject;
         shopItemUIGameObject = Instantiate(ItemPrefab, transform);
-        shopItemUIGameObject.transform.position = startPoint.position;
+        shopItemUIGameObject.transform.position = slot.transform.position;
 
         shopItem.ShopItemUIController = shopItemUIGameObject;
 
@@ -24,7 +24,7 @@ public class CardShopItemUIBuildController : MonoBehaviour
 
         cardShopCartUIController.enabled = false;
 
-        DowntimeManager.instance.CardShopManager.CardShopVendorSlotManager.AddItemToCollection(cardShopVendorUIController, null);
+        DowntimeManager.instance.CardShopManager.CardShopVendorSlotManager.AddItemToCollection(cardShopVendorUIController, slot);
 
         shopItemUIGameObject.SetActive(true);
     }

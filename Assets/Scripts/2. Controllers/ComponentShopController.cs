@@ -33,36 +33,35 @@ public class ComponentShopController : MonoBehaviour
             }
         }
 
-        float currencycost = 0;
-        float timecost = 0;
+        float currencyCost = 0;
+        float timeCost = 0;
 
         foreach (ComponentShopCartUIController shopCartUI in shopCartItemList)
         {
-            currencycost += shopCartUI.ShopItemUIObject.CurrencyCost;
-            timecost += shopCartUI.ShopItemUIObject.TimeCost;
+            currencyCost += shopCartUI.ShopItemUIObject.CurrencyCost;
+            timeCost += shopCartUI.ShopItemUIObject.TimeCost;
         }
 
         #region Debugging
-        Debug.Log("cart total currency cost: " + currencycost);
-        Debug.Log("cart total time cost: " + timecost);
+        Debug.Log("cart total currency cost: " + currencyCost);
+        Debug.Log("cart total time cost: " + timeCost);
         Debug.Log("--playerdata--");
-        Debug.Log("currency: " + GameManager.instance.PlayerData.CurrencyToSpend);
-        Debug.Log("time left to spend: " + GameManager.instance.PlayerData.TimeLeftToSpend);
+        Debug.Log("currency: " + GameManager.instance.PlayerBankController.GetPlayerCurrency());
+        Debug.Log("time left to spend: " + GameManager.instance.PlayerBankController.GetPlayerTime());
         #endregion
 
 
-        if (currencycost <= GameManager.instance.PlayerData.CurrencyToSpend &&
-            timecost <= GameManager.instance.PlayerData.TimeLeftToSpend)
+        if (currencyCost <= GameManager.instance.PlayerBankController.GetPlayerCurrency() &&
+            timeCost <= GameManager.instance.PlayerBankController.GetPlayerTime())
         {
             foreach(ComponentShopCartUIController cartItem in shopCartItemList)
             {
-                GameManager.instance.InventoryController.AddItemToInventory(cartItem.ShopItemUIObject.SOItemDataObject);
+                GameManager.instance.PlayerInventoryController.AddItemToInventory(cartItem.ShopItemUIObject.SOItemDataObject);
                 RemoveItemFromSlot(cartItem);
 
             }
-
-            GameManager.instance.PlayerData.CurrencyToSpend -= currencycost;
-            GameManager.instance.PlayerData.TimeLeftToSpend -= timecost;
+            GameManager.instance.PlayerBankController.SpendPlayerCurrency((int)currencyCost);
+            GameManager.instance.PlayerBankController.SpendPlayerTime((int)timeCost);
         }
         else
         {

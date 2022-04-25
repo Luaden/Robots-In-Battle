@@ -2,10 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class DeckManager : MonoBehaviour
+public class CombatDeckManager : MonoBehaviour
 {
-    private DeckController playerDeck;
-    private DeckController opponentDeck;
+    private CombatDeckController playerDeck;
+    private CombatDeckController opponentDeck;
 
     public void SetPlayerDeck(List<SOItemDataObject> playerCardSOs)
     {
@@ -77,11 +77,11 @@ public class DeckManager : MonoBehaviour
 
     private void Awake()
     {
-        playerDeck = new DeckController();
-        opponentDeck = new DeckController();
+        playerDeck = new CombatDeckController();
+        opponentDeck = new CombatDeckController();
     }
 
-    private void RandomizeCardDeck(DeckController destinationDeck)
+    private void RandomizeCardDeck(CombatDeckController destinationDeck)
     {
         List<CardDataObject> newDeckOrder = new List<CardDataObject>();
         int deckCount = destinationDeck.CardDeck.Count;

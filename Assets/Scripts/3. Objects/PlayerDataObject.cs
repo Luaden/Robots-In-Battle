@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-public class PlayerDataObject 
+public class PlayerDataObject
 {
     private List<SOItemDataObject> playerDeck;
     private MechObject playerMech;
@@ -12,11 +12,12 @@ public class PlayerDataObject
     //We need to store the win/loss record here as well maybe?
 
     private float timeLeftToSpend;
-    private float currencyToSpend;
+    private int currencyToSpend;
 
     public float TimeLeftToSpend { get => timeLeftToSpend; set => timeLeftToSpend = value; }
-    public float CurrencyToSpend { get => currencyToSpend; set => currencyToSpend = value; }
+    public int CurrencyToSpend { get => currencyToSpend; set => currencyToSpend = value; }
     public List<SOItemDataObject> PlayerDeck { get => playerDeck; set => playerDeck = value; }
-    public MechObject PlayerMech { get => playerMech; set => playerMech = value;  }
+    public MechObject PlayerMech { get => playerMech; set => playerMech = value; }
     public List<MechComponentDataObject> PlayerInventory { get => playerInventory; set => playerInventory = value; }
+
 }
