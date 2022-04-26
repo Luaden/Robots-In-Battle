@@ -5,7 +5,7 @@ using UnityEngine.EventSystems;
 using TMPro;
 using UnityEngine.UI;
 
-public class CardShopVendorUIController : MonoBehaviour, IPointerDownHandler, IPointerUpHandler,
+public class InventoryUIController : MonoBehaviour, IPointerDownHandler, IPointerUpHandler,
                               IPointerEnterHandler, IPointerExitHandler, IBeginDragHandler,
                               IEndDragHandler, IDragHandler
 {
@@ -18,18 +18,18 @@ public class CardShopVendorUIController : MonoBehaviour, IPointerDownHandler, IP
 
     public bool isPickedUp = false;
     public Transform previousParentObject;
-    public float travelSpeed = 600.0f;
+    public float travelSpeed = 450.0f;
 
     private RectTransform draggableRectTransform;
     private CanvasGroup draggableCanvasGroup;
 
-    private ShopItemUIObject shopItemUIObject;
-    public ShopItemUIObject ShopItemUIObject { get => shopItemUIObject; }
+    private MechComponentUIObject itemUIObject;
+    public MechComponentUIObject ItemUIObject { get => itemUIObject; }
 
-    private BaseSlotController<CardShopVendorUIController> cardShopVendorSlotController;
-    public BaseSlotController<CardShopVendorUIController> CardShopVendorSlotController
+    private BaseSlotController<InventoryUIController> inventorySlotController;
+    public BaseSlotController<InventoryUIController> InventorySlotController
     {
-        get => cardShopVendorSlotController;
+        get => inventorySlotController;
         set => UpdateItemSlot(value);
     }
     public Transform PreviousParentObject
@@ -38,7 +38,7 @@ public class CardShopVendorUIController : MonoBehaviour, IPointerDownHandler, IP
         set => previousParentObject = value;
     }
 
-    public void InitUI(ShopItemUIObject shopItemUIObject)
+    public void InitUI(MechComponentUIObject mechComponent)
     {
         TMP_Text[] texts = GetComponentsInChildren<TMP_Text>();
 
@@ -49,19 +49,17 @@ public class CardShopVendorUIController : MonoBehaviour, IPointerDownHandler, IP
         currencyCostText = texts[3];
 
 
-        itemNameText.text = shopItemUIObject.ItemName;
-        itemDescriptionText.text = shopItemUIObject.ItemDescription;
-        itemImage.sprite = shopItemUIObject.ItemImage;
-        timeCostText.text = shopItemUIObject.TimeCost.ToString();
-        currencyCostText.text = shopItemUIObject.CurrencyCost.ToString();
+        itemNameText.text = mechComponent.ComponentName;
+        itemDescriptionText.text = mechComponent.ComponentElement.ToString();
+        itemImage.sprite = mechComponent.ComponentSprite;
 
-        this.shopItemUIObject = shopItemUIObject;
-        shopItemUIObject.ShopItemUIController = this.gameObject;
+        this.itemUIObject = mechComponent;
+        mechComponent.MechComponentUIController = this.gameObject;
     }
 
     public void OnDrag(PointerEventData eventData)
     {
-        cardShopVendorSlotController.HandleDrag(eventData);
+        inventorySlotController.HandleDrag(eventData);
 
     }
 
@@ -70,7 +68,6 @@ public class CardShopVendorUIController : MonoBehaviour, IPointerDownHandler, IP
         isPickedUp = true;
         draggableCanvasGroup.blocksRaycasts = false;
         draggableCanvasGroup.alpha = .6f;
-        cardShopVendorSlotController.SlotManager.RemoveItemFromCollection(this);
     }
 
     public virtual void OnEndDrag(PointerEventData eventData)
@@ -82,7 +79,7 @@ public class CardShopVendorUIController : MonoBehaviour, IPointerDownHandler, IP
 
     public void OnPointerDown(PointerEventData eventData)
     {
-        transform.SetParent(cardShopVendorSlotController.SlotManager.MainCanvas.transform);
+        transform.SetParent(inventorySlotController.SlotManager.MainCanvas.transform);
     }
 
     public void OnPointerEnter(PointerEventData eventData)
@@ -111,7 +108,7 @@ public class CardShopVendorUIController : MonoBehaviour, IPointerDownHandler, IP
 
     private void MoveToSlot()
     {
-        if (isPickedUp || cardShopVendorSlotController == null)
+        if (isPickedUp || inventorySlotController == null)
             return;
 
         if (transform.parent == null)
@@ -119,13 +116,14 @@ public class CardShopVendorUIController : MonoBehaviour, IPointerDownHandler, IP
 
         draggableRectTransform.position =
             Vector3.MoveTowards(draggableRectTransform.position,
-            CardShopVendorSlotController.gameObject.GetComponent<RectTransform>().position,
+            InventorySlotController.gameObject.GetComponent<RectTransform>().position,
             travelSpeed * Time.deltaTime);
     }
-    private void UpdateItemSlot(BaseSlotController<CardShopVendorUIController> newSlot)
+    private void UpdateItemSlot(BaseSlotController<InventoryUIController> newSlot)
     {
-        cardShopVendorSlotController = newSlot;
+        inventorySlotController = newSlot;
         transform.SetParent(newSlot.transform);
         previousParentObject = newSlot.transform;
     }
 }
+

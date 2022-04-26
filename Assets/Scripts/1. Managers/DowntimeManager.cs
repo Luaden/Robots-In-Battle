@@ -7,11 +7,15 @@ public class DowntimeManager : MonoBehaviour
     private CardShopManager cardShopManager;
     private ComponentShopManager componentShopManager;
     private ShopCollectionRandomizeManager shopCollectionRandomizeManager;
+    private InventoryManager inventoryManager;
 
     public static DowntimeManager instance;
     public CardShopManager CardShopManager { get => cardShopManager; }
     public ComponentShopManager ComponentShopManager { get => componentShopManager; }
     public ShopCollectionRandomizeManager ShopCollectionRandomizeManager { get => shopCollectionRandomizeManager; }
+
+    public InventoryManager InventoryManager { get => inventoryManager; }
+
 
 
 
@@ -27,6 +31,7 @@ public class DowntimeManager : MonoBehaviour
         cardShopManager = GetComponentInChildren<CardShopManager>(true);
         componentShopManager = GetComponentInChildren<ComponentShopManager>(true);
         shopCollectionRandomizeManager = GetComponentInChildren<ShopCollectionRandomizeManager>(true);
+        inventoryManager = GetComponentInChildren<InventoryManager>(true);
 
 
         instance.CardShopManager.InitializeShop();
