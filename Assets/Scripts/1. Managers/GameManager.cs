@@ -142,6 +142,8 @@ public class GameManager : MonoBehaviour
 
     public class DowntimeMechBuilderController
     {
+        public MechObject PlayerMech { get => instance.playerData.PlayerMech; }
+
         public MechObject BuildNewMech(SOItemDataObject mechHead, SOItemDataObject mechTorso, SOItemDataObject mechArms, SOItemDataObject mechLegs)
         {
             MechComponentDataObject head = new MechComponentDataObject(mechHead);
@@ -183,6 +185,7 @@ public class GameManager : MonoBehaviour
 
     public class DowntimeInventoryController
     {
+        public List<MechComponentDataObject> PlayerInventory { get => instance.playerData.PlayerInventory; }
         public void AddItemToInventory(SOItemDataObject mechComponent)
         {
             if (mechComponent.ItemType != ItemType.Component)
