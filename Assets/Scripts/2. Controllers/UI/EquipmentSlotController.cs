@@ -5,12 +5,17 @@ using UnityEngine.EventSystems;
 
 public class EquipmentSlotController : BaseSlotController<EquipmentUIController>
 {
-    
-
+    private MechComponent mechComponentType;
+    public MechComponent MechComponentType { get => mechComponentType; }
     public void SetSlotManager(BaseSlotManager<EquipmentUIController> slotManager)
     {
         this.slotManager = slotManager;
     }
+    public void SetComponentType(MechComponent mechComponent)
+    {
+        this.mechComponentType = mechComponent;
+    }
+
     public override void OnDrop(PointerEventData eventData)
     {
         Debug.Log("on drop -- EquipmentSlotController");
@@ -24,6 +29,12 @@ public class EquipmentSlotController : BaseSlotController<EquipmentUIController>
         if (equipmentItem == null)
         {
             Debug.Log("Item was dropped in a slot that does not fit it.");
+            return;
+        }
+
+        if(equipmentItem.ItemUIObject.MechComponentData.ComponentType != this.MechComponentType)
+        {
+            Debug.Log("the dropped item is not of the same component type as slot");
             return;
         }
 
