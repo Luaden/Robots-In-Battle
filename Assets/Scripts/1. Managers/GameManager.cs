@@ -146,8 +146,8 @@ public class GameManager : MonoBehaviour
         {
             MechComponentDataObject head = new MechComponentDataObject(mechHead);
             MechComponentDataObject torso = new MechComponentDataObject(mechTorso);
-            MechComponentDataObject legs = new MechComponentDataObject(mechArms);
-            MechComponentDataObject arms = new MechComponentDataObject(mechLegs);
+            MechComponentDataObject legs = new MechComponentDataObject(mechLegs);
+            MechComponentDataObject arms = new MechComponentDataObject(mechArms);
 
             MechObject newMech = new MechObject(head, torso, arms, legs);
 
@@ -158,8 +158,8 @@ public class GameManager : MonoBehaviour
         {
             MechComponentDataObject head = new MechComponentDataObject(mechHead);
             MechComponentDataObject torso = new MechComponentDataObject(mechTorso);
-            MechComponentDataObject legs = new MechComponentDataObject(mechArms);
-            MechComponentDataObject arms = new MechComponentDataObject(mechLegs);
+            MechComponentDataObject legs = new MechComponentDataObject(mechLegs);
+            MechComponentDataObject arms = new MechComponentDataObject(mechArms);
             MechObject newMech = new MechObject(head, torso, arms, legs);
 
             instance.playerData.PlayerMech = newMech;

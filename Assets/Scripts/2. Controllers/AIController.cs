@@ -22,6 +22,7 @@ public class AIController : MonoBehaviour
         WeightPriorityWithDefensiveness(cardPlays);
         WeightPriorityWithDamage(cardPlays);
         WeightPriorityWithComponentDamage(cardPlays);
+        WeightPriorityWithTargetWeight(cardPlays);
 
         foreach (CardPlayPriorityObject card in cardPlays)
             Debug.Log(card.card.CardName + " : " + card.priority);
@@ -48,26 +49,26 @@ public class AIController : MonoBehaviour
         "that can target weaker components more.")]
     [Range(0, 5)] [SerializeField] private int targetingWeight;
 
-    [Tooltip("A value range between 0 and 5 that represents the AI preference to play cards that benefit from buffs. A value of 5 means that the AI will " +
-        "value cards that benefit from buffs more than those that do not.")]
-    [Range(0, 5)] [SerializeField] private int benefitWeight;
+    //[Tooltip("A value range between 0 and 5 that represents the AI preference to play cards that benefit from buffs. A value of 5 means that the AI will " +
+    //    "value cards that benefit from buffs more than those that do not.")]
+    //[Range(0, 5)] [SerializeField] private int benefitWeight;
     
-    [Tooltip("A value range between 0 and 5 that represents the AI preference to play cards that are not mitigated by debuffs. A value of 5 means that the " +
-        "AI will value cards that are mitigated by buffs and shields less than those that are not.")]
-    [Range(0, 5)] [SerializeField] private int mitigationWeight;
+    //[Tooltip("A value range between 0 and 5 that represents the AI preference to play cards that are not mitigated by debuffs. A value of 5 means that the " +
+    //    "AI will value cards that are mitigated by buffs and shields less than those that are not.")]
+    //[Range(0, 5)] [SerializeField] private int mitigationWeight;
 
-    [Tooltip("A value range between 0 and 5 that represents the AI preference to play cards that apply effects. A value of 5 means that the AI will value " +
-        "cards that apply effects such as buffs, debuffs, and shields more than those that do not.")]
-    [Range(0, 5)] [SerializeField] private int applicationWeight;
+    //[Tooltip("A value range between 0 and 5 that represents the AI preference to play cards that apply effects. A value of 5 means that the AI will value " +
+    //    "cards that apply effects such as buffs, debuffs, and shields more than those that do not.")]
+    //[Range(0, 5)] [SerializeField] private int applicationWeight;
 
-    [Tooltip("A value range between 0 and 5 that represents the AI ability to accurately defend against attacks. A value of 5 means that the AI will make an " +
-        "accurate guess as to where to defend given the available information, whereas a value of 0 will randomly guess from the channels able to be guarded.")]
-    [Range(0, 5)] [SerializeField] private int defensivePredictionAccuracy;
+    //[Tooltip("A value range between 0 and 5 that represents the AI ability to accurately defend against attacks. A value of 5 means that the AI will make an " +
+    //    "accurate guess as to where to defend given the available information, whereas a value of 0 will randomly guess from the channels able to be guarded.")]
+    //[Range(0, 5)] [SerializeField] private int defensivePredictionAccuracy;
 
-    [Tooltip("A value range between 0 and 5 that represents the AI ability to accurately choose attacks that cannot be guarded or countered. A value of 5 " +
-        "means that the AI will value attacks that cannot be guarded or countered more where a value of 0 means that the AI will not consider the player's " +
-        "defensive cards when picking where to attack.")]
-    [Range(0, 5)] [SerializeField] private int offensivePredictionAccuracy;
+    //[Tooltip("A value range between 0 and 5 that represents the AI ability to accurately choose attacks that cannot be guarded or countered. A value of 5 " +
+    //    "means that the AI will value attacks that cannot be guarded or countered more where a value of 0 means that the AI will not consider the player's " +
+    //    "defensive cards when picking where to attack.")]
+    //[Range(0, 5)] [SerializeField] private int offensivePredictionAccuracy;
 
 
     private List<CardDataObject> opponentHand;
@@ -336,27 +337,31 @@ public class AIController : MonoBehaviour
 
     private void WeightPriorityWithTargetWeight(List<CardPlayPriorityObject> cardPlayPriorityObjects)
     {
-        FighterEffectObject playerEffectObject = CombatManager.instance.CardPlayManager.GetFighterEffects(CharacterSelect.Player);
-        
-        foreach (CardPlayPriorityObject cardPrioPair in cardPlayPriorityObjects)
+        MechObject playerFighter = CombatManager.instance.PlayerFighter.FighterMech;
+        float lowestComponentHealth = Mathf.Infinity;
+        Channels lowestChannel = Channels.None;
+
+        if (lowestComponentHealth > playerFighter.MechArms.ComponentCurrentHP)
         {
-            switch (cardPrioPair.card.CardType)
-            {
-                case CardType.Attack:
-                    break;
-                case CardType.Defense:
-                    cardPrioPair.priority += aggressivenessWeight;
-                    break;
-                case CardType.Neutral:
-                    foreach (SOCardEffectObject cardEffect in cardPrioPair.card.CardEffects)
-                        if (CardEffectTypes.Defensive.HasFlag(cardEffect.EffectType))
-                        {
-                            cardPrioPair.priority += aggressivenessWeight;
-                            break;
-                        }
-                    break;
-            }
+            lowestComponentHealth = playerFighter.MechArms.ComponentCurrentHP;
+            lowestChannel = Channels.High;
         }
+
+        if (lowestComponentHealth > playerFighter.MechTorso.ComponentCurrentHP)
+        {
+            lowestComponentHealth = playerFighter.MechTorso.ComponentCurrentHP;
+            lowestChannel = Channels.Mid;
+        }
+
+        if (lowestComponentHealth > playerFighter.MechLegs.ComponentCurrentHP)
+        {
+            lowestComponentHealth = playerFighter.MechLegs.ComponentCurrentHP;
+            lowestChannel = Channels.Low;
+        }
+
+        foreach(CardPlayPriorityObject card in cardPlayPriorityObjects)
+            if(card.channel == lowestChannel)
+                card.priority += targetingWeight;
     }
 
     #region Utility
