@@ -56,18 +56,23 @@ public class CardUIController : MonoBehaviour, IPointerDownHandler, IPointerUpHa
         {
             case CardCategory.Punch:
                 cardImage.sprite = punchIcon;
+                cardImage.SetNativeSize();
                 break;
             case CardCategory.Kick:
                 cardImage.sprite = kickIcon;
+                cardImage.SetNativeSize();
                 break;
             case CardCategory.Special:
                 cardImage.sprite = specialIcon;
+                cardImage.SetNativeSize();
                 break;
             case CardCategory.Guard:
                 cardImage.sprite = guardIcon;
+                cardImage.SetNativeSize();
                 break;
             case CardCategory.Counter:
                 cardImage.sprite = counterIcon;
+                cardImage.SetNativeSize();
                 break;
         }
 

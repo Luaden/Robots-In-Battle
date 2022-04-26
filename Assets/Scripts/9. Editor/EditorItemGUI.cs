@@ -52,7 +52,6 @@ public class EditorItemGUI : Editor
 
     private void DisplayNeutralCardAttributes()
     {
-        EditorGUILayout.PropertyField(serializedObject.FindProperty("cardBackground"));
         EditorGUILayout.PropertyField(serializedObject.FindProperty("cardCategory"));
         EditorGUILayout.PropertyField(serializedObject.FindProperty("possibleChannels"));
         EditorGUILayout.PropertyField(serializedObject.FindProperty("affectedChannels"));
