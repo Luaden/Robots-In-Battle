@@ -113,14 +113,14 @@ public class EquipmentController : MonoBehaviour
 
     private void OnCreation()
     {
-        MechObject currentPlayerMech = GameManager.instance.PlayerMechController.PlayerMech;
+/*        MechObject currentPlayerMech = GameManager.instance.PlayerMechController.PlayerMech;
 
         currentMechEquipment.Add(currentPlayerMech.MechHead);
         currentMechEquipment.Add(currentPlayerMech.MechTorso);
         currentMechEquipment.Add(currentPlayerMech.MechArms);
         currentMechEquipment.Add(currentPlayerMech.MechLegs);
 
-        CreateItemsToDisplay(currentMechEquipment.ToArray());
+        CreateItemsToDisplay(currentMechEquipment.ToArray());*/
 
     }
 
@@ -129,7 +129,7 @@ public class EquipmentController : MonoBehaviour
         if (currentMechEquipment == null)
             currentMechEquipment = new List<MechComponentDataObject>();
 
-        MechObject currentPlayerMech = GameManager.instance.PlayerMechController.PlayerMech;
+        //MechObject currentPlayerMech = GameManager.instance.PlayerMechController.PlayerMech;
 
 /*         if(!currentMechEquipment.Contains(currentPlayerMech.MechHead) ||
             !currentMechEquipment.Contains(currentPlayerMech.MechTorso) ||

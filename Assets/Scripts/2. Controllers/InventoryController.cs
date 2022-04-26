@@ -40,8 +40,9 @@ public class InventoryController : MonoBehaviour
     {
         if (inventoryList == null)
             inventoryList = new List<MechComponentDataObject>();
+        
 
-        List<MechComponentDataObject> mechComponentDatas = GameManager.instance.PlayerInventoryController.PlayerInventory;
+/*        List<MechComponentDataObject> mechComponentDatas = GameManager.instance.PlayerInventoryController.PlayerInventory;
         Debug.Log(mechComponentDatas);
         for(int i = 0; i < mechComponentDatas.Count; i++)
         {
@@ -50,7 +51,7 @@ public class InventoryController : MonoBehaviour
                 CreateItemToDisplay(mechComponentDatas[i]);
                 inventoryList.Add(mechComponentDatas[i]);
             }
-        }
+        }*/
     }
 
 }
