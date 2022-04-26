@@ -117,6 +117,7 @@ public enum EffectTarget
 
 public enum MechComponent
 {
+    None,
     Head,
     Torso,
     Arms,

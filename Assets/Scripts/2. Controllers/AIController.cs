@@ -9,15 +9,12 @@ public class AIController : MonoBehaviour
     #region Debug Functions
 
     [SerializeField] private bool aSlot = true;
-    
+
     [ContextMenu("Test Choices")]
     public void TestCardSelection()
     {
-        if (CombatManager.instance.HandManager.OpponentHand.CharacterHand == null)
-            GameManager.instance.BuildMech();
-
         List<CardPlayPriorityObject> cardPlays = GetCurrentHandPossibleAttacks(aSlot);
-        
+
         WeightPriorityWithAggressiveness(cardPlays);
         WeightPriorityWithDefensiveness(cardPlays);
         WeightPriorityWithDamage(cardPlays);
@@ -35,11 +32,11 @@ public class AIController : MonoBehaviour
     [Tooltip("A value range between 0 and 5 that represents the AI preference for A Slot offense or defense. A value of 5 means the AI will value defensive " +
         "Neutral cards more than Attack cards.")]
     [Range(0, 5)] [SerializeField] private int defensivenessWeight;
-    
+
     [Tooltip("A value range between 0 and 5 that represents the AI preference for base damage. A value of 5 means the AI will value attacks that deal more" +
     "base damage more than those that do less.")]
     [Range(0, 5)] [SerializeField] private int baseDamageWeight;
-    
+
     [Tooltip("A value range between 0 and 5 that represents the AI preference for component damage. A value of 5 means the AI will value attacks that deal " +
         "or benefit from bonus component damage more than those that do not.")]
     [Range(0, 5)] [SerializeField] private int componentDamageWeight;
@@ -48,42 +45,32 @@ public class AIController : MonoBehaviour
         "that can target weaker components more.")]
     [Range(0, 5)] [SerializeField] private int targetingWeight;
 
-    [Tooltip("A value range between 0 and 5 that represents the AI preference to play cards that benefit from buffs. A value of 5 means that the AI will " +
-        "value cards that benefit from buffs more than those that do not.")]
-    [Range(0, 5)] [SerializeField] private int benefitWeight;
-    
-    [Tooltip("A value range between 0 and 5 that represents the AI preference to play cards that are not mitigated by debuffs. A value of 5 means that the " +
-        "AI will value cards that are mitigated by buffs and shields less than those that are not.")]
-    [Range(0, 5)] [SerializeField] private int mitigationWeight;
+    //[Tooltip("A value range between 0 and 5 that represents the AI preference to play cards that benefit from buffs. A value of 5 means that the AI will " +
+    //    "value cards that benefit from buffs more than those that do not.")]
+    //[Range(0, 5)] [SerializeField] private int benefitWeight;
 
-    [Tooltip("A value range between 0 and 5 that represents the AI preference to play cards that apply effects. A value of 5 means that the AI will value " +
-        "cards that apply effects such as buffs, debuffs, and shields more than those that do not.")]
-    [Range(0, 5)] [SerializeField] private int applicationWeight;
+    //[Tooltip("A value range between 0 and 5 that represents the AI preference to play cards that are not mitigated by debuffs. A value of 5 means that the " +
+    //    "AI will value cards that are mitigated by buffs and shields less than those that are not.")]
+    //[Range(0, 5)] [SerializeField] private int mitigationWeight;
 
-    [Tooltip("A value range between 0 and 5 that represents the AI ability to accurately defend against attacks. A value of 5 means that the AI will make an " +
-        "accurate guess as to where to defend given the available information, whereas a value of 0 will randomly guess from the channels able to be guarded.")]
-    [Range(0, 5)] [SerializeField] private int defensivePredictionAccuracy;
+    //[Tooltip("A value range between 0 and 5 that represents the AI preference to play cards that apply effects. A value of 5 means that the AI will value " +
+    //    "cards that apply effects such as buffs, debuffs, and shields more than those that do not.")]
+    //[Range(0, 5)] [SerializeField] private int applicationWeight;
 
-    [Tooltip("A value range between 0 and 5 that represents the AI ability to accurately choose attacks that cannot be guarded or countered. A value of 5 " +
-        "means that the AI will value attacks that cannot be guarded or countered more where a value of 0 means that the AI will not consider the player's " +
-        "defensive cards when picking where to attack.")]
-    [Range(0, 5)] [SerializeField] private int offensivePredictionAccuracy;
+    //[Tooltip("A value range between 0 and 5 that represents the AI ability to accurately defend against attacks. A value of 5 means that the AI will make an " +
+    //    "accurate guess as to where to defend given the available information, whereas a value of 0 will randomly guess from the channels able to be guarded.")]
+    //[Range(0, 5)] [SerializeField] private int defensivePredictionAccuracy;
+
+    //[Tooltip("A value range between 0 and 5 that represents the AI ability to accurately choose attacks that cannot be guarded or countered. A value of 5 " +
+    //    "means that the AI will value attacks that cannot be guarded or countered more where a value of 0 means that the AI will not consider the player's " +
+    //    "defensive cards when picking where to attack.")]
+    //[Range(0, 5)] [SerializeField] private int offensivePredictionAccuracy;
 
 
     private List<CardDataObject> opponentHand;
 
     private CardChannelPairObject attackA;
     private CardChannelPairObject attackB;
-
-    //Check hand - what can I hit?
-    //Check player - are any components particularly weak? Can I hit them?
-    //Assign value ratings based on behavior multipliers to each potential attack.
-
-    //Check player hand, check energy consumed from queued card, any cards consuming the same value, look at the channels they hit.
-    //Check self - are any components particularly weak? Can I guard them?
-    //Assign ratings to defensive options
-
-    //Queue attack
 
     private void Start()
     {
@@ -106,17 +93,17 @@ public class AIController : MonoBehaviour
             return;
 
         opponentHand = CombatManager.instance.HandManager.OpponentHand.CharacterHand;
-        
-        List<CardDataObject> possibleCards = new List<CardDataObject>();
+
+        List<CardPlayPriorityObject> cardPlays = GetCurrentHandPossibleAttacks(aSlot);
         CardDataObject selectedCard;
 
-        foreach (CardDataObject card in opponentHand)
-            if (card.EnergyCost <= CombatManager.instance.OpponentFighter.FighterMech.MechCurrentEnergy)
-                if(card.CardType == CardType.Attack || card.CardType == CardType.Neutral)
-                    possibleCards.Add(card);
+        WeightPriorityWithAggressiveness(cardPlays);
+        WeightPriorityWithDefensiveness(cardPlays);
+        WeightPriorityWithDamage(cardPlays);
+        WeightPriorityWithComponentDamage(cardPlays);
 
 
-        if(possibleCards.Count == 0)
+        if (cardPlays.Count == 0)
         {
             selectedCard = null;
 
@@ -126,12 +113,22 @@ public class AIController : MonoBehaviour
         }
         else
         {
-            selectedCard = possibleCards[UnityEngine.Random.Range(0, possibleCards.Count)];
+            int highestCardPriority = 0;
+            int highestCardIndex = 0;
 
-            attackA = new CardChannelPairObject(selectedCard, GetRandomChannelFromFlag(selectedCard.PossibleChannels));
+            for(int i = 0; i < cardPlays.Count; i++)
+            {
+                if(cardPlays[i].priority > highestCardPriority)
+                {
+                    highestCardPriority = cardPlays[i].priority;
+                    highestCardIndex = i;
+                }    
+            }
 
-            CombatManager.instance.ChannelsUISlotManager.OpponentAssignAttackSlot(selectedCard.CardUIObject.GetComponent<CardUIController>(),
-                selectedCard.CardUIObject.GetComponent<CardUIController>().CardSlotController);
+            attackA = new CardChannelPairObject(cardPlays[highestCardIndex].card, cardPlays[highestCardIndex].channel);
+
+            CombatManager.instance.ChannelsUISlotManager.OpponentAssignAttackSlot(cardPlays[highestCardIndex].card.CardUIObject.GetComponent<CardUIController>(),
+                cardPlays[highestCardIndex].card.CardUIObject.GetComponent<CardUIController>().CardSlotController);
         }
     }
 
@@ -142,15 +139,15 @@ public class AIController : MonoBehaviour
 
         opponentHand = CombatManager.instance.HandManager.OpponentHand.CharacterHand;
 
-        List<CardDataObject> possibleCards = new List<CardDataObject>();
+        List<CardPlayPriorityObject> cardPlays = GetCurrentHandPossibleAttacks(aSlot);
         CardDataObject selectedCard;
 
-        foreach (CardDataObject card in opponentHand)
-            if (card.EnergyCost <= CombatManager.instance.OpponentFighter.FighterMech.MechCurrentEnergy)
-                if (card.CardType == CardType.Defense || card.CardType == CardType.Neutral)
-                    possibleCards.Add(card);
+        WeightPriorityWithAggressiveness(cardPlays);
+        WeightPriorityWithDefensiveness(cardPlays);
+        WeightPriorityWithDamage(cardPlays);
+        WeightPriorityWithComponentDamage(cardPlays);
 
-        if (possibleCards.Count == 0)
+        if (cardPlays.Count == 0)
         {
             selectedCard = null;
 
@@ -160,12 +157,22 @@ public class AIController : MonoBehaviour
         }
         else
         {
-            selectedCard = possibleCards[UnityEngine.Random.Range(0, possibleCards.Count)];
+            int highestCardPriority = 0;
+            int highestCardIndex = 0;
 
-            attackB = new CardChannelPairObject(selectedCard, GetRandomChannelFromFlag(selectedCard.PossibleChannels));
+            for (int i = 0; i < cardPlays.Count; i++)
+            {
+                if (cardPlays[i].priority > highestCardPriority)
+                {
+                    highestCardPriority = cardPlays[i].priority;
+                    highestCardIndex = i;
+                }
+            }
 
-            CombatManager.instance.ChannelsUISlotManager.OpponentAssignAttackSlot(selectedCard.CardUIObject.GetComponent<CardUIController>(),
-                selectedCard.CardUIObject.GetComponent<CardUIController>().CardSlotController);
+            attackB = new CardChannelPairObject(cardPlays[highestCardIndex].card, cardPlays[highestCardIndex].channel);
+
+            CombatManager.instance.ChannelsUISlotManager.OpponentAssignAttackSlot(cardPlays[highestCardIndex].card.CardUIObject.GetComponent<CardUIController>(),
+                cardPlays[highestCardIndex].card.CardUIObject.GetComponent<CardUIController>().CardSlotController);
         }
     }
 
@@ -294,7 +301,7 @@ public class AIController : MonoBehaviour
             if (cardPlayPriority.card.BaseDamage <= 0)
                 continue;
 
-            cardPlayPriority.priority += Mathf.RoundToInt(((cardPlayPriority.card.BaseDamage * GetComponentDamageMultiplier(cardPlayPriority)) 
+            cardPlayPriority.priority += Mathf.RoundToInt(((cardPlayPriority.card.BaseDamage * GetComponentDamageMultiplier(cardPlayPriority))
                                                             / maximumComponentDamage) * componentDamageWeight);
         }
 
@@ -337,7 +344,7 @@ public class AIController : MonoBehaviour
     private void WeightPriorityWithTargetWeight(List<CardPlayPriorityObject> cardPlayPriorityObjects)
     {
         FighterEffectObject playerEffectObject = CombatManager.instance.CardPlayManager.GetFighterEffects(CharacterSelect.Player);
-        
+
         foreach (CardPlayPriorityObject cardPrioPair in cardPlayPriorityObjects)
         {
             switch (cardPrioPair.card.CardType)
