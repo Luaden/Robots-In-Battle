@@ -5,6 +5,8 @@ using UnityEngine.EventSystems;
 
 public class EquipmentSlotController : BaseSlotController<EquipmentUIController>
 {
+    
+
     public void SetSlotManager(BaseSlotManager<EquipmentUIController> slotManager)
     {
         this.slotManager = slotManager;
@@ -32,16 +34,24 @@ public class EquipmentSlotController : BaseSlotController<EquipmentUIController>
             if (inventoryItem != null)
             {
                 Debug.Log("dropped item");
+                // this current slottedItem
+                EquipmentUIController currentItem = CurrentSlottedItem;
 
-                //set this slot's "previous" item's slotcontroller to be the dropped item's slotcontroller, swapping places
-                EquipmentUIController previousSlottedItem = currentSlottedItem.GetComponent<EquipmentUIController>();
-                previousSlottedItem.GetComponent<InventoryUIController>().InventorySlotController = inventoryItem.InventorySlotController;
-                previousSlottedItem.GetComponent<InventoryUIController>().enabled = true;
-                previousSlottedItem.GetComponent<EquipmentUIController>().enabled = false;
+                //enable both of the UIControllers
+                currentItem.GetComponent<EquipmentUIController>().enabled = true;
+                currentItem.GetComponent<InventoryUIController>().enabled = true;
+
+                // set current slot item to take this dropped item's place
+                currentItem.GetComponent<InventoryUIController>().InventorySlotController = inventoryItem.InventorySlotController;
+                currentItem.GetComponent<InventoryUIController>().isPickedUp = false;
+                currentItem.GetComponent<EquipmentUIController>().enabled = false;
+
+                currentSlottedItem = null;
 
                 // set this dropped item's slot controller to be this slot
                 equipmentItem.enabled = true;
                 equipmentItem.EquipmentSlotController = this;
+                currentSlottedItem = equipmentItem;
 
                 // remove the dropped item from inventory slot
                 inventoryItem.InventorySlotController.CurrentSlottedItem = null;
