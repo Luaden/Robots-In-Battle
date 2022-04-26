@@ -40,18 +40,17 @@ public class InventoryController : MonoBehaviour
     {
         if (inventoryList == null)
             inventoryList = new List<MechComponentDataObject>();
-        
 
-/*        List<MechComponentDataObject> mechComponentDatas = GameManager.instance.PlayerInventoryController.PlayerInventory;
-        Debug.Log(mechComponentDatas);
-        for(int i = 0; i < mechComponentDatas.Count; i++)
+
+        List<MechComponentDataObject> mechComponentDatas = GameManager.instance.PlayerInventoryController.PlayerInventory;
+        for (int i = 0; i < mechComponentDatas.Count; i++)
         {
-            if(!inventoryList.Contains(mechComponentDatas[i]))
+            if (!inventoryList.Contains(mechComponentDatas[i]))
             {
                 CreateItemToDisplay(mechComponentDatas[i]);
                 inventoryList.Add(mechComponentDatas[i]);
             }
-        }*/
+        }
     }
 
 }
