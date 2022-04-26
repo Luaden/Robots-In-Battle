@@ -11,10 +11,11 @@ public class CardUIController : MonoBehaviour, IPointerDownHandler, IPointerUpHa
     [SerializeField] private Image cardBackground;
     [SerializeField] private Image cardImage;
     [SerializeField] private TMP_Text cardName;
-    [SerializeField] private TMP_Text cardDescription;
-    [SerializeField] private TMP_Text energyCostText;
-    [SerializeField] private TMP_Text damageDealtText;
-    [SerializeField] private Image highlightImage;
+    
+    [Header("Channel Icons")]
+    [SerializeField] private GameObject highChannelIcon;
+    [SerializeField] private GameObject midChannelIcon;
+    [SerializeField] private GameObject lowChannelIcon;
 
     [Header("Required Interaction Components")]
     [SerializeField] private RectTransform draggableRectTransform;
@@ -24,11 +25,22 @@ public class CardUIController : MonoBehaviour, IPointerDownHandler, IPointerUpHa
     [SerializeField] private float travelSpeed;
     private Transform previousParentObject;
 
+    [Header("Card Frames")]
+    [SerializeField] private Sprite attackFrame;
+    [SerializeField] private Sprite defenseFrame;
+    [SerializeField] private Sprite neutralFrame;
+
+    [Header("Card Icons")]
+    [SerializeField] private Sprite punchIcon;
+    [SerializeField] private Sprite kickIcon;
+    [SerializeField] private Sprite specialIcon;
+    [SerializeField] private Sprite counterIcon;
+    [SerializeField] private Sprite guardIcon;
+
     private CardDataObject cardData;
     private BaseSlotController<CardUIController> cardSlotController;
     
     private bool isPickedUp = false;
-    private Vector2 originPosition;
 
     public CardDataObject CardData { get => cardData; }
     public Transform PreviousParentObject { get => previousParentObject; set => previousParentObject = value; }
@@ -36,17 +48,48 @@ public class CardUIController : MonoBehaviour, IPointerDownHandler, IPointerUpHa
 
     public void InitCardUI(CardDataObject newCardData)
     {
-        cardBackground.sprite = newCardData.CardBackground;
-        cardImage.sprite = newCardData.CardForeground;
         cardName.text = newCardData.CardName;
-        cardDescription.text = newCardData.CardDescription;
-        energyCostText.text = newCardData.EnergyCost.ToString();
-        damageDealtText.text = newCardData.BaseDamage.ToString();
-
-        //Need to somehow indicate possible channels and affected channels in here. Possibly description?
-
         cardData = newCardData;
         newCardData.CardUIObject = this.gameObject;
+
+        switch (newCardData.CardCategory)
+        {
+            case CardCategory.Punch:
+                cardImage.sprite = punchIcon;
+                break;
+            case CardCategory.Kick:
+                cardImage.sprite = kickIcon;
+                break;
+            case CardCategory.Special:
+                cardImage.sprite = specialIcon;
+                break;
+            case CardCategory.Guard:
+                cardImage.sprite = guardIcon;
+                break;
+            case CardCategory.Counter:
+                cardImage.sprite = counterIcon;
+                break;
+        }
+
+        switch (newCardData.CardType)
+        {
+            case CardType.Attack:
+                cardBackground.sprite = attackFrame;
+                break;
+            case CardType.Defense:
+                cardBackground.sprite = defenseFrame;
+                break;
+            case CardType.Neutral:
+                cardBackground.sprite = neutralFrame;
+                break;
+        }
+
+        if(newCardData.PossibleChannels.HasFlag(Channels.High))
+            highChannelIcon.SetActive(true);
+        if (newCardData.PossibleChannels.HasFlag(Channels.Mid))
+            midChannelIcon.SetActive(true);
+        if (newCardData.PossibleChannels.HasFlag(Channels.Low))
+            lowChannelIcon.SetActive(true);
     }
 
     public virtual void OnPointerEnter(PointerEventData eventData)
