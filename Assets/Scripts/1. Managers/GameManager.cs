@@ -18,6 +18,13 @@ public class GameManager : MonoBehaviour
     public DowntimeDeckController PlayerDeckController { get => playerDeckController; }
     public DowntimeBankController PlayerBankController { get => playerBankController; }
 
+    #region Debug
+    [SerializeField] private bool narrateCombatChoices;
+    [SerializeField] private bool narrateAIDecisionMaking;
+
+    public bool NarrateCombat { get => narrateCombatChoices; }
+    public bool NarrateAIDecisionMaking { get => narrateAIDecisionMaking; }
+    #endregion
 
     #region Playtesting
     [SerializeField] private SOItemDataObject starterMechHead;
@@ -25,6 +32,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] private SOItemDataObject starterMechArms;
     [SerializeField] private SOItemDataObject starterMechLegs;
     [SerializeField] private List<SOItemDataObject> starterDeck;
+
 
     [ContextMenu("Start Game")]
     public void BuildMech()

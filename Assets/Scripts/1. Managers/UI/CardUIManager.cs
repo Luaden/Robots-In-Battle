@@ -13,12 +13,14 @@ public class CardUIManager : MonoBehaviour
 
     public void BuildAndDrawPlayerCard(CardDataObject cardToDraw)
     {
-        cardUIBuildController.BuildAndDrawPlayerCard(cardToDraw, playerDeckTransform);
+        CardUIController drawnCard = cardUIBuildController.BuildPlayerCard(cardToDraw, playerDeckTransform);
+        CombatManager.instance.PlayerHandSlotManager.AddItemToCollection(drawnCard, null);
     }
 
     public void BuildAndDrawOpponentCard(CardDataObject cardToDraw)
     {
-        cardUIBuildController.BuildAndDrawOpponentCard(cardToDraw, opponentDeckTransform);
+        CardUIController drawnCard = cardUIBuildController.BuildOpponentCard(cardToDraw, opponentDeckTransform);
+        CombatManager.instance.OpponentHandSlotManager.AddItemToCollection(drawnCard, null);
     }
 
     public void DestroyCardUI(CardDataObject cardToReturn)

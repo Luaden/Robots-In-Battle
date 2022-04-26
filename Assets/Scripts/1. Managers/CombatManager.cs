@@ -7,6 +7,8 @@ public class CombatManager : MonoBehaviour
     [SerializeField] private int mechEnergyGain;
     [SerializeField] private float counterDamageMultiplier;
     [SerializeField] private float guardDamageMultiplier;
+    [SerializeField] private float acidComponentDamageMultiplier;
+    [SerializeField] private int iceChannelEnergyReductionModifier;
     [SerializeField] private GameObject winLossPanel;
 
     public static CombatManager instance;
@@ -43,6 +45,8 @@ public class CombatManager : MonoBehaviour
     public int MechEnergyGain { get => mechEnergyGain; }
     public float CounterDamageMultiplier { get => counterDamageMultiplier; }
     public float GuardDamageMultiplier { get => guardDamageMultiplier; }
+    public float AcidComponentDamageMultiplier { get => acidComponentDamageMultiplier; }
+    public int IceChannelEnergyReductionModifier { get => iceChannelEnergyReductionModifier; }
 
     public delegate void onDestroyScene();
     public static event onDestroyScene OnDestroyScene;

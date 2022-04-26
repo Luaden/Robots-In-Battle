@@ -8,6 +8,9 @@ public class EffectController
     private FighterEffectObject playerFighterEffectObject;
     private FighterEffectObject opponentFighterEffectObject;
 
+    public FighterEffectObject PlayerEffects { get => playerFighterEffectObject; }
+    public FighterEffectObject OpponentEffects { get => opponentFighterEffectObject; }
+
     public void EnableEffects(CardChannelPairObject cardChannelPair, CharacterSelect destinationMech)
     {
         if (cardChannelPair == null || cardChannelPair.CardData == null)
@@ -24,7 +27,7 @@ public class EffectController
                 repeatPlay += effect.EffectMagnitude;
 
             if (effect.EffectType == CardEffectTypes.KeyWord && effect.CardKeyWord == CardKeyWord.Flurry)
-                repeatPlay += GetFlurryBonus(destinationMech == CharacterSelect.Opponent ? CharacterSelect.Player : CharacterSelect.Opponent);
+                repeatPlay += GetAndConsumeFlurryBonus(destinationMech == CharacterSelect.Opponent ? CharacterSelect.Player : CharacterSelect.Opponent);
         }
 
 
@@ -83,7 +86,7 @@ public class EffectController
                         break;
 
                     case CardEffectTypes.KeyWord:
-                        KeyWordInitialize(effect, cardChannelPair.CardData.AffectedChannels == AffectedChannels.SelectedChannel ?
+                        GainKeyWord(effect, cardChannelPair.CardData.AffectedChannels == AffectedChannels.SelectedChannel ?
                             cardChannelPair.CardChannel : cardChannelPair.CardData.PossibleChannels,
                             destinationMech == CharacterSelect.Opponent ? CharacterSelect.Player : CharacterSelect.Opponent);
                         break;
@@ -120,6 +123,23 @@ public class EffectController
         UpdateFighterBuffs();
     }
 
+    public int GetMechDamageWithAndConsumeModifiers(CardChannelPairObject attack, CharacterSelect defensiveCharacter)
+    {
+        int damageToReturn = attack.CardData.BaseDamage;
+
+        //Get Damage Boosts and Modifiers
+        damageToReturn = GetCardCategoryDamageBonus(attack, damageToReturn, defensiveCharacter);
+        damageToReturn = GetCardChannelDamageBonus(attack, damageToReturn, defensiveCharacter);
+        damageToReturn = GetAndConsumeKeyWordDamageBonus(attack, ref damageToReturn, defensiveCharacter);
+        damageToReturn = GetComponentDamageBonus(attack, damageToReturn, defensiveCharacter);
+
+        //Get Damage Reductions and Modifiers
+        damageToReturn = GetCardChannelDamageReduction(attack, damageToReturn, defensiveCharacter);
+        damageToReturn = GetDamageReducedByShield(attack, damageToReturn, defensiveCharacter);
+
+        return damageToReturn;
+    }
+
     public int GetMechDamageWithModifiers(CardChannelPairObject attack, CharacterSelect defensiveCharacter)
     {
         int damageToReturn = attack.CardData.BaseDamage;
@@ -127,7 +147,7 @@ public class EffectController
         //Get Damage Boosts and Modifiers
         damageToReturn = GetCardCategoryDamageBonus(attack, damageToReturn, defensiveCharacter);
         damageToReturn = GetCardChannelDamageBonus(attack, damageToReturn, defensiveCharacter);
-        damageToReturn = GetKeyWordDamageBonus(attack, ref damageToReturn, defensiveCharacter);
+        damageToReturn = GetAndConsumeKeyWordDamageBonus(attack, ref damageToReturn, defensiveCharacter);
         damageToReturn = GetComponentDamageBonus(attack, damageToReturn, defensiveCharacter);
 
         //Get Damage Reductions and Modifiers
@@ -460,7 +480,7 @@ public class EffectController
         }
     }
 
-    private int GetKeyWordDamageBonus(CardChannelPairObject attack, ref int damageToReturn, CharacterSelect defensiveCharacter)
+    private int GetAndConsumeKeyWordDamageBonus(CardChannelPairObject attack, ref int damageToReturn, CharacterSelect defensiveCharacter)
     {
         CardKeyWord keyWord = CardKeyWord.None;
         List<CardEffectObject> previousKeyWordEffects = new List<CardEffectObject>();
@@ -508,7 +528,35 @@ public class EffectController
         return damageToReturn;
     }
 
-    public int GetFlurryBonus(CharacterSelect characterToCheck)
+    private int GetKeyWordDamageBonus(CardChannelPairObject attack, ref int damageToReturn, CharacterSelect defensiveCharacter)
+    {
+        CardKeyWord keyWord = CardKeyWord.None;
+        List<CardEffectObject> previousKeyWordEffects = new List<CardEffectObject>();
+
+
+        if (attack.CardData.CardEffects.Select(x => x.EffectType).Contains(CardEffectTypes.KeyWord))
+        {
+            foreach (SOCardEffectObject effect in attack.CardData.CardEffects)
+                if (effect.EffectType == CardEffectTypes.KeyWord)
+                    keyWord = effect.CardKeyWord;
+
+            if (defensiveCharacter == CharacterSelect.Opponent)
+            {
+                if (playerFighterEffectObject.KeyWordDuration.TryGetValue(keyWord, out previousKeyWordEffects))
+                    foreach (CardEffectObject effect in previousKeyWordEffects)
+                        damageToReturn += effect.EffectMagnitude;
+            }
+            else
+            {
+                if (opponentFighterEffectObject.KeyWordDuration.TryGetValue(keyWord, out previousKeyWordEffects))
+                    foreach (CardEffectObject effect in previousKeyWordEffects)
+                        damageToReturn += effect.EffectMagnitude;            }
+        }
+
+        return damageToReturn;
+    }
+
+    public int GetAndConsumeFlurryBonus(CharacterSelect characterToCheck)
     {
         int flurryBonus = 0;
 
@@ -877,7 +925,7 @@ public class EffectController
         }
     }
 
-    private void KeyWordInitialize(SOCardEffectObject effect, Channels channel, CharacterSelect characterPriming)
+    private void GainKeyWord(SOCardEffectObject effect, Channels channel, CharacterSelect characterPriming)
     {
         List<CardEffectObject> currentKeyWordEffectList = new List<CardEffectObject>();
         CardEffectObject newKeyWordEffect = new CardEffectObject(effect);
