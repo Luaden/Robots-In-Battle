@@ -125,12 +125,10 @@ public class AIController : MonoBehaviour
                 }    
             }
 
-            selectedCard = cardPlays[highestCardIndex].card;
+            attackA = new CardChannelPairObject(cardPlays[highestCardIndex].card, cardPlays[highestCardIndex].channel);
 
-            attackA = new CardChannelPairObject(selectedCard, GetRandomChannelFromFlag(selectedCard.PossibleChannels));
-
-            CombatManager.instance.ChannelsUISlotManager.OpponentAssignAttackSlot(selectedCard.CardUIObject.GetComponent<CardUIController>(),
-                selectedCard.CardUIObject.GetComponent<CardUIController>().CardSlotController);
+            CombatManager.instance.ChannelsUISlotManager.OpponentAssignAttackSlot(cardPlays[highestCardIndex].card.CardUIObject.GetComponent<CardUIController>(),
+                cardPlays[highestCardIndex].card.CardUIObject.GetComponent<CardUIController>().CardSlotController);
         }
     }
 
@@ -171,7 +169,10 @@ public class AIController : MonoBehaviour
                 }
             }
 
-            selectedCard = cardPlays[highestCardIndex].card;
+            attackB = new CardChannelPairObject(cardPlays[highestCardIndex].card, cardPlays[highestCardIndex].channel);
+
+            CombatManager.instance.ChannelsUISlotManager.OpponentAssignAttackSlot(cardPlays[highestCardIndex].card.CardUIObject.GetComponent<CardUIController>(),
+                cardPlays[highestCardIndex].card.CardUIObject.GetComponent<CardUIController>().CardSlotController);
         }
     }
 
