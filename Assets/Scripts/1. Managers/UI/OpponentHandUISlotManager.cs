@@ -43,6 +43,7 @@ public class OpponentHandUISlotManager : BaseSlotManager<CardUIController>
 
     public override void HandleDrop(PointerEventData eventData, CardUIController droppedCard, BaseSlotController<CardUIController> slot)
     {
+        Debug.Log("Dropping Opponent Card");
         if (droppedCard == null)
         {
             Debug.Log("Could not find appropriate data for slot.");

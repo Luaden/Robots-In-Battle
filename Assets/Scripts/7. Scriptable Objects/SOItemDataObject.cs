@@ -10,7 +10,7 @@ public class SOItemDataObject : ScriptableObject
     [SerializeField] private ItemType itemType;
     [SerializeField] private string itemName;
     [SerializeField] private string itemDescription;
-    [SerializeField] private Sprite itemImage;
+    [SerializeField] private Sprite componentImage;
     [Tooltip("Time cost to implement the item into the player mech or deck.")]
     [SerializeField] private float timeCost;
     [Tooltip("Cost of the item in the shop.")]
@@ -36,9 +36,6 @@ public class SOItemDataObject : ScriptableObject
     [SerializeField] private int extraElementStacks;
     [Tooltip("Increases overall energy gained at the start of the turn.")]
     [SerializeField] private int energyGainModifier;
-    
-    [Header("Card UI")]
-    [SerializeField] private Sprite cardBackground;
 
     [Header("Card Attributes")]
     [SerializeField] private CardType cardType;
@@ -65,8 +62,6 @@ public class SOItemDataObject : ScriptableObject
     #region Card Attribute Properties
     public string CardName { get => itemName; }
     public string CardDescription { get => itemDescription; }
-    public Sprite CardImage { get => itemImage; }
-    public Sprite CardBackground { get => cardBackground; }
     public CardType CardType { get => cardType; }
     public CardCategory CardCategory { get => cardCategory; }
     public Channels PossibleChannels { get => possibleChannels; }
@@ -78,7 +73,7 @@ public class SOItemDataObject : ScriptableObject
     #region Component Attribute Properties
     public string ComponentName { get => itemName; }
     public MechComponent ComponentType { get => componentType; }
-    public Sprite ComponentSprite { get => itemImage; }
+    public Sprite ComponentSprite { get => componentImage; }
     public int ComponentHP { get => componentHP; }
     public int ComponentEnergy { get => componentEnergy; }
     public ElementType ComponentElement { get => componentElement; }
@@ -94,7 +89,7 @@ public class SOItemDataObject : ScriptableObject
     public ItemType ItemType { get => itemType; }
     public string ItemName { get => itemName; }
     public string ItemDescription { get => itemDescription; }
-    public Sprite ItemImage { get => itemImage; }
+    public Sprite ItemImage { get => componentImage; }
     public float TimeCost { get => timeCost; }
     public int CurrencyCost { get => currencyCost; }
     public int ChanceToSpawn { get => chanceToSpawn; }

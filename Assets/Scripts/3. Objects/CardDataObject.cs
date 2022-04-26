@@ -7,8 +7,6 @@ public class CardDataObject
     [Header("Card UI")]
     [SerializeField] private string cardName;
     [SerializeField] private string cardDescription;
-    [SerializeField] private Sprite cardImage;
-    [SerializeField] private Sprite cardBackground;
 
     [Header("Card Attributes")]
     [SerializeField] private CardType cardType;
@@ -27,8 +25,6 @@ public class CardDataObject
     #region Base Card Properties
     public string CardName { get => cardName; }
     public string CardDescription { get => cardDescription; }
-    public Sprite CardForeground { get => cardImage; }
-    public Sprite CardBackground { get => cardBackground; }
     public CardType CardType { get => cardType; }
     public CardCategory CardCategory { get => cardCategory; }
     public Channels PossibleChannels { get => possibleChannels; }
@@ -48,8 +44,6 @@ public class CardDataObject
     {
         cardName = data.CardName;
         cardDescription = data.CardDescription;
-        cardImage = data.CardImage;
-        cardBackground = data.CardBackground;
         
         cardType = data.CardType;
         cardCategory = data.CardCategory;
