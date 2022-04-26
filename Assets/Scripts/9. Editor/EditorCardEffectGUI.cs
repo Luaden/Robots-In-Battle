@@ -25,7 +25,7 @@ public class EditorCardEffectGUI : Editor
         }
         else
         {
-            switch (EffectTypeProperty.enumValueIndex)
+            switch (EffectTypeProperty.intValue)
             {
                 case (int)CardEffectTypes.AdditionalElementStacks:
                     DisplayMagnitudeAttribute();

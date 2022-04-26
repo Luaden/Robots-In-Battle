@@ -16,7 +16,7 @@ public class GlobalCategoryBuffController : BaseUIElement<Dictionary<CardCategor
     {
         if (ClearedIfEmpty(primaryData))
             return;
-        Debug.Log("Updating Global Category Buffs");
+
         List<CardEffectObject> checkValue = new List<CardEffectObject>();
 
         if (primaryData.TryGetValue(CardCategory.Punch, out checkValue))

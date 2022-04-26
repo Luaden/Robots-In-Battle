@@ -40,8 +40,9 @@ public class ChannelsUISlotManager : BaseSlotManager<CardUIController>
                     item.CardData.SelectedChannels = item.CardData.PossibleChannels;
                 else
                     item.CardData.SelectedChannels = selectedChannel;
-
-                Debug.Log("Player selected " + item.CardData.CardName + " for their A Slot.");
+                
+                if(CombatManager.instance.NarrateCardSelection)
+                    Debug.Log("Player selected " + item.CardData.CardName + " for their A Slot.");
 
                 cardChannelPairObjectA = new CardChannelPairObject(item.CardData, selectedChannel);
                 CombatManager.instance.CardPlayManager.PlayerAttackPlan.cardChannelPairA = cardChannelPairObjectA;
@@ -67,7 +68,8 @@ public class ChannelsUISlotManager : BaseSlotManager<CardUIController>
                 else
                     item.CardData.SelectedChannels = selectedChannel;
 
-                Debug.Log("Player selected " + item.CardData.CardName + " for their B Slot.");
+                if (CombatManager.instance.NarrateCardSelection)
+                    Debug.Log("Player selected " + item.CardData.CardName + " for their B Slot.");
 
                 cardChannelPairObjectB = new CardChannelPairObject(item.CardData, selectedChannel);
                 CombatManager.instance.CardPlayManager.PlayerAttackPlan.cardChannelPairB = cardChannelPairObjectB;
@@ -113,7 +115,9 @@ public class ChannelsUISlotManager : BaseSlotManager<CardUIController>
                 else
                     item.CardData.SelectedChannels = selectedChannel;
 
-                Debug.Log("Opponent selected " + item.CardData.CardName + " for their A Slot.");
+                if (CombatManager.instance.NarrateCardSelection)
+                    Debug.Log("Opponent selected " + item.CardData.CardName + " for their A Slot.");
+
                 return;
             }
             else
@@ -134,7 +138,8 @@ public class ChannelsUISlotManager : BaseSlotManager<CardUIController>
                 else
                     item.CardData.SelectedChannels = selectedChannel;
 
-                Debug.Log("Opponent selected " + item.CardData.CardName + " for their B Slot.");
+                if (CombatManager.instance.NarrateCardSelection)
+                    Debug.Log("Opponent selected " + item.CardData.CardName + " for their B Slot.");
 
                 return;
             }
