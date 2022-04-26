@@ -97,16 +97,10 @@ public class FighterEffectObject
             }
 
             foreach (CardEffectObject effect in effectList)
-            {
-                Debug.Log("Removing effect from dictionary list.");
                 pair.Value.Remove(effect);
-            }
 
             if (pair.Value.Count == 0)
-            {
-                Debug.Log("Removing KV pair from dictionary.");
                 categoryKVPairList.Add(pair);
-            }
         }
 
         foreach (KeyValuePair<CardCategory, List<CardEffectObject>> pair in categoryKVPairList)

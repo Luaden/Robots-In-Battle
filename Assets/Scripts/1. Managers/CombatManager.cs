@@ -4,10 +4,24 @@ using UnityEngine;
 
 public class CombatManager : MonoBehaviour
 {
+    [Header("Combat Modifiers")]
     [SerializeField] private int mechEnergyGain;
     [SerializeField] private float counterDamageMultiplier;
     [SerializeField] private float guardDamageMultiplier;
+    [SerializeField] private float acidComponentDamageMultiplier;
+    [SerializeField] private int iceChannelEnergyReductionModifier;
+
+    #region Debug
+    [Header("Debug / Testing")]
     [SerializeField] private GameObject winLossPanel;
+    [SerializeField] private bool narrateCardSelection;
+    [SerializeField] private bool narrateCombatChoices;
+    [SerializeField] private bool narrateAIDecisionMaking;
+
+    public bool NarrateCardSelection { get => narrateCardSelection; }
+    public bool NarrateCombat { get => narrateCombatChoices; }
+    public bool NarrateAIDecisionMaking { get => narrateAIDecisionMaking; }
+    #endregion
 
     public static CombatManager instance;
 
@@ -43,6 +57,8 @@ public class CombatManager : MonoBehaviour
     public int MechEnergyGain { get => mechEnergyGain; }
     public float CounterDamageMultiplier { get => counterDamageMultiplier; }
     public float GuardDamageMultiplier { get => guardDamageMultiplier; }
+    public float AcidComponentDamageMultiplier { get => acidComponentDamageMultiplier; }
+    public int IceChannelEnergyReductionModifier { get => iceChannelEnergyReductionModifier; }
 
     public delegate void onDestroyScene();
     public static event onDestroyScene OnDestroyScene;

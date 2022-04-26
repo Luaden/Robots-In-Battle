@@ -8,7 +8,7 @@ public class CardUIBuildController : MonoBehaviour
     [SerializeField] private GameObject OpponentCardPrefab;
     //Builds Card UIs, sets destination.
 
-    public void BuildAndDrawPlayerCard(CardDataObject cardToDraw, Transform cardStartPoint)
+    public CardUIController BuildPlayerCard(CardDataObject cardToDraw, Transform cardStartPoint)
     {
         GameObject cardUIGameObject;
         cardUIGameObject = Instantiate(PlayerCardPrefab, transform);
@@ -18,13 +18,12 @@ public class CardUIBuildController : MonoBehaviour
         CardUIController cardUIObject = cardUIGameObject.GetComponent<CardUIController>();
 
         cardUIObject.InitCardUI(cardToDraw);
-
-        CombatManager.instance.PlayerHandSlotManager.AddItemToCollection(cardUIObject, null);
-
         cardUIGameObject.SetActive(true);
+
+        return cardUIObject;
     }
 
-    public void BuildAndDrawOpponentCard(CardDataObject cardToDraw, Transform cardStartPoint)
+    public CardUIController BuildOpponentCard(CardDataObject cardToDraw, Transform cardStartPoint)
     {
         GameObject cardUIGameObject;
         cardUIGameObject = Instantiate(PlayerCardPrefab, transform);
@@ -34,9 +33,8 @@ public class CardUIBuildController : MonoBehaviour
         CardUIController cardUIObject = cardUIGameObject.GetComponent<CardUIController>();
 
         cardUIObject.InitCardUI(cardToDraw);
-
-        CombatManager.instance.OpponentHandSlotManager.AddItemToCollection(cardUIObject, null);
-
         cardUIGameObject.SetActive(true);
+
+        return cardUIObject;
     }
 }

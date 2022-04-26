@@ -18,13 +18,13 @@ public class GameManager : MonoBehaviour
     public DowntimeDeckController PlayerDeckController { get => playerDeckController; }
     public DowntimeBankController PlayerBankController { get => playerBankController; }
 
-
     #region Playtesting
     [SerializeField] private SOItemDataObject starterMechHead;
     [SerializeField] private SOItemDataObject starterMechTorso;
     [SerializeField] private SOItemDataObject starterMechArms;
     [SerializeField] private SOItemDataObject starterMechLegs;
     [SerializeField] private List<SOItemDataObject> starterDeck;
+
 
     [ContextMenu("Start Game")]
     public void BuildMech()

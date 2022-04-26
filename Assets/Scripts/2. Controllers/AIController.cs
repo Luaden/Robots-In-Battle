@@ -7,39 +7,71 @@ using UnityEngine;
 public class AIController : MonoBehaviour
 {
     #region Debug Functions
+
+    [SerializeField] private bool aSlot = true;
+    
+    [ContextMenu("Test Choices")]
     public void TestCardSelection()
     {
-        List<CardPriorityPairObject> cardPool = new List<CardPriorityPairObject>();
-        cardPool = GetCurrentHandPossibleAttacks(true);
+        if (CombatManager.instance.HandManager.OpponentHand.CharacterHand == null)
+            GameManager.instance.BuildMech();
 
-        RankChoicesWithAggressiveness(cardPool);
+        List<CardPlayPriorityObject> cardPlays = GetCurrentHandPossibleAttacks(aSlot);
+        
+        WeightPriorityWithAggressiveness(cardPlays);
+        WeightPriorityWithDefensiveness(cardPlays);
+        WeightPriorityWithDamage(cardPlays);
+        WeightPriorityWithComponentDamage(cardPlays);
 
-        foreach (CardPriorityPairObject card in cardPool)
+        foreach (CardPlayPriorityObject card in cardPlays)
             Debug.Log(card.card.CardName + " : " + card.priority);
     }
     #endregion
 
-    [Tooltip("A value range between -10 and 10 that represents the AI preference for either offense or defense. " +
-        "A value of -10 means the AI will always use defensive cards unless none are available, whereas a value of 10 means the AI will always use damageing " +
-        "neutral cards unless there are none are available.")]
-    [Range(-10, 10)] [SerializeField] private int aggressiveness;
-    [Tooltip("A value range between -10 and 10 that represents the AI preference for raw damage or targeting components. " +
-        "A value of -10 means the AI will primarily target weaker components to break them, whereas a value of 10 means the AI will always prioritize higher " +
-        "base damage for attacks.")]
-    [Range(-10, 10)] [SerializeField] private int precision;
-    [Tooltip("A value range between -10 and 10 that represents the AI ability to choose the best option given its other " +
-        "behavioral traits and battle context. A value of -10 means that the AI will always pick the best action from other behavioral guidances, but will ignore " +
-        "battlefield context such as buffs, debuffs, or shields, whereas a value of 10 means that the AI will value cards that benefit from buffs higher, and  " +
-        "cards that are mitigated lower.")]
-    [Range(-10, 10)] [SerializeField] private int battlefieldIntelligence;
-    [Tooltip("A value range between -10 and 10 that represents the AI ability to recognize deck composition and play cards " +
-        "that will benefit from bonuses when those bonuses are available. I.e. KeyWordInit and KeyWordExec, as well as CardCategory buffs such as Punch damage" +
-        "damage buffs when punches are available. A value of -10 means that these contexts are completely ignored while a value of 10 means that cards will be " +
-        "not be played if there is a potential boost available.")]
-    [Range(-10, 10)] [SerializeField] private int deckIntelligence;
+    [Tooltip("A value range between 0 and 5 that represents the AI preference for B Slot offense or defense. A value of 5 means the AI will value damaging " +
+        "Neutral cards more than Defense cards.")]
+    [Range(0, 5)] [SerializeField] private int aggressivenessWeight;
+
+    [Tooltip("A value range between 0 and 5 that represents the AI preference for A Slot offense or defense. A value of 5 means the AI will value defensive " +
+        "Neutral cards more than Attack cards.")]
+    [Range(0, 5)] [SerializeField] private int defensivenessWeight;
+    
+    [Tooltip("A value range between 0 and 5 that represents the AI preference for base damage. A value of 5 means the AI will value attacks that deal more" +
+    "base damage more than those that do less.")]
+    [Range(0, 5)] [SerializeField] private int baseDamageWeight;
+    
+    [Tooltip("A value range between 0 and 5 that represents the AI preference for component damage. A value of 5 means the AI will value attacks that deal " +
+        "or benefit from bonus component damage more than those that do not.")]
+    [Range(0, 5)] [SerializeField] private int componentDamageWeight;
+
+    [Tooltip("A value range between 0 and 5 that represents the AI preference for targeting weaker components. A value of 5 means that the AI will value attacks " +
+        "that can target weaker components more.")]
+    [Range(0, 5)] [SerializeField] private int targetingWeight;
+
+    [Tooltip("A value range between 0 and 5 that represents the AI preference to play cards that benefit from buffs. A value of 5 means that the AI will " +
+        "value cards that benefit from buffs more than those that do not.")]
+    [Range(0, 5)] [SerializeField] private int benefitWeight;
+    
+    [Tooltip("A value range between 0 and 5 that represents the AI preference to play cards that are not mitigated by debuffs. A value of 5 means that the " +
+        "AI will value cards that are mitigated by buffs and shields less than those that are not.")]
+    [Range(0, 5)] [SerializeField] private int mitigationWeight;
+
+    [Tooltip("A value range between 0 and 5 that represents the AI preference to play cards that apply effects. A value of 5 means that the AI will value " +
+        "cards that apply effects such as buffs, debuffs, and shields more than those that do not.")]
+    [Range(0, 5)] [SerializeField] private int applicationWeight;
+
+    [Tooltip("A value range between 0 and 5 that represents the AI ability to accurately defend against attacks. A value of 5 means that the AI will make an " +
+        "accurate guess as to where to defend given the available information, whereas a value of 0 will randomly guess from the channels able to be guarded.")]
+    [Range(0, 5)] [SerializeField] private int defensivePredictionAccuracy;
+
+    [Tooltip("A value range between 0 and 5 that represents the AI ability to accurately choose attacks that cannot be guarded or countered. A value of 5 " +
+        "means that the AI will value attacks that cannot be guarded or countered more where a value of 0 means that the AI will not consider the player's " +
+        "defensive cards when picking where to attack.")]
+    [Range(0, 5)] [SerializeField] private int offensivePredictionAccuracy;
+
 
     private List<CardDataObject> opponentHand;
-    private List<CardDataObject> cardPool;
+
     private CardChannelPairObject attackA;
     private CardChannelPairObject attackB;
 
@@ -67,6 +99,7 @@ public class AIController : MonoBehaviour
         CardPlayManager.OnCombatStart -= FinalCheck;
     }
 
+    #region AI Demo
     private void BuildCardChannelPairA()
     {
         if (attackA != null)
@@ -159,116 +192,204 @@ public class AIController : MonoBehaviour
 
         return randomChannel;
     }
+    #endregion
 
-    private List<CardPriorityPairObject> GetCurrentHandPossibleAttacks(bool aSlot)
+    private List<CardPlayPriorityObject> GetCurrentHandPossibleAttacks(bool aSlot)
     {
         opponentHand = CombatManager.instance.HandManager.OpponentHand.CharacterHand;
-        List<CardPriorityPairObject> cardPool = new List<CardPriorityPairObject>();
+        List<CardPlayPriorityObject> cardPlays = new List<CardPlayPriorityObject>();
 
         foreach (CardDataObject card in opponentHand)
-            if (card.EnergyCost <= CombatManager.instance.OpponentFighter.FighterMech.MechCurrentEnergy)
-            {
-                if (aSlot && (card.CardType == CardType.Attack || card.CardType == CardType.Neutral))
-                {
-                    CardPriorityPairObject newCardPriority = new CardPriorityPairObject();
-                    newCardPriority.card = card;
-                    newCardPriority.priority = 0;
+        {
+            if (card.EnergyCost > CombatManager.instance.OpponentFighter.FighterMech.MechCurrentEnergy)
+                continue;
 
-                    cardPool.Add(newCardPriority);
+            if (aSlot && (card.CardType == CardType.Attack || card.CardType == CardType.Neutral))
+                foreach (Channels channel in GetChannelListFromFlags(card.PossibleChannels))
+                    cardPlays.Add(CreateCardPlayPriorityObject(card, channel));
 
-                }
+            if (!aSlot && (card.CardType == CardType.Defense || card.CardType == CardType.Neutral))
+                foreach (Channels channel in GetChannelListFromFlags(card.PossibleChannels))
+                    cardPlays.Add(CreateCardPlayPriorityObject(card, channel));
+        }
 
-                if (!aSlot && (card.CardType == CardType.Defense || card.CardType == CardType.Neutral))
-                {
-                    CardPriorityPairObject newCardPriority = new CardPriorityPairObject();
-                    newCardPriority.card = card;
-                    newCardPriority.priority = 0;
-
-                    cardPool.Add(newCardPriority);
-
-                }
-            }
-
-        return cardPool;
+        return cardPlays;
     }
 
-    private void RankChoicesWithAggressiveness(List<CardPriorityPairObject> cardPriorityPairs)
+    private void WeightPriorityWithAggressiveness(List<CardPlayPriorityObject> cardPlayPriorityObjects)
     {
-        if(PositiveValue(aggressiveness))
+        foreach (CardPlayPriorityObject cardPrioPair in cardPlayPriorityObjects)
         {
-            foreach(CardPriorityPairObject cardPrioPair in cardPriorityPairs)
+            switch (cardPrioPair.card.CardType)
             {
-                switch (cardPrioPair.card.CardType)
-                {
-                    case CardType.Attack:
-                        cardPrioPair.priority += aggressiveness;
-                        break;
-                    case CardType.Defense:
-                        break;
-                    case CardType.Neutral:
-                        foreach (SOCardEffectObject cardEffect in cardPrioPair.card.CardEffects)
-                            if (CardEffectTypes.Offensive.HasFlag(cardEffect.EffectType))
-                            {
-                                cardPrioPair.priority += aggressiveness;
-                                break;
-                            }
-                        break;
-                }
+                case CardType.Attack:
+                    cardPrioPair.priority += aggressivenessWeight;
+                    break;
+                case CardType.Defense:
+                    break;
+                case CardType.Neutral:
+                    foreach (SOCardEffectObject cardEffect in cardPrioPair.card.CardEffects)
+                        if (CardEffectTypes.Offensive.HasFlag(cardEffect.EffectType))
+                        {
+                            cardPrioPair.priority += aggressivenessWeight;
+                            break;
+                        }
+                    break;
             }
         }
-        else
-            foreach (CardPriorityPairObject cardPrioPair in cardPriorityPairs)
+    }
+
+    private void WeightPriorityWithDefensiveness(List<CardPlayPriorityObject> cardPlayPriorityObjects)
+    {
+        foreach (CardPlayPriorityObject cardPrioPair in cardPlayPriorityObjects)
+        {
+            switch (cardPrioPair.card.CardType)
             {
-                switch (cardPrioPair.card.CardType)
-                {
-                    case CardType.Attack:
-                        break;
-                    case CardType.Defense:
-                        cardPrioPair.priority += Mathf.Abs(aggressiveness);
-                        break;
-                    case CardType.Neutral:
-                        foreach (SOCardEffectObject cardEffect in cardPrioPair.card.CardEffects)
-                            if (CardEffectTypes.Defensive.HasFlag(cardEffect.EffectType))
-                            {
-                                cardPrioPair.priority += Mathf.Abs(aggressiveness);
-                                break;
-                            }
-                        break;
-                }
+                case CardType.Attack:
+                    break;
+                case CardType.Defense:
+                    cardPrioPair.priority += aggressivenessWeight;
+                    break;
+                case CardType.Neutral:
+                    foreach (SOCardEffectObject cardEffect in cardPrioPair.card.CardEffects)
+                        if (CardEffectTypes.Defensive.HasFlag(cardEffect.EffectType))
+                        {
+                            cardPrioPair.priority += aggressivenessWeight;
+                            break;
+                        }
+                    break;
             }
+        }
     }
 
-    private void RankChoicesWithPrecision()
+    private void WeightPriorityWithDamage(List<CardPlayPriorityObject> cardPlayPriorityObjects)
     {
+        int maximumDamage = 0;
 
+        foreach (CardPlayPriorityObject cardPlayPriority in cardPlayPriorityObjects)
+            if (cardPlayPriority.card.BaseDamage > maximumDamage)
+                maximumDamage = cardPlayPriority.card.BaseDamage;
+
+        foreach (CardPlayPriorityObject cardPlayPriority in cardPlayPriorityObjects)
+        {
+            if (cardPlayPriority.card.BaseDamage <= 0)
+                continue;
+
+            cardPlayPriority.priority += Mathf.RoundToInt((cardPlayPriority.card.BaseDamage / maximumDamage) * baseDamageWeight);
+        }
     }
 
-    private void RankChoicesWithBattlefieldIntel()
+    private void WeightPriorityWithComponentDamage(List<CardPlayPriorityObject> cardPlayPriorityObjects)
     {
+        FighterEffectObject playerEffectObject = CombatManager.instance.CardPlayManager.GetFighterEffects(CharacterSelect.Player);
+        List<ElementStackObject> channelElementStacks = new List<ElementStackObject>();
+        int maximumComponentDamage = 0;
 
+        foreach (CardPlayPriorityObject cardPlayPriority in cardPlayPriorityObjects)
+            if (cardPlayPriority.card.BaseDamage > maximumComponentDamage)
+                maximumComponentDamage = Mathf.RoundToInt(cardPlayPriority.card.BaseDamage * GetComponentDamageMultiplier(cardPlayPriority));
+
+        foreach (CardPlayPriorityObject cardPlayPriority in cardPlayPriorityObjects)
+        {
+            if (cardPlayPriority.card.BaseDamage <= 0)
+                continue;
+
+            cardPlayPriority.priority += Mathf.RoundToInt(((cardPlayPriority.card.BaseDamage * GetComponentDamageMultiplier(cardPlayPriority)) 
+                                                            / maximumComponentDamage) * componentDamageWeight);
+        }
+
+        float GetComponentDamageMultiplier(CardPlayPriorityObject cardPlayPriorityObject)
+        {
+            CardDataObject cardData = cardPlayPriorityObject.card;
+
+            float componentDamageMultiplier = 1;
+
+            switch (cardData.CardCategory)
+            {
+                case CardCategory.Punch:
+                    componentDamageMultiplier += CombatManager.instance.OpponentFighter.FighterMech.MechArms.BonusDamageFromComponent;
+                    break;
+
+                case CardCategory.Kick:
+                    componentDamageMultiplier += CombatManager.instance.OpponentFighter.FighterMech.MechLegs.BonusDamageFromComponent;
+                    break;
+
+                case CardCategory.Special:
+                    componentDamageMultiplier += CombatManager.instance.OpponentFighter.FighterMech.MechHead.BonusDamageFromComponent;
+                    break;
+            }
+
+            if (playerEffectObject.IceAcidStacks.TryGetValue(cardPlayPriorityObject.channel, out channelElementStacks))
+            {
+                Debug.Log("Found IceAcid Dictionary.");
+                foreach (ElementStackObject element in channelElementStacks)
+                    if (element.ElementType == ElementType.Acid)
+                    {
+                        Debug.Log("Found acid element in channel.");
+                        componentDamageMultiplier += CombatManager.instance.AcidComponentDamageMultiplier;
+                    }
+            }
+
+            return componentDamageMultiplier;
+        }
     }
 
-    private void RankChoicesWithDeckIntel()
+    private void WeightPriorityWithTargetWeight(List<CardPlayPriorityObject> cardPlayPriorityObjects)
     {
-
+        FighterEffectObject playerEffectObject = CombatManager.instance.CardPlayManager.GetFighterEffects(CharacterSelect.Player);
+        
+        foreach (CardPlayPriorityObject cardPrioPair in cardPlayPriorityObjects)
+        {
+            switch (cardPrioPair.card.CardType)
+            {
+                case CardType.Attack:
+                    break;
+                case CardType.Defense:
+                    cardPrioPair.priority += aggressivenessWeight;
+                    break;
+                case CardType.Neutral:
+                    foreach (SOCardEffectObject cardEffect in cardPrioPair.card.CardEffects)
+                        if (CardEffectTypes.Defensive.HasFlag(cardEffect.EffectType))
+                        {
+                            cardPrioPair.priority += aggressivenessWeight;
+                            break;
+                        }
+                    break;
+            }
+        }
     }
 
-    private void GetBestCardChoice()
+    #region Utility
+    private List<Channels> GetChannelListFromFlags(Channels channelToInterpret)
     {
+        List<Channels> channelList = new List<Channels>();
 
+        if (channelToInterpret.HasFlag(Channels.High))
+            channelList.Add(Channels.High);
+        if (channelToInterpret.HasFlag(Channels.Mid))
+            channelList.Add(Channels.Mid);
+        if (channelToInterpret.HasFlag(Channels.Low))
+            channelList.Add(Channels.Low);
+
+        return channelList;
     }
 
-    private bool PositiveValue(int value)
+
+    private CardPlayPriorityObject CreateCardPlayPriorityObject(CardDataObject card, Channels channel)
     {
-        if (value >= 0)
-            return true;
-        else
-            return false;
+        CardPlayPriorityObject newCardPriority = new CardPlayPriorityObject();
+        newCardPriority.card = card;
+        newCardPriority.channel = channel;
+        newCardPriority.priority = 0;
+
+        return newCardPriority;
     }
 
-    private class CardPriorityPairObject
+    private class CardPlayPriorityObject
     {
         public CardDataObject card;
+        public Channels channel;
         public int priority;
     }
+    #endregion
 }

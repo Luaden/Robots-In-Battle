@@ -7,20 +7,16 @@ public class CardPlayManager : MonoBehaviour
     private AttackPlanObject playerAttackPlan;
     private AttackPlanObject opponentAttackPlan;
 
-    private DamageCalculatorController damageCalculator;
-    
+    private CardInteractionController cardInteractionController;
+    private EffectController effectController;
+
+    public EffectController EffectController { get => effectController; }
     public AttackPlanObject PlayerAttackPlan { get => playerAttackPlan; }
 
     public delegate void onCombatStart();
     public static event onCombatStart OnCombatStart;
     public delegate void onCombatComplete();
     public static event onCombatComplete OnCombatComplete;
-
-    //public void BuildPlayerAttackPlan(CardChannelPairObject cardChannelPairObjectA, CardChannelPairObject cardChannelPairObjectB)
-    //{
-    //    AttackPlanObject attackPlan = new AttackPlanObject(cardChannelPairObjectA, cardChannelPairObjectB, CharacterSelect.Player, CharacterSelect.Opponent);
-    //    playerAttackPlan = attackPlan;
-    //}
 
     public void BuildOpponentAttackPlan(CardChannelPairObject cardChannelPairObjectA, CardChannelPairObject cardChannelPairObjectB)
     {
@@ -32,11 +28,23 @@ public class CardPlayManager : MonoBehaviour
     {
         OnCombatStart?.Invoke();
 
-        damageCalculator.DetermineABInteraction(playerAttackPlan, opponentAttackPlan);
+        cardInteractionController.DetermineABInteraction(playerAttackPlan, opponentAttackPlan);
 
         ClearAttackPlans();
     }
 
+    public int GetDamageEstimate(CardChannelPairObject checkAttack, CharacterSelect target)
+    {
+        return effectController.GetMechDamageWithModifiers(checkAttack, target);
+    }
+
+    public FighterEffectObject GetFighterEffects(CharacterSelect character)
+    {
+        if(character == CharacterSelect.Player)
+            return effectController.PlayerEffects;
+        else 
+            return effectController.OpponentEffects;
+    }
 
     private void ClearAttackPlans()
     {
@@ -72,7 +80,8 @@ public class CardPlayManager : MonoBehaviour
 
     private void Start()
     {
-        damageCalculator = new DamageCalculatorController();
+        cardInteractionController = new CardInteractionController();
         playerAttackPlan = new AttackPlanObject(null, null, CharacterSelect.Player, CharacterSelect.Opponent);
+        effectController = new EffectController();
     }
 }
