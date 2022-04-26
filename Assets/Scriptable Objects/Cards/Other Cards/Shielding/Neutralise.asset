@@ -10,14 +10,14 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 36bc40fa79bff934fb1579cc2f9655ef, type: 3}
-  m_Name: Strike
+  m_Name: Neutralise
   m_EditorClassIdentifier: 
   itemType: 0
-  itemName: Strike
+  itemName: Neutralise
   itemDescription: 
   itemImage: {fileID: 0}
-  timeCost: 1
-  currencyCost: 1
+  timeCost: 0
+  currencyCost: 0
   chanceToSpawn: 1
   componentType: 0
   componentHP: 0
@@ -30,11 +30,12 @@ MonoBehaviour:
   extraElementStacks: 0
   energyGainModifier: 0
   cardBackground: {fileID: 0}
-  cardType: 0
-  cardCategory: 2
-  possibleChannels: 6
+  cardType: 1
+  cardCategory: 16
+  possibleChannels: -1
   affectedChannels: 0
-  energyCost: 5
-  baseDamage: 7
+  energyCost: 2
+  baseDamage: 3
   componentDamageMultiplier: 0
-  cardEffects: []
+  cardEffects:
+  - {fileID: 11400000, guid: 17d7e098b3b492248a6c6ebff6c810d9, type: 2}
