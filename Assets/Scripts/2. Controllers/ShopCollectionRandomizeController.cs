@@ -25,7 +25,20 @@ public class ShopCollectionRandomizeController : MonoBehaviour
     }
     public void RandomizeShopItemCollection()
     {
+        //test
         int playerFights = 3;
+
+        if (cardShopItemCollectionObjects == null || cardShopItemCollectionObjects.Count == 0)
+        {
+            Debug.Log("missing card collection object");
+            return;
+        }
+        if(componentShopItemCollectionObjects == null || componentShopItemCollectionObjects.Count == 0)
+        {
+            Debug.Log("missing component collection object");
+            return;
+        }
+
         List<SOShopItemCollectionObject> shopCollectionToSend = new List<SOShopItemCollectionObject>();
         foreach (SOShopItemCollectionObject collection in cardShopItemCollectionObjects)
         {
