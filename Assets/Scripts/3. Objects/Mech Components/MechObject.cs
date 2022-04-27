@@ -107,7 +107,12 @@ public class MechObject
 
     private void AddMechHPByComponent(MechComponentDataObject componentAdded)
     {
-        mechMaxHP -= componentAdded.ComponentMaxHP;
-        mechCurrentHP -= componentAdded.ComponentCurrentHP;
+        mechMaxHP += componentAdded.ComponentMaxHP;
+        mechCurrentHP += componentAdded.ComponentCurrentHP;
+    }
+
+    private void ResetEnergy()
+    {
+        mechCurrentEnergy = mechMaxEnergy;
     }
 }
