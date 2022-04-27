@@ -37,17 +37,12 @@ public class GameManager : MonoBehaviour
     public void BuildMech()
     {
         LoadPlayer();
-        instance.PlayerMechController.BuildNewPlayerMech(starterMechHead, starterMechTorso, starterMechArms, starterMechLegs);
-        PilotDataObject playerPilot = new PilotDataObject();
-        FighterDataObject playerFighter = new FighterDataObject(playerData.PlayerMech, playerPilot, starterDeck);
-
-
-
+        
         MechObject opponentMech = instance.PlayerMechController.BuildNewMech(starterMechHead, starterMechTorso, starterMechArms, starterMechLegs);
         PilotDataObject opponentPilot = new PilotDataObject();
         FighterDataObject opponentFighter = new FighterDataObject(opponentMech, opponentPilot, starterDeck);
 
-        CombatManager.instance.PlayerFighter = playerFighter;
+        CombatManager.instance.PlayerFighter = new FighterDataObject(playerData.PlayerMech, new PilotDataObject(), playerData.PlayerDeck);
         CombatManager.instance.OpponentFighter = opponentFighter;
 
         DrawCardPrefab();
@@ -104,17 +99,30 @@ public class GameManager : MonoBehaviour
 
     public void LoadPlayer(PlayerDataObject playerDataObject = null)
     {
+        if (playerData != null)
+        {
+            Debug.Log("Found a pilot!");
+            return;
+        }
+
         if (playerDataObject != null)
         {
+            Debug.Log("Recieved a new pilot!");
             playerData = playerDataObject;
             return;
         }
+
+        Debug.Log("Creating a new pilot.");
 
         playerData = new PlayerDataObject(starterPlayerCurrency, starterTimeLeftToSpend);
         MechObject newMech = instance.PlayerMechController.BuildNewMech(starterMechHead, starterMechTorso, starterMechArms, starterMechLegs);
 
         playerData.PlayerDeck = starterDeck;
         playerData.PlayerMech = newMech;
+
+        PilotDataObject playerPilot = new PilotDataObject();
+        FighterDataObject playerFighter = new FighterDataObject(playerData.PlayerMech, playerPilot, playerData.PlayerDeck);
+
     }
 
 

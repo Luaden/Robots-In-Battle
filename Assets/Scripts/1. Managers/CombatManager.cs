@@ -177,6 +177,7 @@ public class CombatManager : MonoBehaviour
         playerFighter = newPlayerFighter;
 
         mechHUDManager.SetPlayerMaxStats(playerFighter.FighterMech.MechMaxHP, playerFighter.FighterMech.MechMaxHP);
+        mechHUDManager.UpdatePlayerHP(playerFighter.FighterMech.MechCurrentHP);
     }
 
     private void InitOpponentFighter(FighterDataObject newOpponentFighter)
@@ -200,17 +201,19 @@ public class CombatManager : MonoBehaviour
         if (playerFighter.FighterMech.MechCurrentHP <= 0)
         {
             winLossPanel.SetActive(true);
-            loadShoppingButton.SetActive(true);
             MechAnimationManager.SetMechAnimation(CharacterSelect.Player, AnimationType.Lose, CharacterSelect.Opponent, AnimationType.Win);
+            reloadGameButton.SetActive(true);
 
             GameManager.instance.PlayerMechController.SetNewPlayerMech(playerFighter.FighterMech);
             GameManager.instance.PlayerBankController.AddPlayerCurrency(GameManager.instance.PlayerCurrencyGainOnWin);
+            return;
         }
         if (opponentFighter.FighterMech.MechCurrentHP <= 0)
         {
             winLossPanel.SetActive(true);
-            reloadGameButton.SetActive(true);
+            loadShoppingButton.SetActive(true);
             MechAnimationManager.SetMechAnimation(CharacterSelect.Player, AnimationType.Win, CharacterSelect.Opponent, AnimationType.Lose);
+            return;
         }
 
     }
