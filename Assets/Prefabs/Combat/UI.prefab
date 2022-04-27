@@ -3993,6 +3993,7 @@ GameObject:
   - component: {fileID: 129746560167356354}
   - component: {fileID: 129746560167356355}
   - component: {fileID: 129746560167356348}
+  - component: {fileID: 1520715247}
   m_Layer: 5
   m_Name: UI
   m_TagString: Untagged
@@ -4093,6 +4094,18 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
+--- !u!114 &1520715247
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 129746560167356349}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d5da14ad8bbf59b4a9ee88dad25b4137, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &129746560192522485
 GameObject:
   m_ObjectHideFlags: 0
@@ -4413,9 +4426,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: GameManager, Assembly-CSharp
-        m_MethodName: BuildMech
+      - m_Target: {fileID: 1520715247}
+        m_TargetAssemblyTypeName: TestCombatUIButton, Assembly-CSharp
+        m_MethodName: StartGame
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -15925,10 +15938,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   aSlot: 1
   aggressivenessWeight: 5
-  defensivenessWeight: 1
-  baseDamageWeight: 1
-  componentDamageWeight: 1
-  targetingWeight: 2
+  defensivenessWeight: 0
+  baseDamageWeight: 2
+  componentDamageWeight: 3
+  targetingWeight: 5
 --- !u!1 &2245919304587867374
 GameObject:
   m_ObjectHideFlags: 0
@@ -17071,6 +17084,7 @@ GameObject:
   - component: {fileID: 5025408727385579564}
   - component: {fileID: 5025408727385579565}
   - component: {fileID: 8844141020488066544}
+  - component: {fileID: 2143598469}
   m_Layer: 5
   m_Name: Current Energy
   m_TagString: Untagged
@@ -17149,6 +17163,26 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 18df2f8f176d60b498774834c7ab7c26, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!95 &2143598469
+Animator:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5025408727385579603}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 42ffffafeb15f6a44b4bbf5b68e6d0bd, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1 &5025408727508294983
 GameObject:
   m_ObjectHideFlags: 0
@@ -17161,6 +17195,7 @@ GameObject:
   - component: {fileID: 5025408727508294976}
   - component: {fileID: 5025408727508294977}
   - component: {fileID: 6193148269190715509}
+  - component: {fileID: 1172762588}
   m_Layer: 5
   m_Name: Current Energy
   m_TagString: Untagged
@@ -17239,6 +17274,26 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 18df2f8f176d60b498774834c7ab7c26, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!95 &1172762588
+Animator:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5025408727508294983}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 42ffffafeb15f6a44b4bbf5b68e6d0bd, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1 &5025408727953302657
 GameObject:
   m_ObjectHideFlags: 0

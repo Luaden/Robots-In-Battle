@@ -99,7 +99,7 @@ public class GameManager : MonoBehaviour
         }
 
         playerData = new PlayerDataObject();
-        MechObject newMech = PlayerMechController.BuildNewMech(starterMechHead, starterMechTorso, starterMechArms, starterMechLegs);
+        MechObject newMech = playerMechController.BuildNewMech(starterMechHead, starterMechTorso, starterMechArms, starterMechLegs);
 
         playerData.PlayerDeck = starterDeck;
         playerData.PlayerMech = newMech;
