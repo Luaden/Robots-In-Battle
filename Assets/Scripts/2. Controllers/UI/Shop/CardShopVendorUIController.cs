@@ -9,54 +9,100 @@ public class CardShopVendorUIController : MonoBehaviour, IPointerDownHandler, IP
                               IPointerEnterHandler, IPointerExitHandler, IBeginDragHandler,
                               IEndDragHandler, IDragHandler
 {
-    [SerializeField] protected TMP_Text itemNameText;
-    [SerializeField] protected TMP_Text itemDescriptionText;
-    [SerializeField] protected Image itemImage;
-    [SerializeField] protected TMP_Text timeCostText;
-    [SerializeField] protected TMP_Text currencyCostText;
+    [Header("Card Attributes")]
+    [SerializeField] private Image cardBackground;
+    [SerializeField] private Image cardImage;
+    [SerializeField] private TMP_Text cardName;
 
+    [Header("Channel Icons")]
+    [SerializeField] private GameObject highChannelIcon;
+    [SerializeField] private GameObject midChannelIcon;
+    [SerializeField] private GameObject lowChannelIcon;
+
+    [Header("Required Interaction Components")]
+    [SerializeField] private RectTransform draggableRectTransform;
+    [SerializeField] private CanvasGroup draggableCanvasGroup;
+
+    [Header("Interaction Attributes")]
+    [SerializeField] private float travelSpeed;
+    private Transform previousParentObject;
+
+    [Header("Card Frames")]
+    [SerializeField] private Sprite attackFrame;
+    [SerializeField] private Sprite defenseFrame;
+    [SerializeField] private Sprite neutralFrame;
+
+    [Header("Card Icons")]
+    [SerializeField] private Sprite punchIcon;
+    [SerializeField] private Sprite kickIcon;
+    [SerializeField] private Sprite specialIcon;
+    [SerializeField] private Sprite counterIcon;
+    [SerializeField] private Sprite guardIcon;
+
+    [SerializeField] private TMP_Text currencyCost;
 
     public bool isPickedUp = false;
-    public Transform previousParentObject;
-    public float travelSpeed = 600.0f;
-
-    private RectTransform draggableRectTransform;
-    private CanvasGroup draggableCanvasGroup;
 
     private ShopItemUIObject shopItemUIObject;
     public ShopItemUIObject ShopItemUIObject { get => shopItemUIObject; }
 
     private BaseSlotController<CardShopVendorUIController> cardShopVendorSlotController;
-    public BaseSlotController<CardShopVendorUIController> CardShopVendorSlotController
-    {
-        get => cardShopVendorSlotController;
-        set => UpdateItemSlot(value);
-    }
-    public Transform PreviousParentObject
-    {
-        get => previousParentObject;
-        set => previousParentObject = value;
-    }
+    public BaseSlotController<CardShopVendorUIController> CardShopVendorSlotController { get => cardShopVendorSlotController; set => UpdateItemSlot(value); }
+    public Transform PreviousParentObject { get => previousParentObject; set => previousParentObject = value; }
+
+    
 
     public void InitUI(ShopItemUIObject shopItemUIObject)
     {
-        TMP_Text[] texts = GetComponentsInChildren<TMP_Text>();
-
-        itemNameText = texts[0];
-        itemDescriptionText = texts[1];
-        itemImage = GetComponentInChildren<Image>(true);
-        timeCostText = texts[2];
-        currencyCostText = texts[3];
-
-
-        itemNameText.text = shopItemUIObject.ItemName;
-        itemDescriptionText.text = shopItemUIObject.ItemDescription;
-        itemImage.sprite = shopItemUIObject.ItemImage;
-        timeCostText.text = shopItemUIObject.TimeCost.ToString();
-        currencyCostText.text = shopItemUIObject.CurrencyCost.ToString();
-
+        cardName.text = shopItemUIObject.ItemName;
         this.shopItemUIObject = shopItemUIObject;
         shopItemUIObject.ShopItemUIController = this.gameObject;
+
+        switch (shopItemUIObject.CardCategory)
+        {
+            case CardCategory.Punch:
+                cardImage.sprite = punchIcon;
+                cardImage.SetNativeSize();
+                break;
+            case CardCategory.Kick:
+                cardImage.sprite = kickIcon;
+                cardImage.SetNativeSize();
+                break;
+            case CardCategory.Special:
+                cardImage.sprite = specialIcon;
+                cardImage.SetNativeSize();
+                break;
+            case CardCategory.Guard:
+                cardImage.sprite = guardIcon;
+                cardImage.SetNativeSize();
+                break;
+            case CardCategory.Counter:
+                cardImage.sprite = counterIcon;
+                cardImage.SetNativeSize();
+                break;
+        }
+
+        switch (shopItemUIObject.CardType)
+        {
+            case CardType.Attack:
+                cardBackground.sprite = attackFrame;
+                break;
+            case CardType.Defense:
+                cardBackground.sprite = defenseFrame;
+                break;
+            case CardType.Neutral:
+                cardBackground.sprite = neutralFrame;
+                break;
+        }
+
+        if (shopItemUIObject.PossibleChannels.HasFlag(Channels.High))
+            highChannelIcon.SetActive(true);
+        if (shopItemUIObject.PossibleChannels.HasFlag(Channels.Mid))
+            midChannelIcon.SetActive(true);
+        if (shopItemUIObject.PossibleChannels.HasFlag(Channels.Low))
+            lowChannelIcon.SetActive(true);
+
+        currencyCost.text = shopItemUIObject.CurrencyCost.ToString();
     }
 
     public void OnDrag(PointerEventData eventData)
