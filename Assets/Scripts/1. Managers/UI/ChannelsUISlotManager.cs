@@ -108,19 +108,9 @@ public class ChannelsUISlotManager : BaseSlotManager<CardUIController>
     public void OpponentAssignAttackSlot(CardUIController item, BaseSlotController<CardUIController> slot)
     {
         if (item == null || slot == null)
-        {
-            if(opponentAttackSlotA.CurrentSlottedItem == null)
-            {
-                opponentAttackSlotA.CurrentSlottedItem = item;
-                return;
-            }
+            return;
 
-            if (opponentAttackSlotB.CurrentSlottedItem == null)
-            {
-                opponentAttackSlotB.CurrentSlottedItem = item;
-                return;
-            }
-        }
+        slot.SlotManager.RemoveItemFromCollection(item);
 
         if (opponentAttackSlotA.CurrentSlottedItem == null)
             if (item.CardData.CardType == CardType.Attack || item.CardData.CardType == CardType.Neutral)
