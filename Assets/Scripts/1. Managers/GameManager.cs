@@ -10,6 +10,7 @@ public class GameManager : MonoBehaviour
     private DowntimeDeckController playerDeckController;
     private DowntimeBankController playerBankController;
     private PlayerDataObject playerData;
+    private SceneController sceneController;
 
     public static GameManager instance;
 
@@ -17,6 +18,7 @@ public class GameManager : MonoBehaviour
     public DowntimeMechBuilderController PlayerMechController { get => playerMechController; }
     public DowntimeDeckController PlayerDeckController { get => playerDeckController; }
     public DowntimeBankController PlayerBankController { get => playerBankController; }
+    public SceneController SceneController { get => sceneController; }
 
     #region Playtesting
     [SerializeField] private SOItemDataObject starterMechHead;
@@ -83,6 +85,7 @@ public class GameManager : MonoBehaviour
         playerInventoryController = new DowntimeInventoryController();
         playerMechController = new DowntimeMechBuilderController();
         playerDeckController = new DowntimeDeckController();
+        sceneController = new SceneController();
     }
 
     public void LoadPlayer(PlayerDataObject playerDataObject = null)
