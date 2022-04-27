@@ -41,7 +41,16 @@ public class InventoryController : MonoBehaviour
         if (inventoryList == null)
             inventoryList = new List<MechComponentDataObject>();
 
-
+        if(GameManager.instance.PlayerInventoryController == null)
+        {
+            Debug.Log("instance of PlayerInventoryController is null");
+            return;
+        }
+        if (GameManager.instance.PlayerInventoryController.PlayerInventory == null)
+        {
+            Debug.Log("instance of PlayerInventoryController.PlayerInventory is null");
+            return;
+        }
         List<MechComponentDataObject> mechComponentDatas = GameManager.instance.PlayerInventoryController.PlayerInventory;
         for (int i = 0; i < mechComponentDatas.Count; i++)
         {
