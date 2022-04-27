@@ -85,7 +85,7 @@ public class GameManager : MonoBehaviour
         playerInventoryController = new DowntimeInventoryController();
         playerMechController = new DowntimeMechBuilderController();
         playerDeckController = new DowntimeDeckController();
-        sceneController = new SceneController();
+        sceneController = GetComponent<SceneController>();
     }
 
     public void LoadPlayer(PlayerDataObject playerDataObject = null)
