@@ -16,9 +16,6 @@ public class DowntimeManager : MonoBehaviour
 
     public InventoryManager InventoryManager { get => inventoryManager; }
 
-
-
-
     private void Awake()
     {
         if(instance != this && instance != null)
@@ -38,4 +35,10 @@ public class DowntimeManager : MonoBehaviour
         instance.ComponentShopManager.InitializeShop();
 
     }
+
+    public void LoadCombatScene()
+    {
+        GameManager.instance.SceneController.LoadCombatScene();
+    }
+
 }
