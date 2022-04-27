@@ -189,8 +189,8 @@ public class CombatManager : MonoBehaviour
         deckManager.DrawPlayerCard(5 - HandManager.PlayerHand.CharacterHand.Count);
         deckManager.DrawOpponentCard(5 - HandManager.OpponentHand.CharacterHand.Count);
 
-        AddEnergyToMech(CharacterSelect.Opponent, OpponentFighter.FighterMech.MechEnergyGain);
-        AddEnergyToMech(CharacterSelect.Player, PlayerFighter.FighterMech.MechEnergyGain);
+        AddEnergyToMech(CharacterSelect.Opponent, mechEnergyGain + OpponentFighter.FighterMech.MechEnergyGain);
+        AddEnergyToMech(CharacterSelect.Player, mechEnergyGain + PlayerFighter.FighterMech.MechEnergyGain);
     }
 
     private void CheckForWinLoss()
