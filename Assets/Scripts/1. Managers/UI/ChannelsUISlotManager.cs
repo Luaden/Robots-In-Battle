@@ -78,6 +78,7 @@ public class ChannelsUISlotManager : BaseSlotManager<CardUIController>
                 cardChannelPairObjectB = new CardChannelPairObject(item.CardData, selectedChannel);
                 CombatManager.instance.CardPlayManager.PlayerAttackPlan.cardChannelPairB = cardChannelPairObjectB;
 
+                //Needs to account for ice.
                 CombatManager.instance.RemoveEnergyFromMech(CharacterSelect.Player, cardChannelPairObjectA.CardData.EnergyCost + cardChannelPairObjectB.CardData.EnergyCost, true);
 
 
@@ -107,9 +108,19 @@ public class ChannelsUISlotManager : BaseSlotManager<CardUIController>
     public void OpponentAssignAttackSlot(CardUIController item, BaseSlotController<CardUIController> slot)
     {
         if (item == null || slot == null)
-            return;
+        {
+            if(opponentAttackSlotA.CurrentSlottedItem == null)
+            {
+                opponentAttackSlotA.CurrentSlottedItem = item;
+                return;
+            }
 
-        slot.SlotManager.RemoveItemFromCollection(item);
+            if (opponentAttackSlotB.CurrentSlottedItem == null)
+            {
+                opponentAttackSlotB.CurrentSlottedItem = item;
+                return;
+            }
+        }
 
         if (opponentAttackSlotA.CurrentSlottedItem == null)
             if (item.CardData.CardType == CardType.Attack || item.CardData.CardType == CardType.Neutral)

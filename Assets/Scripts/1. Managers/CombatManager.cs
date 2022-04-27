@@ -74,7 +74,7 @@ public class CombatManager : MonoBehaviour
 
         if (character == CharacterSelect.Opponent)
         {
-            opponentFighter.FighterMech.MechCurrentHP = Mathf.Clamp(playerFighter.FighterMech.MechCurrentHP - damage, 0, int.MaxValue);
+            opponentFighter.FighterMech.MechCurrentHP = Mathf.Clamp(opponentFighter.FighterMech.MechCurrentHP - damage, 0, int.MaxValue);
             mechHUDManager.UpdateOpponentHP(opponentFighter.FighterMech.MechCurrentHP);
             CheckForWinLoss();
         }
