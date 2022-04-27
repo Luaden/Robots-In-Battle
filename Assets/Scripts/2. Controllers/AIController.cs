@@ -19,9 +19,10 @@ public class AIController : MonoBehaviour
         WeightPriorityWithDefensiveness(cardPlays);
         WeightPriorityWithDamage(cardPlays);
         WeightPriorityWithComponentDamage(cardPlays);
+        WeightPriorityWithTargetWeight(cardPlays);
 
         foreach (CardPlayPriorityObject card in cardPlays)
-            Debug.Log(card.card.CardName + " : " + card.priority);
+            Debug.Log(card.card.CardName + ", " + card.channel + ": " + card.priority);
     }
     #endregion
 
@@ -101,6 +102,7 @@ public class AIController : MonoBehaviour
         WeightPriorityWithDefensiveness(cardPlays);
         WeightPriorityWithDamage(cardPlays);
         WeightPriorityWithComponentDamage(cardPlays);
+        WeightPriorityWithTargetWeight(cardPlays);
 
 
         if (cardPlays.Count == 0)
@@ -146,6 +148,7 @@ public class AIController : MonoBehaviour
         WeightPriorityWithDefensiveness(cardPlays);
         WeightPriorityWithDamage(cardPlays);
         WeightPriorityWithComponentDamage(cardPlays);
+        WeightPriorityWithTargetWeight(cardPlays);
 
         if (cardPlays.Count == 0)
         {
@@ -343,27 +346,31 @@ public class AIController : MonoBehaviour
 
     private void WeightPriorityWithTargetWeight(List<CardPlayPriorityObject> cardPlayPriorityObjects)
     {
-        FighterEffectObject playerEffectObject = CombatManager.instance.CardPlayManager.GetFighterEffects(CharacterSelect.Player);
+        MechObject playerFighter = CombatManager.instance.PlayerFighter.FighterMech;
+        float lowestComponentHealth = Mathf.Infinity;
+        Channels lowestChannel = Channels.None;
 
-        foreach (CardPlayPriorityObject cardPrioPair in cardPlayPriorityObjects)
+        if (lowestComponentHealth > playerFighter.MechArms.ComponentCurrentHP)
         {
-            switch (cardPrioPair.card.CardType)
-            {
-                case CardType.Attack:
-                    break;
-                case CardType.Defense:
-                    cardPrioPair.priority += aggressivenessWeight;
-                    break;
-                case CardType.Neutral:
-                    foreach (SOCardEffectObject cardEffect in cardPrioPair.card.CardEffects)
-                        if (CardEffectTypes.Defensive.HasFlag(cardEffect.EffectType))
-                        {
-                            cardPrioPair.priority += aggressivenessWeight;
-                            break;
-                        }
-                    break;
-            }
+            lowestComponentHealth = playerFighter.MechArms.ComponentCurrentHP;
+            lowestChannel = Channels.High;
         }
+
+        if (lowestComponentHealth > playerFighter.MechTorso.ComponentCurrentHP)
+        {
+            lowestComponentHealth = playerFighter.MechTorso.ComponentCurrentHP;
+            lowestChannel = Channels.Mid;
+        }
+
+        if (lowestComponentHealth > playerFighter.MechLegs.ComponentCurrentHP)
+        {
+            lowestComponentHealth = playerFighter.MechLegs.ComponentCurrentHP;
+            lowestChannel = Channels.Low;
+        }
+
+        foreach (CardPlayPriorityObject card in cardPlayPriorityObjects)
+            if (card.channel == lowestChannel)
+                card.priority += targetingWeight;
     }
 
     #region Utility
