@@ -45,21 +45,7 @@ public class GameManager : MonoBehaviour
         CombatManager.instance.PlayerFighter = new FighterDataObject(playerData.PlayerMech, new PilotDataObject(), playerData.PlayerDeck);
         CombatManager.instance.OpponentFighter = opponentFighter;
 
-        DrawCardPrefab();
-    }
-
-    private void DrawCardPrefab()
-    {
-        CombatManager.instance.DeckManager.SetPlayerDeck(starterDeck);
-
-        for (int i = 0; i <= 4; i++)
-            CombatManager.instance.DeckManager.DrawPlayerCard();
-
-        CombatManager.instance.DeckManager.SetOpponentDeck(starterDeck);
-
-        for (int i = 0; i <= 4; i++)
-            CombatManager.instance.DeckManager.DrawOpponentCard();
-
+        CombatManager.instance.StartGame();
     }
     #endregion
 

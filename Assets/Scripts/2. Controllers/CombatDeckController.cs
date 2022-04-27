@@ -9,6 +9,8 @@ public class CombatDeckController
 
     public List<CardDataObject> CardDeck { get => cardDeck; set => cardDeck = value; }
 
+    public CombatDeckController() => cardDeck = new List<CardDataObject>();
+
     public void InitDeckList(List<SOItemDataObject> newDeckSO)
     {
         cardDeck = new List<CardDataObject>();
@@ -45,7 +47,7 @@ public class CombatDeckController
 
         if (cardDeck.Count <= 0)
         {
-            Debug.Log("Not enough utility cards to draw more!");
+            Debug.Log("Not enough cards to draw more!");
             return null;
         }
 

@@ -7,6 +7,12 @@ public class CombatDeckManager : MonoBehaviour
     private CombatDeckController playerDeck;
     private CombatDeckController opponentDeck;
 
+    public CombatDeckManager()
+    {
+        playerDeck = new CombatDeckController();
+        opponentDeck = new CombatDeckController();
+    }
+
     public void SetPlayerDeck(List<SOItemDataObject> playerCardSOs)
     {
         playerDeck.InitDeckList(playerCardSOs);
@@ -27,7 +33,7 @@ public class CombatDeckManager : MonoBehaviour
 
             if (drawnCard == null)
             {
-                Debug.Log("No more cards to draw in player deck.");
+                Debug.Log("No more cards to draw in deck.");
                 return;
             }
 
@@ -73,12 +79,6 @@ public class CombatDeckManager : MonoBehaviour
         cardToReturn.SelectedChannels = Channels.None;
         
         opponentDeck.AddCardToBottom(cardToReturn);
-    }
-
-    private void Awake()
-    {
-        playerDeck = new CombatDeckController();
-        opponentDeck = new CombatDeckController();
     }
 
     private void RandomizeCardDeck(CombatDeckController destinationDeck)
