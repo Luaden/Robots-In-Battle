@@ -13,9 +13,9 @@ public class CardUIController : MonoBehaviour, IPointerDownHandler, IPointerUpHa
     [SerializeField] private TMP_Text cardName;
     
     [Header("Channel Icons")]
-    [SerializeField] private GameObject highChannelIcon;
-    [SerializeField] private GameObject midChannelIcon;
-    [SerializeField] private GameObject lowChannelIcon;
+    [SerializeField] private Image highChannelIcon;
+    [SerializeField] private Image midChannelIcon;
+    [SerializeField] private Image lowChannelIcon;
 
     [Header("Required Interaction Components")]
     [SerializeField] private RectTransform draggableRectTransform;
@@ -23,6 +23,8 @@ public class CardUIController : MonoBehaviour, IPointerDownHandler, IPointerUpHa
 
     [Header("Interaction Attributes")]
     [SerializeField] private float travelSpeed;
+    [SerializeField] private Color fullColor;
+    [SerializeField] private Color fadeColor;
     private Transform previousParentObject;
 
     [Header("Card Frames")]
@@ -41,6 +43,9 @@ public class CardUIController : MonoBehaviour, IPointerDownHandler, IPointerUpHa
     private BaseSlotController<CardUIController> cardSlotController;
     
     private bool isPickedUp = false;
+
+    public delegate void onPickUp(Channels channel);
+    public static event onPickUp OnPickUp;
 
     public CardDataObject CardData { get => cardData; }
     public Transform PreviousParentObject { get => previousParentObject; set => previousParentObject = value; }
@@ -89,12 +94,12 @@ public class CardUIController : MonoBehaviour, IPointerDownHandler, IPointerUpHa
                 break;
         }
 
-        if(newCardData.PossibleChannels.HasFlag(Channels.High))
-            highChannelIcon.SetActive(true);
+        if (newCardData.PossibleChannels.HasFlag(Channels.High))
+            highChannelIcon.color = fullColor;
         if (newCardData.PossibleChannels.HasFlag(Channels.Mid))
-            midChannelIcon.SetActive(true);
+            midChannelIcon.color = fullColor;
         if (newCardData.PossibleChannels.HasFlag(Channels.Low))
-            lowChannelIcon.SetActive(true);
+            lowChannelIcon.color = fullColor;
     }
 
     public virtual void OnPointerEnter(PointerEventData eventData)
@@ -110,11 +115,13 @@ public class CardUIController : MonoBehaviour, IPointerDownHandler, IPointerUpHa
     public virtual void OnPointerDown(PointerEventData eventData)
     {
         transform.SetParent(cardSlotController.SlotManager.MainCanvas.transform);
+        OnPickUp.Invoke(cardData.PossibleChannels);
     }
 
     public void OnPointerUp(PointerEventData eventData)
     {
         transform.SetParent(previousParentObject);
+        OnPickUp.Invoke(Channels.None);
     }
 
     public virtual void OnBeginDrag(PointerEventData eventData)
@@ -134,6 +141,25 @@ public class CardUIController : MonoBehaviour, IPointerDownHandler, IPointerUpHa
     public void OnDrag(PointerEventData eventData)
     {
         cardSlotController.HandleDrag(eventData);
+    }
+
+    public void UpdateSelectedChannel(Channels channel)
+    {
+        Debug.Log(cardData.CardName + ": " + channel);
+        if (channel.HasFlag(Channels.High))
+            highChannelIcon.color = fullColor;
+        else
+            highChannelIcon.color = fadeColor;
+
+        if (channel.HasFlag(Channels.Mid))
+            midChannelIcon.color = fullColor;
+        else
+            midChannelIcon.color = fadeColor;
+
+        if (channel.HasFlag(Channels.Low))
+            lowChannelIcon.color = fullColor;
+        else
+            lowChannelIcon.color = fadeColor;
     }
 
     private void Update()

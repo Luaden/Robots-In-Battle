@@ -11,8 +11,7 @@ public class ChannelsUISlotManager : BaseSlotManager<CardUIController>
 
     [SerializeField] private BaseSlotController<CardUIController> playerAttackSlotA;
     [SerializeField] private BaseSlotController<CardUIController> playerAttackSlotB;
-    [SerializeField] private BaseSlotController<CardUIController> opponentAttackSlotA;
-    [SerializeField] private BaseSlotController<CardUIController> opponentAttackSlotB;
+
 
     [SerializeField] private GameObject SkipASlotButton;
 
@@ -103,68 +102,6 @@ public class ChannelsUISlotManager : BaseSlotManager<CardUIController>
         OnASlotFilled?.Invoke();
 
         SkipASlotButton.SetActive(false);
-    }
-
-    public void OpponentAssignAttackSlot(CardUIController item, BaseSlotController<CardUIController> slot)
-    {
-        if (item == null || slot == null)
-            return;
-
-        slot.SlotManager.RemoveItemFromCollection(item);
-
-        if (opponentAttackSlotA.CurrentSlottedItem == null)
-            if (item.CardData.CardType == CardType.Attack || item.CardData.CardType == CardType.Neutral)
-            {
-                opponentAttackSlotA.CurrentSlottedItem = item;
-                item.CardSlotController = opponentAttackSlotA;
-
-                if (item.CardData.AffectedChannels == AffectedChannels.AllPossibleChannels)
-                    item.CardData.SelectedChannels = item.CardData.PossibleChannels;
-                else
-                    item.CardData.SelectedChannels = selectedChannel;
-
-                CombatManager.instance.RemoveEnergyFromMech(CharacterSelect.Opponent, item.CardData.EnergyCost, true);
-
-
-                if (CombatManager.instance.NarrateCardSelection)
-                    Debug.Log("Opponent selected " + item.CardData.CardName + " for their A Slot.");
-
-                return;
-            }
-            else
-            {
-                Debug.Log(item.CardData.CardName + " is not the correct type for Slot B. Slot A must be an Defense or Neutral Card Type but it is a "
-                    + item.CardData.CardType + " card.");
-                return;
-            }
-
-        if (opponentAttackSlotB.CurrentSlottedItem == null)
-            if (item.CardData.CardType == CardType.Defense || item.CardData.CardType == CardType.Neutral)
-            {
-                opponentAttackSlotB.CurrentSlottedItem = item;
-                item.CardSlotController = opponentAttackSlotB;
-
-                if (item.CardData.AffectedChannels == AffectedChannels.AllPossibleChannels)
-                    item.CardData.SelectedChannels = item.CardData.PossibleChannels;
-                else
-                    item.CardData.SelectedChannels = selectedChannel;
-
-
-                CombatManager.instance.RemoveEnergyFromMech(CharacterSelect.Opponent, item.CardData.EnergyCost + opponentAttackSlotA.CurrentSlottedItem.CardData.EnergyCost, true);
-
-                if (CombatManager.instance.NarrateCardSelection)
-                    Debug.Log("Opponent selected " + item.CardData.CardName + " for their B Slot.");
-
-                return;
-            }
-            else
-            {
-                Debug.Log(item.CardData.CardName + " is not the correct type for Slot B. Slot A must be an Defense or Neutral Card Type but it is a "
-                    + item.CardData.CardType + " card.");
-                return;
-            }
-
-        Debug.Log("No slots available in the hand to add a card to. This should not happen and should be stopped before this point.");
     }
 
     public override void AddSlotToList(BaseSlotController<CardUIController> newSlot)

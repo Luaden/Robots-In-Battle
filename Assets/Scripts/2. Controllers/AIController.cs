@@ -15,36 +15,36 @@ public class AIController : MonoBehaviour
     {
         List<CardPlayPriorityObject> cardPlays = GetCurrentHandPossibleAttacks(aSlot);
 
-        WeightPriorityWithAggressiveness(cardPlays);
-        WeightPriorityWithDefensiveness(cardPlays);
-        WeightPriorityWithDamage(cardPlays);
-        WeightPriorityWithComponentDamage(cardPlays);
-        WeightPriorityWithTargetWeight(cardPlays);
+        WeightCardPlayValues(cardPlays);
 
         foreach (CardPlayPriorityObject card in cardPlays)
             Debug.Log(card.card.CardName + ", " + card.channel + ": " + card.priority);
     }
     #endregion
 
-    [Tooltip("A value range between 0 and 5 that represents the AI preference for B Slot offense or defense. A value of 5 means the AI will value damaging " +
+    [Tooltip("A value range between 0 and 9 that represents variance for AI priority preference. This value is added or subtracted from each possible move's " +
+        "valuation in order to add variance from rigid strategy. 0 represents an accurate strategy of the weighted values below while 9 represents the most " +
+        "added randomness. Chaos reigns.")]
+    [Range(0, 9)] [SerializeField] private int randomizationWeight;
+    [Tooltip("A value range between 0 and 9 that represents the AI preference for B Slot offense or defense. A value of 5 means the AI will value damaging " +
         "Neutral cards more than Defense cards.")]
-    [Range(0, 5)] [SerializeField] private int aggressivenessWeight;
+    [Range(0, 9)] [SerializeField] private int aggressivenessWeight;
 
-    [Tooltip("A value range between 0 and 5 that represents the AI preference for A Slot offense or defense. A value of 5 means the AI will value defensive " +
+    [Tooltip("A value range between 0 and 9 that represents the AI preference for A Slot offense or defense. A value of 5 means the AI will value defensive " +
         "Neutral cards more than Attack cards.")]
-    [Range(0, 5)] [SerializeField] private int defensivenessWeight;
+    [Range(0, 9)] [SerializeField] private int defensivenessWeight;
 
-    [Tooltip("A value range between 0 and 5 that represents the AI preference for base damage. A value of 5 means the AI will value attacks that deal more" +
+    [Tooltip("A value range between 0 and 9 that represents the AI preference for base damage. A value of 5 means the AI will value attacks that deal more" +
     "base damage more than those that do less.")]
-    [Range(0, 5)] [SerializeField] private int baseDamageWeight;
+    [Range(0, 9)] [SerializeField] private int baseDamageWeight;
 
-    [Tooltip("A value range between 0 and 5 that represents the AI preference for component damage. A value of 5 means the AI will value attacks that deal " +
+    [Tooltip("A value range between 0 and 9 that represents the AI preference for component damage. A value of 5 means the AI will value attacks that deal " +
         "or benefit from bonus component damage more than those that do not.")]
-    [Range(0, 5)] [SerializeField] private int componentDamageWeight;
+    [Range(0, 9)] [SerializeField] private int componentDamageWeight;
 
-    [Tooltip("A value range between 0 and 5 that represents the AI preference for targeting weaker components. A value of 5 means that the AI will value attacks " +
+    [Tooltip("A value range between 0 and 9 that represents the AI preference for targeting weaker components. A value of 5 means that the AI will value attacks " +
         "that can target weaker components more.")]
-    [Range(0, 5)] [SerializeField] private int targetingWeight;
+    [Range(0, 9)] [SerializeField] private int targetingWeight;
 
     //[Tooltip("A value range between 0 and 5 that represents the AI preference to play cards that benefit from buffs. A value of 5 means that the AI will " +
     //    "value cards that benefit from buffs more than those that do not.")]
@@ -98,65 +98,13 @@ public class AIController : MonoBehaviour
         List<CardPlayPriorityObject> cardPlays = GetCurrentHandPossibleAttacks(true);
         CardDataObject selectedCard;
 
-        WeightPriorityWithAggressiveness(cardPlays);
-        WeightPriorityWithDefensiveness(cardPlays);
-        WeightPriorityWithDamage(cardPlays);
-        WeightPriorityWithComponentDamage(cardPlays);
-        WeightPriorityWithTargetWeight(cardPlays);
-
+        WeightCardPlayValues(cardPlays);
 
         if (cardPlays.Count == 0)
         {
             selectedCard = null;
 
             attackA = new CardChannelPairObject(selectedCard, Channels.None);
-
-            CombatManager.instance.ChannelsUISlotManager.OpponentAssignAttackSlot(null, null);
-        }
-        else
-        {
-            int highestCardPriority = 0;
-            int highestCardIndex = 0;
-
-            for(int i = 0; i < cardPlays.Count; i++)
-            {
-                if(cardPlays[i].priority > highestCardPriority)
-                {
-                    highestCardPriority = cardPlays[i].priority;
-                    highestCardIndex = i;
-                }    
-            }
-
-            attackA = new CardChannelPairObject(cardPlays[highestCardIndex].card, cardPlays[highestCardIndex].channel);
-
-            CombatManager.instance.ChannelsUISlotManager.OpponentAssignAttackSlot(cardPlays[highestCardIndex].card.CardUIObject.GetComponent<CardUIController>(),
-                cardPlays[highestCardIndex].card.CardUIObject.GetComponent<CardUIController>().CardSlotController);
-        }
-    }
-
-    private void BuildCardChannelPairB()
-    {
-        if (attackB != null)
-            return;
-
-        opponentHand = CombatManager.instance.HandManager.OpponentHand.CharacterHand;
-
-        List<CardPlayPriorityObject> cardPlays = GetCurrentHandPossibleAttacks(false);
-        CardDataObject selectedCard;
-
-        WeightPriorityWithAggressiveness(cardPlays);
-        WeightPriorityWithDefensiveness(cardPlays);
-        WeightPriorityWithDamage(cardPlays);
-        WeightPriorityWithComponentDamage(cardPlays);
-        WeightPriorityWithTargetWeight(cardPlays);
-
-        if (cardPlays.Count == 0)
-        {
-            selectedCard = null;
-
-            attackB = new CardChannelPairObject(selectedCard, Channels.None);
-
-            CombatManager.instance.ChannelsUISlotManager.OpponentAssignAttackSlot(null, null);
         }
         else
         {
@@ -172,11 +120,66 @@ public class AIController : MonoBehaviour
                 }
             }
 
-            attackB = new CardChannelPairObject(cardPlays[highestCardIndex].card, cardPlays[highestCardIndex].channel);
+            //CONSIDER ICE HERE.
 
-            CombatManager.instance.ChannelsUISlotManager.OpponentAssignAttackSlot(cardPlays[highestCardIndex].card.CardUIObject.GetComponent<CardUIController>(),
-                cardPlays[highestCardIndex].card.CardUIObject.GetComponent<CardUIController>().CardSlotController);
+            attackA = new CardChannelPairObject(cardPlays[highestCardIndex].card, cardPlays[highestCardIndex].channel);
+            CombatManager.instance.RemoveEnergyFromMech(CharacterSelect.Opponent, attackA.CardData.EnergyCost, true);
+
+            if (CombatManager.instance.NarrateCardSelection)
+                Debug.Log("Opponent selected " + attackA.CardData.CardName + " for their A Slot.");
         }
+    }
+
+    private void BuildCardChannelPairB()
+    {
+        if (attackB != null)
+            return;
+
+        opponentHand = CombatManager.instance.HandManager.OpponentHand.CharacterHand;
+
+        List<CardPlayPriorityObject> cardPlays = GetCurrentHandPossibleAttacks(false);
+        CardDataObject selectedCard;
+
+        WeightCardPlayValues(cardPlays);
+
+        if (cardPlays.Count == 0)
+        {
+            selectedCard = null;
+
+            attackB = new CardChannelPairObject(selectedCard, Channels.None);
+        }
+        else
+        {
+            int highestCardPriority = 0;
+            int highestCardIndex = 0;
+
+            for (int i = 0; i < cardPlays.Count; i++)
+            {
+                if (cardPlays[i].priority > highestCardPriority)
+                {
+                    highestCardPriority = cardPlays[i].priority;
+                    highestCardIndex = i;
+                }
+            }
+
+            //CONSIDER ICE HERE.
+
+            attackB = new CardChannelPairObject(cardPlays[highestCardIndex].card, cardPlays[highestCardIndex].channel);
+            CombatManager.instance.RemoveEnergyFromMech(CharacterSelect.Opponent, attackA.CardData.EnergyCost + attackB.CardData.EnergyCost, true);
+
+            if (CombatManager.instance.NarrateCardSelection)
+                Debug.Log("Opponent selected " + attackB.CardData.CardName + " for their B Slot.");
+        }
+    }
+
+    private void WeightCardPlayValues(List<CardPlayPriorityObject> cardPlays)
+    {
+        WeightPriorityWithAggressiveness(cardPlays);
+        WeightPriorityWithDefensiveness(cardPlays);
+        WeightPriorityWithDamage(cardPlays);
+        WeightPriorityWithComponentDamage(cardPlays);
+        WeightPriorityWithTargetWeight(cardPlays);
+        WeightPriorityWithRanzomization(cardPlays);
     }
 
     private void FinalCheck()
@@ -192,16 +195,6 @@ public class AIController : MonoBehaviour
         attackA = null;
         attackB = null;
     }
-
-    private Channels GetRandomChannelFromFlag(Channels channel)
-    {
-        System.Random random = new System.Random();
-
-        Channels[] allChannels = Enum.GetValues(typeof(Channels)).Cast<Channels>().Where(x => channel.HasFlag(x)).ToArray();
-        Channels randomChannel = allChannels[random.Next(1, allChannels.Length)];
-
-        return randomChannel;
-    }
     #endregion
 
     private List<CardPlayPriorityObject> GetCurrentHandPossibleAttacks(bool aSlot)
@@ -211,6 +204,8 @@ public class AIController : MonoBehaviour
 
         foreach (CardDataObject card in opponentHand)
         {
+            //CONSIDER ICE HERE.
+
             if (card.EnergyCost > CombatManager.instance.OpponentFighter.FighterMech.MechCurrentEnergy)
                 continue;
 
@@ -347,30 +342,69 @@ public class AIController : MonoBehaviour
     private void WeightPriorityWithTargetWeight(List<CardPlayPriorityObject> cardPlayPriorityObjects)
     {
         MechObject playerFighter = CombatManager.instance.PlayerFighter.FighterMech;
-        float lowestComponentHealth = Mathf.Infinity;
-        Channels lowestChannel = Channels.None;
 
-        if (lowestComponentHealth > playerFighter.MechArms.ComponentCurrentHP)
-        {
-            lowestComponentHealth = playerFighter.MechArms.ComponentCurrentHP;
-            lowestChannel = Channels.High;
-        }
+        List<MechComponentDataObject> componentList = new List<MechComponentDataObject>();
+        componentList.Add(playerFighter.MechArms);
+        componentList.Add(playerFighter.MechTorso);
+        componentList.Add(playerFighter.MechLegs);
 
-        if (lowestComponentHealth > playerFighter.MechTorso.ComponentCurrentHP)
-        {
-            lowestComponentHealth = playerFighter.MechTorso.ComponentCurrentHP;
-            lowestChannel = Channels.Mid;
-        }
+        componentList = componentList.OrderBy(o => o.ComponentCurrentHP).ToList();
 
-        if (lowestComponentHealth > playerFighter.MechLegs.ComponentCurrentHP)
+        Channels highPriority = Channels.None;
+        Channels midPriority = Channels.None; 
+        Channels lowPriority = Channels.None;
+
+        for (int i = 0; i < componentList.Count; i++)
         {
-            lowestComponentHealth = playerFighter.MechLegs.ComponentCurrentHP;
-            lowestChannel = Channels.Low;
+            switch (componentList[i].ComponentType)
+            {
+                case MechComponent.Torso:
+                    if (i == 0)
+                        highPriority = Channels.Mid;
+                    if (i == 1)
+                        midPriority = Channels.Mid;
+                    if (i == 2)
+                        lowPriority = Channels.Mid;
+                    break;
+
+                case MechComponent.Arms:
+                    if (i == 0)
+                        highPriority = Channels.High;
+                    if (i == 1)
+                        midPriority = Channels.High;
+                    if (i == 2)
+                        lowPriority = Channels.High;
+                    break;
+
+                case MechComponent.Legs:
+                    if (i == 0)
+                        highPriority = Channels.Low;
+                    if (i == 1)
+                        midPriority = Channels.Low;
+                    if (i == 2)
+                        lowPriority = Channels.Low;
+                    break;
+            }
+
         }
 
         foreach (CardPlayPriorityObject card in cardPlayPriorityObjects)
-            if (card.channel == lowestChannel)
+        {
+            if (card.channel == highPriority)
                 card.priority += targetingWeight;
+            if (card.channel == midPriority)
+                card.priority += Mathf.RoundToInt(targetingWeight / 2);
+            if (card.channel == lowPriority)
+                continue;
+        }
+    }
+
+    private void WeightPriorityWithRanzomization(List<CardPlayPriorityObject> cardPlayPriorityObjects)
+    {
+        foreach(CardPlayPriorityObject cardPlayPrio in cardPlayPriorityObjects)
+        {
+            cardPlayPrio.priority += Mathf.RoundToInt(UnityEngine.Random.Range(-randomizationWeight, randomizationWeight));
+        }
     }
 
     #region Utility
