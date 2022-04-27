@@ -85,6 +85,8 @@ public class GameManager : MonoBehaviour
         playerInventoryController = new DowntimeInventoryController();
         playerMechController = new DowntimeMechBuilderController();
         playerDeckController = new DowntimeDeckController();
+        playerBankController = new DowntimeBankController();
+
         sceneController = GetComponent<SceneController>();
 
         instance.LoadPlayer();
