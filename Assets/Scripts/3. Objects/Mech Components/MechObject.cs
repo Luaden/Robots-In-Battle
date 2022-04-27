@@ -44,7 +44,6 @@ public class MechObject
         mechCurrentHP = mechMaxHP;
         mechCurrentEnergy = mechMaxEnergy;
 
-        mechEnergyGain = CombatManager.instance.MechEnergyGain;
         mechEnergyGain += head.EnergyGainModifier;
         mechEnergyGain += torso.EnergyGainModifier;
         mechEnergyGain += arms.EnergyGainModifier;
