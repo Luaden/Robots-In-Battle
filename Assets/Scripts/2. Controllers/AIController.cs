@@ -94,7 +94,7 @@ public class AIController : MonoBehaviour
 
         opponentHand = CombatManager.instance.HandManager.OpponentHand.CharacterHand;
 
-        List<CardPlayPriorityObject> cardPlays = GetCurrentHandPossibleAttacks(aSlot);
+        List<CardPlayPriorityObject> cardPlays = GetCurrentHandPossibleAttacks(true);
         CardDataObject selectedCard;
 
         WeightPriorityWithAggressiveness(cardPlays);
@@ -139,7 +139,7 @@ public class AIController : MonoBehaviour
 
         opponentHand = CombatManager.instance.HandManager.OpponentHand.CharacterHand;
 
-        List<CardPlayPriorityObject> cardPlays = GetCurrentHandPossibleAttacks(aSlot);
+        List<CardPlayPriorityObject> cardPlays = GetCurrentHandPossibleAttacks(false);
         CardDataObject selectedCard;
 
         WeightPriorityWithAggressiveness(cardPlays);

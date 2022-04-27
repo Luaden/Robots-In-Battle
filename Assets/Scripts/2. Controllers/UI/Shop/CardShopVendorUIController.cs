@@ -18,7 +18,7 @@ public class CardShopVendorUIController : MonoBehaviour, IPointerDownHandler, IP
 
     public bool isPickedUp = false;
     public Transform previousParentObject;
-    public float travelSpeed = 450.0f;
+    public float travelSpeed = 600.0f;
 
     private RectTransform draggableRectTransform;
     private CanvasGroup draggableCanvasGroup;

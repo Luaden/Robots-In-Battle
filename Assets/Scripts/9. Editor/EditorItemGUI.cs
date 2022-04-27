@@ -32,7 +32,6 @@ public class EditorItemGUI : Editor
 
     private void DisplayAttackCardAttributes()
     {
-        EditorGUILayout.PropertyField(serializedObject.FindProperty("cardBackground"));
         EditorGUILayout.PropertyField(serializedObject.FindProperty("cardCategory"));
         EditorGUILayout.PropertyField(serializedObject.FindProperty("possibleChannels"));
         EditorGUILayout.PropertyField(serializedObject.FindProperty("affectedChannels"));
@@ -44,7 +43,6 @@ public class EditorItemGUI : Editor
 
     private void DisplayDefenseCardAttributes()
     {
-        EditorGUILayout.PropertyField(serializedObject.FindProperty("cardBackground"));
         EditorGUILayout.PropertyField(serializedObject.FindProperty("cardCategory"));
         EditorGUILayout.PropertyField(serializedObject.FindProperty("possibleChannels"));
         EditorGUILayout.PropertyField(serializedObject.FindProperty("affectedChannels"));
@@ -54,7 +52,6 @@ public class EditorItemGUI : Editor
 
     private void DisplayNeutralCardAttributes()
     {
-        EditorGUILayout.PropertyField(serializedObject.FindProperty("cardBackground"));
         EditorGUILayout.PropertyField(serializedObject.FindProperty("cardCategory"));
         EditorGUILayout.PropertyField(serializedObject.FindProperty("possibleChannels"));
         EditorGUILayout.PropertyField(serializedObject.FindProperty("affectedChannels"));
@@ -68,7 +65,6 @@ public class EditorItemGUI : Editor
     {
         EditorGUILayout.PropertyField(serializedObject.FindProperty("itemName"));
         EditorGUILayout.PropertyField(serializedObject.FindProperty("itemDescription"));
-        EditorGUILayout.PropertyField(serializedObject.FindProperty("itemImage"));
         EditorGUILayout.PropertyField(serializedObject.FindProperty("timeCost"));
         EditorGUILayout.PropertyField(serializedObject.FindProperty("currencyCost"));
         EditorGUILayout.PropertyField(serializedObject.FindProperty("chanceToSpawn"));
@@ -104,6 +100,7 @@ public class EditorItemGUI : Editor
 
     private void DisplayComponentAttributes()
     {
+        EditorGUILayout.PropertyField(serializedObject.FindProperty("componentImage"));
         EditorGUILayout.PropertyField(serializedObject.FindProperty("componentType"));
         EditorGUILayout.PropertyField(serializedObject.FindProperty("componentHP"));
         EditorGUILayout.PropertyField(serializedObject.FindProperty("componentEnergy"));
