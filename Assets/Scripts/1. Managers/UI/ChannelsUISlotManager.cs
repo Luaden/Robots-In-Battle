@@ -46,6 +46,10 @@ public class ChannelsUISlotManager : BaseSlotManager<CardUIController>
 
                 cardChannelPairObjectA = new CardChannelPairObject(item.CardData, selectedChannel);
                 CombatManager.instance.CardPlayManager.PlayerAttackPlan.cardChannelPairA = cardChannelPairObjectA;
+
+                //Needs to account for ice.
+                CombatManager.instance.RemoveEnergyFromMech(CharacterSelect.Player, cardChannelPairObjectA.CardData.EnergyCost, true);
+
                 SkipASlotButton.SetActive(false);
                 OnASlotFilled?.Invoke();
                 return;
@@ -73,6 +77,9 @@ public class ChannelsUISlotManager : BaseSlotManager<CardUIController>
 
                 cardChannelPairObjectB = new CardChannelPairObject(item.CardData, selectedChannel);
                 CombatManager.instance.CardPlayManager.PlayerAttackPlan.cardChannelPairB = cardChannelPairObjectB;
+
+                CombatManager.instance.RemoveEnergyFromMech(CharacterSelect.Player, cardChannelPairObjectA.CardData.EnergyCost + cardChannelPairObjectB.CardData.EnergyCost, true);
+
 
                 OnBSlotFilled?.Invoke();
                 return;
@@ -115,6 +122,9 @@ public class ChannelsUISlotManager : BaseSlotManager<CardUIController>
                 else
                     item.CardData.SelectedChannels = selectedChannel;
 
+                CombatManager.instance.RemoveEnergyFromMech(CharacterSelect.Opponent, item.CardData.EnergyCost, true);
+
+
                 if (CombatManager.instance.NarrateCardSelection)
                     Debug.Log("Opponent selected " + item.CardData.CardName + " for their A Slot.");
 
@@ -137,6 +147,9 @@ public class ChannelsUISlotManager : BaseSlotManager<CardUIController>
                     item.CardData.SelectedChannels = item.CardData.PossibleChannels;
                 else
                     item.CardData.SelectedChannels = selectedChannel;
+
+
+                CombatManager.instance.RemoveEnergyFromMech(CharacterSelect.Opponent, item.CardData.EnergyCost + opponentAttackSlotA.CurrentSlottedItem.CardData.EnergyCost, true);
 
                 if (CombatManager.instance.NarrateCardSelection)
                     Debug.Log("Opponent selected " + item.CardData.CardName + " for their B Slot.");
@@ -176,6 +189,7 @@ public class ChannelsUISlotManager : BaseSlotManager<CardUIController>
 
         if(CardChannelCheck(newData, selectedChannel))
         {
+            //Needs to also account for energy cost + ice
             newData.CardSlotController.SlotManager.RemoveItemFromCollection(newData);
             AddItemToCollection(newData, slot);
             return;

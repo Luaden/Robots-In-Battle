@@ -149,7 +149,7 @@ public class CardInteractionController
                 {
                     CombatManager.instance.MechAnimationManager.SetMechAnimation(GetOtherMech(defensiveMech), AnimationType.Counter, 
                         defensiveMech, CombatManager.instance.MechAnimationManager.GetAnimationFromCategory(offensiveAttack.CardData.CardCategory));
-                    CombatManager.instance.DealDamageToMech(defensiveMech, damageToDeal * Mathf.RoundToInt(CombatManager.instance.CounterDamageMultiplier));
+                    CombatManager.instance.RemoveHealthFromMech(defensiveMech, damageToDeal * Mathf.RoundToInt(CombatManager.instance.CounterDamageMultiplier));
                     CalculateComponentDamage(offensiveAttack, defensiveMech);
                     hasDefended = true;
 
@@ -165,7 +165,7 @@ public class CardInteractionController
                 {
                     CombatManager.instance.MechAnimationManager.SetMechAnimation(defensiveMech, AnimationType.Guard,
                         GetOtherMech(defensiveMech), CombatManager.instance.MechAnimationManager.GetAnimationFromCategory(offensiveAttack.CardData.CardCategory));
-                    CombatManager.instance.DealDamageToMech(defensiveMech, damageToDeal * Mathf.RoundToInt(CombatManager.instance.GuardDamageMultiplier));
+                    CombatManager.instance.RemoveHealthFromMech(defensiveMech, damageToDeal * Mathf.RoundToInt(CombatManager.instance.GuardDamageMultiplier));
                     CalculateComponentDamage(offensiveAttack, defensiveMech);
                     hasDefended = true;
 
@@ -181,7 +181,7 @@ public class CardInteractionController
                 {
                     CombatManager.instance.MechAnimationManager.SetMechAnimation(defensiveMech, AnimationType.Damaged,
                         GetOtherMech(defensiveMech), CombatManager.instance.MechAnimationManager.GetAnimationFromCategory(offensiveAttack.CardData.CardCategory));
-                    CombatManager.instance.DealDamageToMech(defensiveMech, damageToDeal);
+                    CombatManager.instance.RemoveHealthFromMech(defensiveMech, damageToDeal);
                     CalculateComponentDamage(offensiveAttack, defensiveMech);
                     
                     if(CombatManager.instance.NarrateCombat)
