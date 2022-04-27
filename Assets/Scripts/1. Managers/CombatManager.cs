@@ -49,7 +49,7 @@ public class CombatManager : MonoBehaviour
     public ChannelsUISlotManager ChannelsUISlotManager { get => channelsUISlotManager; }
     public CardPlayManager CardPlayManager { get => cardPlayManager; }
     public CardUIManager CardUIManager { get => cardUIManager; }
-    public MechHUDManager MechHUDManager { get => mechHUDManager; }
+    //public MechHUDManager MechHUDManager { get => mechHUDManager; }
     public PopupUIManager PopupUIManager { get => popupUIManager; }
     public BuffUIManager BuffUIManager { get => buffUIManager; }
     public MechAnimationManager MechAnimationManager { get => mechAnimationManager; }
@@ -63,35 +63,67 @@ public class CombatManager : MonoBehaviour
     public delegate void onDestroyScene();
     public static event onDestroyScene OnDestroyScene;
 
-    public void DealDamageToMech(CharacterSelect character, int damage)
+    public void RemoveHealthFromMech(CharacterSelect character, int damage)
     {
         if (character == CharacterSelect.Player)
         {
-            playerFighter.FighterMech.MechCurrentHP -= damage;
+            playerFighter.FighterMech.MechCurrentHP = Mathf.Clamp(playerFighter.FighterMech.MechCurrentHP - damage, 0, int.MaxValue);
             mechHUDManager.UpdatePlayerHP(playerFighter.FighterMech.MechCurrentHP);
             CheckForWinLoss();
         }
 
         if (character == CharacterSelect.Opponent)
         {
-            opponentFighter.FighterMech.MechCurrentHP -= damage;
+            opponentFighter.FighterMech.MechCurrentHP = Mathf.Clamp(playerFighter.FighterMech.MechCurrentHP - damage, 0, int.MaxValue);
             mechHUDManager.UpdateOpponentHP(opponentFighter.FighterMech.MechCurrentHP);
             CheckForWinLoss();
         }
-
     }
 
-    public void RemoveEnergyFromMech(CharacterSelect character, int energyToRemove)
+    public void AddHealthToMech(CharacterSelect character, int health)
     {
         if (character == CharacterSelect.Player)
         {
+            playerFighter.FighterMech.MechCurrentHP += health;
+            mechHUDManager.UpdatePlayerHP(playerFighter.FighterMech.MechCurrentHP);
+            CheckForWinLoss();
+        }
+
+        if (character == CharacterSelect.Opponent)
+        {
+            opponentFighter.FighterMech.MechCurrentHP += health;
+            mechHUDManager.UpdateOpponentHP(opponentFighter.FighterMech.MechCurrentHP);
+            CheckForWinLoss();
+        }
+    }
+
+    public void RemoveEnergyFromMech(CharacterSelect character, int energyToRemove, bool queueEnergyRemoval = false)
+    {
+        if (character == CharacterSelect.Player)
+        {
+            if(queueEnergyRemoval)
+            {
+                mechHUDManager.UpdatePlayerEnergy(playerFighter.FighterMech.MechCurrentEnergy, 
+                    playerFighter.FighterMech.MechCurrentEnergy - energyToRemove, 
+                    queueEnergyRemoval);
+                return;
+            }
+
             playerFighter.FighterMech.MechCurrentEnergy -= energyToRemove;
-            mechHUDManager.UpdatePlayerEnergy(playerFighter.FighterMech.MechCurrentEnergy);
+            mechHUDManager.UpdatePlayerEnergy(playerFighter.FighterMech.MechCurrentEnergy, playerFighter.FighterMech.MechCurrentEnergy, false);
         }
         if (character == CharacterSelect.Opponent)
         {
+            if (queueEnergyRemoval)
+            {
+                mechHUDManager.UpdateOpponentEnergy(opponentFighter.FighterMech.MechCurrentEnergy, 
+                    opponentFighter.FighterMech.MechCurrentEnergy - energyToRemove, 
+                    queueEnergyRemoval);
+                return;
+            }
+
             opponentFighter.FighterMech.MechCurrentEnergy -= energyToRemove;
-            mechHUDManager.UpdateOpponentEnergy(opponentFighter.FighterMech.MechCurrentEnergy);
+            mechHUDManager.UpdateOpponentEnergy(opponentFighter.FighterMech.MechCurrentEnergy, playerFighter.FighterMech.MechCurrentEnergy, false);
         }
     }
 
@@ -99,13 +131,13 @@ public class CombatManager : MonoBehaviour
     {
         if (character == CharacterSelect.Player)
         {
-            playerFighter.FighterMech.MechCurrentEnergy += energyToAdd;
-            mechHUDManager.UpdatePlayerEnergy(playerFighter.FighterMech.MechCurrentEnergy);
+            playerFighter.FighterMech.MechCurrentEnergy = Mathf.Clamp(playerFighter.FighterMech.MechCurrentEnergy + energyToAdd, 0, playerFighter.FighterMech.MechMaxEnergy);
+            mechHUDManager.UpdatePlayerEnergy(playerFighter.FighterMech.MechCurrentEnergy, playerFighter.FighterMech.MechCurrentEnergy, false);
         }
         if (character == CharacterSelect.Opponent)
         {
-            opponentFighter.FighterMech.MechCurrentEnergy += energyToAdd;
-            mechHUDManager.UpdateOpponentEnergy(opponentFighter.FighterMech.MechCurrentEnergy);
+            opponentFighter.FighterMech.MechCurrentEnergy = Mathf.Clamp(opponentFighter.FighterMech.MechCurrentEnergy + energyToAdd, 0, opponentFighter.FighterMech.MechMaxEnergy);
+            mechHUDManager.UpdateOpponentEnergy(opponentFighter.FighterMech.MechCurrentEnergy, opponentFighter.FighterMech.MechCurrentEnergy, false);
         }
     }
 

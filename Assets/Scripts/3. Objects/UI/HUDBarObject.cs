@@ -28,8 +28,9 @@ public class HUDBarObject : BaseUIElement<int>
 
     protected override bool ClearedIfEmpty(int newData)
     {
-        if (newData == 0)
+        if (newData < 0)
             return true;
         return false;
     }
 }
+

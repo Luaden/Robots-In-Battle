@@ -12,9 +12,14 @@ public class MechHUDManager : MonoBehaviour
         playerHudBarController.UpdateHealthBar(playerHP);
     }
 
-    public void UpdatePlayerEnergy(int playerEnergy)
+    public void UpdatePlayerEnergy(int currentPlayerEnergy, int playerQueuedEnergy, bool queuedEnergy = false)
     {
-        playerHudBarController.UpdateEnergyBar(playerEnergy);
+        if(!queuedEnergy)
+            playerHudBarController.UpdateEnergyBar(currentPlayerEnergy);
+        else
+        {
+            playerHudBarController.UpdateEnergyQueueBar(playerQueuedEnergy, currentPlayerEnergy);
+        }
     }
 
     public void UpdateOpponentHP(int opponentHP)
@@ -22,20 +27,29 @@ public class MechHUDManager : MonoBehaviour
         opponentHudBarController.UpdateHealthBar(opponentHP);
     }
 
-    public void UpdateOpponentEnergy(int opponentEnergy)
+    public void UpdateOpponentEnergy(int opponentEnergy, int opponentQueuedEnergy, bool queuedEnergy = false)
     {
-        opponentHudBarController.UpdateEnergyBar(opponentEnergy);
+        if(!queuedEnergy)
+            opponentHudBarController.UpdateEnergyBar(opponentEnergy);
+        else
+        {
+            opponentHudBarController.UpdateEnergyQueueBar(opponentQueuedEnergy, opponentEnergy);
+        }
     }
 
     public void SetPlayerMaxStats(int playerHealth, int playerEnergy)
     {
         playerHudBarController.SetHealthBarMax(playerHealth);
         playerHudBarController.SetEnergyBarMax(playerEnergy);
+        UpdatePlayerEnergy(playerEnergy, playerEnergy, false);
+        UpdatePlayerHP(playerHealth);
     }
 
     public void SetOpponentMaxStats(int opponentHealth, int opponentEnergy)
     {
         opponentHudBarController.SetHealthBarMax(opponentHealth);
         opponentHudBarController.SetEnergyBarMax(opponentEnergy);
+        UpdateOpponentEnergy(opponentEnergy, opponentEnergy, false);
+        UpdateOpponentHP(opponentHealth);
     }
 }
