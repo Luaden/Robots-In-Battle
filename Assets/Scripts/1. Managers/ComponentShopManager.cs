@@ -38,7 +38,7 @@ public class ComponentShopManager : MonoBehaviour
             DowntimeManager.instance.ShopCollectionRandomizeManager.AddToComponentShopCollectionList(collection);
         }
 
-        DowntimeManager.instance.ShopCollectionRandomizeManager.RandomizeShopItemCollection();
+        DowntimeManager.instance.ShopCollectionRandomizeManager.RandomizeComponentShopItemCollection();
 
         if(itemsToDisplay.Count <= 0)
         {

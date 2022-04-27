@@ -16,17 +16,23 @@ public class ShopCollectionRandomizeManager : MonoBehaviour
         shopCollectionController.AddToCardShopCollectionList(item);
     }
 
-    public void RandomizeShopItemCollection()
+    public void RandomizeCardShopItemCollection()
     {
-        shopCollectionController.RandomizeShopItemCollection();
+        shopCollectionController.RandomizeCardShopItemCollection();
+    }
+    public void RandomizeComponentShopItemCollection()
+    {
+        shopCollectionController.RandomizeComponentShopItemCollection();
     }
 
     public void InitCardList()
     {
+        Debug.Log("init card list");
         shopCollectionController.InitCardList();
     }
     public void InitComponentList()
     {
+        Debug.Log("init component list");
         shopCollectionController.InitComponentList();
     }
 }

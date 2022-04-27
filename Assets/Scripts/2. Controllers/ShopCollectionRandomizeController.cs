@@ -27,31 +27,30 @@ public class ShopCollectionRandomizeController : MonoBehaviour
         if (collection != null && collection.CollectionType == ItemType.Card)
             cardShopItemCollectionObjects.Add(collection);
     }
-    public void RandomizeShopItemCollection()
+    public void RandomizeCardShopItemCollection()
     {
+        Debug.Log("randomizing shop collection");
         //test
         int playerFights = 0;
-
-        if (cardShopItemCollectionObjects == null)
-        {
-            Debug.Log("missing card collection object");
-            return;
-        }
-        if(componentShopItemCollectionObjects == null)
-        {
-            Debug.Log("missing component collection object");
-            return;
-        }
 
         List<SOShopItemCollectionObject> shopCollectionToSend = new List<SOShopItemCollectionObject>();
         foreach (SOShopItemCollectionObject collection in cardShopItemCollectionObjects)
         {
             if (collection.FightsBeforeAppearance <= playerFights)
-            {
                 shopCollectionToSend.Add(collection);
-            }
 
         }
+
+        DowntimeManager.instance.CardShopManager.AddToShop(cardShopItemCollectionObjects);
+
+    }
+    public void RandomizeComponentShopItemCollection()
+    {
+        Debug.Log("randomizing shop collection");
+        //test
+        int playerFights = 0;
+
+        List<SOShopItemCollectionObject> shopCollectionToSend = new List<SOShopItemCollectionObject>();
         foreach (SOShopItemCollectionObject collection in componentShopItemCollectionObjects)
         {
             if (collection.FightsBeforeAppearance <= playerFights)
@@ -60,7 +59,6 @@ public class ShopCollectionRandomizeController : MonoBehaviour
         }
 
         DowntimeManager.instance.ComponentShopManager.AddToShop(componentShopItemCollectionObjects);
-        DowntimeManager.instance.CardShopManager.AddToShop(cardShopItemCollectionObjects);
 
     }
 }
