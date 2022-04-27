@@ -32,13 +32,13 @@ public class GameManager : MonoBehaviour
     public void BuildMech()
     {
         LoadPlayer();
-        PlayerMechController.BuildNewPlayerMech(starterMechHead, starterMechTorso, starterMechArms, starterMechLegs);
+        instance.PlayerMechController.BuildNewPlayerMech(starterMechHead, starterMechTorso, starterMechArms, starterMechLegs);
         PilotDataObject playerPilot = new PilotDataObject();
         FighterDataObject playerFighter = new FighterDataObject(playerData.PlayerMech, playerPilot, starterDeck);
 
 
 
-        MechObject opponentMech = PlayerMechController.BuildNewMech(starterMechHead, starterMechTorso, starterMechArms, starterMechLegs);
+        MechObject opponentMech = instance.PlayerMechController.BuildNewMech(starterMechHead, starterMechTorso, starterMechArms, starterMechLegs);
         PilotDataObject opponentPilot = new PilotDataObject();
         FighterDataObject opponentFighter = new FighterDataObject(opponentMech, opponentPilot, starterDeck);
 
@@ -99,7 +99,7 @@ public class GameManager : MonoBehaviour
         }
 
         playerData = new PlayerDataObject();
-        MechObject newMech = PlayerMechController.BuildNewMech(starterMechHead, starterMechTorso, starterMechArms, starterMechLegs);
+        MechObject newMech = instance.PlayerMechController.BuildNewMech(starterMechHead, starterMechTorso, starterMechArms, starterMechLegs);
 
         playerData.PlayerDeck = starterDeck;
         playerData.PlayerMech = newMech;
