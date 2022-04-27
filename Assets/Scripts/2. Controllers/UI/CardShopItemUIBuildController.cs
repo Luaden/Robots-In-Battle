@@ -13,8 +13,8 @@ public class CardShopItemUIBuildController : MonoBehaviour
 
         shopItem.ShopItemUIController = shopItemUIGameObject;
 
-        shopItemUIGameObject.AddComponent<CardShopVendorUIController>();
-        shopItemUIGameObject.AddComponent<CardShopCartUIController>();
+/*        shopItemUIGameObject.AddComponent<CardShopVendorUIController>();
+        shopItemUIGameObject.AddComponent<CardShopCartUIController>();*/
 
         CardShopVendorUIController cardShopVendorUIController = shopItemUIGameObject.GetComponent<CardShopVendorUIController>();
         CardShopCartUIController cardShopCartUIController = shopItemUIGameObject.GetComponent<CardShopCartUIController>();
