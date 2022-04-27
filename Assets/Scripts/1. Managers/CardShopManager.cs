@@ -33,7 +33,7 @@ public class CardShopManager : MonoBehaviour
     // should only be called once everytime we change to downtime
     public void InitializeShop()
     {
-        cardShopController = GetComponentInChildren<CardShopController>();
+        cardShopController = GetComponentInChildren<CardShopController>(true);
         cardShopVendorSlotManager = GetComponentInChildren<CardShopVendorSlotManager>(true);
         cardShopCartSlotManager = GetComponentInChildren<CardShopCartSlotManager>(true);
 
@@ -41,7 +41,7 @@ public class CardShopManager : MonoBehaviour
 
         foreach(SOShopItemCollectionObject collection in shopCollectionObjects)
         {
-            DowntimeManager.instance.ShopCollectionRandomizeManager.InitList();
+            DowntimeManager.instance.ShopCollectionRandomizeManager.InitCardList();
             DowntimeManager.instance.ShopCollectionRandomizeManager.AddToCardShopCollectionList(collection);
         }
         

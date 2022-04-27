@@ -7,9 +7,13 @@ public class ShopCollectionRandomizeController : MonoBehaviour
     protected List<SOShopItemCollectionObject> componentShopItemCollectionObjects;
     protected List<SOShopItemCollectionObject> cardShopItemCollectionObjects;
 
-    public void InitList()
+    public void InitComponentList()
     { 
         componentShopItemCollectionObjects = new List<SOShopItemCollectionObject>();
+    }
+
+    public void InitCardList()
+    {
         cardShopItemCollectionObjects = new List<SOShopItemCollectionObject>();
     }
 
@@ -26,14 +30,14 @@ public class ShopCollectionRandomizeController : MonoBehaviour
     public void RandomizeShopItemCollection()
     {
         //test
-        int playerFights = 3;
+        int playerFights = 0;
 
-        if (cardShopItemCollectionObjects == null || cardShopItemCollectionObjects.Count == 0)
+        if (cardShopItemCollectionObjects == null)
         {
             Debug.Log("missing card collection object");
             return;
         }
-        if(componentShopItemCollectionObjects == null || componentShopItemCollectionObjects.Count == 0)
+        if(componentShopItemCollectionObjects == null)
         {
             Debug.Log("missing component collection object");
             return;
