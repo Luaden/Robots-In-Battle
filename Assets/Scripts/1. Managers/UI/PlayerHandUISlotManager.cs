@@ -25,6 +25,7 @@ public class PlayerHandUISlotManager : BaseSlotManager<CardUIController>
                 return;
             }
 
+        item.UpdateSelectedChannel(item.CardData.PossibleChannels);
         Debug.Log("No slots available in the hand to add a card to. This should not happen and should be stopped before this point.");
     }
 

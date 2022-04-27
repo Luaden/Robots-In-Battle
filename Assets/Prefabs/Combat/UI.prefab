@@ -807,6 +807,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   slotManager: {fileID: 129746560678925515}
+  channelFlag: 1
+  channelImage: {fileID: 129746561047293262}
+  fullColor: {r: 1, g: 0, b: 0.95686275, a: 0.47058824}
+  fadeColor: {r: 1, g: 0, b: 0.95686275, a: 0.15686275}
+  fadeTimeModifier: 0.4
 --- !u!222 &129746559725803830
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -1398,6 +1403,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   slotManager: {fileID: 129746560766270655}
+  channelFlag: 0
+  channelImage: {fileID: 0}
+  fullColor: {r: 0, g: 0, b: 0, a: 0}
+  fadeColor: {r: 0, g: 0, b: 0, a: 0}
+  fadeTimeModifier: 0
 --- !u!1 &129746559802652389
 GameObject:
   m_ObjectHideFlags: 0
@@ -1692,7 +1702,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.47588062, g: 0, b: 1, a: 0.18431373}
+  m_Color: {r: 0.5932576, g: 0.18039218, b: 0.98039216, a: 0.39215687}
   m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -1739,96 +1749,6 @@ MonoBehaviour:
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls: []
---- !u!1 &129746559895224419
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 129746559895224418}
-  - component: {fileID: 129746559895224423}
-  - component: {fileID: 129746559895224416}
-  - component: {fileID: 129746559895224417}
-  m_Layer: 0
-  m_Name: Opponent Attack B
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!224 &129746559895224418
-RectTransform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 129746559895224419}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.75, y: 0.75, z: 0.75}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 8245430195200485915}
-  m_RootOrder: 2
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0}
-  m_AnchorMax: {x: 0.5, y: 0}
-  m_AnchoredPosition: {x: 290, y: 200}
-  m_SizeDelta: {x: 100, y: 100}
-  m_Pivot: {x: 0.5, y: 0.5}
---- !u!222 &129746559895224423
-CanvasRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 129746559895224419}
-  m_CullTransparentMesh: 1
---- !u!114 &129746559895224416
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 129746559895224419}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
-  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
-  m_Maskable: 1
-  m_OnCullStateChanged:
-    m_PersistentCalls:
-      m_Calls: []
-  m_Sprite: {fileID: 0}
-  m_Type: 0
-  m_PreserveAspect: 0
-  m_FillCenter: 1
-  m_FillMethod: 4
-  m_FillAmount: 1
-  m_FillClockwise: 1
-  m_FillOrigin: 0
-  m_UseSpriteMesh: 0
-  m_PixelsPerUnitMultiplier: 1
---- !u!114 &129746559895224417
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 129746559895224419}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c58b00655586d0e42928a817cfec2401, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  slotManager: {fileID: 129746560678925515}
 --- !u!1 &129746559903923270
 GameObject:
   m_ObjectHideFlags: 0
@@ -2530,6 +2450,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   slotManager: {fileID: 0}
+  channelFlag: 0
+  channelImage: {fileID: 0}
+  fullColor: {r: 0, g: 0, b: 0, a: 0}
+  fadeColor: {r: 0, g: 0, b: 0, a: 0}
+  fadeTimeModifier: 0
 --- !u!222 &129746559934530344
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -2658,6 +2583,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   slotManager: {fileID: 129746560766270655}
+  channelFlag: 0
+  channelImage: {fileID: 0}
+  fullColor: {r: 0, g: 0, b: 0, a: 0}
+  fadeColor: {r: 0, g: 0, b: 0, a: 0}
+  fadeTimeModifier: 0
 --- !u!1 &129746559957776747
 GameObject:
   m_ObjectHideFlags: 0
@@ -3705,6 +3635,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   slotManager: {fileID: 129746560678925515}
+  channelFlag: 4
+  channelImage: {fileID: 129746559877222975}
+  fullColor: {r: 0.5921569, g: 0.18039216, b: 0.98039216, a: 0.47058824}
+  fadeColor: {r: 0.5921569, g: 0.18039216, b: 0.98039216, a: 0.15686275}
+  fadeTimeModifier: 0.4
 --- !u!222 &129746560092067426
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -4535,6 +4470,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   slotManager: {fileID: 0}
+  channelFlag: 0
+  channelImage: {fileID: 0}
+  fullColor: {r: 0, g: 0, b: 0, a: 0}
+  fadeColor: {r: 0, g: 0, b: 0, a: 0}
+  fadeTimeModifier: 0
 --- !u!222 &129746560193976702
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -7024,6 +6964,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   slotManager: {fileID: 0}
+  channelFlag: 0
+  channelImage: {fileID: 0}
+  fullColor: {r: 0, g: 0, b: 0, a: 0}
+  fadeColor: {r: 0, g: 0, b: 0, a: 0}
+  fadeTimeModifier: 0
 --- !u!222 &129746560552789827
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -7730,6 +7675,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   slotManager: {fileID: 0}
+  channelFlag: 0
+  channelImage: {fileID: 0}
+  fullColor: {r: 0, g: 0, b: 0, a: 0}
+  fadeColor: {r: 0, g: 0, b: 0, a: 0}
+  fadeTimeModifier: 0
 --- !u!222 &129746560641533388
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -8121,6 +8071,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   slotManager: {fileID: 129746560766270655}
+  channelFlag: 0
+  channelImage: {fileID: 0}
+  fullColor: {r: 0, g: 0, b: 0, a: 0}
+  fadeColor: {r: 0, g: 0, b: 0, a: 0}
+  fadeTimeModifier: 0
 --- !u!1 &129746560678925509
 GameObject:
   m_ObjectHideFlags: 0
@@ -8185,8 +8140,6 @@ MonoBehaviour:
   - {fileID: 129746560092067420}
   playerAttackSlotA: {fileID: 129746561551062944}
   playerAttackSlotB: {fileID: 129746561224329455}
-  opponentAttackSlotA: {fileID: 129746561463971117}
-  opponentAttackSlotB: {fileID: 129746559895224417}
   SkipASlotButton: {fileID: 129746561454339981}
 --- !u!1 &129746560713854579
 GameObject:
@@ -8324,6 +8277,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   slotManager: {fileID: 0}
+  channelFlag: 0
+  channelImage: {fileID: 0}
+  fullColor: {r: 0, g: 0, b: 0, a: 0}
+  fadeColor: {r: 0, g: 0, b: 0, a: 0}
+  fadeTimeModifier: 0
 --- !u!222 &129746560717030172
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -8973,6 +8931,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   slotManager: {fileID: 0}
+  channelFlag: 0
+  channelImage: {fileID: 0}
+  fullColor: {r: 0, g: 0, b: 0, a: 0}
+  fadeColor: {r: 0, g: 0, b: 0, a: 0}
+  fadeTimeModifier: 0
 --- !u!222 &129746560851164021
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -10605,7 +10568,6 @@ GameObject:
   - component: {fileID: 129746561047293256}
   - component: {fileID: 129746561047293261}
   - component: {fileID: 129746561047293262}
-  - component: {fileID: 129746561047293263}
   m_Layer: 5
   m_Name: High Channel
   m_TagString: Untagged
@@ -10655,7 +10617,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 0, b: 0.9576378, a: 0.18431373}
+  m_Color: {r: 1, g: 0, b: 0.9576378, a: 0.39215687}
   m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -10672,36 +10634,6 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!114 &129746561047293263
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 129746561047293257}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1aa08ab6e0800fa44ae55d278d1423e3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Content: {fileID: 129746559725803825}
-  m_Horizontal: 1
-  m_Vertical: 0
-  m_MovementType: 1
-  m_Elasticity: 0.1
-  m_Inertia: 1
-  m_DecelerationRate: 0.135
-  m_ScrollSensitivity: 1
-  m_Viewport: {fileID: 0}
-  m_HorizontalScrollbar: {fileID: 0}
-  m_VerticalScrollbar: {fileID: 0}
-  m_HorizontalScrollbarVisibility: 2
-  m_VerticalScrollbarVisibility: 2
-  m_HorizontalScrollbarSpacing: -3
-  m_VerticalScrollbarSpacing: -3
-  m_OnValueChanged:
-    m_PersistentCalls:
-      m_Calls: []
 --- !u!1 &129746561049401200
 GameObject:
   m_ObjectHideFlags: 0
@@ -11255,7 +11187,6 @@ GameObject:
   - component: {fileID: 129746561100228190}
   - component: {fileID: 129746561100228195}
   - component: {fileID: 129746561100228188}
-  - component: {fileID: 129746561100228189}
   m_Layer: 5
   m_Name: Mid Channel
   m_TagString: Untagged
@@ -11305,7 +11236,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0, g: 0.94464993, b: 1, a: 0.18431373}
+  m_Color: {r: 0, g: 0.94464993, b: 1, a: 0.39215687}
   m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -11322,36 +11253,6 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!114 &129746561100228189
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 129746561100228191}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1aa08ab6e0800fa44ae55d278d1423e3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Content: {fileID: 129746561330962286}
-  m_Horizontal: 1
-  m_Vertical: 0
-  m_MovementType: 1
-  m_Elasticity: 0.1
-  m_Inertia: 1
-  m_DecelerationRate: 0.135
-  m_ScrollSensitivity: 1
-  m_Viewport: {fileID: 0}
-  m_HorizontalScrollbar: {fileID: 0}
-  m_VerticalScrollbar: {fileID: 0}
-  m_HorizontalScrollbarVisibility: 2
-  m_VerticalScrollbarVisibility: 2
-  m_HorizontalScrollbarSpacing: -3
-  m_VerticalScrollbarSpacing: -3
-  m_OnValueChanged:
-    m_PersistentCalls:
-      m_Calls: []
 --- !u!1 &129746561137877016
 GameObject:
   m_ObjectHideFlags: 0
@@ -11826,7 +11727,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 0}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -11856,6 +11757,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   slotManager: {fileID: 129746560678925515}
+  channelFlag: 0
+  channelImage: {fileID: 0}
+  fullColor: {r: 0, g: 0, b: 0, a: 0}
+  fadeColor: {r: 0, g: 0, b: 0, a: 0}
+  fadeTimeModifier: 0
 --- !u!1 &129746561236229917
 GameObject:
   m_ObjectHideFlags: 0
@@ -12421,6 +12327,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   slotManager: {fileID: 129746560766270655}
+  channelFlag: 0
+  channelImage: {fileID: 0}
+  fullColor: {r: 0, g: 0, b: 0, a: 0}
+  fadeColor: {r: 0, g: 0, b: 0, a: 0}
+  fadeTimeModifier: 0
 --- !u!1 &129746561302224404
 GameObject:
   m_ObjectHideFlags: 0
@@ -12825,6 +12736,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   slotManager: {fileID: 129746560678925515}
+  channelFlag: 2
+  channelImage: {fileID: 129746561100228188}
+  fullColor: {r: 0, g: 0.94509804, b: 1, a: 0.47058824}
+  fadeColor: {r: 0, g: 0.94509804, b: 1, a: 0.15686275}
+  fadeTimeModifier: 0.4
 --- !u!222 &129746561330962291
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -13023,6 +12939,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   slotManager: {fileID: 0}
+  channelFlag: 0
+  channelImage: {fileID: 0}
+  fullColor: {r: 0, g: 0, b: 0, a: 0}
+  fadeColor: {r: 0, g: 0, b: 0, a: 0}
+  fadeTimeModifier: 0
 --- !u!222 &129746561372116897
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -13795,96 +13716,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   slotManager: {fileID: 129746560766270655}
---- !u!1 &129746561463971118
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 129746561463971122}
-  - component: {fileID: 129746561463971123}
-  - component: {fileID: 129746561463971116}
-  - component: {fileID: 129746561463971117}
-  m_Layer: 0
-  m_Name: Opponent Attack A
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!224 &129746561463971122
-RectTransform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 129746561463971118}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.75, y: 0.75, z: 0.75}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 8245430195200485915}
-  m_RootOrder: 1
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0}
-  m_AnchorMax: {x: 0.5, y: 0}
-  m_AnchoredPosition: {x: 290, y: 350}
-  m_SizeDelta: {x: 100, y: 100}
-  m_Pivot: {x: 0.5, y: 0.5}
---- !u!222 &129746561463971123
-CanvasRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 129746561463971118}
-  m_CullTransparentMesh: 1
---- !u!114 &129746561463971116
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 129746561463971118}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
-  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
-  m_Maskable: 1
-  m_OnCullStateChanged:
-    m_PersistentCalls:
-      m_Calls: []
-  m_Sprite: {fileID: 0}
-  m_Type: 0
-  m_PreserveAspect: 0
-  m_FillCenter: 1
-  m_FillMethod: 4
-  m_FillAmount: 1
-  m_FillClockwise: 1
-  m_FillOrigin: 0
-  m_UseSpriteMesh: 0
-  m_PixelsPerUnitMultiplier: 1
---- !u!114 &129746561463971117
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 129746561463971118}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c58b00655586d0e42928a817cfec2401, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  slotManager: {fileID: 129746560678925515}
+  channelFlag: 0
+  channelImage: {fileID: 0}
+  fullColor: {r: 0, g: 0, b: 0, a: 0}
+  fadeColor: {r: 0, g: 0, b: 0, a: 0}
+  fadeTimeModifier: 0
 --- !u!1 &129746561481031619
 GameObject:
   m_ObjectHideFlags: 0
@@ -14337,7 +14173,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 0}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -14367,6 +14203,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   slotManager: {fileID: 129746560678925515}
+  channelFlag: 0
+  channelImage: {fileID: 0}
+  fullColor: {r: 0, g: 0, b: 0, a: 0}
+  fadeColor: {r: 0, g: 0, b: 0, a: 0}
+  fadeTimeModifier: 0
 --- !u!1 &129746561571394383
 GameObject:
   m_ObjectHideFlags: 0
@@ -16063,6 +15904,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   slotManager: {fileID: 0}
+  channelFlag: 0
+  channelImage: {fileID: 0}
+  fullColor: {r: 0, g: 0, b: 0, a: 0}
+  fadeColor: {r: 0, g: 0, b: 0, a: 0}
+  fadeTimeModifier: 0
 --- !u!222 &129746561812664497
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -16181,7 +16027,7 @@ MonoBehaviour:
   winLossPanel: {fileID: 129746561627348948}
   reloadGameButton: {fileID: 129746561049401200}
   loadShoppingButton: {fileID: 2050768820}
-  narrateCardSelection: 0
+  narrateCardSelection: 1
   narrateCombatChoices: 1
   narrateAIDecisionMaking: 0
 --- !u!114 &1646574084020073059
@@ -16209,11 +16055,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   aSlot: 1
+  randomizationWeight: 9
   aggressivenessWeight: 5
-  defensivenessWeight: 0
-  baseDamageWeight: 2
-  componentDamageWeight: 3
-  targetingWeight: 5
+  defensivenessWeight: 5
+  baseDamageWeight: 5
+  componentDamageWeight: 5
+  targetingWeight: 1
 --- !u!1 &2245919304587867374
 GameObject:
   m_ObjectHideFlags: 0
@@ -16336,8 +16183,6 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 8072552485190867768}
-  - {fileID: 129746561463971122}
-  - {fileID: 129746559895224418}
   m_Father: {fileID: 129746560902767076}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -16493,6 +16338,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   slotManager: {fileID: 2460050125509668766}
+  channelFlag: 0
+  channelImage: {fileID: 0}
+  fullColor: {r: 0, g: 0, b: 0, a: 0}
+  fadeColor: {r: 0, g: 0, b: 0, a: 0}
+  fadeTimeModifier: 0
 --- !u!1 &3444914628272037668
 GameObject:
   m_ObjectHideFlags: 0
@@ -16861,7 +16711,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &4340643545533421041
 RectTransform:
   m_ObjectHideFlags: 0
@@ -17391,6 +17241,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   slotManager: {fileID: 2460050125509668766}
+  channelFlag: 0
+  channelImage: {fileID: 0}
+  fullColor: {r: 0, g: 0, b: 0, a: 0}
+  fadeColor: {r: 0, g: 0, b: 0, a: 0}
+  fadeTimeModifier: 0
 --- !u!1 &5025408726891117219
 GameObject:
   m_ObjectHideFlags: 0
@@ -18383,6 +18238,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   slotManager: {fileID: 2460050125509668766}
+  channelFlag: 0
+  channelImage: {fileID: 0}
+  fullColor: {r: 0, g: 0, b: 0, a: 0}
+  fadeColor: {r: 0, g: 0, b: 0, a: 0}
+  fadeTimeModifier: 0
 --- !u!1 &5928361025756203247
 GameObject:
   m_ObjectHideFlags: 0
@@ -18608,6 +18468,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   slotManager: {fileID: 2460050125509668766}
+  channelFlag: 0
+  channelImage: {fileID: 0}
+  fullColor: {r: 0, g: 0, b: 0, a: 0}
+  fadeColor: {r: 0, g: 0, b: 0, a: 0}
+  fadeTimeModifier: 0
 --- !u!1 &6635841002450346203
 GameObject:
   m_ObjectHideFlags: 0
@@ -19058,6 +18923,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   slotManager: {fileID: 2460050125509668766}
+  channelFlag: 0
+  channelImage: {fileID: 0}
+  fullColor: {r: 0, g: 0, b: 0, a: 0}
+  fadeColor: {r: 0, g: 0, b: 0, a: 0}
+  fadeTimeModifier: 0
 --- !u!1 &7893407874866714928
 GameObject:
   m_ObjectHideFlags: 0
