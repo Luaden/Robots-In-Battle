@@ -47,8 +47,6 @@ public class CardUISlotController : BaseSlotController<CardUIController>
         {
             if(fadeOut)
             {
-                Debug.Log("Flashing, fading out.");
-
                 channelImage.color = new Color(fadeColor.r, fadeColor.g, fadeColor.b, channelImage.color.a - (fadeTimeModifier * Time.deltaTime));
 
                 if (channelImage.color.a <= fadeColor.a)
@@ -57,19 +55,13 @@ public class CardUISlotController : BaseSlotController<CardUIController>
 
             if(!fadeOut)
             {
-                Debug.Log("Flashing, fading in.");
                 channelImage.color = new Color(fadeColor.r, fadeColor.g, fadeColor.b, channelImage.color.a + (fadeTimeModifier * Time.deltaTime));
 
                 if (channelImage.color.a >= fullColor.a)
                     fadeOut = true;
             }
-
-            return;
         }
-
-        if(!flashChannel)
-        {
+        else
             channelImage.color = Color.Lerp(channelImage.color, fullColor, (fadeTimeModifier * Time.deltaTime));
-        }
     }
 }

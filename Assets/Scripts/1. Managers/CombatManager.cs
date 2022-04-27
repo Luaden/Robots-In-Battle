@@ -51,7 +51,6 @@ public class CombatManager : MonoBehaviour
     public ChannelsUISlotManager ChannelsUISlotManager { get => channelsUISlotManager; }
     public CardPlayManager CardPlayManager { get => cardPlayManager; }
     public CardUIManager CardUIManager { get => cardUIManager; }
-    //public MechHUDManager MechHUDManager { get => mechHUDManager; }
     public PopupUIManager PopupUIManager { get => popupUIManager; }
     public BuffUIManager BuffUIManager { get => buffUIManager; }
     public MechAnimationManager MechAnimationManager { get => mechAnimationManager; }
@@ -64,6 +63,17 @@ public class CombatManager : MonoBehaviour
 
     public delegate void onDestroyScene();
     public static event onDestroyScene OnDestroyScene;
+
+    public delegate void onStartNewTurn();
+    public static event onStartNewTurn OnStartNewTurn;
+
+    #region Debug
+    public void StartGame()
+    {
+
+        StartNewTurn();
+    }
+    #endregion
 
     public void RemoveHealthFromMech(CharacterSelect character, int damage)
     {
@@ -175,7 +185,7 @@ public class CombatManager : MonoBehaviour
     private void InitPlayerFighter(FighterDataObject newPlayerFighter)
     {
         playerFighter = newPlayerFighter;
-
+        deckManager.SetPlayerDeck(newPlayerFighter.FighterDeck);
         mechHUDManager.SetPlayerMaxStats(playerFighter.FighterMech.MechMaxHP, playerFighter.FighterMech.MechMaxHP);
         mechHUDManager.UpdatePlayerHP(playerFighter.FighterMech.MechCurrentHP);
     }
@@ -183,7 +193,7 @@ public class CombatManager : MonoBehaviour
     private void InitOpponentFighter(FighterDataObject newOpponentFighter)
     {
         opponentFighter = newOpponentFighter;
-
+        deckManager.SetOpponentDeck(newOpponentFighter.FighterDeck);
         mechHUDManager.SetOpponentMaxStats(opponentFighter.FighterMech.MechMaxHP, opponentFighter.FighterMech.MechMaxEnergy);
     }
 
@@ -194,6 +204,8 @@ public class CombatManager : MonoBehaviour
 
         AddEnergyToMech(CharacterSelect.Opponent, mechEnergyGain + OpponentFighter.FighterMech.MechEnergyGain);
         AddEnergyToMech(CharacterSelect.Player, mechEnergyGain + PlayerFighter.FighterMech.MechEnergyGain);
+
+        OnStartNewTurn?.Invoke();
     }
 
     private void CheckForWinLoss()

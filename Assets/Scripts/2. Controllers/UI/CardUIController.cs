@@ -26,6 +26,7 @@ public class CardUIController : MonoBehaviour, IPointerDownHandler, IPointerUpHa
     [SerializeField] private Color fullColor;
     [SerializeField] private Color fadeColor;
     private Transform previousParentObject;
+    private bool isInteractable;
 
     [Header("Card Frames")]
     [SerializeField] private Sprite attackFrame;
@@ -51,7 +52,7 @@ public class CardUIController : MonoBehaviour, IPointerDownHandler, IPointerUpHa
     public Transform PreviousParentObject { get => previousParentObject; set => previousParentObject = value; }
     public BaseSlotController<CardUIController> CardSlotController { get => cardSlotController; set => UpdateCardSlot(value); }
 
-    public void InitCardUI(CardDataObject newCardData)
+    public void InitCardUI(CardDataObject newCardData, CharacterSelect character)
     {
         cardName.text = newCardData.CardName;
         cardData = newCardData;
@@ -100,6 +101,11 @@ public class CardUIController : MonoBehaviour, IPointerDownHandler, IPointerUpHa
             midChannelIcon.color = fullColor;
         if (newCardData.PossibleChannels.HasFlag(Channels.Low))
             lowChannelIcon.color = fullColor;
+
+        if (character == CharacterSelect.Player)
+            isInteractable = true;
+        if (character == CharacterSelect.Opponent)
+            isInteractable = false;
     }
 
     public virtual void OnPointerEnter(PointerEventData eventData)
@@ -114,38 +120,50 @@ public class CardUIController : MonoBehaviour, IPointerDownHandler, IPointerUpHa
 
     public virtual void OnPointerDown(PointerEventData eventData)
     {
-        transform.SetParent(cardSlotController.SlotManager.MainCanvas.transform);
-        OnPickUp.Invoke(cardData.PossibleChannels);
+        if (isInteractable)
+        {
+            transform.SetParent(cardSlotController.SlotManager.MainCanvas.transform);
+            OnPickUp.Invoke(cardData.PossibleChannels);
+        }
     }
 
     public void OnPointerUp(PointerEventData eventData)
     {
-        transform.SetParent(previousParentObject);
-        OnPickUp.Invoke(Channels.None);
+        if(isInteractable)
+        {
+            transform.SetParent(previousParentObject);
+            OnPickUp.Invoke(Channels.None);
+        }
     }
 
     public virtual void OnBeginDrag(PointerEventData eventData)
     {
-        isPickedUp = true;
-        draggableCanvasGroup.blocksRaycasts = false;
-        draggableCanvasGroup.alpha = .6f;
+        if(isInteractable)
+        {
+            isPickedUp = true;
+            draggableCanvasGroup.blocksRaycasts = false;
+            draggableCanvasGroup.alpha = .6f;
+        }
     }
 
     public virtual void OnEndDrag(PointerEventData eventData)
     {
-        isPickedUp = false;
-        draggableCanvasGroup.blocksRaycasts = true;
-        draggableCanvasGroup.alpha = 1f;
+        if (isInteractable)
+        {
+            isPickedUp = false;
+            draggableCanvasGroup.blocksRaycasts = true;
+            draggableCanvasGroup.alpha = 1f;
+        }
     }
 
     public void OnDrag(PointerEventData eventData)
     {
-        cardSlotController.HandleDrag(eventData);
+        if(isInteractable)
+            cardSlotController.HandleDrag(eventData);
     }
 
     public void UpdateSelectedChannel(Channels channel)
     {
-        Debug.Log(cardData.CardName + ": " + channel);
         if (channel.HasFlag(Channels.High))
             highChannelIcon.color = fullColor;
         else

@@ -38,13 +38,13 @@ public class AIController : MonoBehaviour
     "base damage more than those that do less.")]
     [Range(0, 9)] [SerializeField] private int baseDamageWeight;
 
-    [Tooltip("A value range between 0 and 9 that represents the AI preference for component damage. A value of 5 means the AI will value attacks that deal " +
-        "or benefit from bonus component damage more than those that do not.")]
-    [Range(0, 9)] [SerializeField] private int componentDamageWeight;
+    [Tooltip("(Component Damage Multiplier) A value range between 0 and 9 that represents the AI preference for component damage. A value of 5 means the AI " +
+        "will value attacks that deal or benefit from bonus component damage more than those that do not.")]
+    [Range(0, 9)] [SerializeField] private int cDMWeight;
 
     [Tooltip("A value range between 0 and 9 that represents the AI preference for targeting weaker components. A value of 5 means that the AI will value attacks " +
         "that can target weaker components more.")]
-    [Range(0, 9)] [SerializeField] private int targetingWeight;
+    [Range(0, 9)] [SerializeField] private int componentHealthWeight;
 
     //[Tooltip("A value range between 0 and 5 that represents the AI preference to play cards that benefit from buffs. A value of 5 means that the AI will " +
     //    "value cards that benefit from buffs more than those that do not.")]
@@ -75,15 +75,15 @@ public class AIController : MonoBehaviour
 
     private void Start()
     {
-        ChannelsUISlotManager.OnASlotFilled += BuildCardChannelPairA;
-        ChannelsUISlotManager.OnBSlotFilled += BuildCardChannelPairB;
+        CombatManager.OnStartNewTurn += BuildCardChannelPairA;
+        ChannelsUISlotManager.OnASlotFilled += BuildCardChannelPairB;
         CardPlayManager.OnCombatStart += FinalCheck;
     }
 
     private void OnDestroy()
     {
-        ChannelsUISlotManager.OnASlotFilled -= BuildCardChannelPairA;
-        ChannelsUISlotManager.OnBSlotFilled -= BuildCardChannelPairB;
+        CombatManager.OnStartNewTurn -= BuildCardChannelPairA;
+        ChannelsUISlotManager.OnASlotFilled -= BuildCardChannelPairB;
         CardPlayManager.OnCombatStart -= FinalCheck;
     }
 
@@ -300,7 +300,7 @@ public class AIController : MonoBehaviour
                 continue;
 
             cardPlayPriority.priority += Mathf.RoundToInt(((cardPlayPriority.card.BaseDamage * GetComponentDamageMultiplier(cardPlayPriority))
-                                                            / maximumComponentDamage) * componentDamageWeight);
+                                                            / maximumComponentDamage) * cDMWeight);
         }
 
         float GetComponentDamageMultiplier(CardPlayPriorityObject cardPlayPriorityObject)
@@ -391,9 +391,9 @@ public class AIController : MonoBehaviour
         foreach (CardPlayPriorityObject card in cardPlayPriorityObjects)
         {
             if (card.channel == highPriority)
-                card.priority += targetingWeight;
+                card.priority += componentHealthWeight;
             if (card.channel == midPriority)
-                card.priority += Mathf.RoundToInt(targetingWeight / 2);
+                card.priority += Mathf.RoundToInt(componentHealthWeight / 2);
             if (card.channel == lowPriority)
                 continue;
         }

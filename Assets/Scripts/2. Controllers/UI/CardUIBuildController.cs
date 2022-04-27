@@ -17,7 +17,7 @@ public class CardUIBuildController : MonoBehaviour
         cardToDraw.CardUIObject = cardUIGameObject;
         CardUIController cardUIObject = cardUIGameObject.GetComponent<CardUIController>();
 
-        cardUIObject.InitCardUI(cardToDraw);
+        cardUIObject.InitCardUI(cardToDraw, CharacterSelect.Player);
         cardUIGameObject.SetActive(true);
 
         return cardUIObject;
@@ -32,7 +32,7 @@ public class CardUIBuildController : MonoBehaviour
         cardToDraw.CardUIObject = cardUIGameObject;
         CardUIController cardUIObject = cardUIGameObject.GetComponent<CardUIController>();
 
-        cardUIObject.InitCardUI(cardToDraw);
+        cardUIObject.InitCardUI(cardToDraw, CharacterSelect.Opponent);
         cardUIGameObject.SetActive(true);
 
         return cardUIObject;

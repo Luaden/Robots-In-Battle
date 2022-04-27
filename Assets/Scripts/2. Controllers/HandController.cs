@@ -8,6 +8,8 @@ public class HandController
 
     public List<CardDataObject> CharacterHand { get => characterHand; }
 
+    public HandController() => characterHand = new List<CardDataObject>();
+
     public void AddCardToHand(CardDataObject cardToAdd)
     {
         if (characterHand == null)
