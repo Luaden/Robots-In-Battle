@@ -28,6 +28,9 @@ public class GameManager : MonoBehaviour
     [SerializeField] private List<SOItemDataObject> starterDeck;
     [SerializeField] protected int starterPlayerCurrency;
     [SerializeField] protected float starterTimeLeftToSpend;
+    [SerializeField] protected int playerCurrencyGainOnWin;
+
+    public int PlayerCurrencyGainOnWin { get => playerCurrencyGainOnWin; }
 
 
     [ContextMenu("Start Game")]
@@ -64,11 +67,16 @@ public class GameManager : MonoBehaviour
 
     }
     #endregion
-    
-    public void ReloadScene()
+
+    public void ReloadGame()
     {
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+        sceneController.LoadTitleScene();
         Destroy(this);
+    }
+
+    public void LoadShoppingScene()
+    {
+        sceneController.LoadDowntimeScene();
     }
 
     private void Awake()
@@ -173,6 +181,12 @@ public class GameManager : MonoBehaviour
             instance.playerData.PlayerMech = newMech;
         }
 
+        public void SetNewPlayerMech(MechObject newMech)
+        {
+            MechObject newPlayerMech = new MechObject(newMech.MechHead, newMech.MechTorso, newMech.MechArms, newMech.MechLegs);
+            instance.playerData.PlayerMech = newPlayerMech;
+        }
+
         public void SwapPlayerMechPart(SOItemDataObject SOMechComponentDataObject)
         {
             MechComponentDataObject newComponent = new MechComponentDataObject(SOMechComponentDataObject);
@@ -254,6 +268,16 @@ public class GameManager : MonoBehaviour
             }
 
             instance.playerData.TimeLeftToSpend -= timeToSpend;
+        }
+
+        public void AddPlayerCurrency(int currencyToGain)
+        {
+            instance.playerData.CurrencyToSpend += currencyToGain;
+        }
+
+        public void ResetPlayerTime()
+        {
+            instance.playerData.TimeLeftToSpend = instance.starterTimeLeftToSpend;
         }
     }
 }

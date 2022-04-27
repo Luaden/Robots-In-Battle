@@ -8,4 +8,14 @@ public class TestCombatUIButton : MonoBehaviour
     {
         GameManager.instance.BuildMech();
     }
+
+    public void LoadTitle()
+    {
+        GameManager.instance.ReloadGame();
+    }
+
+    public void LoadShoppingScene()
+    {
+        GameManager.instance.LoadShoppingScene();
+    }
 }

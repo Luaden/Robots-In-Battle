@@ -14,6 +14,8 @@ public class CombatManager : MonoBehaviour
     #region Debug
     [Header("Debug / Testing")]
     [SerializeField] private GameObject winLossPanel;
+    [SerializeField] private GameObject reloadGameButton;
+    [SerializeField] private GameObject loadShoppingButton;
     [SerializeField] private bool narrateCardSelection;
     [SerializeField] private bool narrateCombatChoices;
     [SerializeField] private bool narrateAIDecisionMaking;
@@ -198,11 +200,16 @@ public class CombatManager : MonoBehaviour
         if (playerFighter.FighterMech.MechCurrentHP <= 0)
         {
             winLossPanel.SetActive(true);
+            loadShoppingButton.SetActive(true);
             MechAnimationManager.SetMechAnimation(CharacterSelect.Player, AnimationType.Lose, CharacterSelect.Opponent, AnimationType.Win);
+
+            GameManager.instance.PlayerMechController.SetNewPlayerMech(playerFighter.FighterMech);
+            GameManager.instance.PlayerBankController.AddPlayerCurrency(GameManager.instance.PlayerCurrencyGainOnWin);
         }
         if (opponentFighter.FighterMech.MechCurrentHP <= 0)
         {
             winLossPanel.SetActive(true);
+            reloadGameButton.SetActive(true);
             MechAnimationManager.SetMechAnimation(CharacterSelect.Player, AnimationType.Win, CharacterSelect.Opponent, AnimationType.Lose);
         }
 
