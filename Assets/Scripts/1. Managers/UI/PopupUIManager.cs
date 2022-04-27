@@ -16,22 +16,24 @@ public class PopupUIManager : MonoBehaviour
         hudPopUpController = GetComponentInChildren<HUDPopupController>();
     }
 
-    public void HandlePopup(CardDataObject cardDataObject, Transform transform, Vector3 cursorPosition)
+    public void HandlePopup(CardDataObject cardDataObject)
     {
-        cardUIPopupController.HandlePopup(cardDataObject, transform, cursorPosition);
+        cardUIPopupController.UpdateUI(cardDataObject);
     }
-    public void HandlePopup(List<SOCardEffectObject> cardEffects, Transform transform, Vector3 cursorPosition)
-    {
-        hudPopUpController.HandlePopup(cardEffects, transform, cursorPosition);
-    }
-    public void HandlePopup(MechObject mechObject, Transform transform, Vector3 cursorPosition)
-    {
-        mechUIPopupController.HandlePopup(mechObject, transform, cursorPosition);
-    }
+
+    //public void HandlePopup(List<SOCardEffectObject> cardEffects, Transform transform, Vector3 cursorPosition)
+    //{
+    //    hudPopUpController.HandlePopup(cardEffects, transform, cursorPosition);
+    //}
+
+    //public void HandlePopup(MechObject mechObject, Transform transform, Vector3 cursorPosition)
+    //{
+    //    mechUIPopupController.HandlePopup(mechObject, transform, cursorPosition);
+    //}
 
     public void InactivatePopup()
     {
-        cardUIPopupController.InactivatePopup();
+        cardUIPopupController.UpdateUI(null);
     }
 
 }

@@ -99,7 +99,7 @@ public class CardUIController : MonoBehaviour, IPointerDownHandler, IPointerUpHa
 
     public virtual void OnPointerEnter(PointerEventData eventData)
     {
-        CombatManager.instance.PopupUIManager.HandlePopup(cardData, transform, eventData.position);
+        CombatManager.instance.PopupUIManager.HandlePopup(cardData);
     }
 
     public virtual void OnPointerExit(PointerEventData eventData)
