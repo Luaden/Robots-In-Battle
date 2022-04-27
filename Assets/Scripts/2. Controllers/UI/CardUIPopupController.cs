@@ -1,47 +1,42 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 
-public class CardUIPopupController : MonoBehaviour
+public class CardUIPopupController : BaseUIElement<CardDataObject>
 {
     [SerializeField] protected GameObject popupObject;
+    [SerializeField] private TMP_Text nameText;
+    [SerializeField] private TMP_Text descriptionText;
+    [SerializeField] private TMP_Text energyCostText;
+    [SerializeField] private TMP_Text damageDealtText;
 
-    private RectTransform rectTransform;
-    private int cardWidth = 125;
-
-    private void Awake()
+    public override void UpdateUI(CardDataObject primaryData)
     {
-        popupObject.SetActive(false);
-    }
-    public void HandlePopup(CardDataObject cardDataObject, 
-                            Transform transform,
-                            Vector3 cursorPosition)
-    {
-        //create popupdata
-        PopupData popupData = new PopupData(cardDataObject.CardName,
-                                            cardDataObject.CardDescription);
+        if (ClearedIfEmpty(primaryData))
+            return;
 
-        // get component from gameobject
-        CardPopupObject cardPopupObject = popupObject.GetComponent<CardPopupObject>();
+        nameText.text = primaryData.CardName;
+        descriptionText.text = primaryData.CardDescription;
+        energyCostText.text = primaryData.EnergyCost.ToString();
+        damageDealtText.text = primaryData.BaseDamage.ToString();
 
-        //assign popupdata to cardpopup
-        cardPopupObject.Assign(popupData);
-
-        // reference the transform of the popup
-        rectTransform = popupObject.GetComponent<RectTransform>();
-
-        // put object at correct location
-        rectTransform.position = new Vector3(transform.position.x + cardWidth, cursorPosition.y);
-
-        // display
         popupObject.SetActive(true);
-
-
     }
 
-    public void InactivatePopup()
+    protected override bool ClearedIfEmpty(CardDataObject newData)
     {
-        popupObject.SetActive(false);
-    }
+        if (newData == null)
+        {
+            nameText.text = string.Empty;
+            descriptionText.text = string.Empty;
+            energyCostText.text = string.Empty;
+            damageDealtText.text = string.Empty;
 
+            popupObject.SetActive(false);
+            return true;
+        }
+
+        return false;
+    }
 }
