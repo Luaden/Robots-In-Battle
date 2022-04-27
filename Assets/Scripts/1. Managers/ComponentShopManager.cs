@@ -34,7 +34,7 @@ public class ComponentShopManager : MonoBehaviour
 
         foreach (SOShopItemCollectionObject collection in shopCollectionObjects)
         {
-            DowntimeManager.instance.ShopCollectionRandomizeManager.InitList();
+            DowntimeManager.instance.ShopCollectionRandomizeManager.InitComponentList();
             DowntimeManager.instance.ShopCollectionRandomizeManager.AddToComponentShopCollectionList(collection);
         }
 

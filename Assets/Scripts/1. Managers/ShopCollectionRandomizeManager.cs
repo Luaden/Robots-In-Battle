@@ -21,8 +21,12 @@ public class ShopCollectionRandomizeManager : MonoBehaviour
         shopCollectionController.RandomizeShopItemCollection();
     }
 
-    public void InitList()
+    public void InitCardList()
     {
-        shopCollectionController.InitList();
+        shopCollectionController.InitCardList();
+    }
+    public void InitComponentList()
+    {
+        shopCollectionController.InitComponentList();
     }
 }
