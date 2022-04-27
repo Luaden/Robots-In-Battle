@@ -19,6 +19,14 @@ public class PlayerDataObject
         playerInventory = new List<MechComponentDataObject>();
         playerDeck = new List<SOItemDataObject>();
     }
+    public PlayerDataObject(int startCurrency, float startTimeToSpend)
+    {
+        currencyToSpend = startCurrency;
+        timeLeftToSpend = startTimeToSpend;
+
+        playerInventory = new List<MechComponentDataObject>();
+        playerDeck = new List<SOItemDataObject>();
+    }
 
     public float TimeLeftToSpend { get => timeLeftToSpend; set => timeLeftToSpend = value; }
     public int CurrencyToSpend { get => currencyToSpend; set => currencyToSpend = value; }

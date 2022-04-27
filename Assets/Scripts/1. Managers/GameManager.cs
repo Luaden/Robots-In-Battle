@@ -26,6 +26,8 @@ public class GameManager : MonoBehaviour
     [SerializeField] private SOItemDataObject starterMechArms;
     [SerializeField] private SOItemDataObject starterMechLegs;
     [SerializeField] private List<SOItemDataObject> starterDeck;
+    [SerializeField] protected int starterPlayerCurrency;
+    [SerializeField] protected float starterTimeLeftToSpend;
 
 
     [ContextMenu("Start Game")]
@@ -100,7 +102,7 @@ public class GameManager : MonoBehaviour
             return;
         }
 
-        playerData = new PlayerDataObject();
+        playerData = new PlayerDataObject(starterPlayerCurrency, starterTimeLeftToSpend);
         MechObject newMech = instance.PlayerMechController.BuildNewMech(starterMechHead, starterMechTorso, starterMechArms, starterMechLegs);
 
         playerData.PlayerDeck = starterDeck;
