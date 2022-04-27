@@ -100,14 +100,10 @@ public class GameManager : MonoBehaviour
     public void LoadPlayer(PlayerDataObject playerDataObject = null)
     {
         if (playerData != null)
-        {
-            Debug.Log("Found a pilot!");
             return;
-        }
 
         if (playerDataObject != null)
         {
-            Debug.Log("Recieved a new pilot!");
             playerData = playerDataObject;
             return;
         }

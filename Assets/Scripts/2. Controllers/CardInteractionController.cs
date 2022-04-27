@@ -155,8 +155,8 @@ public class CardInteractionController
 
                     if (CombatManager.instance.NarrateCombat)
                     {
-                        combatLog += (GetOtherMech(defensiveMech) + " is playing " + offensiveAttack.CardData.CardName + " but is Countered by " + defensiveMech + ". ");
-                        combatLog += (GetOtherMech(defensiveMech) + " would have dealt " + offensiveAttack.CardData.BaseDamage + " damage but will instead be dealt " +
+                        combatLog += ((defensiveMech) + " is playing " + offensiveAttack.CardData.CardName + " but is Countered by " + GetOtherMech(defensiveMech) + ". ");
+                        combatLog += ((defensiveMech) + " would have dealt " + offensiveAttack.CardData.BaseDamage + " damage but will instead be dealt " +
                             (damageToDeal * Mathf.RoundToInt(CombatManager.instance.CounterDamageMultiplier)) + ". ");
                         combatLog += (GetOtherMech(defensiveMech) + "'s attack is " + i + " of " + repeatPlay + " total attacks. ");
                     }
