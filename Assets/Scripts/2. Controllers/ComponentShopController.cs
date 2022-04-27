@@ -38,6 +38,17 @@ public class ComponentShopController : MonoBehaviour
 
     public void PurchaseItem()
     {
+        if(GameManager.instance.PlayerBankController == null)
+        {
+            Debug.Log("instance of PlayerBankController is null");
+            return;
+        }
+        if (GameManager.instance.PlayerInventoryController == null)
+        {
+            Debug.Log("instance of PlayerInventoryController is null");
+            return;
+        }
+
         List<ComponentShopCartUIController> shopCartItemList = new List<ComponentShopCartUIController>();
         for (int i = 0; i < DowntimeManager.instance.ComponentShopManager.ComponentShopCartSlotManager.SlotList.Count; i++)
         {
