@@ -496,7 +496,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2126257079}
-  - component: {fileID: 2126257080}
   m_Layer: 0
   m_Name: Mechs
   m_TagString: Untagged
@@ -521,20 +520,6 @@ Transform:
   m_Father: {fileID: 1215757184}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &2126257080
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2126257078}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3f7639a6b63bcb54e8a696cf33859ec8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  playerMechAnimationController: {fileID: 8973352678076547054}
-  opponentMechAnimationController: {fileID: 95278977585015121}
 --- !u!1 &13898062404133399
 GameObject:
   m_ObjectHideFlags: 0
@@ -1744,6 +1729,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4448456664252747910, guid: 3cb39735a198a9a498fdb244110e27d7, type: 3}
+      propertyPath: playerMechAnimationController
+      value: 
+      objectReference: {fileID: 8973352678076547054}
+    - target: {fileID: 4448456664252747910, guid: 3cb39735a198a9a498fdb244110e27d7, type: 3}
+      propertyPath: opponentMechAnimationController
+      value: 
+      objectReference: {fileID: 95278977585015121}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3cb39735a198a9a498fdb244110e27d7, type: 3}
 --- !u!114 &1767766824680108594

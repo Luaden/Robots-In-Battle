@@ -7,7 +7,7 @@ public class AnimationTestTool : MonoBehaviour
     [SerializeField] private AnimationType playerMechAnimation;
     [SerializeField] private AnimationType opponentMechAnimation;
 
-    private MechAnimationManager mechAnimationManager;
+    private CombatAnimationManager mechAnimationManager;
 
     public void TestAnimations()
     {
@@ -16,6 +16,6 @@ public class AnimationTestTool : MonoBehaviour
 
     private void Start()
     {
-        mechAnimationManager = FindObjectOfType<MechAnimationManager>();
+        mechAnimationManager = FindObjectOfType<CombatAnimationManager>();
     }
 }

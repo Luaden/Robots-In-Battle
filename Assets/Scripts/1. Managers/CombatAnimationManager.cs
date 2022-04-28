@@ -2,16 +2,22 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MechAnimationManager : MonoBehaviour
+public class CombatAnimationManager : MonoBehaviour
 {
     [SerializeField] private MechAnimationController playerMechAnimationController;
     [SerializeField] private MechAnimationController opponentMechAnimationController;
+    [SerializeField] private BurnPileController burnPileController;
+
+    private bool animationComplete = true;
+    private bool turnComplete = true;
 
     private Queue<AnimationType> playerAnimations = new Queue<AnimationType>();
     private Queue<AnimationType> opponentAnimations = new Queue<AnimationType>();
 
-    public delegate void onStartingAnimation();
-    public static event onStartingAnimation OnStartingAnimation;
+    public delegate void onStartNewAnimation();
+    public static event onStartNewAnimation OnStartNewAnimation;
+    public delegate void onAnimationsComplete();
+    public static event onAnimationsComplete OnAnimationsComplete;
 
     public void SetMechAnimation(CharacterSelect firstMech, AnimationType firstAnimation, CharacterSelect secondMech, AnimationType secondAnimation)
     {
@@ -24,6 +30,14 @@ public class MechAnimationManager : MonoBehaviour
             playerAnimations.Enqueue(secondAnimation);
         else
             opponentAnimations.Enqueue(secondAnimation);
+
+        animationComplete = false;
+        turnComplete = false;
+    }
+
+    public void SetCardOnBurnPile(CardUIController firstCard, CharacterSelect firstCardOwner, CardUIController secondCard = null)
+    {
+        burnPileController.SetCardOnBurnPile(firstCard, firstCardOwner, secondCard);
     }
 
     public AnimationType GetAnimationFromCategory(CardCategory cardCategory)
@@ -49,9 +63,16 @@ public class MechAnimationManager : MonoBehaviour
         return AnimationType.Idle;
     }
 
+    private void Awake()
+    {
+        if (burnPileController == null)
+            GetComponent<BurnPileController>();
+    }
+
     private void Update()
     {
         PlayMechAnimations();
+        CheckAllAnimationsComplete();
     }
 
     private bool CheckMechIsAnimating(CharacterSelect mechToCheck)
@@ -67,12 +88,27 @@ public class MechAnimationManager : MonoBehaviour
         if (CheckMechIsAnimating(CharacterSelect.Player) || CheckMechIsAnimating(CharacterSelect.Opponent))
             return;
 
-        OnStartingAnimation?.Invoke();
+        OnStartNewAnimation?.Invoke();
 
         if (playerAnimations.Count > 0)
             playerMechAnimationController.SetMechAnimation(playerAnimations.Dequeue());
 
         if (opponentAnimations.Count > 0)
             opponentMechAnimationController.SetMechAnimation(opponentAnimations.Dequeue());
+
+        if (!animationComplete && playerAnimations.Count == 0 && opponentAnimations.Count == 0)
+            animationComplete = true;
+    }
+
+    private void CheckAllAnimationsComplete()
+    {
+        if (CheckMechIsAnimating(CharacterSelect.Player) || CheckMechIsAnimating(CharacterSelect.Opponent))
+            return;
+
+        if (animationComplete && burnPileController.BurnComplete && !turnComplete)
+        {
+            OnAnimationsComplete.Invoke();
+            turnComplete = true;
+        }
     }
 }
