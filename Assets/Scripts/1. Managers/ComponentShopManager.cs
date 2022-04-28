@@ -31,12 +31,10 @@ public class ComponentShopManager : MonoBehaviour
         componentShopCartSlotManager = GetComponentInChildren<ComponentShopCartSlotManager>(true);
 
         itemsToDisplay = new List<SOItemDataObject>();
+        DowntimeManager.instance.ShopCollectionRandomizeManager.InitComponentList();
 
         foreach (SOShopItemCollectionObject collection in shopCollectionObjects)
-        {
-            DowntimeManager.instance.ShopCollectionRandomizeManager.InitComponentList();
             DowntimeManager.instance.ShopCollectionRandomizeManager.AddToComponentShopCollectionList(collection);
-        }
 
         DowntimeManager.instance.ShopCollectionRandomizeManager.RandomizeComponentShopItemCollection();
 

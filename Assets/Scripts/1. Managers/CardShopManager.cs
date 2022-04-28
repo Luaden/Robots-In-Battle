@@ -38,12 +38,10 @@ public class CardShopManager : MonoBehaviour
         cardShopCartSlotManager = GetComponentInChildren<CardShopCartSlotManager>(true);
 
         itemsToDisplay = new List<SOItemDataObject>();
+        DowntimeManager.instance.ShopCollectionRandomizeManager.InitCardList();
 
         foreach(SOShopItemCollectionObject collection in shopCollectionObjects)
-        {
-            DowntimeManager.instance.ShopCollectionRandomizeManager.InitCardList();
             DowntimeManager.instance.ShopCollectionRandomizeManager.AddToCardShopCollectionList(collection);
-        }
         
         DowntimeManager.instance.ShopCollectionRandomizeManager.RandomizeCardShopItemCollection();
 
