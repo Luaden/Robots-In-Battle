@@ -78,7 +78,7 @@ public class EquipmentController : MonoBehaviour
 
             addedSlot.SetSlotManager(slotManager);
             slotManager.AddSlotToList(addedSlot);
-            addedSlot.SetComponentType((MechComponent)i);
+            addedSlot.SetComponentType((MechComponent)i + 1);
 
             Vector3 scale = slotGO.transform.localScale;
             slotGO.transform.SetParent(slotManager.transform);

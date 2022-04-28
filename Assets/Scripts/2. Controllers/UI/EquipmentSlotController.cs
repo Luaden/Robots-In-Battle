@@ -32,6 +32,8 @@ public class EquipmentSlotController : BaseSlotController<EquipmentUIController>
             return;
         }
 
+        Debug.Log(equipmentItem.MechComponentUIObject.MechComponentData.ComponentType);
+        Debug.Log(mechComponentType);
         if(equipmentItem.MechComponentUIObject.MechComponentData.ComponentType != this.MechComponentType)
         {
             Debug.Log("the dropped item is not of the same component type as slot");
