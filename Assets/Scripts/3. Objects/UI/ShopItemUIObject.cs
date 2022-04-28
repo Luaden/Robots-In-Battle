@@ -71,7 +71,6 @@ public class ShopItemUIObject
 
     public ShopItemUIObject(SOItemDataObject data)
     {
-        Debug.Log(data.ItemType);
         if(data.ItemType == ItemType.Card)
         {
             itemName = data.CardName;

@@ -9,7 +9,6 @@ public class ComponentShopController : MonoBehaviour
     [SerializeField] protected ComponentShopItemUIBuildController shopItemUIBuildController;
     public void InitializeShop(List<SOItemDataObject> itemsToDisplay)
     {
-        Debug.Log(itemsToDisplay.Count);
         shopItemList = new List<ShopItemUIObject>();
         for (int i = 0; i < itemsToDisplay.Count; i++)
         {

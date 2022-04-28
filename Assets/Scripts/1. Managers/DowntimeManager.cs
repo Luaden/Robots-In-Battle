@@ -4,13 +4,16 @@ using UnityEngine;
 
 public class DowntimeManager : MonoBehaviour
 {
+    [SerializeField] private int repairCost;
     private CardShopManager cardShopManager;
     private ComponentShopManager componentShopManager;
     private ShopCollectionRandomizeManager shopCollectionRandomizeManager;
     private InventoryManager inventoryManager;
-    [SerializeField] protected int repairCost;
 
     public static DowntimeManager instance;
+
+    public int RepairCost { get => repairCost; }
+
     public CardShopManager CardShopManager { get => cardShopManager; }
     public ComponentShopManager ComponentShopManager { get => componentShopManager; }
     public ShopCollectionRandomizeManager ShopCollectionRandomizeManager { get => shopCollectionRandomizeManager; }
@@ -44,19 +47,10 @@ public class DowntimeManager : MonoBehaviour
 
     public void RepairEquippedItems()
     {
-        Debug.Log("click");
-        MechComponentDataObject[] mechDatas = new MechComponentDataObject[4] { 
-            GameManager.instance.PlayerMechController.PlayerMech.MechHead,
-            GameManager.instance.PlayerMechController.PlayerMech.MechTorso,
-            GameManager.instance.PlayerMechController.PlayerMech.MechArms,
-            GameManager.instance.PlayerMechController.PlayerMech.MechLegs
-        };
-
         if (GameManager.instance.PlayerBankController.GetPlayerCurrency() >= repairCost)
         {
-            GameManager.instance.PlayerMechController.BuildNewMech(mechDatas[0].SOItemDataObject, mechDatas[1].SOItemDataObject, mechDatas[2].SOItemDataObject, mechDatas[3].SOItemDataObject);
+            GameManager.instance.PlayerMechController.PlayerMech.ResetHealth();
             GameManager.instance.PlayerBankController.SpendPlayerCurrency(repairCost);
-            Debug.Log("repairing mech");
         }
     }
 }
