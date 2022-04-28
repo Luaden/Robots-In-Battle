@@ -10,12 +10,12 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 36bc40fa79bff934fb1579cc2f9655ef, type: 3}
-  m_Name: Aggressive Block
+  m_Name: Punch Stop
   m_EditorClassIdentifier: 
   itemType: 0
-  itemName: Aggressive Block
-  itemDescription: 
-  itemImage: {fileID: 0}
+  itemName: Punch Stop
+  itemDescription: Deals damage and adds 3 shield in High or Mid.
+  componentImage: {fileID: 0}
   timeCost: 1
   currencyCost: 1
   chanceToSpawn: 1
@@ -29,13 +29,12 @@ MonoBehaviour:
   reduceDamageAsPercent: 0
   extraElementStacks: 0
   energyGainModifier: 0
-  cardBackground: {fileID: 0}
   cardType: 2
   cardCategory: 1
-  possibleChannels: 6
+  possibleChannels: 3
   affectedChannels: 0
   energyCost: 4
-  baseDamage: 2
+  baseDamage: 3
   componentDamageMultiplier: 0
   cardEffects:
-  - {fileID: 11400000, guid: c1efbc2fdb34ff04893467982c69fa6f, type: 2}
+  - {fileID: 11400000, guid: a98f5d55b8bff7448a76d8a6167209af, type: 2}
