@@ -22,8 +22,9 @@ public class InventoryController : MonoBehaviour
         InventoryUIController inventoryUIController = inventoryUIGameObject.GetComponent<InventoryUIController>();
         EquipmentUIController equipmentUIController = inventoryUIGameObject.GetComponent<EquipmentUIController>();
 
-        inventoryUIController.InitUI(mechComponentUIObject);
+        // todo: change 
         equipmentUIController.InitUI(mechComponentUIObject);
+        inventoryUIController.InitUI(mechComponentUIObject);
 
         inventoryUIController.enabled = true;
 

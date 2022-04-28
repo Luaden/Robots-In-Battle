@@ -31,7 +31,8 @@ public class EquipmentSlotController : BaseSlotController<EquipmentUIController>
             Debug.Log("Item was dropped in a slot that does not fit it.");
             return;
         }
-
+        Debug.Log(equipmentItem);
+        Debug.Log(equipmentItem.MechComponentUIObject);
         Debug.Log(equipmentItem.MechComponentUIObject.MechComponentData.ComponentType);
         Debug.Log(mechComponentType);
         if(equipmentItem.MechComponentUIObject.MechComponentData.ComponentType != this.MechComponentType)
