@@ -80,7 +80,7 @@ public class CardInteractionController
     private void CalculateDefensiveInteraction(CardChannelPairObject offensiveCard, CharacterSelect offensiveCharacter, CardChannelPairObject defensiveCard)
     {
         
-        if (defensiveCard.CardData.CardCategory.HasFlag(CardCategory.Guard))
+        if (defensiveCard.CardData.CardCategory == CardCategory.Guard)
         {
             CombatManager.instance.CardPlayManager.EffectController.EnableEffects(defensiveCard, offensiveCharacter);
 
@@ -91,8 +91,14 @@ public class CardInteractionController
                     CalculateMechDamage(offensiveCard, GetOtherMech(offensiveCharacter), false, true);
                     CombatManager.instance.CardPlayManager.EffectController.EnableEffects(offensiveCard, GetOtherMech(offensiveCharacter));
                 }
+                else
+                {
+                    CalculateMechDamage(offensiveCard, GetOtherMech(offensiveCharacter));
+                    CombatManager.instance.CardPlayManager.EffectController.EnableEffects(offensiveCard, GetOtherMech(offensiveCharacter));
+                }
+
             }
-            else if (offensiveCard.CardChannel.HasFlag(defensiveCard.CardChannel))
+            else if (offensiveCard.CardChannel == defensiveCard.CardChannel)
             {
                 CalculateMechDamage(offensiveCard, GetOtherMech(offensiveCharacter), false, true);
                 CombatManager.instance.CardPlayManager.EffectController.EnableEffects(offensiveCard, GetOtherMech(offensiveCharacter));
@@ -174,8 +180,6 @@ public class CardInteractionController
                     repeatPlay += CombatManager.instance.CardPlayManager.EffectController.GetAndConsumeFlurryBonus(GetOtherMech(defensiveMech));
             }
 
-
-
         if (offensiveAttack.CardData != null)
         {
             for (int i = 0; i < repeatPlay; i++)
@@ -218,14 +222,27 @@ public class CardInteractionController
                         combatLog += (GetOtherMech(defensiveMech) + "'s attack is " + i + " of " + repeatPlay + " total attacks. ");
                     }
                 }
+                else if(CardCategory.Defensive.HasFlag(offensiveAttack.CardData.CardCategory))
+                {
+                    CombatManager.instance.MechAnimationManager.SetMechAnimation(defensiveMech, AnimationType.Idle,
+                        GetOtherMech(defensiveMech), CombatManager.instance.MechAnimationManager.GetAnimationFromCategory(offensiveAttack.CardData.CardCategory));
+                    CombatManager.instance.RemoveHealthFromMech(defensiveMech, damageToDeal);
+                    CalculateComponentDamage(offensiveAttack, defensiveMech);
+                    
+                    if(CombatManager.instance.NarrateCombat)
+                    {
+                        combatLog += (GetOtherMech(defensiveMech) + " is playing " + offensiveAttack.CardData.CardName + " for " + damageToDeal + " damage. ");
+                        combatLog += (GetOtherMech(defensiveMech) + "'s attack is " + i + " of " + repeatPlay + " total attacks. ");
+                    }
+                }
                 else
                 {
                     CombatManager.instance.MechAnimationManager.SetMechAnimation(defensiveMech, AnimationType.Damaged,
                         GetOtherMech(defensiveMech), CombatManager.instance.MechAnimationManager.GetAnimationFromCategory(offensiveAttack.CardData.CardCategory));
                     CombatManager.instance.RemoveHealthFromMech(defensiveMech, damageToDeal);
                     CalculateComponentDamage(offensiveAttack, defensiveMech);
-                    
-                    if(CombatManager.instance.NarrateCombat)
+
+                    if (CombatManager.instance.NarrateCombat)
                     {
                         combatLog += (GetOtherMech(defensiveMech) + " is playing " + offensiveAttack.CardData.CardName + " for " + damageToDeal + " damage. ");
                         combatLog += (GetOtherMech(defensiveMech) + "'s attack is " + i + " of " + repeatPlay + " total attacks. ");

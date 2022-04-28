@@ -48,7 +48,7 @@ public class BurnPileController : MonoBehaviour
             burnCardCharacterQueue.Enqueue(newCardList);
             return;
         }
-        else
+        if(firstCardOwner == CharacterSelect.Opponent)
         {
             CardCharacterPairObject cardCharacterPair = new CardCharacterPairObject();
             cardCharacterPair.card = firstCard;
@@ -100,8 +100,6 @@ public class BurnPileController : MonoBehaviour
             {
                 if(cardCharacterPair.character == CharacterSelect.Player)
                 {
-                    Debug.Log(cardCharacterPair.card.CardData.SelectedChannels);
-
                     switch (cardCharacterPair.card.CardData.SelectedChannels)
                     {
                         case Channels.High:

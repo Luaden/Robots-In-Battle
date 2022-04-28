@@ -168,7 +168,11 @@ public class AIController : MonoBehaviour
 
             attackB = new CardChannelPairObject(cardPlays[highestCardIndex].card, cardPlays[highestCardIndex].channel);
             attackB.CardData.SelectedChannels = attackB.CardChannel;
-            CombatManager.instance.RemoveEnergyFromMech(CharacterSelect.Opponent, attackA.CardData.EnergyCost + attackB.CardData.EnergyCost, true);
+
+            if(attackA.CardData != null)
+                CombatManager.instance.RemoveEnergyFromMech(CharacterSelect.Opponent, attackA.CardData.EnergyCost + attackB.CardData.EnergyCost, true);
+            else
+                CombatManager.instance.RemoveEnergyFromMech(CharacterSelect.Opponent, attackB.CardData.EnergyCost, true);
 
             if (CombatManager.instance.NarrateCardSelection)
                 Debug.Log("Opponent selected " + attackB.CardData.CardName + " for their B Slot.");

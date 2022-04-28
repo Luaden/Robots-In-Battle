@@ -17,6 +17,9 @@ public class ChannelsUISlotManager : BaseSlotManager<CardUIController>
 
     private CardChannelPairObject cardChannelPairObjectA;
     private CardChannelPairObject cardChannelPairObjectB;
+
+    private bool attackSlotAFilled = false;
+    private bool attackSlotBFilled = false;
     private Channels selectedChannel;
 
     public CardDataObject ASlotItem { get => playerAttackSlotA.CurrentSlottedItem.CardData; } 
@@ -29,7 +32,7 @@ public class ChannelsUISlotManager : BaseSlotManager<CardUIController>
 
     public override void AddItemToCollection(CardUIController item, BaseSlotController<CardUIController> slot)
     {
-        if(playerAttackSlotA.CurrentSlottedItem == null)
+        if(!attackSlotAFilled)
             if(item.CardData.CardType == CardType.Attack || item.CardData.CardType == CardType.Neutral)
             {
                 playerAttackSlotA.CurrentSlottedItem = item;
@@ -46,6 +49,7 @@ public class ChannelsUISlotManager : BaseSlotManager<CardUIController>
                 //Needs to account for ice.
                 CombatManager.instance.RemoveEnergyFromMech(CharacterSelect.Player, cardChannelPairObjectA.CardData.EnergyCost, true);
 
+                attackSlotAFilled = true;
                 SkipASlotButton.SetActive(false);
                 OnASlotFilled?.Invoke();
                 return;
@@ -57,7 +61,7 @@ public class ChannelsUISlotManager : BaseSlotManager<CardUIController>
                 return;
             }
 
-        if (playerAttackSlotB.CurrentSlottedItem == null)
+        if (!attackSlotBFilled)
             if (item.CardData.CardType == CardType.Defense || item.CardData.CardType == CardType.Neutral)
             {
                 playerAttackSlotB.CurrentSlottedItem = item;
@@ -72,9 +76,12 @@ public class ChannelsUISlotManager : BaseSlotManager<CardUIController>
                 CombatManager.instance.CardPlayManager.PlayerAttackPlan.cardChannelPairB = cardChannelPairObjectB;
 
                 //Needs to account for ice.
-                CombatManager.instance.RemoveEnergyFromMech(CharacterSelect.Player, cardChannelPairObjectA.CardData.EnergyCost + cardChannelPairObjectB.CardData.EnergyCost, true);
+                if (cardChannelPairObjectA != null && cardChannelPairObjectA.CardData != null)
+                    CombatManager.instance.RemoveEnergyFromMech(CharacterSelect.Player, cardChannelPairObjectA.CardData.EnergyCost + cardChannelPairObjectB.CardData.EnergyCost, true);
+                else
+                    CombatManager.instance.RemoveEnergyFromMech(CharacterSelect.Player, cardChannelPairObjectB.CardData.EnergyCost, true);
 
-
+                attackSlotBFilled = true;
                 OnBSlotFilled?.Invoke();
                 return;
             }
@@ -93,6 +100,7 @@ public class ChannelsUISlotManager : BaseSlotManager<CardUIController>
         CombatManager.instance.CardPlayManager.PlayerAttackPlan.cardChannelPairA = 
             new CardChannelPairObject(null, Channels.None);
 
+        attackSlotAFilled = true;
         OnASlotFilled?.Invoke();
 
         SkipASlotButton.SetActive(false);
@@ -135,16 +143,26 @@ public class ChannelsUISlotManager : BaseSlotManager<CardUIController>
         if (playerAttackSlotA.CurrentSlottedItem == item)
         {
             playerAttackSlotA.CurrentSlottedItem = null;
-            //item.CardData.SelectedChannels = Channels.None;
+            attackSlotAFilled = false;
             return;
         }
 
         if (playerAttackSlotB.CurrentSlottedItem == item)
         {
             playerAttackSlotB.CurrentSlottedItem = null;
-            //item.CardData.SelectedChannels = Channels.None;
+            attackSlotBFilled = false;
             return;
         }
+    }
+
+    private void Start()
+    {
+        CardPlayManager.OnCombatComplete += ResetChannelSelections;
+    }
+
+    private void OnDestroy()
+    {
+        CardPlayManager.OnCombatComplete -= ResetChannelSelections;
     }
 
     private Channels CheckChannelSlot(BaseSlotController<CardUIController> slotToCheck)
@@ -179,5 +197,14 @@ public class ChannelsUISlotManager : BaseSlotManager<CardUIController>
                 return true;
 
         return false;
+    }
+
+    private void ResetChannelSelections()
+    {
+        playerAttackSlotA.CurrentSlottedItem = null;
+        playerAttackSlotB.CurrentSlottedItem = null;
+
+        attackSlotAFilled = false;
+        attackSlotBFilled = false;
     }
 }
