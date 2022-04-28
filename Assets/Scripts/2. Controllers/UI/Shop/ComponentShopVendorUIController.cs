@@ -84,7 +84,6 @@ public class ComponentShopVendorUIController : MonoBehaviour, IPointerDownHandle
 
         currencyCost.text = shopItemUIObject.CurrencyCost.ToString();
         timeCost.text = shopItemUIObject.TimeCost.ToString();
-        componentImage.sprite = shopItemUIObject.ComponentSprite;
 
         this.shopItemUIObject = shopItemUIObject;
         shopItemUIObject.ShopItemUIController = this.gameObject;
