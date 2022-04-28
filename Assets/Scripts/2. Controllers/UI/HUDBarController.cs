@@ -23,7 +23,7 @@ public class HUDBarController : MonoBehaviour
         queuedEnergyBar.UpdateUI(energy);
     }
 
-    public void UpdateEnergyQueueBar(int queuedEnergyTotal, int currentEnergy)
+    public void UpdateEnergyQueueBar(int currentEnergy, int queuedEnergyTotal)
     {
         int queuedValue = currentEnergy - queuedEnergyTotal;
         string queuedString = "(" + queuedValue.ToString() + ")";

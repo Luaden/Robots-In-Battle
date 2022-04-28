@@ -26,11 +26,14 @@ public class CardPlayManager : MonoBehaviour
 
     public void PlayCards()
     {
-        OnCombatStart?.Invoke();
+        if(CombatManager.instance.CanPlayCards)
+        {
+            OnCombatStart?.Invoke();
 
-        cardInteractionController.DetermineCardInteractions(playerAttackPlan, opponentAttackPlan);
+            cardInteractionController.DetermineCardInteractions(playerAttackPlan, opponentAttackPlan);
 
-        ClearAttackPlans();
+            ClearAttackPlans();
+        }
     }
 
     public int GetDamageEstimate(CardChannelPairObject checkAttack, CharacterSelect target)

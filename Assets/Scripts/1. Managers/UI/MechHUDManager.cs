@@ -18,7 +18,7 @@ public class MechHUDManager : MonoBehaviour
             playerHudBarController.UpdateEnergyBar(currentPlayerEnergy);
         else
         {
-            playerHudBarController.UpdateEnergyQueueBar(playerQueuedEnergy, currentPlayerEnergy);
+            playerHudBarController.UpdateEnergyQueueBar(currentPlayerEnergy, playerQueuedEnergy);
         }
     }
 
@@ -33,7 +33,7 @@ public class MechHUDManager : MonoBehaviour
             opponentHudBarController.UpdateEnergyBar(opponentEnergy);
         else
         {
-            opponentHudBarController.UpdateEnergyQueueBar(opponentQueuedEnergy, opponentEnergy);
+            opponentHudBarController.UpdateEnergyQueueBar(opponentEnergy, opponentQueuedEnergy);
         }
     }
 

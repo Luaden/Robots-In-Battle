@@ -44,7 +44,6 @@ public class CardUIController : MonoBehaviour, IPointerDownHandler, IPointerUpHa
     private BaseSlotController<CardUIController> cardSlotController;
     
     private bool isPickedUp = false;
-    private bool isInteractable = true;
 
     public delegate void onPickUp(Channels channel);
     public static event onPickUp OnPickUp;
@@ -121,7 +120,7 @@ public class CardUIController : MonoBehaviour, IPointerDownHandler, IPointerUpHa
 
     public virtual void OnPointerDown(PointerEventData eventData)
     {
-        if (isPlayer && isInteractable)
+        if (isPlayer && CombatManager.instance.CanPlayCards)
         {
             isPickedUp = true;
             transform.SetParent(cardSlotController.SlotManager.MainCanvas.transform);
@@ -131,7 +130,7 @@ public class CardUIController : MonoBehaviour, IPointerDownHandler, IPointerUpHa
 
     public void OnPointerUp(PointerEventData eventData)
     {
-        if(isPlayer && isInteractable)
+        if(isPlayer && CombatManager.instance.CanPlayCards)
         {
             isPickedUp = false;
             transform.SetParent(previousParentObject);
@@ -141,7 +140,7 @@ public class CardUIController : MonoBehaviour, IPointerDownHandler, IPointerUpHa
 
     public virtual void OnBeginDrag(PointerEventData eventData)
     {
-        if(isPlayer && isInteractable)
+        if(isPlayer && CombatManager.instance.CanPlayCards)
         {
             isPickedUp = true;
             draggableCanvasGroup.blocksRaycasts = false;
@@ -151,7 +150,7 @@ public class CardUIController : MonoBehaviour, IPointerDownHandler, IPointerUpHa
 
     public virtual void OnEndDrag(PointerEventData eventData)
     {
-        if (isPlayer && isInteractable)
+        if (isPlayer && CombatManager.instance.CanPlayCards)
         {
             isPickedUp = false;
             draggableCanvasGroup.blocksRaycasts = true;
@@ -161,7 +160,7 @@ public class CardUIController : MonoBehaviour, IPointerDownHandler, IPointerUpHa
 
     public void OnDrag(PointerEventData eventData)
     {
-        if(isPlayer && isInteractable)
+        if(isPlayer && CombatManager.instance.CanPlayCards)
             cardSlotController.HandleDrag(eventData);
     }
 
@@ -183,31 +182,9 @@ public class CardUIController : MonoBehaviour, IPointerDownHandler, IPointerUpHa
             lowChannelIcon.color = fadeColor;
     }
 
-    private void Start()
-    {
-        CardPlayManager.OnCombatStart += UpdateInteractability;
-        CardPlayManager.OnCombatComplete += ResetInteractability;
-    }
-
     private void Update()
     {
         MoveToSlot();
-    }
-
-    private void OnDestroy()
-    {
-        CardPlayManager.OnCombatStart -= UpdateInteractability;
-        CardPlayManager.OnCombatComplete -= ResetInteractability;
-    }
-
-    private void UpdateInteractability()
-    {
-        isInteractable = false;
-    }
-
-    private void ResetInteractability()
-    {
-        isInteractable = true;
     }
 
     private void MoveToSlot()

@@ -43,6 +43,8 @@ public class CombatManager : MonoBehaviour
     private FighterDataObject playerFighter;
     private FighterDataObject opponentFighter;
 
+    private bool canPlayCards = true;
+
     public FighterDataObject PlayerFighter { get => playerFighter; set => InitPlayerFighter(value); }
     public FighterDataObject OpponentFighter { get => opponentFighter; set => InitOpponentFighter(value); }
     public CombatDeckManager DeckManager { get => deckManager; }
@@ -62,6 +64,7 @@ public class CombatManager : MonoBehaviour
     public float GuardDamageMultiplier { get => guardDamageMultiplier; }
     public float AcidComponentDamageMultiplier { get => acidComponentDamageMultiplier; }
     public int IceChannelEnergyReductionModifier { get => iceChannelEnergyReductionModifier; }
+    public bool CanPlayCards { get => canPlayCards; }
 
     public delegate void onDestroyScene();
     public static event onDestroyScene OnDestroyScene;
@@ -72,7 +75,6 @@ public class CombatManager : MonoBehaviour
     #region Debug
     public void StartGame()
     {
-
         StartNewTurn();
     }
     #endregion
@@ -155,6 +157,13 @@ public class CombatManager : MonoBehaviour
         }
     }
 
+    public void ResetMechEnergyHUD(CharacterSelect character)
+    {
+        if (character == CharacterSelect.Player)
+            mechHUDManager.UpdatePlayerEnergy(playerFighter.FighterMech.MechCurrentEnergy, 0, false);
+        if(character == CharacterSelect.Opponent)
+            mechHUDManager.UpdatePlayerEnergy(playerFighter.FighterMech.MechCurrentEnergy, playerFighter.FighterMech.MechCurrentEnergy, false);
+    }
     private void Awake()
     {
         instance = this;
@@ -175,13 +184,27 @@ public class CombatManager : MonoBehaviour
 
     private void Start()
     {
+        CardPlayManager.OnCombatStart += DisableInteractability;
+        CardPlayManager.OnCombatComplete += ResetInteractability;
         CardPlayManager.OnCombatComplete += StartNewTurn;
+    }
+
+    private void DisableInteractability()
+    {
+        canPlayCards = false;
+    }
+
+    private void ResetInteractability()
+    {
+        canPlayCards = true;
     }
 
     private void OnDestroy()
     {
         OnDestroyScene?.Invoke();
         instance = null;
+        CardPlayManager.OnCombatStart -= DisableInteractability;
+        CardPlayManager.OnCombatComplete -= ResetInteractability;
         CardPlayManager.OnCombatComplete -= StartNewTurn;
     }
 

@@ -97,13 +97,16 @@ public class ChannelsUISlotManager : BaseSlotManager<CardUIController>
 
     public void SkipASlot()
     {
-        CombatManager.instance.CardPlayManager.PlayerAttackPlan.cardChannelPairA = 
+        if(CombatManager.instance.CanPlayCards)
+        {
+            CombatManager.instance.CardPlayManager.PlayerAttackPlan.cardChannelPairA =
             new CardChannelPairObject(null, Channels.None);
 
-        attackSlotAFilled = true;
-        OnASlotFilled?.Invoke();
+            attackSlotAFilled = true;
+            OnASlotFilled?.Invoke();
 
-        SkipASlotButton.SetActive(false);
+            SkipASlotButton.SetActive(false);
+        }
     }
 
     public override void AddSlotToList(BaseSlotController<CardUIController> newSlot)
@@ -143,14 +146,26 @@ public class ChannelsUISlotManager : BaseSlotManager<CardUIController>
         if (playerAttackSlotA.CurrentSlottedItem == item)
         {
             playerAttackSlotA.CurrentSlottedItem = null;
+            cardChannelPairObjectA = null;
             attackSlotAFilled = false;
+
+            if (playerAttackSlotB.CurrentSlottedItem != null)
+                CombatManager.instance.RemoveEnergyFromMech(CharacterSelect.Player, cardChannelPairObjectB.CardData.EnergyCost, true);
+            else
+                CombatManager.instance.ResetMechEnergyHUD(CharacterSelect.Player);
             return;
         }
 
         if (playerAttackSlotB.CurrentSlottedItem == item)
         {
             playerAttackSlotB.CurrentSlottedItem = null;
+            cardChannelPairObjectB = null;
             attackSlotBFilled = false;
+
+            if (playerAttackSlotA.CurrentSlottedItem != null)
+                CombatManager.instance.RemoveEnergyFromMech(CharacterSelect.Player, cardChannelPairObjectA.CardData.EnergyCost, true);
+            else
+                CombatManager.instance.ResetMechEnergyHUD(CharacterSelect.Player);
             return;
         }
     }
