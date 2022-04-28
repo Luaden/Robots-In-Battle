@@ -2,10 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MechAnimationManager : MonoBehaviour
+public class CombatAnimationManager : MonoBehaviour
 {
     [SerializeField] private MechAnimationController playerMechAnimationController;
     [SerializeField] private MechAnimationController opponentMechAnimationController;
+    [SerializeField] private BurnPileController burnPileController;
 
     private Queue<AnimationType> playerAnimations = new Queue<AnimationType>();
     private Queue<AnimationType> opponentAnimations = new Queue<AnimationType>();
@@ -47,6 +48,17 @@ public class MechAnimationManager : MonoBehaviour
         }
 
         return AnimationType.Idle;
+    }
+
+    public void SetCardPlayAnimation(CardUIController firstCard, CharacterSelect firstCardOwner, CardUIController secondCard = null)
+    {
+        burnPileController.SetCardOnBurnPile(firstCard, firstCardOwner, secondCard);
+    }
+
+    private void Start()
+    { 
+        if(burnPileController == null)
+        burnPileController = FindObjectOfType<BurnPileController>(true);
     }
 
     private void Update()

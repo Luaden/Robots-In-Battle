@@ -22,7 +22,7 @@ public class CardInteractionController
             CardCategory.Defensive.HasFlag(opponentAttackPlan.cardChannelPairB.CardData.CardCategory) &&
             playerAttackPlan.cardChannelPairA != null && playerAttackPlan.cardChannelPairA.CardData != null)
         {
-            CombatManager.instance.BurnPileController.SetCardOnBurnPile(playerAttackPlan.cardChannelPairA.CardData.CardUIController,
+            CombatManager.instance.MechAnimationManager.SetCardPlayAnimation(playerAttackPlan.cardChannelPairA.CardData.CardUIController,
                                 CharacterSelect.Player, opponentAttackPlan.cardChannelPairB.CardData.CardUIController);
 
             CalculateDefensiveInteraction(playerAttackPlan.cardChannelPairA, CharacterSelect.Player, opponentAttackPlan.cardChannelPairB);
@@ -32,7 +32,7 @@ public class CardInteractionController
             CardCategory.Defensive.HasFlag(playerAttackPlan.cardChannelPairB.CardData.CardCategory) && 
             opponentAttackPlan.cardChannelPairA != null && opponentAttackPlan.cardChannelPairA.CardData != null)
         {
-            CombatManager.instance.BurnPileController.SetCardOnBurnPile(opponentAttackPlan.cardChannelPairA.CardData.CardUIController,
+            CombatManager.instance.MechAnimationManager.SetCardPlayAnimation(opponentAttackPlan.cardChannelPairA.CardData.CardUIController,
                                 CharacterSelect.Opponent, playerAttackPlan.cardChannelPairB.CardData.CardUIController);
 
             CalculateDefensiveInteraction(opponentAttackPlan.cardChannelPairA, CharacterSelect.Opponent, playerAttackPlan.cardChannelPairB);
@@ -40,7 +40,7 @@ public class CardInteractionController
 
         if (playerAttackPlan.cardChannelPairA != null && playerAttackPlan.cardChannelPairA.CardData != null)
         {
-            CombatManager.instance.BurnPileController.SetCardOnBurnPile(playerAttackPlan.cardChannelPairA.CardData.CardUIController,
+            CombatManager.instance.MechAnimationManager.SetCardPlayAnimation(playerAttackPlan.cardChannelPairA.CardData.CardUIController,
                 CharacterSelect.Player);
 
             CalculateMechDamage(playerAttackPlan.cardChannelPairA, CharacterSelect.Opponent);
@@ -49,7 +49,7 @@ public class CardInteractionController
 
         if (opponentAttackPlan.cardChannelPairA != null && opponentAttackPlan.cardChannelPairA.CardData != null)
         {
-            CombatManager.instance.BurnPileController.SetCardOnBurnPile(opponentAttackPlan.cardChannelPairA.CardData.CardUIController,
+            CombatManager.instance.MechAnimationManager.SetCardPlayAnimation(opponentAttackPlan.cardChannelPairA.CardData.CardUIController,
                 CharacterSelect.Opponent);
 
             CalculateMechDamage(opponentAttackPlan.cardChannelPairA, CharacterSelect.Player);
@@ -58,7 +58,7 @@ public class CardInteractionController
 
         if (playerAttackPlan.cardChannelPairB != null && playerAttackPlan.cardChannelPairB.CardData != null)
         {
-            CombatManager.instance.BurnPileController.SetCardOnBurnPile(playerAttackPlan.cardChannelPairB.CardData.CardUIController,
+            CombatManager.instance.MechAnimationManager.SetCardPlayAnimation(playerAttackPlan.cardChannelPairB.CardData.CardUIController,
                 CharacterSelect.Player);
 
             CalculateMechDamage(playerAttackPlan.cardChannelPairB, CharacterSelect.Opponent);
@@ -67,7 +67,7 @@ public class CardInteractionController
 
         if (opponentAttackPlan.cardChannelPairB != null && opponentAttackPlan.cardChannelPairB.CardData != null)
         {
-            CombatManager.instance.BurnPileController.SetCardOnBurnPile(opponentAttackPlan.cardChannelPairB.CardData.CardUIController,
+            CombatManager.instance.MechAnimationManager.SetCardPlayAnimation(opponentAttackPlan.cardChannelPairB.CardData.CardUIController,
                 CharacterSelect.Opponent);
 
             CalculateMechDamage(opponentAttackPlan.cardChannelPairB, CharacterSelect.Player);

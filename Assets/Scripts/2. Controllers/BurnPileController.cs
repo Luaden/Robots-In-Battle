@@ -157,11 +157,11 @@ public class BurnPileController : MonoBehaviour
 
     private void Start()
     {
-        MechAnimationManager.OnStartingAnimation += BurnCards;
+        CombatAnimationManager.OnStartingAnimation += BurnCards;
     }
 
     private void OnDestroy()
     {
-        MechAnimationManager.OnStartingAnimation -= BurnCards;
+        CombatAnimationManager.OnStartingAnimation -= BurnCards;
     }
 }

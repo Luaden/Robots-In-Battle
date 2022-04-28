@@ -37,8 +37,7 @@ public class CombatManager : MonoBehaviour
     private MechHUDManager mechHUDManager;
     private PopupUIManager popupUIManager;
     private BuffUIManager buffUIManager;
-    private MechAnimationManager mechAnimationManager;
-    private BurnPileController burnPileController;
+    private CombatAnimationManager mechAnimationManager;
 
     private FighterDataObject playerFighter;
     private FighterDataObject opponentFighter;
@@ -56,8 +55,7 @@ public class CombatManager : MonoBehaviour
     public CardUIManager CardUIManager { get => cardUIManager; }
     public PopupUIManager PopupUIManager { get => popupUIManager; }
     public BuffUIManager BuffUIManager { get => buffUIManager; }
-    public MechAnimationManager MechAnimationManager { get => mechAnimationManager; }
-    public BurnPileController BurnPileController { get => burnPileController; }
+    public CombatAnimationManager MechAnimationManager { get => mechAnimationManager; }
 
     public int MechEnergyGain { get => mechEnergyGain; }
     public float CounterDamageMultiplier { get => counterDamageMultiplier; }
@@ -178,8 +176,7 @@ public class CombatManager : MonoBehaviour
         mechHUDManager = FindObjectOfType<MechHUDManager>(true);
         popupUIManager = FindObjectOfType<PopupUIManager>(true);
         buffUIManager = FindObjectOfType<BuffUIManager>(true);
-        mechAnimationManager = FindObjectOfType<MechAnimationManager>(true);
-        burnPileController = FindObjectOfType<BurnPileController>(true);
+        mechAnimationManager = FindObjectOfType<CombatAnimationManager>(true);
     }
 
     private void Start()
