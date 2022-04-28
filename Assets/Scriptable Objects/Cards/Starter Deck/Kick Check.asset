@@ -10,12 +10,12 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 36bc40fa79bff934fb1579cc2f9655ef, type: 3}
-  m_Name: Guarded Hook
+  m_Name: Kick Check
   m_EditorClassIdentifier: 
   itemType: 0
-  itemName: Guarded hook
-  itemDescription: 
-  itemImage: {fileID: 0}
+  itemName: Kick Check
+  itemDescription: Deals damage and adds 3 shield in Mid or Low.
+  componentImage: {fileID: 0}
   timeCost: 1
   currencyCost: 1
   chanceToSpawn: 1
@@ -29,13 +29,12 @@ MonoBehaviour:
   reduceDamageAsPercent: 0
   extraElementStacks: 0
   energyGainModifier: 0
-  cardBackground: {fileID: 0}
   cardType: 2
-  cardCategory: 1
-  possibleChannels: 3
+  cardCategory: 2
+  possibleChannels: 6
   affectedChannels: 0
   energyCost: 4
-  baseDamage: 3
+  baseDamage: 4
   componentDamageMultiplier: 0
   cardEffects:
-  - {fileID: 11400000, guid: dc97d90fc2e2b6e46af6a0435a8a2a54, type: 2}
+  - {fileID: 11400000, guid: c1efbc2fdb34ff04893467982c69fa6f, type: 2}
