@@ -22,6 +22,18 @@ public class ShopItemUIObject
     private int baseDamage;
     private List<SOCardEffectObject> cardEffects;
 
+    private MechComponent componentType;
+    private Sprite componentImage;
+    private int componentHP;
+    private int componentEnergy;
+    private ElementType componentElement;
+    private int bonusDamageFromComponent;
+    private bool bonusDamageAsPercent;
+    private int reduceDamageToComponent;
+    private bool reduceDamageAsPercent;
+    private int extraElementStacks;
+    private int energyGainModifier;
+
 
     private GameObject shopItemUIController;
     private SOItemDataObject soItemDataObject;
@@ -44,29 +56,26 @@ public class ShopItemUIObject
     public int BaseDamage { get => baseDamage; }
     public List <SOCardEffectObject> CardEffects { get => cardEffects; }
 
-/*    public ShopItemUIObject(SOItemDataObject soItemDataObject)
-    {
-        this.itemType = soItemDataObject.ItemType;
-        this.itemName = soItemDataObject.ItemName;
-        this.itemDescription = soItemDataObject.ItemDescription;
-        this.itemImage = soItemDataObject.ItemImage;
-        this.timeCost = soItemDataObject.TimeCost;
-        this.currencyCost = soItemDataObject.CurrencyCost;
-        this.chanceToSpawn = soItemDataObject.ChanceToSpawn;
-
-        this.soItemDataObject = soItemDataObject;
-    }*/
+    public string ComponentName { get => itemName; }
+    public MechComponent ComponentType { get => componentType; }
+    public Sprite ComponentSprite { get => componentImage; }
+    public int ComponentHP { get => componentHP; }
+    public int ComponentEnergy { get => componentEnergy; }
+    public ElementType ComponentElement { get => componentElement; }
+    public int BonusDamageFromComponent { get => bonusDamageFromComponent; }
+    public bool BonusDamageAsPercent { get => bonusDamageAsPercent; }
+    public int ReduceDamageToComponent { get => reduceDamageToComponent; }
+    public bool ReduceDamageAsPercent { get => reduceDamageAsPercent; }
+    public int ExtraElementStacks { get => extraElementStacks; }
+    public int EnergyGainModifier { get => energyGainModifier; }
 
     public ShopItemUIObject(SOItemDataObject data)
     {
         Debug.Log(data.ItemType);
         if(data.ItemType == ItemType.Card)
         {
-            Debug.Log("assigning card values");
             itemName = data.CardName;
-            Debug.Log("cardName: " + data.CardName);
             itemDescription = data.CardDescription;
-
             cardType = data.CardType;
             cardCategory = data.CardCategory;
             possibleChannels = data.PossibleChannels;
@@ -77,28 +86,35 @@ public class ShopItemUIObject
             baseDamage = data.BaseDamage;
 
             cardEffects = data.CardEffects;
-            this.soItemDataObject = data;
-
         }
 
         if(data.ItemType == ItemType.Component)
         {
-            this.itemName = data.ItemName;
-            this.itemType = data.ItemType;
-            this.itemDescription = data.ItemDescription;
-            this.itemImage = data.ItemImage;
-            this.timeCost = data.TimeCost;
-            this.currencyCost = data.CurrencyCost;
-            this.chanceToSpawn = data.ChanceToSpawn;
+            componentType = data.ComponentType;
+            componentImage = data.ComponentSprite;
+            componentHP = data.ComponentHP;
+            componentEnergy = data.ComponentEnergy;
+            componentElement = data.ComponentElement;
+            energyGainModifier = data.EnergyGainModifier;
 
-            this.soItemDataObject = data;
+
+            // is it needed to display?
+            extraElementStacks = data.ExtraElementStacks;
+            bonusDamageFromComponent = data.BonusDamageFromComponent;
+            bonusDamageAsPercent = data.BonusDamageAsPercent;
+            reduceDamageToComponent = data.ReduceDamageToComponent;
+            reduceDamageAsPercent = data.ReduceDamageAsPercent;
+            
         }
 
         this.currencyCost = data.CurrencyCost;
         this.chanceToSpawn = data.ChanceToSpawn;
+        this.soItemDataObject = data;
 
 
     }
+
+
 
 
 }

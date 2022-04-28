@@ -9,12 +9,8 @@ public class EquipmentUIController : MonoBehaviour, IPointerDownHandler, IPointe
                               IPointerEnterHandler, IPointerExitHandler, IBeginDragHandler,
                               IEndDragHandler, IDragHandler
 {
-    [SerializeField] protected TMP_Text itemNameText;
-    [SerializeField] protected TMP_Text itemDescriptionText;
-    [SerializeField] protected Image itemImage;
-    [SerializeField] protected TMP_Text timeCostText;
-    [SerializeField] protected TMP_Text currencyCostText;
-
+    [SerializeField] protected Image componentImage;
+    [SerializeField] protected TMP_Text componentName;
 
     public bool isPickedUp = false;
     public Transform previousParentObject;
@@ -23,8 +19,8 @@ public class EquipmentUIController : MonoBehaviour, IPointerDownHandler, IPointe
     private RectTransform draggableRectTransform;
     private CanvasGroup draggableCanvasGroup;
 
-    private MechComponentUIObject itemUIObject;
-    public MechComponentUIObject ItemUIObject { get => itemUIObject; }
+    private MechComponentUIObject mechComponentUIObject;
+    public MechComponentUIObject MechComponentUIObject { get => mechComponentUIObject; }
 
     private BaseSlotController<EquipmentUIController> equipmentSlotController;
     public BaseSlotController<EquipmentUIController> EquipmentSlotController
@@ -40,20 +36,10 @@ public class EquipmentUIController : MonoBehaviour, IPointerDownHandler, IPointe
 
     public void InitUI(MechComponentUIObject mechComponent)
     {
-        TMP_Text[] texts = GetComponentsInChildren<TMP_Text>();
+        componentName.text = mechComponent.ComponentName;
+        componentImage.sprite = mechComponent.ComponentSprite;
 
-        itemNameText = texts[0];
-        itemDescriptionText = texts[1];
-        itemImage = GetComponentInChildren<Image>(true);
-        timeCostText = texts[2];
-        currencyCostText = texts[3];
-
-
-        itemNameText.text = mechComponent.ComponentName;
-        itemDescriptionText.text = mechComponent.ComponentElement.ToString();
-        itemImage.sprite = mechComponent.ComponentSprite;
-
-        this.itemUIObject = mechComponent;
+        this.mechComponentUIObject = mechComponent;
         mechComponent.MechComponentUIController = this.gameObject;
     }
 

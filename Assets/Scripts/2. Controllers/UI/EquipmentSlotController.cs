@@ -32,7 +32,7 @@ public class EquipmentSlotController : BaseSlotController<EquipmentUIController>
             return;
         }
 
-        if(equipmentItem.ItemUIObject.MechComponentData.ComponentType != this.MechComponentType)
+        if(equipmentItem.MechComponentUIObject.MechComponentData.ComponentType != this.MechComponentType)
         {
             Debug.Log("the dropped item is not of the same component type as slot");
             return;
@@ -68,7 +68,7 @@ public class EquipmentSlotController : BaseSlotController<EquipmentUIController>
                 inventoryItem.InventorySlotController.CurrentSlottedItem = null;
                 inventoryItem.enabled = false;
 
-                GameManager.instance.PlayerMechController.SwapPlayerMechPart(equipmentItem.ItemUIObject.MechComponentData);
+                GameManager.instance.PlayerMechController.SwapPlayerMechPart(equipmentItem.MechComponentUIObject.MechComponentData);
 
             }
         }

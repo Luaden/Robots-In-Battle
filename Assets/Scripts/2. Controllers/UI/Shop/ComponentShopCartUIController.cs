@@ -9,20 +9,19 @@ public class ComponentShopCartUIController : MonoBehaviour, IPointerDownHandler,
                               IPointerEnterHandler, IPointerExitHandler, IBeginDragHandler,
                               IEndDragHandler, IDragHandler
 {
-    [SerializeField] protected TMP_Text itemNameText;
-    [SerializeField] protected TMP_Text itemDescriptionText;
-    [SerializeField] protected Image itemImage;
-    [SerializeField] protected TMP_Text timeCostText;
-    [SerializeField] protected TMP_Text currencyCostText;
 
-
-    public bool isPickedUp = false;
-    public Transform previousParentObject;
-    public float travelSpeed = 600.0f;
+    [SerializeField] protected Image componentImage;
+    [SerializeField] protected TMP_Text componentName;
+    [SerializeField] protected TMP_Text currencyCost;
+    [SerializeField] protected TMP_Text timeCost;
 
     private RectTransform draggableRectTransform;
     private CanvasGroup draggableCanvasGroup;
+    private Transform previousParentObject;
 
+    [SerializeField] protected float travelSpeed;
+    private bool isPickedUp = false;
+    
     private ShopItemUIObject shopItemUIObject;
     public ShopItemUIObject ShopItemUIObject { get => shopItemUIObject; }
 
@@ -40,19 +39,14 @@ public class ComponentShopCartUIController : MonoBehaviour, IPointerDownHandler,
 
     public void InitUI(ShopItemUIObject shopItemUIObject)
     {
-        TMP_Text[] texts = GetComponentsInChildren<TMP_Text>();
 
-        itemNameText = texts[0];
-        itemDescriptionText = texts[1];
-        itemImage = GetComponentInChildren<Image>(true);
-        timeCostText = texts[2];
-        currencyCostText = texts[3];
+        timeCost.gameObject.SetActive(true);
+        currencyCost.gameObject.SetActive(true);
 
-        itemNameText.text = shopItemUIObject.ItemName;
-        itemDescriptionText.text = shopItemUIObject.ItemDescription;
-        itemImage.sprite = shopItemUIObject.ItemImage;
-        timeCostText.text = shopItemUIObject.TimeCost.ToString();
-        currencyCostText.text = shopItemUIObject.CurrencyCost.ToString();
+        componentName.text = shopItemUIObject.ComponentName;
+        currencyCost.text = shopItemUIObject.CurrencyCost.ToString();
+        timeCost.text = shopItemUIObject.TimeCost.ToString();
+        componentImage.sprite = shopItemUIObject.ComponentSprite;
 
         this.shopItemUIObject = shopItemUIObject;
         shopItemUIObject.ShopItemUIController = this.gameObject;
