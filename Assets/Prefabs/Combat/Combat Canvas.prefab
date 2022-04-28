@@ -194,7 +194,7 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 178505719}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -202,8 +202,8 @@ RectTransform:
   - {fileID: 1804825138}
   - {fileID: 543912109}
   - {fileID: 2078395138}
-  m_Father: {fileID: 129746560902767076}
-  m_RootOrder: 3
+  m_Father: {fileID: 4046714076151326294}
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -305,7 +305,7 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1341640241}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -313,8 +313,8 @@ RectTransform:
   - {fileID: 93801836}
   - {fileID: 2122492936}
   - {fileID: 198105021}
-  m_Father: {fileID: 129746560902767076}
-  m_RootOrder: 2
+  m_Father: {fileID: 4046714076151326294}
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -4493,7 +4493,7 @@ GameObject:
   - component: {fileID: 129746560167356348}
   - component: {fileID: 1520715247}
   m_Layer: 5
-  m_Name: UI
+  m_Name: Combat Canvas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4523,6 +4523,7 @@ RectTransform:
   - {fileID: 129746561627348953}
   - {fileID: 129746561203828185}
   - {fileID: 1646574084020073058}
+  - {fileID: 4046714076151326294}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -9765,7 +9766,6 @@ GameObject:
   m_Component:
   - component: {fileID: 129746560902767076}
   - component: {fileID: 129746560902767083}
-  - component: {fileID: 2024929119}
   m_Layer: 5
   m_Name: Hands
   m_TagString: Untagged
@@ -9787,8 +9787,6 @@ RectTransform:
   m_Children:
   - {fileID: 129746560766270651}
   - {fileID: 8245430195200485915}
-  - {fileID: 1341640242}
-  - {fileID: 178505720}
   m_Father: {fileID: 129746560167356353}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -9809,24 +9807,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bbf111baa210ec24f8b4f5121477daca, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &2024929119
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 129746560902767077}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8d339b86e2e9887488959056d58df404, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  playerHighBurnPile: {fileID: 93801835}
-  playerMidBurnPile: {fileID: 2122492935}
-  playerLowBurnPile: {fileID: 198105020}
-  opponentHighBurnPile: {fileID: 1804825137}
-  opponentMidBurnPile: {fileID: 543912108}
-  opponentLowBurnPile: {fileID: 2078395137}
 --- !u!1 &129746560914730432
 GameObject:
   m_ObjectHideFlags: 0
@@ -16466,6 +16446,78 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cf3938cd3c62d21488817a038125b1ae, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &2370531553521979061
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4046714076151326294}
+  - component: {fileID: 4448456664252747910}
+  - component: {fileID: 6307307724587190148}
+  m_Layer: 5
+  m_Name: Animation Manager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &4046714076151326294
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2370531553521979061}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 1341640242}
+  - {fileID: 178505720}
+  m_Father: {fileID: 129746560167356353}
+  m_RootOrder: 12
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &4448456664252747910
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2370531553521979061}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 070f3dfa957d1cd49a81887f00390b09, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerMechAnimationController: {fileID: 0}
+  opponentMechAnimationController: {fileID: 0}
+--- !u!114 &6307307724587190148
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2370531553521979061}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8d339b86e2e9887488959056d58df404, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerHighBurnPile: {fileID: 93801835}
+  playerMidBurnPile: {fileID: 2122492935}
+  playerLowBurnPile: {fileID: 198105020}
+  opponentHighBurnPile: {fileID: 1804825137}
+  opponentMidBurnPile: {fileID: 543912108}
+  opponentLowBurnPile: {fileID: 2078395137}
 --- !u!1 &2567569998568977543
 GameObject:
   m_ObjectHideFlags: 0
@@ -16479,7 +16531,7 @@ GameObject:
   - component: {fileID: 6959435063526046698}
   - component: {fileID: 2460050125509668766}
   m_Layer: 5
-  m_Name: Opponent Hand Content
+  m_Name: Opponent Hand
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

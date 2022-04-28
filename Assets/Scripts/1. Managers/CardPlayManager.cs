@@ -73,12 +73,12 @@ public class CardPlayManager : MonoBehaviour
         playerAttackPlan = new AttackPlanObject(null, null, CharacterSelect.Player, CharacterSelect.Opponent);
         effectController = new EffectController();
 
-        BurnPileController.OnCardBurnComplete += TurnComplete;
+        CombatAnimationManager.OnAnimationsComplete += TurnComplete;
     }
 
     private void OnDestroy()
     {
-        BurnPileController.OnCardBurnComplete -= TurnComplete;
+        CombatAnimationManager.OnAnimationsComplete -= TurnComplete;
     }
 
     private void TurnComplete()

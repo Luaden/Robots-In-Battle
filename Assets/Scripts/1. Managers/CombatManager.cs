@@ -37,7 +37,7 @@ public class CombatManager : MonoBehaviour
     private MechHUDManager mechHUDManager;
     private PopupUIManager popupUIManager;
     private BuffUIManager buffUIManager;
-    private CombatAnimationManager mechAnimationManager;
+    private CombatAnimationManager combatAnimationManager;
 
     private FighterDataObject playerFighter;
     private FighterDataObject opponentFighter;
@@ -55,7 +55,7 @@ public class CombatManager : MonoBehaviour
     public CardUIManager CardUIManager { get => cardUIManager; }
     public PopupUIManager PopupUIManager { get => popupUIManager; }
     public BuffUIManager BuffUIManager { get => buffUIManager; }
-    public CombatAnimationManager MechAnimationManager { get => mechAnimationManager; }
+    public CombatAnimationManager CombatAnimationManager { get => combatAnimationManager; }
 
     public int MechEnergyGain { get => mechEnergyGain; }
     public float CounterDamageMultiplier { get => counterDamageMultiplier; }
@@ -176,22 +176,22 @@ public class CombatManager : MonoBehaviour
         mechHUDManager = FindObjectOfType<MechHUDManager>(true);
         popupUIManager = FindObjectOfType<PopupUIManager>(true);
         buffUIManager = FindObjectOfType<BuffUIManager>(true);
-        mechAnimationManager = FindObjectOfType<CombatAnimationManager>(true);
+        combatAnimationManager = FindObjectOfType<CombatAnimationManager>(true);
     }
 
     private void Start()
     {
-        CardPlayManager.OnCombatStart += DisableInteractability;
-        CardPlayManager.OnCombatComplete += ResetInteractability;
+        CardPlayManager.OnCombatStart += DisableCanPlayCards;
+        CardPlayManager.OnCombatComplete += EnableCanPlayCards;
         CardPlayManager.OnCombatComplete += StartNewTurn;
     }
 
-    private void DisableInteractability()
+    private void DisableCanPlayCards()
     {
         canPlayCards = false;
     }
 
-    private void ResetInteractability()
+    private void EnableCanPlayCards()
     {
         canPlayCards = true;
     }
@@ -200,8 +200,8 @@ public class CombatManager : MonoBehaviour
     {
         OnDestroyScene?.Invoke();
         instance = null;
-        CardPlayManager.OnCombatStart -= DisableInteractability;
-        CardPlayManager.OnCombatComplete -= ResetInteractability;
+        CardPlayManager.OnCombatStart -= DisableCanPlayCards;
+        CardPlayManager.OnCombatComplete -= EnableCanPlayCards;
         CardPlayManager.OnCombatComplete -= StartNewTurn;
     }
 
@@ -236,7 +236,7 @@ public class CombatManager : MonoBehaviour
         if (playerFighter.FighterMech.MechCurrentHP <= 0)
         {
             winLossPanel.SetActive(true);
-            MechAnimationManager.SetMechAnimation(CharacterSelect.Player, AnimationType.Lose, CharacterSelect.Opponent, AnimationType.Win);
+            CombatAnimationManager.SetMechAnimation(CharacterSelect.Player, AnimationType.Lose, CharacterSelect.Opponent, AnimationType.Win);
             reloadGameButton.SetActive(true);
 
             GameManager.instance.PlayerMechController.SetNewPlayerMech(playerFighter.FighterMech);
@@ -247,7 +247,7 @@ public class CombatManager : MonoBehaviour
         {
             winLossPanel.SetActive(true);
             loadShoppingButton.SetActive(true);
-            MechAnimationManager.SetMechAnimation(CharacterSelect.Player, AnimationType.Win, CharacterSelect.Opponent, AnimationType.Lose);
+            CombatAnimationManager.SetMechAnimation(CharacterSelect.Player, AnimationType.Win, CharacterSelect.Opponent, AnimationType.Lose);
             return;
         }
 

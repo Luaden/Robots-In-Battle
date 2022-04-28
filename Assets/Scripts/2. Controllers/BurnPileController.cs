@@ -11,11 +11,12 @@ public class BurnPileController : MonoBehaviour
     [SerializeField] private GameObject opponentMidBurnPile;
     [SerializeField] private GameObject opponentLowBurnPile;
 
+    private bool burnComplete = false;
+
     private Queue<List<CardCharacterPairObject>> burnCardCharacterQueue = new Queue<List<CardCharacterPairObject>>();
     private Queue<List<CardCharacterPairObject>> destroyQueue = new Queue<List<CardCharacterPairObject>>();
 
-    public delegate void onCardBurnComplete();
-    public static event onCardBurnComplete OnCardBurnComplete;
+    public bool BurnComplete { get => burnComplete; }
 
     public void SetCardOnBurnPile(CardUIController firstCard, CharacterSelect firstCardOwner, CardUIController secondCard = null)
     {
@@ -26,8 +27,6 @@ public class BurnPileController : MonoBehaviour
 
         if(firstCardOwner == CharacterSelect.Player)
         {
-            Debug.Log("First card belongs to Player.");
-
             CardCharacterPairObject cardCharacterPair = new CardCharacterPairObject();
             cardCharacterPair.card = firstCard;
             cardCharacterPair.character = CharacterSelect.Player;
@@ -52,7 +51,6 @@ public class BurnPileController : MonoBehaviour
         }
         if(firstCardOwner == CharacterSelect.Opponent)
         {
-            Debug.Log("First card belongs to Opponent.");
             CardCharacterPairObject cardCharacterPair = new CardCharacterPairObject();
             cardCharacterPair.card = firstCard;
             cardCharacterPair.character = CharacterSelect.Opponent;
@@ -73,6 +71,7 @@ public class BurnPileController : MonoBehaviour
             }
 
             burnCardCharacterQueue.Enqueue(newCardList);
+            burnComplete = false;
         }
     }
 
@@ -91,7 +90,7 @@ public class BurnPileController : MonoBehaviour
             }
 
             if (destroyQueue.Count == 0 && burnCardCharacterQueue.Count == 0)
-                OnCardBurnComplete?.Invoke();
+                burnComplete = true;
         }
 
         if (burnCardCharacterQueue.Count > 0)
@@ -157,11 +156,11 @@ public class BurnPileController : MonoBehaviour
 
     private void Start()
     {
-        CombatAnimationManager.OnStartingAnimation += BurnCards;
+        CombatAnimationManager.OnStartNewAnimation += BurnCards;
     }
 
     private void OnDestroy()
     {
-        CombatAnimationManager.OnStartingAnimation -= BurnCards;
+        CombatAnimationManager.OnStartNewAnimation -= BurnCards;
     }
 }
