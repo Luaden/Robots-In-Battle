@@ -12,12 +12,19 @@ public class EquipmentUIController : MonoBehaviour, IPointerDownHandler, IPointe
     [SerializeField] protected Image componentImage;
     [SerializeField] protected TMP_Text componentName;
 
-    public bool isPickedUp = false;
-    public Transform previousParentObject;
-    public float travelSpeed = 450.0f;
+    private bool isPickedUp = false;
+    private Transform previousParentObject;
+    [SerializeField] protected float travelSpeed;
 
     private RectTransform draggableRectTransform;
     private CanvasGroup draggableCanvasGroup;
+
+    [Header("Component Icons")]
+    [SerializeField] protected Sprite headIcon;
+    [SerializeField] protected Sprite torsoIcon;
+    [SerializeField] protected Sprite armsIcon;
+    [SerializeField] protected Sprite legsIcon;
+
 
     private MechComponentUIObject mechComponentUIObject;
     public MechComponentUIObject MechComponentUIObject { get => mechComponentUIObject; }
@@ -34,10 +41,38 @@ public class EquipmentUIController : MonoBehaviour, IPointerDownHandler, IPointe
         set => previousParentObject = value;
     }
 
+    private void OnEnable()
+    {
+        isPickedUp = false;
+    }
+    private void OnDisable()
+    {
+        isPickedUp = false;
+    }
     public void InitUI(MechComponentUIObject mechComponent)
     {
         componentName.text = mechComponent.ComponentName;
-        componentImage.sprite = mechComponent.ComponentSprite;
+        switch (mechComponent.ComponentType)
+        {
+            case MechComponent.None:
+                break;
+            case MechComponent.Head:
+                componentImage.sprite = headIcon;
+                break;
+            case MechComponent.Torso:
+                componentImage.sprite = torsoIcon;
+                break;
+            case MechComponent.Arms:
+                componentImage.sprite = armsIcon;
+                break;
+            case MechComponent.Legs:
+                componentImage.sprite = legsIcon;
+                break;
+            case MechComponent.Back:
+                break;
+            default:
+                break;
+        }
 
         this.mechComponentUIObject = mechComponent;
         mechComponent.MechComponentUIController = this.gameObject;

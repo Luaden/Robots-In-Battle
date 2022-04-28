@@ -54,7 +54,6 @@ public class EquipmentSlotController : BaseSlotController<EquipmentUIController>
 
                 // set current slot item to take this dropped item's place
                 currentItem.GetComponent<InventoryUIController>().InventorySlotController = inventoryItem.InventorySlotController;
-                currentItem.GetComponent<InventoryUIController>().isPickedUp = false;
                 currentItem.GetComponent<EquipmentUIController>().enabled = false;
 
                 currentSlottedItem = null;
