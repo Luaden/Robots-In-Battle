@@ -9,9 +9,11 @@ public class ComponentShopController : MonoBehaviour
     [SerializeField] protected ComponentShopItemUIBuildController shopItemUIBuildController;
     public void InitializeShop(List<SOItemDataObject> itemsToDisplay)
     {
+        Debug.Log(itemsToDisplay.Count);
         shopItemList = new List<ShopItemUIObject>();
         for (int i = 0; i < itemsToDisplay.Count; i++)
         {
+            
             int minimumChance = Random.Range(1, 101);
             if (minimumChance < itemsToDisplay[i].ChanceToSpawn)
             {
@@ -117,7 +119,7 @@ public class ComponentShopController : MonoBehaviour
             vendorItem.transform.SetParent(vendorItem.PreviousParentObject);
             cartItem.enabled = false;
             vendorItem.enabled = true;
-            vendorItem.isPickedUp = false;
+            //vendorItem.isPickedUp = false;
 
         }
     }

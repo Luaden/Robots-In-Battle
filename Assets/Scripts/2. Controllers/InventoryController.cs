@@ -19,17 +19,13 @@ public class InventoryController : MonoBehaviour
 
         mechComponentUIObject.MechComponentUIController = inventoryUIGameObject;
 
-        inventoryUIGameObject.AddComponent<InventoryUIController>();
-        inventoryUIGameObject.AddComponent<EquipmentUIController>();
-
         InventoryUIController inventoryUIController = inventoryUIGameObject.GetComponent<InventoryUIController>();
         EquipmentUIController equipmentUIController = inventoryUIGameObject.GetComponent<EquipmentUIController>();
 
         inventoryUIController.InitUI(mechComponentUIObject);
         equipmentUIController.InitUI(mechComponentUIObject);
 
-        equipmentUIController.enabled = false;
-
+        inventoryUIController.enabled = true;
 
         DowntimeManager.instance.InventoryManager.InventoryController.InventorySlotManager.AddItemToCollection(inventoryUIController, null);
 

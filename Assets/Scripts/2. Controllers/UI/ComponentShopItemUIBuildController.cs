@@ -13,15 +13,13 @@ public class ComponentShopItemUIBuildController : MonoBehaviour
 
         shopItem.ShopItemUIController = shopItemUIGameObject;
 
-        shopItemUIGameObject.AddComponent<ComponentShopVendorUIController>();
-        shopItemUIGameObject.AddComponent<ComponentShopCartUIController>();
-
         ComponentShopVendorUIController componentShopVendorUIController = shopItemUIGameObject.GetComponent<ComponentShopVendorUIController>();
         ComponentShopCartUIController componentShopCartUIController = shopItemUIGameObject.GetComponent<ComponentShopCartUIController>();
 
         componentShopVendorUIController.InitUI(shopItem);
         componentShopCartUIController.InitUI(shopItem);
 
+        componentShopVendorUIController.enabled = true;
         componentShopCartUIController.enabled = false;
 
         DowntimeManager.instance.ComponentShopManager.ComponentShopVendorSlotManager.AddItemToCollection(componentShopVendorUIController, slot);

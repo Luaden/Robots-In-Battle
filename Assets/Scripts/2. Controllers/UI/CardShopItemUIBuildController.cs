@@ -4,17 +4,14 @@ using UnityEngine;
 
 public class CardShopItemUIBuildController : MonoBehaviour
 {
-    [SerializeField] private GameObject ItemPrefab;
+    [SerializeField] private GameObject itemPrefab;
     public void BuildAndDisplayItemUI(ShopItemUIObject shopItem, CardShopVendorSlotController slot)
     {
         GameObject shopItemUIGameObject;
-        shopItemUIGameObject = Instantiate(ItemPrefab, transform);
+        shopItemUIGameObject = Instantiate(itemPrefab, transform);
         shopItemUIGameObject.transform.position = slot.transform.position;
 
         shopItem.ShopItemUIController = shopItemUIGameObject;
-
-/*        shopItemUIGameObject.AddComponent<CardShopVendorUIController>();
-        shopItemUIGameObject.AddComponent<CardShopCartUIController>();*/
 
         CardShopVendorUIController cardShopVendorUIController = shopItemUIGameObject.GetComponent<CardShopVendorUIController>();
         CardShopCartUIController cardShopCartUIController = shopItemUIGameObject.GetComponent<CardShopCartUIController>();
@@ -22,6 +19,7 @@ public class CardShopItemUIBuildController : MonoBehaviour
         cardShopVendorUIController.InitUI(shopItem);
         cardShopCartUIController.InitUI(shopItem);
 
+        cardShopVendorUIController.enabled = true;
         cardShopCartUIController.enabled = false;
 
         DowntimeManager.instance.CardShopManager.CardShopVendorSlotManager.AddItemToCollection(cardShopVendorUIController, slot);

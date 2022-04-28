@@ -41,7 +41,7 @@ public class ShopCollectionRandomizeController : MonoBehaviour
 
         }
 
-        DowntimeManager.instance.CardShopManager.AddToShop(cardShopItemCollectionObjects);
+        DowntimeManager.instance.CardShopManager.AddToShop(shopCollectionToSend);
 
     }
     public void RandomizeComponentShopItemCollection()
@@ -57,8 +57,9 @@ public class ShopCollectionRandomizeController : MonoBehaviour
                 shopCollectionToSend.Add(collection);
 
         }
+        Debug.Log(shopCollectionToSend.Count);
 
-        DowntimeManager.instance.ComponentShopManager.AddToShop(componentShopItemCollectionObjects);
-
+        DowntimeManager.instance.ComponentShopManager.AddToShop(shopCollectionToSend);
+        Debug.Log(componentShopItemCollectionObjects.Count);
     }
 }

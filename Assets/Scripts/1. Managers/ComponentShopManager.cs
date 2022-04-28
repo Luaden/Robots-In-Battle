@@ -40,11 +40,6 @@ public class ComponentShopManager : MonoBehaviour
 
         DowntimeManager.instance.ShopCollectionRandomizeManager.RandomizeComponentShopItemCollection();
 
-        if(itemsToDisplay.Count <= 0)
-        {
-            Debug.Log("missing items to display : ComponentShopManager");
-            return;
-        }
         componentShopController.InitializeShop(itemsToDisplay);
     }
 

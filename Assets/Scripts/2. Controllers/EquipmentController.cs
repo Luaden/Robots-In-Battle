@@ -92,16 +92,14 @@ public class EquipmentController : MonoBehaviour
 
             mechComponentUIObject.MechComponentUIController = equipmentUIGameObject;
 
-            equipmentUIGameObject.AddComponent<InventoryUIController>();
-            equipmentUIGameObject.AddComponent<EquipmentUIController>();
-
             InventoryUIController inventoryUIController = equipmentUIGameObject.GetComponent<InventoryUIController>();
             EquipmentUIController equipmentUIController = equipmentUIGameObject.GetComponent<EquipmentUIController>();
 
             inventoryUIController.InitUI(mechComponentUIObject);
             equipmentUIController.InitUI(mechComponentUIObject);
 
-            inventoryUIController.enabled = false;
+
+            equipmentUIController.enabled = true;
 
             slotManager.AddItemToCollection(equipmentUIController, addedSlot);
 
