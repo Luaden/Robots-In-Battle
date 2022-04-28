@@ -27,7 +27,7 @@ public class InventoryUIController : MonoBehaviour, IPointerDownHandler, IPointe
 
 
     private MechComponentUIObject mechComponentUIObject;
-    public MechComponentUIObject ItemUIObject { get => mechComponentUIObject; }
+    public MechComponentUIObject MechComponentUIObject { get => mechComponentUIObject; }
 
     private BaseSlotController<InventoryUIController> inventorySlotController;
     public BaseSlotController<InventoryUIController> InventorySlotController

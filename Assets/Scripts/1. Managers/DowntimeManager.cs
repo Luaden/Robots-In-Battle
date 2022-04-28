@@ -41,4 +41,16 @@ public class DowntimeManager : MonoBehaviour
         GameManager.instance.SceneController.LoadCombatScene();
     }
 
+    public void RepairEquippedItems()
+    {
+        MechComponentDataObject[] mechDatas = new MechComponentDataObject[] { };
+        mechDatas[0] = GameManager.instance.PlayerMechController.PlayerMech.MechHead;
+        mechDatas[1] = GameManager.instance.PlayerMechController.PlayerMech.MechTorso;
+        mechDatas[2] = GameManager.instance.PlayerMechController.PlayerMech.MechArms;
+        mechDatas[3] = GameManager.instance.PlayerMechController.PlayerMech.MechLegs;
+        
+        // todo: check the repair cost of equipped items is (foreach loop)
+
+        //todo: check current player money
+    }
 }
