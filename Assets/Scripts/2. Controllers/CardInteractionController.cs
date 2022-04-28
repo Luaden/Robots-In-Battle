@@ -168,9 +168,16 @@ public class CardInteractionController
 
         int repeatPlay = 1;
         bool hasDefended = false;
-        string combatLog = "";
 
-        if(offensiveAttack.CardData.CardEffects != null)
+
+        combatLog += GetOtherMech(defensiveMech) + " starting HP: " + (GetOtherMech(defensiveMech) == CharacterSelect.Player ?
+            CombatManager.instance.PlayerFighter.FighterMech.MechCurrentHP.ToString() : CombatManager.instance.OpponentFighter.FighterMech.MechCurrentHP.ToString());
+        combatLog += ". ";
+        combatLog += defensiveMech + " starting HP: " + (defensiveMech == CharacterSelect.Player ?
+            CombatManager.instance.PlayerFighter.FighterMech.MechCurrentHP.ToString() : CombatManager.instance.OpponentFighter.FighterMech.MechCurrentHP.ToString());
+        combatLog += ". ";
+
+        if (offensiveAttack.CardData.CardEffects != null)
             foreach (SOCardEffectObject effect in offensiveAttack.CardData.CardEffects)
             {
                 if (effect.EffectType == CardEffectTypes.PlayMultipleTimes)
@@ -246,12 +253,20 @@ public class CardInteractionController
                     {
                         combatLog += (GetOtherMech(defensiveMech) + " is playing " + offensiveAttack.CardData.CardName + " for " + damageToDeal + " damage. ");
                         combatLog += (GetOtherMech(defensiveMech) + "'s attack is " + i + " of " + repeatPlay + " total attacks. ");
-                    }
+                    } 
                 }
             }
 
             if(CombatManager.instance.NarrateCombat)
             {
+                combatLog += GetOtherMech(defensiveMech) + " ending HP: " + (GetOtherMech(defensiveMech) == CharacterSelect.Player ?
+                    CombatManager.instance.PlayerFighter.FighterMech.MechCurrentHP : CombatManager.instance.OpponentFighter.FighterMech.MechCurrentHP);
+                combatLog += ". ";
+
+                combatLog += defensiveMech + " ending HP: " + (defensiveMech == CharacterSelect.Player ?
+                    CombatManager.instance.PlayerFighter.FighterMech.MechCurrentHP : CombatManager.instance.OpponentFighter.FighterMech.MechCurrentHP);
+                combatLog += ". ";
+
                 Debug.Log(combatLog);
                 combatLog = "";
             }

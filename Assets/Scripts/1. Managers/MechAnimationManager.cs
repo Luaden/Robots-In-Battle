@@ -64,7 +64,7 @@ public class MechAnimationManager : MonoBehaviour
 
     private void PlayMechAnimations()
     {
-        if (playerMechAnimationController.IsAnimating || opponentMechAnimationController.IsAnimating)
+        if (CheckMechIsAnimating(CharacterSelect.Player) || CheckMechIsAnimating(CharacterSelect.Opponent))
             return;
 
         OnStartingAnimation?.Invoke();

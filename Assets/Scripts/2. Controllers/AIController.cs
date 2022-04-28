@@ -192,10 +192,16 @@ public class AIController : MonoBehaviour
     private void FinalCheck()
     {
         if (attackA == null)
+        {
+            Debug.Log("AI failed to build Attack A in time.");
             BuildCardChannelPairA();
+        }
 
         if (attackB == null)
+        {
+            Debug.Log("AI failed to build Attack B in time.");
             BuildCardChannelPairB();
+        }
 
         CombatManager.instance.CardPlayManager.BuildOpponentAttackPlan(attackA, attackB);
 
