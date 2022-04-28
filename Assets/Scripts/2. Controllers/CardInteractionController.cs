@@ -210,6 +210,8 @@ public class CardInteractionController
                             (damageToDeal * Mathf.RoundToInt(CombatManager.instance.CounterDamageMultiplier)) + ". ");
                         combatLog += (GetOtherMech(defensiveMech) + "'s attack is " + i + " of " + repeatPlay + " total attacks. ");
                     }
+
+                    Debug.Log("Default Counter scenario.");
                 }
                 else if(guardDamage && !hasDefended)
                 {
@@ -228,6 +230,7 @@ public class CardInteractionController
                             (Mathf.RoundToInt(damageToDeal * CombatManager.instance.GuardDamageMultiplier)) + ". ");
                         combatLog += (GetOtherMech(defensiveMech) + "'s attack is " + i + " of " + repeatPlay + " total attacks. ");
                     }
+                    Debug.Log("Default Guard scenario.");
                 }
                 else if(CardCategory.Defensive.HasFlag(offensiveAttack.CardData.CardCategory))
                 {
@@ -241,6 +244,8 @@ public class CardInteractionController
                         combatLog += (GetOtherMech(defensiveMech) + " is playing " + offensiveAttack.CardData.CardName + " for " + damageToDeal + " damage. ");
                         combatLog += (GetOtherMech(defensiveMech) + "'s attack is " + i + " of " + repeatPlay + " total attacks. ");
                     }
+
+                    Debug.Log("Awkward Guard scenario.");
                 }
                 else
                 {
@@ -253,7 +258,9 @@ public class CardInteractionController
                     {
                         combatLog += (GetOtherMech(defensiveMech) + " is playing " + offensiveAttack.CardData.CardName + " for " + damageToDeal + " damage. ");
                         combatLog += (GetOtherMech(defensiveMech) + "'s attack is " + i + " of " + repeatPlay + " total attacks. ");
-                    } 
+                    }
+
+                    Debug.Log("Default Attack scenario.");
                 }
             }
 

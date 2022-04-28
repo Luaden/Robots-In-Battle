@@ -169,7 +169,7 @@ public class AIController : MonoBehaviour
             attackB = new CardChannelPairObject(cardPlays[highestCardIndex].card, cardPlays[highestCardIndex].channel);
             attackB.CardData.SelectedChannels = attackB.CardChannel;
 
-            if(attackA.CardData != null)
+            if(attackA != null && attackA.CardData != null)
                 CombatManager.instance.RemoveEnergyFromMech(CharacterSelect.Opponent, attackA.CardData.EnergyCost + attackB.CardData.EnergyCost, true);
             else
                 CombatManager.instance.RemoveEnergyFromMech(CharacterSelect.Opponent, attackB.CardData.EnergyCost, true);

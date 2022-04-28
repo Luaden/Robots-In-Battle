@@ -26,7 +26,7 @@ public class CardUIController : MonoBehaviour, IPointerDownHandler, IPointerUpHa
     [SerializeField] private Color fullColor;
     [SerializeField] private Color fadeColor;
     private Transform previousParentObject;
-    private bool isInteractable;
+    private bool isPlayer;
 
     [Header("Card Frames")]
     [SerializeField] private Sprite attackFrame;
@@ -44,6 +44,7 @@ public class CardUIController : MonoBehaviour, IPointerDownHandler, IPointerUpHa
     private BaseSlotController<CardUIController> cardSlotController;
     
     private bool isPickedUp = false;
+    private bool isInteractable = true;
 
     public delegate void onPickUp(Channels channel);
     public static event onPickUp OnPickUp;
@@ -103,9 +104,9 @@ public class CardUIController : MonoBehaviour, IPointerDownHandler, IPointerUpHa
             lowChannelIcon.color = fullColor;
 
         if (character == CharacterSelect.Player)
-            isInteractable = true;
+            isPlayer = true;
         if (character == CharacterSelect.Opponent)
-            isInteractable = false;
+            isPlayer = false;
     }
 
     public virtual void OnPointerEnter(PointerEventData eventData)
@@ -120,8 +121,9 @@ public class CardUIController : MonoBehaviour, IPointerDownHandler, IPointerUpHa
 
     public virtual void OnPointerDown(PointerEventData eventData)
     {
-        if (isInteractable)
+        if (isPlayer && isInteractable)
         {
+            isPickedUp = true;
             transform.SetParent(cardSlotController.SlotManager.MainCanvas.transform);
             OnPickUp.Invoke(cardData.PossibleChannels);
         }
@@ -129,8 +131,9 @@ public class CardUIController : MonoBehaviour, IPointerDownHandler, IPointerUpHa
 
     public void OnPointerUp(PointerEventData eventData)
     {
-        if(isInteractable)
+        if(isPlayer && isInteractable)
         {
+            isPickedUp = false;
             transform.SetParent(previousParentObject);
             OnPickUp.Invoke(Channels.None);
         }
@@ -138,7 +141,7 @@ public class CardUIController : MonoBehaviour, IPointerDownHandler, IPointerUpHa
 
     public virtual void OnBeginDrag(PointerEventData eventData)
     {
-        if(isInteractable)
+        if(isPlayer && isInteractable)
         {
             isPickedUp = true;
             draggableCanvasGroup.blocksRaycasts = false;
@@ -148,7 +151,7 @@ public class CardUIController : MonoBehaviour, IPointerDownHandler, IPointerUpHa
 
     public virtual void OnEndDrag(PointerEventData eventData)
     {
-        if (isInteractable)
+        if (isPlayer && isInteractable)
         {
             isPickedUp = false;
             draggableCanvasGroup.blocksRaycasts = true;
@@ -158,7 +161,7 @@ public class CardUIController : MonoBehaviour, IPointerDownHandler, IPointerUpHa
 
     public void OnDrag(PointerEventData eventData)
     {
-        if(isInteractable)
+        if(isPlayer && isInteractable)
             cardSlotController.HandleDrag(eventData);
     }
 
@@ -180,9 +183,31 @@ public class CardUIController : MonoBehaviour, IPointerDownHandler, IPointerUpHa
             lowChannelIcon.color = fadeColor;
     }
 
+    private void Start()
+    {
+        CardPlayManager.OnCombatStart += UpdateInteractability;
+        CardPlayManager.OnCombatComplete += ResetInteractability;
+    }
+
     private void Update()
     {
         MoveToSlot();
+    }
+
+    private void OnDestroy()
+    {
+        CardPlayManager.OnCombatStart -= UpdateInteractability;
+        CardPlayManager.OnCombatComplete -= ResetInteractability;
+    }
+
+    private void UpdateInteractability()
+    {
+        isInteractable = false;
+    }
+
+    private void ResetInteractability()
+    {
+        isInteractable = true;
     }
 
     private void MoveToSlot()
@@ -193,15 +218,10 @@ public class CardUIController : MonoBehaviour, IPointerDownHandler, IPointerUpHa
         if (transform.parent == null)
             transform.SetParent(PreviousParentObject);
 
-        if (CardSlotController != null)
+        if (transform.parent != null)
         {
             draggableRectTransform.position =
-                    Vector3.MoveTowards(draggableRectTransform.position, CardSlotController.gameObject.GetComponent<RectTransform>().position, travelSpeed * Time.deltaTime);
-        }
-        else
-        {
-            draggableRectTransform.position =
-                    Vector3.MoveTowards(draggableRectTransform.position, transform.parent.position, travelSpeed * Time.deltaTime);
+                    Vector3.MoveTowards(draggableRectTransform.position, transform.parent.position, travelSpeed * FindObjectOfType<Canvas>().scaleFactor * Time.deltaTime);
         }
     }
 

@@ -59,10 +59,10 @@ public class CombatDeckManager : MonoBehaviour
 
     public void ReturnCardToPlayerDeck(CardDataObject cardToReturn)
     {
-        if(cardToReturn.CardUIObject.GetComponent<CardUIController>().CardSlotController != null)
+        if(cardToReturn.CardUIController.CardSlotController != null)
         {
-            BaseSlotController<CardUIController> slotController = cardToReturn.CardUIObject.GetComponent<CardUIController>().CardSlotController;
-            slotController.SlotManager.RemoveItemFromCollection(cardToReturn.CardUIObject.GetComponent<CardUIController>());
+            BaseSlotController<CardUIController> slotController = cardToReturn.CardUIController.CardSlotController;
+            slotController.SlotManager.RemoveItemFromCollection(cardToReturn.CardUIController);
         }
 
         CombatManager.instance.CardUIManager.DestroyCardUI(cardToReturn);
@@ -74,10 +74,10 @@ public class CombatDeckManager : MonoBehaviour
 
     public void ReturnCardToOpponentDeck(CardDataObject cardToReturn)
     {
-        if (cardToReturn.CardUIObject.GetComponent<CardUIController>().CardSlotController != null)
+        if (cardToReturn.CardUIController.CardSlotController != null)
         {
-            BaseSlotController<CardUIController> slotController = cardToReturn.CardUIObject.GetComponent<CardUIController>().CardSlotController;
-            slotController.SlotManager.RemoveItemFromCollection(cardToReturn.CardUIObject.GetComponent<CardUIController>());
+            BaseSlotController<CardUIController> slotController = cardToReturn.CardUIController.CardSlotController;
+            slotController.SlotManager.RemoveItemFromCollection(cardToReturn.CardUIController);
         }
 
         CombatManager.instance.CardUIManager.DestroyCardUI(cardToReturn);

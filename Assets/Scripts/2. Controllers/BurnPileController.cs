@@ -26,6 +26,8 @@ public class BurnPileController : MonoBehaviour
 
         if(firstCardOwner == CharacterSelect.Player)
         {
+            Debug.Log("First card belongs to Player.");
+
             CardCharacterPairObject cardCharacterPair = new CardCharacterPairObject();
             cardCharacterPair.card = firstCard;
             cardCharacterPair.character = CharacterSelect.Player;
@@ -50,6 +52,7 @@ public class BurnPileController : MonoBehaviour
         }
         if(firstCardOwner == CharacterSelect.Opponent)
         {
+            Debug.Log("First card belongs to Opponent.");
             CardCharacterPairObject cardCharacterPair = new CardCharacterPairObject();
             cardCharacterPair.card = firstCard;
             cardCharacterPair.character = CharacterSelect.Opponent;
