@@ -21,7 +21,13 @@ public class ComponentShopCartUIController : MonoBehaviour, IPointerDownHandler,
 
     [SerializeField] protected float travelSpeed;
     private bool isPickedUp = false;
-    
+
+    [Header("Component Icons")]
+    [SerializeField] protected Sprite headIcon;
+    [SerializeField] protected Sprite torsoIcon;
+    [SerializeField] protected Sprite armsIcon;
+    [SerializeField] protected Sprite legsIcon;
+
     private ShopItemUIObject shopItemUIObject;
     public ShopItemUIObject ShopItemUIObject { get => shopItemUIObject; }
 
@@ -44,6 +50,28 @@ public class ComponentShopCartUIController : MonoBehaviour, IPointerDownHandler,
         currencyCost.gameObject.SetActive(true);
 
         componentName.text = shopItemUIObject.ComponentName;
+        switch (shopItemUIObject.ComponentType)
+        {
+            case MechComponent.None:
+                break;
+            case MechComponent.Head:
+                componentImage.sprite = headIcon;
+                break;
+            case MechComponent.Torso:
+                componentImage.sprite = torsoIcon;
+                break;
+            case MechComponent.Arms:
+                componentImage.sprite = armsIcon;
+                break;
+            case MechComponent.Legs:
+                componentImage.sprite = legsIcon;
+                break;
+            case MechComponent.Back:
+                break;
+            default:
+                break;
+        }
+
         currencyCost.text = shopItemUIObject.CurrencyCost.ToString();
         timeCost.text = shopItemUIObject.TimeCost.ToString();
         componentImage.sprite = shopItemUIObject.ComponentSprite;
