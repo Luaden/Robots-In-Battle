@@ -21,6 +21,7 @@ public class MechComponentDataObject
     private bool reduceDamageAsPercent;
     private int extraElementStacks;
     private int energyGainModifier;
+    private SOItemDataObject sOItemDataObject;
 
     public string ComponentName { get => componentName; }
     public MechComponent ComponentType { get => componentType; }
@@ -35,6 +36,7 @@ public class MechComponentDataObject
     public bool ReduceDamageAsPercent { get => reduceDamageAsPercent; }
     public int ExtraElementStacks { get => extraElementStacks; }
     public int EnergyGainModifier { get => energyGainModifier; }
+    public SOItemDataObject SOItemDataObject { get => sOItemDataObject; }
 
     public MechComponentDataObject(SOItemDataObject sOMechComponent)
     {
@@ -55,5 +57,6 @@ public class MechComponentDataObject
         reduceDamageAsPercent = sOMechComponent.ReduceDamageAsPercent;
         extraElementStacks = sOMechComponent.ExtraElementStacks;
         energyGainModifier = sOMechComponent.EnergyGainModifier;
+        sOItemDataObject = sOMechComponent;
     }
 }

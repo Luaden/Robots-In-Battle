@@ -8,6 +8,7 @@ public class DowntimeManager : MonoBehaviour
     private ComponentShopManager componentShopManager;
     private ShopCollectionRandomizeManager shopCollectionRandomizeManager;
     private InventoryManager inventoryManager;
+    [SerializeField] protected int repairCost;
 
     public static DowntimeManager instance;
     public CardShopManager CardShopManager { get => cardShopManager; }
@@ -43,14 +44,19 @@ public class DowntimeManager : MonoBehaviour
 
     public void RepairEquippedItems()
     {
-        MechComponentDataObject[] mechDatas = new MechComponentDataObject[] { };
-        mechDatas[0] = GameManager.instance.PlayerMechController.PlayerMech.MechHead;
-        mechDatas[1] = GameManager.instance.PlayerMechController.PlayerMech.MechTorso;
-        mechDatas[2] = GameManager.instance.PlayerMechController.PlayerMech.MechArms;
-        mechDatas[3] = GameManager.instance.PlayerMechController.PlayerMech.MechLegs;
-        
-        // todo: check the repair cost of equipped items is (foreach loop)
+        Debug.Log("click");
+        MechComponentDataObject[] mechDatas = new MechComponentDataObject[4] { 
+            GameManager.instance.PlayerMechController.PlayerMech.MechHead,
+            GameManager.instance.PlayerMechController.PlayerMech.MechTorso,
+            GameManager.instance.PlayerMechController.PlayerMech.MechArms,
+            GameManager.instance.PlayerMechController.PlayerMech.MechLegs
+        };
 
-        //todo: check current player money
+        if (GameManager.instance.PlayerBankController.GetPlayerCurrency() >= repairCost)
+        {
+            GameManager.instance.PlayerMechController.BuildNewMech(mechDatas[0].SOItemDataObject, mechDatas[1].SOItemDataObject, mechDatas[2].SOItemDataObject, mechDatas[3].SOItemDataObject);
+            GameManager.instance.PlayerBankController.SpendPlayerCurrency(repairCost);
+            Debug.Log("repairing mech");
+        }
     }
 }
