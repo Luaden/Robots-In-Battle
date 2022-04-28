@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
@@ -20,6 +19,9 @@ public class GameManager : MonoBehaviour
     public DowntimeBankController PlayerBankController { get => playerBankController; }
     public SceneController SceneController { get => sceneController; }
 
+    public delegate void onUpdatePlayerCurrencies();
+    public static event onUpdatePlayerCurrencies OnUpdatePlayerCurrencies;
+
     #region Playtesting
     [SerializeField] private SOItemDataObject starterMechHead;
     [SerializeField] private SOItemDataObject starterMechTorso;
@@ -27,7 +29,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] private SOItemDataObject starterMechLegs;
     [SerializeField] private List<SOItemDataObject> starterDeck;
     [SerializeField] protected int starterPlayerCurrency;
-    [SerializeField] protected float starterTimeLeftToSpend;
+    [SerializeField] protected float timeBetweenFights;
     [SerializeField] protected int playerCurrencyGainOnWin;
 
     public int PlayerCurrencyGainOnWin { get => playerCurrencyGainOnWin; }
@@ -58,6 +60,8 @@ public class GameManager : MonoBehaviour
     public void LoadShoppingScene()
     {
         sceneController.LoadDowntimeScene();
+        playerBankController.AddPlayerCurrency(playerCurrencyGainOnWin);
+        playerBankController.ResetPlayerTime();
     }
 
     private void Awake()
@@ -69,15 +73,15 @@ public class GameManager : MonoBehaviour
             instance = this;
             DontDestroyOnLoad(this);
         }
-    }
 
-    private void Start()
-    {
         playerInventoryController = new DowntimeInventoryController();
         playerMechController = new DowntimeMechBuilderController();
         playerDeckController = new DowntimeDeckController();
         playerBankController = new DowntimeBankController();
+    }
 
+    private void Start()
+    {
         sceneController = GetComponent<SceneController>();
 
         instance.LoadPlayer();
@@ -96,7 +100,7 @@ public class GameManager : MonoBehaviour
 
         Debug.Log("Creating a new pilot.");
 
-        playerData = new PlayerDataObject(starterPlayerCurrency, starterTimeLeftToSpend);
+        playerData = new PlayerDataObject(starterPlayerCurrency, timeBetweenFights);
         MechObject newMech = instance.PlayerMechController.BuildNewMech(starterMechHead, starterMechTorso, starterMechArms, starterMechLegs);
 
         playerData.PlayerDeck = starterDeck;
@@ -247,6 +251,8 @@ public class GameManager : MonoBehaviour
             }
 
             instance.playerData.CurrencyToSpend -= currencyToSpend;
+
+            OnUpdatePlayerCurrencies?.Invoke();
         }
 
         public void SpendPlayerTime(float timeToSpend)
@@ -258,16 +264,20 @@ public class GameManager : MonoBehaviour
             }
 
             instance.playerData.TimeLeftToSpend -= timeToSpend;
+
+            OnUpdatePlayerCurrencies?.Invoke();
         }
 
         public void AddPlayerCurrency(int currencyToGain)
         {
             instance.playerData.CurrencyToSpend += currencyToGain;
+            OnUpdatePlayerCurrencies?.Invoke();
         }
 
         public void ResetPlayerTime()
         {
-            instance.playerData.TimeLeftToSpend = instance.starterTimeLeftToSpend;
+            instance.playerData.TimeLeftToSpend = instance.timeBetweenFights;
+            OnUpdatePlayerCurrencies?.Invoke();
         }
     }
 }

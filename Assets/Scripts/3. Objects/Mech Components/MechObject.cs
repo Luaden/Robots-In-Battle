@@ -99,6 +99,22 @@ public class MechObject
         return null;
     }
 
+    public void ResetHealth()
+    {
+        mechHead.HealComponent();
+        mechTorso.HealComponent();
+        mechArms.HealComponent();
+        mechLegs.HealComponent();
+
+        mechCurrentHP = mechMaxHP;
+        ResetEnergy();
+    }
+
+    public void ResetEnergy()
+    {
+        mechCurrentEnergy = mechMaxEnergy;
+    }
+
     private void RemoveMechHPByComponent(MechComponentDataObject componentRemoved)
     {
         mechMaxHP -= componentRemoved.ComponentMaxHP;
@@ -109,10 +125,5 @@ public class MechObject
     {
         mechMaxHP += componentAdded.ComponentMaxHP;
         mechCurrentHP += componentAdded.ComponentCurrentHP;
-    }
-
-    private void ResetEnergy()
-    {
-        mechCurrentEnergy = mechMaxEnergy;
     }
 }

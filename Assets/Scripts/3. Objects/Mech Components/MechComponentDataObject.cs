@@ -59,4 +59,9 @@ public class MechComponentDataObject
         energyGainModifier = sOMechComponent.EnergyGainModifier;
         sOItemDataObject = sOMechComponent;
     }
+
+    public void HealComponent()
+    {
+        componentCurrentHP = componentMaxHP;
+    }
 }

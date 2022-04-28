@@ -29,8 +29,6 @@ public class ShopCollectionRandomizeController : MonoBehaviour
     }
     public void RandomizeCardShopItemCollection()
     {
-        Debug.Log("randomizing shop collection");
-        //test
         int playerFights = 0;
 
         List<SOShopItemCollectionObject> shopCollectionToSend = new List<SOShopItemCollectionObject>();
@@ -46,8 +44,6 @@ public class ShopCollectionRandomizeController : MonoBehaviour
     }
     public void RandomizeComponentShopItemCollection()
     {
-        Debug.Log("randomizing shop collection");
-        //test
         int playerFights = 0;
 
         List<SOShopItemCollectionObject> shopCollectionToSend = new List<SOShopItemCollectionObject>();
@@ -60,6 +56,5 @@ public class ShopCollectionRandomizeController : MonoBehaviour
         Debug.Log(shopCollectionToSend.Count);
 
         DowntimeManager.instance.ComponentShopManager.AddToShop(shopCollectionToSend);
-        Debug.Log(componentShopItemCollectionObjects.Count);
     }
 }
