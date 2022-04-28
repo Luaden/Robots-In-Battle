@@ -35,10 +35,7 @@ public class ChannelsUISlotManager : BaseSlotManager<CardUIController>
                 playerAttackSlotA.CurrentSlottedItem = item;
                 item.CardSlotController = playerAttackSlotA;
 
-                if (item.CardData.AffectedChannels == AffectedChannels.AllPossibleChannels)
-                    item.CardData.SelectedChannels = item.CardData.PossibleChannels;
-                else
-                    item.CardData.SelectedChannels = selectedChannel;
+                item.CardData.SelectedChannels = selectedChannel;
                 
                 if(CombatManager.instance.NarrateCardSelection)
                     Debug.Log("Player selected " + item.CardData.CardName + " for their A Slot.");
@@ -66,10 +63,7 @@ public class ChannelsUISlotManager : BaseSlotManager<CardUIController>
                 playerAttackSlotB.CurrentSlottedItem = item;
                 item.CardSlotController = playerAttackSlotB;
 
-                if (item.CardData.AffectedChannels == AffectedChannels.AllPossibleChannels)
-                    item.CardData.SelectedChannels = item.CardData.PossibleChannels;
-                else
-                    item.CardData.SelectedChannels = selectedChannel;
+                item.CardData.SelectedChannels = selectedChannel;
 
                 if (CombatManager.instance.NarrateCardSelection)
                     Debug.Log("Player selected " + item.CardData.CardName + " for their B Slot.");
@@ -141,14 +135,14 @@ public class ChannelsUISlotManager : BaseSlotManager<CardUIController>
         if (playerAttackSlotA.CurrentSlottedItem == item)
         {
             playerAttackSlotA.CurrentSlottedItem = null;
-            item.CardData.SelectedChannels = Channels.None;
+            //item.CardData.SelectedChannels = Channels.None;
             return;
         }
 
         if (playerAttackSlotB.CurrentSlottedItem == item)
         {
             playerAttackSlotB.CurrentSlottedItem = null;
-            item.CardData.SelectedChannels = Channels.None;
+            //item.CardData.SelectedChannels = Channels.None;
             return;
         }
     }

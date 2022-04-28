@@ -38,6 +38,7 @@ public class CombatManager : MonoBehaviour
     private PopupUIManager popupUIManager;
     private BuffUIManager buffUIManager;
     private MechAnimationManager mechAnimationManager;
+    private BurnPileController burnPileController;
 
     private FighterDataObject playerFighter;
     private FighterDataObject opponentFighter;
@@ -54,6 +55,7 @@ public class CombatManager : MonoBehaviour
     public PopupUIManager PopupUIManager { get => popupUIManager; }
     public BuffUIManager BuffUIManager { get => buffUIManager; }
     public MechAnimationManager MechAnimationManager { get => mechAnimationManager; }
+    public BurnPileController BurnPileController { get => burnPileController; }
 
     public int MechEnergyGain { get => mechEnergyGain; }
     public float CounterDamageMultiplier { get => counterDamageMultiplier; }
@@ -168,6 +170,7 @@ public class CombatManager : MonoBehaviour
         popupUIManager = FindObjectOfType<PopupUIManager>(true);
         buffUIManager = FindObjectOfType<BuffUIManager>(true);
         mechAnimationManager = FindObjectOfType<MechAnimationManager>(true);
+        burnPileController = FindObjectOfType<BurnPileController>(true);
     }
 
     private void Start()

@@ -28,7 +28,7 @@ public class CardPlayManager : MonoBehaviour
     {
         OnCombatStart?.Invoke();
 
-        cardInteractionController.DetermineABInteraction(playerAttackPlan, opponentAttackPlan);
+        cardInteractionController.DetermineCardInteractions(playerAttackPlan, opponentAttackPlan);
 
         ClearAttackPlans();
     }
@@ -49,33 +49,19 @@ public class CardPlayManager : MonoBehaviour
     private void ClearAttackPlans()
     {
         if(playerAttackPlan != null && playerAttackPlan.cardChannelPairA != null && playerAttackPlan.cardChannelPairA.CardData != null)
-        {
             CombatManager.instance.RemoveEnergyFromMech(CharacterSelect.Player, playerAttackPlan.cardChannelPairA.CardData.EnergyCost);
-            CombatManager.instance.DeckManager.ReturnCardToPlayerDeck(playerAttackPlan.cardChannelPairA.CardData);
-        }
 
         if (playerAttackPlan != null && playerAttackPlan.cardChannelPairB != null && playerAttackPlan.cardChannelPairB.CardData != null)
-        {
             CombatManager.instance.RemoveEnergyFromMech(CharacterSelect.Player, playerAttackPlan.cardChannelPairB.CardData.EnergyCost);
-            CombatManager.instance.DeckManager.ReturnCardToPlayerDeck(playerAttackPlan.cardChannelPairB.CardData);
-        }
 
         if(opponentAttackPlan != null && opponentAttackPlan.cardChannelPairA != null && opponentAttackPlan.cardChannelPairA.CardData != null)
-        {
             CombatManager.instance.RemoveEnergyFromMech(CharacterSelect.Opponent, opponentAttackPlan.cardChannelPairA.CardData.EnergyCost);
-            CombatManager.instance.DeckManager.ReturnCardToOpponentDeck(opponentAttackPlan.cardChannelPairA.CardData);
-        }
 
         if (opponentAttackPlan != null && opponentAttackPlan.cardChannelPairB != null && opponentAttackPlan.cardChannelPairB.CardData != null)
-        {
             CombatManager.instance.RemoveEnergyFromMech(CharacterSelect.Opponent, opponentAttackPlan.cardChannelPairB.CardData.EnergyCost);
-            CombatManager.instance.DeckManager.ReturnCardToOpponentDeck(opponentAttackPlan.cardChannelPairB.CardData);
-        }
 
         playerAttackPlan = new AttackPlanObject(null, null, CharacterSelect.Player, CharacterSelect.Opponent);
         opponentAttackPlan = new AttackPlanObject(null, null, CharacterSelect.Opponent, CharacterSelect.Player);
-
-        OnCombatComplete?.Invoke();
     }
 
     private void Start()
@@ -83,5 +69,17 @@ public class CardPlayManager : MonoBehaviour
         cardInteractionController = new CardInteractionController();
         playerAttackPlan = new AttackPlanObject(null, null, CharacterSelect.Player, CharacterSelect.Opponent);
         effectController = new EffectController();
+
+        BurnPileController.OnCardBurnComplete += TurnComplete;
+    }
+
+    private void OnDestroy()
+    {
+        BurnPileController.OnCardBurnComplete -= TurnComplete;
+    }
+
+    private void TurnComplete()
+    {
+        OnCombatComplete?.Invoke();
     }
 }

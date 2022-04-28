@@ -13,7 +13,7 @@ public class CardInteractionController
     #endregion
 
 
-    public void DetermineABInteraction(AttackPlanObject newPlayerAttackPlan, AttackPlanObject newOpponentAttackPlan)
+    public void DetermineCardInteractions(AttackPlanObject newPlayerAttackPlan, AttackPlanObject newOpponentAttackPlan)
     {
         playerAttackPlan = new AttackPlanObject(newPlayerAttackPlan.cardChannelPairA, newPlayerAttackPlan.cardChannelPairB, CharacterSelect.Player, CharacterSelect.Opponent);
         opponentAttackPlan = new AttackPlanObject(newOpponentAttackPlan.cardChannelPairA, newOpponentAttackPlan.cardChannelPairB, CharacterSelect.Opponent, CharacterSelect.Player);
@@ -21,33 +21,55 @@ public class CardInteractionController
         if (opponentAttackPlan.cardChannelPairB != null && opponentAttackPlan.cardChannelPairB.CardData != null &&
             CardCategory.Defensive.HasFlag(opponentAttackPlan.cardChannelPairB.CardData.CardCategory) &&
             playerAttackPlan.cardChannelPairA != null && playerAttackPlan.cardChannelPairA.CardData != null)
+        {
+            CombatManager.instance.BurnPileController.SetCardOnBurnPile(playerAttackPlan.cardChannelPairA.CardData.CardUIController,
+                                CharacterSelect.Player, opponentAttackPlan.cardChannelPairB.CardData.CardUIController);
+
             CalculateDefensiveInteraction(playerAttackPlan.cardChannelPairA, CharacterSelect.Player, opponentAttackPlan.cardChannelPairB);
+        }
 
         if (playerAttackPlan.cardChannelPairB != null && playerAttackPlan.cardChannelPairB.CardData != null &&
             CardCategory.Defensive.HasFlag(playerAttackPlan.cardChannelPairB.CardData.CardCategory) && 
             opponentAttackPlan.cardChannelPairA != null && opponentAttackPlan.cardChannelPairA.CardData != null)
+        {
+            CombatManager.instance.BurnPileController.SetCardOnBurnPile(opponentAttackPlan.cardChannelPairA.CardData.CardUIController,
+                                CharacterSelect.Opponent, playerAttackPlan.cardChannelPairB.CardData.CardUIController);
+
             CalculateDefensiveInteraction(opponentAttackPlan.cardChannelPairA, CharacterSelect.Opponent, playerAttackPlan.cardChannelPairB);
+        }
 
         if (playerAttackPlan.cardChannelPairA != null && playerAttackPlan.cardChannelPairA.CardData != null)
         {
+            CombatManager.instance.BurnPileController.SetCardOnBurnPile(playerAttackPlan.cardChannelPairA.CardData.CardUIController,
+                CharacterSelect.Player);
+
             CalculateMechDamage(playerAttackPlan.cardChannelPairA, CharacterSelect.Opponent);
             CombatManager.instance.CardPlayManager.EffectController.EnableEffects(playerAttackPlan.cardChannelPairA, CharacterSelect.Opponent);
         }
 
         if (opponentAttackPlan.cardChannelPairA != null && opponentAttackPlan.cardChannelPairA.CardData != null)
         {
+            CombatManager.instance.BurnPileController.SetCardOnBurnPile(opponentAttackPlan.cardChannelPairA.CardData.CardUIController,
+                CharacterSelect.Opponent);
+
             CalculateMechDamage(opponentAttackPlan.cardChannelPairA, CharacterSelect.Player);
             CombatManager.instance.CardPlayManager.EffectController.EnableEffects(opponentAttackPlan.cardChannelPairA, CharacterSelect.Player);
         }
 
         if (playerAttackPlan.cardChannelPairB != null && playerAttackPlan.cardChannelPairB.CardData != null)
         {
+            CombatManager.instance.BurnPileController.SetCardOnBurnPile(playerAttackPlan.cardChannelPairB.CardData.CardUIController,
+                CharacterSelect.Player);
+
             CalculateMechDamage(playerAttackPlan.cardChannelPairB, CharacterSelect.Opponent);
             CombatManager.instance.CardPlayManager.EffectController.EnableEffects(playerAttackPlan.cardChannelPairB, CharacterSelect.Opponent);
         }
 
         if (opponentAttackPlan.cardChannelPairB != null && opponentAttackPlan.cardChannelPairB.CardData != null)
         {
+            CombatManager.instance.BurnPileController.SetCardOnBurnPile(opponentAttackPlan.cardChannelPairB.CardData.CardUIController,
+                CharacterSelect.Opponent);
+
             CalculateMechDamage(opponentAttackPlan.cardChannelPairB, CharacterSelect.Player);
             CombatManager.instance.CardPlayManager.EffectController.EnableEffects(opponentAttackPlan.cardChannelPairB, CharacterSelect.Player);
         }
@@ -62,7 +84,15 @@ public class CardInteractionController
         {
             CombatManager.instance.CardPlayManager.EffectController.EnableEffects(defensiveCard, offensiveCharacter);
 
-            if (offensiveCard.CardChannel.HasFlag(defensiveCard.CardChannel) || defensiveCard.CardChannel.HasFlag(offensiveCard.CardChannel))
+            if(defensiveCard.CardData.AffectedChannels == AffectedChannels.AllPossibleChannels)
+            {
+                if (defensiveCard.CardData.PossibleChannels.HasFlag(offensiveCard.CardChannel))
+                {
+                    CalculateMechDamage(offensiveCard, GetOtherMech(offensiveCharacter), false, true);
+                    CombatManager.instance.CardPlayManager.EffectController.EnableEffects(offensiveCard, GetOtherMech(offensiveCharacter));
+                }
+            }
+            else if (offensiveCard.CardChannel.HasFlag(defensiveCard.CardChannel))
             {
                 CalculateMechDamage(offensiveCard, GetOtherMech(offensiveCharacter), false, true);
                 CombatManager.instance.CardPlayManager.EffectController.EnableEffects(offensiveCard, GetOtherMech(offensiveCharacter));
@@ -73,13 +103,19 @@ public class CardInteractionController
                 CombatManager.instance.CardPlayManager.EffectController.EnableEffects(offensiveCard, GetOtherMech(offensiveCharacter));
             }
 
-            ClearCardsAfterDefenses(offensiveCharacter);
-            return;
         }
 
         if (defensiveCard.CardData.CardCategory.HasFlag(CardCategory.Counter))
         {
-            if (offensiveCard.CardChannel.HasFlag(defensiveCard.CardChannel) || defensiveCard.CardChannel.HasFlag(offensiveCard.CardChannel))
+            if (defensiveCard.CardData.AffectedChannels == AffectedChannels.AllPossibleChannels)
+            {
+                if (defensiveCard.CardData.PossibleChannels.HasFlag(offensiveCard.CardChannel))
+                {
+                    CalculateMechDamage(offensiveCard, GetOtherMech(offensiveCharacter), false, true);
+                    CombatManager.instance.CardPlayManager.EffectController.EnableEffects(offensiveCard, GetOtherMech(offensiveCharacter));
+                }
+            }
+            else if (offensiveCard.CardChannel.HasFlag(defensiveCard.CardChannel))
             {
                 CombatManager.instance.CardPlayManager.EffectController.EnableEffects(defensiveCard, offensiveCharacter);
                 CalculateMechDamage(offensiveCard, GetOtherMech(offensiveCharacter), true);
@@ -89,10 +125,9 @@ public class CardInteractionController
                 CalculateMechDamage(offensiveCard, GetOtherMech(offensiveCharacter));
                 CombatManager.instance.CardPlayManager.EffectController.EnableEffects(offensiveCard, GetOtherMech(offensiveCharacter));
             }
-
-            ClearCardsAfterDefenses(offensiveCharacter);
-            return;
         }
+
+        ClearCardsAfterDefenses(offensiveCharacter);
     }
 
     private void ClearCardsAfterDefenses(CharacterSelect offensiveCharacter)

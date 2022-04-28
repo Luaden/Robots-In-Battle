@@ -10,6 +10,9 @@ public class MechAnimationManager : MonoBehaviour
     private Queue<AnimationType> playerAnimations = new Queue<AnimationType>();
     private Queue<AnimationType> opponentAnimations = new Queue<AnimationType>();
 
+    public delegate void onStartingAnimation();
+    public static event onStartingAnimation OnStartingAnimation;
+
     public void SetMechAnimation(CharacterSelect firstMech, AnimationType firstAnimation, CharacterSelect secondMech, AnimationType secondAnimation)
     {
         if (firstMech == CharacterSelect.Player)
@@ -64,8 +67,11 @@ public class MechAnimationManager : MonoBehaviour
         if (playerMechAnimationController.IsAnimating || opponentMechAnimationController.IsAnimating)
             return;
 
+        OnStartingAnimation?.Invoke();
+
         if (playerAnimations.Count > 0)
             playerMechAnimationController.SetMechAnimation(playerAnimations.Dequeue());
+
         if (opponentAnimations.Count > 0)
             opponentMechAnimationController.SetMechAnimation(opponentAnimations.Dequeue());
     }

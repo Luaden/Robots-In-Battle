@@ -123,6 +123,8 @@ public class AIController : MonoBehaviour
             //CONSIDER ICE HERE.
 
             attackA = new CardChannelPairObject(cardPlays[highestCardIndex].card, cardPlays[highestCardIndex].channel);
+            attackA.CardData.SelectedChannels = attackA.CardChannel;
+
             CombatManager.instance.RemoveEnergyFromMech(CharacterSelect.Opponent, attackA.CardData.EnergyCost, true);
 
             if (CombatManager.instance.NarrateCardSelection)
@@ -165,6 +167,7 @@ public class AIController : MonoBehaviour
             //CONSIDER ICE HERE.
 
             attackB = new CardChannelPairObject(cardPlays[highestCardIndex].card, cardPlays[highestCardIndex].channel);
+            attackB.CardData.SelectedChannels = attackB.CardChannel;
             CombatManager.instance.RemoveEnergyFromMech(CharacterSelect.Opponent, attackA.CardData.EnergyCost + attackB.CardData.EnergyCost, true);
 
             if (CombatManager.instance.NarrateCardSelection)

@@ -187,20 +187,32 @@ public class CardUIController : MonoBehaviour, IPointerDownHandler, IPointerUpHa
 
     private void MoveToSlot()
     {
-        if (isPickedUp || cardSlotController == null)
+        if (isPickedUp)
             return;
 
         if (transform.parent == null)
             transform.SetParent(PreviousParentObject);
 
-        draggableRectTransform.position = 
-            Vector3.MoveTowards(draggableRectTransform.position, CardSlotController.gameObject.GetComponent<RectTransform>().position, travelSpeed * Time.deltaTime);
+        if (CardSlotController != null)
+        {
+            draggableRectTransform.position =
+                    Vector3.MoveTowards(draggableRectTransform.position, CardSlotController.gameObject.GetComponent<RectTransform>().position, travelSpeed * Time.deltaTime);
+        }
+        else
+        {
+            draggableRectTransform.position =
+                    Vector3.MoveTowards(draggableRectTransform.position, transform.parent.position, travelSpeed * Time.deltaTime);
+        }
     }
 
     private void UpdateCardSlot(BaseSlotController<CardUIController> newSlot)
     {
         cardSlotController = newSlot;
-        transform.SetParent(newSlot.transform);
-        previousParentObject = newSlot.transform;
+
+        if (newSlot != null)
+        {
+            previousParentObject = newSlot.transform;
+            transform.SetParent(newSlot.transform);
+        }
     }
 }

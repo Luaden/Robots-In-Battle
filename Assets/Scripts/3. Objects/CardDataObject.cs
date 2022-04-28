@@ -21,6 +21,7 @@ public class CardDataObject
     [SerializeField] private List<SOCardEffectObject> cardEffects;
 
     private GameObject cardUIObject;
+    private CardUIController cardUIController;
 
     #region Base Card Properties
     public string CardName { get => cardName; }
@@ -36,7 +37,8 @@ public class CardDataObject
     #endregion
 
     #region Runtime Properties
-    public GameObject CardUIObject { get => cardUIObject; set => cardUIObject = value; }
+    public GameObject CardUIObject { get => cardUIObject; set => UpdateCardUIObject(value); }
+    public CardUIController CardUIController { get => cardUIController; }
     #endregion
 
     #region Constructor
@@ -62,5 +64,11 @@ public class CardDataObject
     {
         selectedChannels = channel;
         cardUIObject.GetComponent<CardUIController>().UpdateSelectedChannel(selectedChannels);
+    }
+
+    private void UpdateCardUIObject(GameObject cardUI)
+    {
+        cardUIObject = cardUI;
+        cardUIController = cardUI.GetComponent<CardUIController>();
     }
 }
