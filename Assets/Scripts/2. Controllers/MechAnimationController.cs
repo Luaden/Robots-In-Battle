@@ -13,6 +13,7 @@ public class MechAnimationController : MonoBehaviour
     {
         if(animationType == AnimationType.Idle)
         {
+            isAnimating = false;
             animator.ResetTrigger("isPunching");
             animator.ResetTrigger("isKicking");
             animator.ResetTrigger("isGuarding");
@@ -22,7 +23,6 @@ public class MechAnimationController : MonoBehaviour
             animator.ResetTrigger("isLosing");
 
             animator.SetTrigger("isIdling");
-            isAnimating = false;
             return;
         }
 

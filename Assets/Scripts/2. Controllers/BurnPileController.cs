@@ -147,13 +147,9 @@ public class BurnPileController : MonoBehaviour
                     CombatManager.instance.DeckManager.ReturnCardToOpponentDeck(cardCharacterPair.card.CardData);
             }
 
-            Debug.Log("Burn prep queue: " + burnCardCharacterQueue.Count);
-            Debug.Log("Burn queue: " + destroyQueue.Count);
-
             if (destroyQueue.Count == 0 && burnCardCharacterQueue.Count == 0)
             {
                 burnComplete = true;
-                Debug.Log("Burn complete.");
             }
         }
     }

@@ -15,19 +15,13 @@ public class EffectController
 
     public EffectController()
     {
-        CardPlayManager.OnCombatComplete += IncrementEffectsAtTurnEnd;
-        CombatManager.OnDestroyScene += OnDestroy;
-
         playerFighterEffectObject = new FighterEffectObject();
         opponentFighterEffectObject = new FighterEffectObject();
         effectQueue = new Queue<CardCharacterPairObject>();
 
+        CombatManager.OnDestroyScene += DisableEffectListeners;
         CombatAnimationManager.OnEndedAnimation += EnableEffects;
-    }
-
-    public void DisableEffectListeners()
-    {
-        CombatAnimationManager.OnEndedAnimation -= EnableEffects;
+        CardPlayManager.OnCombatComplete += IncrementEffectsAtTurnEnd;
     }
 
     public void AddToEffectQueue(CardChannelPairObject cardChannelPairObject, CharacterSelect destinationMech)
@@ -72,7 +66,7 @@ public class EffectController
         return damageToReturn;
     }
 
-    public void UpdateFighterBuffs()
+    private void UpdateFighterBuffs()
     {
         //This currently doesn't account for decreases in channel damage.
         CombatManager.instance.BuffUIManager.UpdateChannelDamageBuffs(CharacterSelect.Player, playerFighterEffectObject.ChannelDamageBonus);
@@ -202,6 +196,14 @@ public class EffectController
 
         return flurryBonus;
     }
+    
+    private void DisableEffectListeners()
+    {
+        CombatAnimationManager.OnEndedAnimation -= EnableEffects;
+        CombatAnimationManager.OnEndedAnimation -= UpdateFighterBuffs;
+        CardPlayManager.OnCombatComplete -= IncrementEffectsAtTurnEnd;
+        CombatManager.OnDestroyScene -= DisableEffectListeners;
+    }
 
     private void EnableEffects()
     {
@@ -325,12 +327,6 @@ public class EffectController
     {
         playerFighterEffectObject.IncrementFighterEffects();
         opponentFighterEffectObject.IncrementFighterEffects();
-    }
-
-    private void OnDestroy()
-    {
-        CardPlayManager.OnCombatComplete -= IncrementEffectsAtTurnEnd;
-        CombatManager.OnDestroyScene -= OnDestroy;
     }
 
     private void AddElementalStacks(SOCardEffectObject effect, Channels channel, MechComponent component, CharacterSelect characterAdding)

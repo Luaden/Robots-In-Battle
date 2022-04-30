@@ -71,8 +71,11 @@ public class CombatAnimationManager : MonoBehaviour
         if (CheckMechIsAnimating(CharacterSelect.Player) || CheckMechIsAnimating(CharacterSelect.Opponent))
             return;
 
-        if (startedAnimations)
+        if(startedAnimations)
+        {
+            Debug.Log("Ending animation.");
             OnEndedAnimation?.Invoke();
+        }
 
         OnStartNewAnimation?.Invoke();
 
@@ -88,12 +91,14 @@ public class CombatAnimationManager : MonoBehaviour
             startedAnimations = true;
         }
 
-        if (!allAnimationsComplete && playerAnimations.Count == 0 && opponentAnimations.Count == 0)
-        {
-            allAnimationsComplete = true;
-            startedAnimations = false;
-            OnEndedAnimation?.Invoke();
-        }
+        if (!CheckMechIsAnimating(CharacterSelect.Player) || !CheckMechIsAnimating(CharacterSelect.Opponent))
+            if (!allAnimationsComplete && playerAnimations.Count == 0 && opponentAnimations.Count == 0)
+            {
+                allAnimationsComplete = true;
+                startedAnimations = false;
+                Debug.Log("Ending animation.");
+                OnEndedAnimation?.Invoke();
+            }
     }
 
     private void CheckAllAnimationsComplete()

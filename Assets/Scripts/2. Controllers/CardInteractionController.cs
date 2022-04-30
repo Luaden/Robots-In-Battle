@@ -18,10 +18,7 @@ public class CardInteractionController
     {
         damageQueue = new Queue<DamageMechPair>();
         CombatAnimationManager.OnEndedAnimation += DealDamage;
-    }
-    public void DisableDamageListeners()
-    {
-        CombatAnimationManager.OnEndedAnimation -= DealDamage;
+        CombatManager.OnDestroyScene += DisableDamageListeners;
     }
 
     public void DetermineCardInteractions(AttackPlanObject newPlayerAttackPlan, AttackPlanObject newOpponentAttackPlan)
@@ -54,8 +51,8 @@ public class CardInteractionController
             CombatManager.instance.CombatAnimationManager.SetCardOnBurnPile(playerAttackPlan.cardChannelPairA.CardData.CardUIController,
                 CharacterSelect.Player);
 
-            CalculateMechDamage(playerAttackPlan.cardChannelPairA, CharacterSelect.Player, null, CharacterSelect.Opponent);
             CombatManager.instance.CardPlayManager.EffectController.AddToEffectQueue(playerAttackPlan.cardChannelPairA, CharacterSelect.Opponent);
+            CalculateMechDamage(playerAttackPlan.cardChannelPairA, CharacterSelect.Player, null, CharacterSelect.Opponent);
         }
 
         if (opponentAttackPlan.cardChannelPairA != null && opponentAttackPlan.cardChannelPairA.CardData != null)
@@ -63,8 +60,8 @@ public class CardInteractionController
             CombatManager.instance.CombatAnimationManager.SetCardOnBurnPile(opponentAttackPlan.cardChannelPairA.CardData.CardUIController,
                 CharacterSelect.Opponent);
 
-            CalculateMechDamage(opponentAttackPlan.cardChannelPairA, CharacterSelect.Opponent, null, CharacterSelect.Player);
             CombatManager.instance.CardPlayManager.EffectController.AddToEffectQueue(opponentAttackPlan.cardChannelPairA, CharacterSelect.Player);
+            CalculateMechDamage(opponentAttackPlan.cardChannelPairA, CharacterSelect.Opponent, null, CharacterSelect.Player);
         }
 
         if (playerAttackPlan.cardChannelPairB != null && playerAttackPlan.cardChannelPairB.CardData != null)
@@ -72,20 +69,26 @@ public class CardInteractionController
             CombatManager.instance.CombatAnimationManager.SetCardOnBurnPile(playerAttackPlan.cardChannelPairB.CardData.CardUIController,
                 CharacterSelect.Player);
 
-            CalculateMechDamage(playerAttackPlan.cardChannelPairB, CharacterSelect.Player, null, CharacterSelect.Opponent);
             CombatManager.instance.CardPlayManager.EffectController.AddToEffectQueue(playerAttackPlan.cardChannelPairB, CharacterSelect.Opponent);
+            CalculateMechDamage(playerAttackPlan.cardChannelPairB, CharacterSelect.Player, null, CharacterSelect.Opponent);
         }
 
         if (opponentAttackPlan.cardChannelPairB != null && opponentAttackPlan.cardChannelPairB.CardData != null)
         {
             CombatManager.instance.CombatAnimationManager.SetCardOnBurnPile(opponentAttackPlan.cardChannelPairB.CardData.CardUIController,
                 CharacterSelect.Opponent);
-
-            CalculateMechDamage(opponentAttackPlan.cardChannelPairB, CharacterSelect.Opponent, null, CharacterSelect.Player);
+            
             CombatManager.instance.CardPlayManager.EffectController.AddToEffectQueue(opponentAttackPlan.cardChannelPairB, CharacterSelect.Player);
+            CalculateMechDamage(opponentAttackPlan.cardChannelPairB, CharacterSelect.Opponent, null, CharacterSelect.Player);
         }
 
         ClearAllCards();
+    }
+    
+    private void DisableDamageListeners()
+    {
+        CombatAnimationManager.OnEndedAnimation -= DealDamage;
+        CombatManager.OnDestroyScene -= DisableDamageListeners;
     }
 
     private void CalculateDefensiveInteraction(CardChannelPairObject offensiveCard, CharacterSelect offensiveMech, 
@@ -311,7 +314,6 @@ public class CardInteractionController
             return;
 
         DamageMechPair newDamage = damageQueue.Dequeue();
-        Debug.Log("Dealing damage");
 
         CombatManager.instance.RemoveHealthFromMech(newDamage.characterTakingDamage, newDamage.damageToDeal);
     }
