@@ -21,6 +21,7 @@ public class EffectController
 
         CombatManager.OnDestroyScene += DisableEffectListeners;
         CombatAnimationManager.OnEndedAnimation += EnableEffects;
+        CombatAnimationManager.OnAnimationsComplete += UpdateFighterBuffs;
         CardPlayManager.OnCombatComplete += IncrementEffectsAtTurnEnd;
     }
 
@@ -35,35 +36,26 @@ public class EffectController
 
     public int GetMechDamageWithAndConsumeModifiers(CardChannelPairObject attack, CharacterSelect defensiveCharacter)
     {
-        int damageToReturn = attack.CardData.BaseDamage;
+        int mechDamageToReturn = attack.CardData.BaseDamage;
 
         //Get Damage Boosts and Modifiers
-        damageToReturn = GetCardCategoryDamageBonus(attack, damageToReturn, defensiveCharacter);
-        damageToReturn = GetCardChannelDamageBonus(attack, damageToReturn, defensiveCharacter);
+        mechDamageToReturn = GetCardCategoryDamageBonus(attack, mechDamageToReturn, defensiveCharacter);
+        mechDamageToReturn = GetCardChannelDamageBonus(attack, mechDamageToReturn, defensiveCharacter);
         //damageToReturn = GetAndConsumeKeyWordDamageBonus(attack, ref damageToReturn, defensiveCharacter);
-        damageToReturn = GetComponentDamageBonus(attack, damageToReturn, defensiveCharacter);
 
         //Get Damage Reductions and Modifiers
-        damageToReturn = GetCardChannelDamageReduction(attack, damageToReturn, defensiveCharacter);
-        damageToReturn = GetDamageReducedByShield(attack, damageToReturn, defensiveCharacter);
+        mechDamageToReturn = GetCardChannelDamageReduction(attack, mechDamageToReturn, defensiveCharacter);
+        mechDamageToReturn = GetDamageReducedByShield(attack, mechDamageToReturn, defensiveCharacter);
 
-        return damageToReturn;
+        return mechDamageToReturn;
     }
 
-    public int GetComponentDamageWithModifiers(CardChannelPairObject attack, CharacterSelect defensiveCharacter)
+    public int GetComponentDamageWithModifiers(int attackDamage, Channels channel, CharacterSelect defensiveCharacter)
     {
-        int damageToReturn = attack.CardData.BaseDamage;
-        //Check for CardType boost.
-        //Check for ChannelType boost.
-        //Check for KeywordExecute boost.
-        //Check for component damage bonus.
+        attackDamage = GetComponentDamageBonus(attackDamage, channel, defensiveCharacter);
+        attackDamage = GetComponentElementDamageBonus(attackDamage, channel, defensiveCharacter);
 
-        //Check for channel reductions
-        //Check for shields
-        //Check for component damage reduction.
-        //Return damage.
-
-        return damageToReturn;
+        return attackDamage;
     }
 
     private void UpdateFighterBuffs()
@@ -94,7 +86,6 @@ public class EffectController
         damageToReturn = GetCardCategoryDamageBonus(attack, damageToReturn, defensiveCharacter);
         damageToReturn = GetCardChannelDamageBonus(attack, damageToReturn, defensiveCharacter);
         //damageToReturn = GetAndConsumeKeyWordDamageBonus(attack, ref damageToReturn, defensiveCharacter);
-        damageToReturn = GetComponentDamageBonus(attack, damageToReturn, defensiveCharacter);
 
         //Get Damage Reductions and Modifiers
         damageToReturn = GetCardChannelDamageReduction(attack, damageToReturn, defensiveCharacter);
@@ -196,11 +187,11 @@ public class EffectController
 
         return flurryBonus;
     }
-    
+
     private void DisableEffectListeners()
     {
         CombatAnimationManager.OnEndedAnimation -= EnableEffects;
-        CombatAnimationManager.OnEndedAnimation -= UpdateFighterBuffs;
+        CombatAnimationManager.OnAnimationsComplete -= UpdateFighterBuffs;
         CardPlayManager.OnCombatComplete -= IncrementEffectsAtTurnEnd;
         CombatManager.OnDestroyScene -= DisableEffectListeners;
     }
@@ -345,11 +336,11 @@ public class EffectController
                 if (characterAdding == CharacterSelect.Player)
                 {
                     ElementType currentElement = CombatManager.instance.OpponentFighter.FighterMech.MechArms.ComponentElement;
-                    
+
                     if (currentElement == ElementType.None)
                         return;
 
-                    if(currentElement == ElementType.Fire || currentElement == ElementType.Plasma)
+                    if (currentElement == ElementType.Fire || currentElement == ElementType.Plasma)
                     {
                         int currentStacks;
 
@@ -365,10 +356,10 @@ public class EffectController
                     if (currentElement == ElementType.Ice || currentElement == ElementType.Acid)
                     {
                         List<ElementStackObject> currentStackObject = new List<ElementStackObject>();
-                        
-                        if(playerFighterEffectObject.IceAcidStacks.TryGetValue(channel, out currentStackObject))
+
+                        if (playerFighterEffectObject.IceAcidStacks.TryGetValue(channel, out currentStackObject))
                         {
-                            foreach(ElementStackObject elementStack in currentStackObject)
+                            foreach (ElementStackObject elementStack in currentStackObject)
                                 if (elementStack.ElementType == currentElement)
                                     elementStack.ElementStacks += newStacks;
                         }
@@ -519,7 +510,7 @@ public class EffectController
     {
         List<CardEffectObject> previousCardCategoryEffects = new List<CardEffectObject>();
 
-        if(defensiveCharacter == CharacterSelect.Opponent)
+        if (defensiveCharacter == CharacterSelect.Opponent)
         {
             switch (attack.CardData.CardCategory)
             {
@@ -573,7 +564,7 @@ public class EffectController
 
         if (defensiveCharacter == CharacterSelect.Opponent)
         {
-            foreach(Channels channel in GetChannelListFromFlags(attack.CardChannel))
+            foreach (Channels channel in CombatManager.instance.GetChannelListFromFlags(attack.CardChannel))
             {
                 if (playerFighterEffectObject.ChannelDamageBonus.TryGetValue(channel, out previousChannelEffects))
                     foreach (CardEffectObject effect in previousChannelEffects)
@@ -584,7 +575,7 @@ public class EffectController
         }
         else
         {
-            foreach (Channels channel in GetChannelListFromFlags(attack.CardChannel))
+            foreach (Channels channel in CombatManager.instance.GetChannelListFromFlags(attack.CardChannel))
             {
                 if (opponentFighterEffectObject.ChannelDamageBonus.TryGetValue(channel, out previousChannelEffects))
                     foreach (CardEffectObject effect in previousChannelEffects)
@@ -608,7 +599,7 @@ public class EffectController
                 if (effect.EffectType == CardEffectTypes.KeyWord)
                     keyWord = effect.CardKeyWord;
 
-            if(defensiveCharacter == CharacterSelect.Opponent)
+            if (defensiveCharacter == CharacterSelect.Opponent)
             {
                 if (playerFighterEffectObject.KeyWordDuration.TryGetValue(keyWord, out previousKeyWordEffects))
                 {
@@ -669,25 +660,26 @@ public class EffectController
             {
                 if (opponentFighterEffectObject.KeyWordDuration.TryGetValue(keyWord, out previousKeyWordEffects))
                     foreach (CardEffectObject effect in previousKeyWordEffects)
-                        damageToReturn += effect.EffectMagnitude;            }
+                        damageToReturn += effect.EffectMagnitude;
+            }
         }
 
         return damageToReturn;
     }
 
-    private int GetComponentDamageBonus(CardChannelPairObject attack, int damageToReturn, CharacterSelect defensiveCharacter)
+    private int GetComponentDamageBonus(int damageToReturn, Channels channel, CharacterSelect defensiveCharacter)
     {
         if (defensiveCharacter == CharacterSelect.Opponent)
         {
-            switch (attack.CardData.CardCategory)
+            switch (channel)
             {
-                case CardCategory.Punch:
+                case Channels.High:
                     damageToReturn = Mathf.RoundToInt(damageToReturn * (1 + CombatManager.instance.PlayerFighter.FighterMech.MechArms.CDMFromComponent));
                     break;
-                case CardCategory.Kick:
-                    damageToReturn = Mathf.RoundToInt(damageToReturn * (1 +CombatManager.instance.PlayerFighter.FighterMech.MechLegs.CDMFromComponent));
+                case Channels.Mid:
+                    damageToReturn = Mathf.RoundToInt(damageToReturn * (1 + CombatManager.instance.PlayerFighter.FighterMech.MechLegs.CDMFromComponent));
                     break;
-                case CardCategory.Special:
+                case Channels.Low:
                     damageToReturn = Mathf.RoundToInt(damageToReturn * (1 + CombatManager.instance.PlayerFighter.FighterMech.MechTorso.CDMFromComponent));
                     break;
             }
@@ -696,15 +688,15 @@ public class EffectController
         }
         else
         {
-            switch (attack.CardData.CardCategory)
+            switch (channel)
             {
-                case CardCategory.Punch:
+                case Channels.High:
                     damageToReturn = Mathf.RoundToInt(damageToReturn * (1 + CombatManager.instance.OpponentFighter.FighterMech.MechArms.CDMFromComponent));
                     break;
-                case CardCategory.Kick:
+                case Channels.Mid:
                     damageToReturn = Mathf.RoundToInt(damageToReturn * (1 + CombatManager.instance.OpponentFighter.FighterMech.MechLegs.CDMFromComponent));
                     break;
-                case CardCategory.Special:
+                case Channels.Low:
                     damageToReturn = Mathf.RoundToInt(damageToReturn * (1 + CombatManager.instance.OpponentFighter.FighterMech.MechTorso.CDMFromComponent));
                     break;
             }
@@ -719,7 +711,7 @@ public class EffectController
 
         if (defensiveCharacter == CharacterSelect.Opponent)
         {
-            foreach (Channels channel in GetChannelListFromFlags(attack.CardChannel))
+            foreach (Channels channel in CombatManager.instance.GetChannelListFromFlags(attack.CardChannel))
             {
                 if (opponentFighterEffectObject.ChannelDamageReduction.TryGetValue(channel, out previousChannelEffects))
                     foreach (CardEffectObject effect in previousChannelEffects)
@@ -730,7 +722,7 @@ public class EffectController
         }
         else
         {
-            foreach (Channels channel in GetChannelListFromFlags(attack.CardChannel))
+            foreach (Channels channel in CombatManager.instance.GetChannelListFromFlags(attack.CardChannel))
             {
                 if (playerFighterEffectObject.ChannelDamageReduction.TryGetValue(channel, out previousChannelEffects))
                     foreach (CardEffectObject effect in previousChannelEffects)
@@ -740,14 +732,14 @@ public class EffectController
             return damageToReturn;
         }
     }
-    
+
     private int GetDamageReducedByShield(CardChannelPairObject attack, int damageToReturn, CharacterSelect defensiveCharacter)
     {
         int initialShield;
 
-        if(defensiveCharacter == CharacterSelect.Opponent)
+        if (defensiveCharacter == CharacterSelect.Opponent)
         {
-            foreach (Channels channel in GetChannelListFromFlags(attack.CardChannel))
+            foreach (Channels channel in CombatManager.instance.GetChannelListFromFlags(attack.CardChannel))
             {
                 if (opponentFighterEffectObject.ChannelShields.TryGetValue(channel, out initialShield))
                 {
@@ -768,7 +760,7 @@ public class EffectController
         }
         else
         {
-            foreach (Channels channel in GetChannelListFromFlags(attack.CardChannel))
+            foreach (Channels channel in CombatManager.instance.GetChannelListFromFlags(attack.CardChannel))
             {
                 if (playerFighterEffectObject.ChannelShields.TryGetValue(channel, out initialShield))
                 {
@@ -783,7 +775,7 @@ public class EffectController
                     else
                         playerFighterEffectObject.ChannelShields[attack.CardChannel] = shieldAmount;
                 }
-            }                
+            }
 
             return damageToReturn;
         }
@@ -795,7 +787,7 @@ public class EffectController
 
         if (characterGaining == CharacterSelect.Player)
         {
-            foreach (Channels returnedChannel in GetChannelListFromFlags(channel))
+            foreach (Channels returnedChannel in CombatManager.instance.GetChannelListFromFlags(channel))
             {
                 if (playerFighterEffectObject.ChannelShields.TryGetValue(returnedChannel, out shieldAmount))
                     playerFighterEffectObject.ChannelShields[returnedChannel] =
@@ -803,12 +795,12 @@ public class EffectController
                 else
                     playerFighterEffectObject.ChannelShields.Add(returnedChannel, effect.EffectMagnitude);
             }
-                
+
         }
 
         if (characterGaining == CharacterSelect.Opponent)
         {
-            foreach (Channels returnedChannel in GetChannelListFromFlags(channel))
+            foreach (Channels returnedChannel in CombatManager.instance.GetChannelListFromFlags(channel))
             {
                 if (opponentFighterEffectObject.ChannelShields.TryGetValue(returnedChannel, out shieldAmount))
                     opponentFighterEffectObject.ChannelShields[returnedChannel] =
@@ -825,7 +817,7 @@ public class EffectController
 
         if (characterGaining == CharacterSelect.Player)
         {
-            foreach (Channels returnedChannel in GetChannelListFromFlags(channel))
+            foreach (Channels returnedChannel in CombatManager.instance.GetChannelListFromFlags(channel))
             {
                 if (playerFighterEffectObject.ChannelShields.TryGetValue(returnedChannel, out shieldAmount))
                     playerFighterEffectObject.ChannelShields[returnedChannel] =
@@ -837,7 +829,7 @@ public class EffectController
 
         if (characterGaining == CharacterSelect.Opponent)
         {
-            foreach (Channels returnedChannel in GetChannelListFromFlags(channel))
+            foreach (Channels returnedChannel in CombatManager.instance.GetChannelListFromFlags(channel))
             {
                 if (opponentFighterEffectObject.ChannelShields.TryGetValue(returnedChannel, out shieldAmount))
                     opponentFighterEffectObject.ChannelShields[returnedChannel] =
@@ -866,7 +858,7 @@ public class EffectController
                 newBoostList.Add(newBoost);
                 playerFighterEffectObject.CardCategoryDamageBonus.Add(effect.CardTypeToBoost, newBoostList);
             }
-                
+
         }
 
         if (characterBoosting == CharacterSelect.Opponent)
@@ -892,7 +884,7 @@ public class EffectController
 
         if (characterBoosting == CharacterSelect.Player)
         {
-            foreach (Channels returnedChannel in GetChannelListFromFlags(channel))
+            foreach (Channels returnedChannel in CombatManager.instance.GetChannelListFromFlags(channel))
             {
                 if (playerFighterEffectObject.ChannelDamageBonus.TryGetValue(returnedChannel, out previousBoostList))
                 {
@@ -910,7 +902,7 @@ public class EffectController
 
         if (characterBoosting == CharacterSelect.Opponent)
         {
-            foreach (Channels returnedChannel in GetChannelListFromFlags(channel))
+            foreach (Channels returnedChannel in CombatManager.instance.GetChannelListFromFlags(channel))
             {
                 if (opponentFighterEffectObject.ChannelDamageBonus.TryGetValue(returnedChannel, out previousBoostList))
                 {
@@ -934,7 +926,7 @@ public class EffectController
 
         if (characterDamageBeingReduced == CharacterSelect.Player)
         {
-            foreach (Channels returnedChannel in GetChannelListFromFlags(channel))
+            foreach (Channels returnedChannel in CombatManager.instance.GetChannelListFromFlags(channel))
             {
                 if (playerFighterEffectObject.ChannelDamageReduction.TryGetValue(returnedChannel, out previousReductionList))
                 {
@@ -952,7 +944,7 @@ public class EffectController
 
         if (characterDamageBeingReduced == CharacterSelect.Opponent)
         {
-            foreach (Channels returnedChannel in GetChannelListFromFlags(channel))
+            foreach (Channels returnedChannel in CombatManager.instance.GetChannelListFromFlags(channel))
             {
                 if (opponentFighterEffectObject.ChannelDamageReduction.TryGetValue(returnedChannel, out previousReductionList))
                 {
@@ -1285,17 +1277,35 @@ public class EffectController
         }
     }
 
-    private List<Channels> GetChannelListFromFlags(Channels channelToInterpret)
+    private int GetComponentElementDamageBonus(int damageToDeal, Channels channel, CharacterSelect defensiveCharacter)
     {
-        List<Channels> channelList = new List<Channels>();
+        List<ElementStackObject> previousElementChannelEffects = new List<ElementStackObject>();
 
-        if (channelToInterpret.HasFlag(Channels.High))
-            channelList.Add(Channels.High);
-        if (channelToInterpret.HasFlag(Channels.Mid))
-            channelList.Add(Channels.Mid);
-        if (channelToInterpret.HasFlag(Channels.Low))
-            channelList.Add(Channels.Low);
+        if (defensiveCharacter == CharacterSelect.Opponent)
+        {
+            if (opponentFighterEffectObject.IceAcidStacks.TryGetValue(channel, out previousElementChannelEffects))
+            {
+                foreach (ElementStackObject element in previousElementChannelEffects)
+                {
+                    if (element.ElementType == ElementType.Acid)
+                        return Mathf.RoundToInt(damageToDeal * CombatManager.instance.AcidComponentDamageMultiplier);
+                }
+            }
 
-        return channelList;
+            return damageToDeal;
+        }
+        else
+        {
+            if (playerFighterEffectObject.IceAcidStacks.TryGetValue(channel, out previousElementChannelEffects))
+            {
+                foreach (ElementStackObject element in previousElementChannelEffects)
+                {
+                    if (element.ElementType == ElementType.Acid)
+                        return Mathf.RoundToInt(damageToDeal * CombatManager.instance.AcidComponentDamageMultiplier);
+                }
+            }
+
+            return damageToDeal;
+        }
     }
 }

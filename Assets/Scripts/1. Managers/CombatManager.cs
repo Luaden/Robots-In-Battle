@@ -6,6 +6,7 @@ public class CombatManager : MonoBehaviour
 {
     [Header("Combat Modifiers")]
     [SerializeField] private int mechEnergyGain;
+    [SerializeField] private float brokenComponentDamageMultiplier;
     [SerializeField] private float counterDamageMultiplier;
     [SerializeField] private float guardDamageMultiplier;
     [SerializeField] private float acidComponentDamageMultiplier;
@@ -58,6 +59,7 @@ public class CombatManager : MonoBehaviour
     public CombatAnimationManager CombatAnimationManager { get => combatAnimationManager; }
 
     public int MechEnergyGain { get => mechEnergyGain; }
+    public float BrokenCDM { get => brokenComponentDamageMultiplier; }
     public float CounterDamageMultiplier { get => counterDamageMultiplier; }
     public float GuardDamageMultiplier { get => guardDamageMultiplier; }
     public float AcidComponentDamageMultiplier { get => acidComponentDamageMultiplier; }
@@ -77,21 +79,64 @@ public class CombatManager : MonoBehaviour
     }
     #endregion
 
-    public void RemoveHealthFromMech(CharacterSelect character, int damage)
+    public void RemoveHealthFromMech(DamageMechPair damageMechPair)
     {
-        if (character == CharacterSelect.Player)
+        if (damageMechPair.characterTakingDamage == CharacterSelect.Player)
         {
-            playerFighter.FighterMech.MechCurrentHP = Mathf.Clamp(playerFighter.FighterMech.MechCurrentHP - damage, 0, int.MaxValue);
-            mechHUDManager.UpdatePlayerHP(playerFighter.FighterMech.MechCurrentHP);
-            CheckForWinLoss();
+            foreach(Channels channel in GetChannelListFromFlags(damageMechPair.damageChannels))
+            {
+                switch (channel)
+                {
+                    case Channels.High:
+                        Debug.Log("Dealing damage to player arms.");
+                        playerFighter.FighterMech.DamageComponentHP(
+                            CardPlayManager.EffectController.GetComponentDamageWithModifiers(damageMechPair.damageToDeal, channel, CharacterSelect.Player), MechComponent.Arms);
+                        break;
+                    case Channels.Mid:
+                        Debug.Log("Dealing damage to player torso.");
+                        playerFighter.FighterMech.DamageComponentHP(
+                            CardPlayManager.EffectController.GetComponentDamageWithModifiers(damageMechPair.damageToDeal, channel, CharacterSelect.Player), MechComponent.Torso);
+                        break;
+                    case Channels.Low:
+                        Debug.Log("Dealing damage to player legs.");
+                        playerFighter.FighterMech.DamageComponentHP(
+                            CardPlayManager.EffectController.GetComponentDamageWithModifiers(damageMechPair.damageToDeal, channel, CharacterSelect.Player), MechComponent.Legs);
+                        break;                
+                }
+
+                mechHUDManager.UpdatePlayerHP(playerFighter.FighterMech.MechCurrentHP);
+            }
         }
 
-        if (character == CharacterSelect.Opponent)
+        if (damageMechPair.characterTakingDamage == CharacterSelect.Opponent)
         {
-            opponentFighter.FighterMech.MechCurrentHP = Mathf.Clamp(opponentFighter.FighterMech.MechCurrentHP - damage, 0, int.MaxValue);
-            mechHUDManager.UpdateOpponentHP(opponentFighter.FighterMech.MechCurrentHP);
-            CheckForWinLoss();
+            foreach (Channels channel in GetChannelListFromFlags(damageMechPair.damageChannels))
+            {
+                switch (channel)
+                {
+                    case Channels.High:
+                        Debug.Log("Dealing damage to opponent arms.");
+                        opponentFighter.FighterMech.DamageComponentHP(
+                            CardPlayManager.EffectController.GetComponentDamageWithModifiers(damageMechPair.damageToDeal, channel, CharacterSelect.Opponent), MechComponent.Arms);
+                        break;
+                    case Channels.Mid:
+                        Debug.Log("Dealing damage to opponent torso.");
+                        opponentFighter.FighterMech.DamageComponentHP(
+                            CardPlayManager.EffectController.GetComponentDamageWithModifiers(damageMechPair.damageToDeal, channel, CharacterSelect.Opponent), MechComponent.Torso);
+                        break;
+                    case Channels.Low:
+                        Debug.Log("Dealing damage to opponent legs.");
+                        opponentFighter.FighterMech.DamageComponentHP(
+                            CardPlayManager.EffectController.GetComponentDamageWithModifiers(damageMechPair.damageToDeal, channel, CharacterSelect.Opponent), MechComponent.Legs);
+                        break;
+                }
+
+                mechHUDManager.UpdateOpponentHP(opponentFighter.FighterMech.MechCurrentHP);
+            }
         }
+
+        CheckForWinLoss();
+
     }
 
     public void AddHealthToMech(CharacterSelect character, int health)
@@ -162,6 +207,21 @@ public class CombatManager : MonoBehaviour
         if(character == CharacterSelect.Opponent)
             mechHUDManager.UpdatePlayerEnergy(playerFighter.FighterMech.MechCurrentEnergy, playerFighter.FighterMech.MechCurrentEnergy, false);
     }
+
+    public List<Channels> GetChannelListFromFlags(Channels channelToInterpret)
+    {
+        List<Channels> channelList = new List<Channels>();
+
+        if (channelToInterpret.HasFlag(Channels.High))
+            channelList.Add(Channels.High);
+        if (channelToInterpret.HasFlag(Channels.Mid))
+            channelList.Add(Channels.Mid);
+        if (channelToInterpret.HasFlag(Channels.Low))
+            channelList.Add(Channels.Low);
+
+        return channelList;
+    }
+
     private void Awake()
     {
         instance = this;

@@ -24,7 +24,7 @@ public class MechComponentDataObject
     public string ComponentName { get => componentName; }
     public MechComponent ComponentType { get => componentType; }
     public Sprite ComponentSprite { get => componentSprite; }
-    public int ComponentCurrentHP { get => componentCurrentHP; }
+    public int ComponentCurrentHP { get => componentCurrentHP; set => componentCurrentHP = value; }
     public int ComponentMaxHP { get => componentMaxHP; }
     public int ComponentMaxEnergy { get => componentEnergy; }
     public ElementType ComponentElement { get => componentElement; }

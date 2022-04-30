@@ -99,6 +99,56 @@ public class MechObject
         return null;
     }
 
+    public void DamageComponentHP(int damageToDeal, MechComponent component)
+    {
+        int bonusDamage = 0;
+
+        switch (component)
+        {
+            case MechComponent.Torso:
+                mechTorso.ComponentCurrentHP -= damageToDeal;
+
+                if(mechTorso.ComponentCurrentHP < 0)
+                {
+                    bonusDamage = Mathf.Abs(mechTorso.ComponentCurrentHP);
+                    mechTorso.ComponentCurrentHP = 0;
+                }
+                break;
+
+            case MechComponent.Arms:
+                mechArms.ComponentCurrentHP -= damageToDeal;
+
+                if (mechTorso.ComponentCurrentHP < 0)
+                {
+                    bonusDamage = Mathf.Abs(mechArms.ComponentCurrentHP);
+                    mechArms.ComponentCurrentHP = 0;
+                }
+                break;
+
+            case MechComponent.Legs:
+                mechLegs.ComponentCurrentHP -= damageToDeal;
+
+                if (mechLegs.ComponentCurrentHP < 0)
+                {
+                    bonusDamage = Mathf.Abs(mechLegs.ComponentCurrentHP);
+                    mechLegs.ComponentCurrentHP = 0;
+                }
+                break;
+        }
+
+        mechCurrentHP = mechHead.ComponentCurrentHP;
+        mechCurrentHP += mechTorso.ComponentCurrentHP;
+        mechCurrentHP += mechArms.ComponentCurrentHP;
+        mechCurrentHP += mechLegs.ComponentCurrentHP;
+
+        Debug.Log("Head: " + mechHead.ComponentCurrentHP);
+        Debug.Log("Torso: " + mechTorso.ComponentCurrentHP);
+        Debug.Log("Arms: " + mechArms.ComponentCurrentHP);
+        Debug.Log("Legs " + mechLegs.ComponentCurrentHP);
+
+        mechCurrentHP -= Mathf.RoundToInt(bonusDamage * CombatManager.instance.BrokenCDM);
+    }
+
     public void ResetHealth()
     {
         mechHead.HealComponent();

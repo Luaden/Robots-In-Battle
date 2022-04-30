@@ -32,67 +32,100 @@ public class ChannelsUISlotManager : BaseSlotManager<CardUIController>
 
     public override void AddItemToCollection(CardUIController item, BaseSlotController<CardUIController> slot)
     {
-        if(!attackSlotAFilled)
-            if(item.CardData.CardType == CardType.Attack || item.CardData.CardType == CardType.Neutral)
+        if(item.CardData.CardType == CardType.Attack)
+        {
+            if(!attackSlotAFilled)
             {
-                playerAttackSlotA.CurrentSlottedItem = item;
-                item.CardSlotController = playerAttackSlotA;
-
-                item.CardData.SelectedChannels = selectedChannel;
-                
-                if(CombatManager.instance.NarrateCardSelection)
-                    Debug.Log("Player selected " + item.CardData.CardName + " for their A Slot.");
-
-                cardChannelPairObjectA = new CardChannelPairObject(item.CardData, selectedChannel);
-                CombatManager.instance.CardPlayManager.PlayerAttackPlan.cardChannelPairA = cardChannelPairObjectA;
-
-                //Needs to account for ice.
-                CombatManager.instance.RemoveEnergyFromMech(CharacterSelect.Player, cardChannelPairObjectA.CardData.EnergyCost, true);
-
-                attackSlotAFilled = true;
-                SkipASlotButton.SetActive(false);
-                OnASlotFilled?.Invoke();
+                FillASlot(item, slot);
                 return;
             }
+
+            if(attackSlotAFilled && !attackSlotBFilled && playerAttackSlotA.CurrentSlottedItem.CardData.CardType == CardType.Neutral)
+            {
+                FillBSlot(playerAttackSlotA.CurrentSlottedItem.CardData.CardUIController, playerAttackSlotB);
+                FillASlot(item, slot);
+                return;
+            }
+        }
+
+        if (item.CardData.CardType == CardType.Defense)
+        {
+            if(!attackSlotBFilled)
+            {
+                FillBSlot(item, slot);
+                return;
+            }
+
+            if (attackSlotBFilled && !attackSlotAFilled && playerAttackSlotB.CurrentSlottedItem.CardData.CardType == CardType.Neutral)
+            {
+                FillASlot(playerAttackSlotA.CurrentSlottedItem.CardData.CardUIController, playerAttackSlotB);
+                FillBSlot(item, slot);
+                return;
+            }
+        }
+
+        if (item.CardData.CardType == CardType.Neutral)
+        {
+            if(!attackSlotAFilled)
+            {
+                FillASlot(item, slot);
+                return;
+            }
+
+            if (!attackSlotBFilled)
+            {
+                FillBSlot(item, slot);
+                return;
+            }
+        }
+
+
+        void FillASlot(CardUIController item, BaseSlotController<CardUIController> slot)
+        {
+            playerAttackSlotA.CurrentSlottedItem = item;
+            item.CardSlotController = playerAttackSlotA;
+
+            item.CardData.SelectedChannels = selectedChannel;
+
+            if (CombatManager.instance.NarrateCardSelection)
+                Debug.Log("Player selected " + item.CardData.CardName + " for their A Slot.");
+
+            cardChannelPairObjectA = new CardChannelPairObject(item.CardData, selectedChannel);
+            CombatManager.instance.CardPlayManager.PlayerAttackPlan.cardChannelPairA = cardChannelPairObjectA;
+
+            //Needs to account for ice.
+            CombatManager.instance.RemoveEnergyFromMech(CharacterSelect.Player, cardChannelPairObjectA.CardData.EnergyCost, true);
+
+            attackSlotAFilled = true;
+            SkipASlotButton.SetActive(false);
+            OnASlotFilled?.Invoke();
+        }
+
+        void FillBSlot(CardUIController item, BaseSlotController<CardUIController> slot)
+        {
+            playerAttackSlotB.CurrentSlottedItem = item;
+            item.CardSlotController = playerAttackSlotB;
+
+            item.CardData.SelectedChannels = selectedChannel;
+
+            if (CombatManager.instance.NarrateCardSelection)
+                Debug.Log("Player selected " + item.CardData.CardName + " for their B Slot.");
+
+            cardChannelPairObjectB = new CardChannelPairObject(item.CardData, selectedChannel);
+            CombatManager.instance.CardPlayManager.PlayerAttackPlan.cardChannelPairB = cardChannelPairObjectB;
+
+            //Needs to account for ice.
+            if (cardChannelPairObjectA != null && cardChannelPairObjectA.CardData != null)
+                CombatManager.instance.RemoveEnergyFromMech(CharacterSelect.Player, cardChannelPairObjectA.CardData.EnergyCost + cardChannelPairObjectB.CardData.EnergyCost, true);
             else
-            {
-                Debug.Log(item.CardData.CardName + " is not the correct type for Slot B. Slot A must be an Defense or Neutral Card Type but it is a " 
-                    + item.CardData.CardType + " card.");
-                return;
-            }
+                CombatManager.instance.RemoveEnergyFromMech(CharacterSelect.Player, cardChannelPairObjectB.CardData.EnergyCost, true);
 
-        if (!attackSlotBFilled)
-            if (item.CardData.CardType == CardType.Defense || item.CardData.CardType == CardType.Neutral)
-            {
-                playerAttackSlotB.CurrentSlottedItem = item;
-                item.CardSlotController = playerAttackSlotB;
+            attackSlotBFilled = true;
+            OnBSlotFilled?.Invoke();
+            return;
+        }
 
-                item.CardData.SelectedChannels = selectedChannel;
-
-                if (CombatManager.instance.NarrateCardSelection)
-                    Debug.Log("Player selected " + item.CardData.CardName + " for their B Slot.");
-
-                cardChannelPairObjectB = new CardChannelPairObject(item.CardData, selectedChannel);
-                CombatManager.instance.CardPlayManager.PlayerAttackPlan.cardChannelPairB = cardChannelPairObjectB;
-
-                //Needs to account for ice.
-                if (cardChannelPairObjectA != null && cardChannelPairObjectA.CardData != null)
-                    CombatManager.instance.RemoveEnergyFromMech(CharacterSelect.Player, cardChannelPairObjectA.CardData.EnergyCost + cardChannelPairObjectB.CardData.EnergyCost, true);
-                else
-                    CombatManager.instance.RemoveEnergyFromMech(CharacterSelect.Player, cardChannelPairObjectB.CardData.EnergyCost, true);
-
-                attackSlotBFilled = true;
-                OnBSlotFilled?.Invoke();
-                return;
-            }
-            else
-            {
-                Debug.Log(item.CardData.CardName + " is not the correct type for Slot B. Slot A must be an Defense or Neutral Card Type but it is a " 
-                    + item.CardData.CardType + " card.");
-                return;
-            }
-
-        Debug.Log("No slots available in the hand to add a card to. This should not happen and should be stopped before this point.");
+        Debug.Log("No slots available in the hand to add a card to.");
     }
 
     public void SkipASlot()
@@ -119,26 +152,37 @@ public class ChannelsUISlotManager : BaseSlotManager<CardUIController>
 
     public override void HandleDrop(PointerEventData eventData, CardUIController newData, BaseSlotController<CardUIController> slot)
     {
+        if(ValidateCardChannelSelection(newData, slot))
+        {
+            //Needs to also account for energy cost + ice
+            newData.CardSlotController.SlotManager.RemoveItemFromCollection(newData);
+            AddItemToCollection(newData, slot);
+        }
+    }
+
+    private bool ValidateCardChannelSelection(CardUIController newData, BaseSlotController<CardUIController> slot)
+    {
         if (newData.CardData.EnergyCost > CombatManager.instance.PlayerFighter.FighterMech.MechCurrentEnergy)
         {
             Debug.Log("Not enough energy to use this card.");
-            return;
+            return false;
         }
 
         selectedChannel = CheckChannelSlot(slot);
 
         if (selectedChannel == Channels.None)
-            return;
-
-        if(CardChannelCheck(newData, selectedChannel))
         {
-            //Needs to also account for energy cost + ice
-            newData.CardSlotController.SlotManager.RemoveItemFromCollection(newData);
-            AddItemToCollection(newData, slot);
-            return;
+            Debug.Log("Channel slot not recognized.");
+            return false;
         }
 
-        Debug.Log("Card does not fit into " + selectedChannel + " slot.");
+        if (!CardChannelCheck(newData, selectedChannel))
+        {
+            Debug.Log("Card does not fit into " + selectedChannel + " slot.");
+            return false;
+        }
+
+        return true;
     }
 
     public override void RemoveItemFromCollection(CardUIController item)

@@ -72,10 +72,7 @@ public class CombatAnimationManager : MonoBehaviour
             return;
 
         if(startedAnimations)
-        {
-            Debug.Log("Ending animation.");
             OnEndedAnimation?.Invoke();
-        }
 
         OnStartNewAnimation?.Invoke();
 
@@ -96,7 +93,6 @@ public class CombatAnimationManager : MonoBehaviour
             {
                 allAnimationsComplete = true;
                 startedAnimations = false;
-                Debug.Log("Ending animation.");
                 OnEndedAnimation?.Invoke();
             }
     }
