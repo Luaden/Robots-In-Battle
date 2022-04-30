@@ -25,7 +25,7 @@ public class CardInteractionController
             CombatManager.instance.CombatAnimationManager.SetCardOnBurnPile(playerAttackPlan.cardChannelPairA.CardData.CardUIController,
                                 CharacterSelect.Player, opponentAttackPlan.cardChannelPairB.CardData.CardUIController);
 
-            CalculateDefensiveInteraction(playerAttackPlan.cardChannelPairA, CharacterSelect.Player, opponentAttackPlan.cardChannelPairB);
+            CalculateDefensiveInteraction(playerAttackPlan.cardChannelPairA, CharacterSelect.Player, opponentAttackPlan.cardChannelPairB, CharacterSelect.Opponent);
         }
 
         if (playerAttackPlan.cardChannelPairB != null && playerAttackPlan.cardChannelPairB.CardData != null &&
@@ -35,7 +35,7 @@ public class CardInteractionController
             CombatManager.instance.CombatAnimationManager.SetCardOnBurnPile(opponentAttackPlan.cardChannelPairA.CardData.CardUIController,
                                 CharacterSelect.Opponent, playerAttackPlan.cardChannelPairB.CardData.CardUIController);
 
-            CalculateDefensiveInteraction(opponentAttackPlan.cardChannelPairA, CharacterSelect.Opponent, playerAttackPlan.cardChannelPairB);
+            CalculateDefensiveInteraction(opponentAttackPlan.cardChannelPairA, CharacterSelect.Opponent, playerAttackPlan.cardChannelPairB, CharacterSelect.Player);
         }
 
         if (playerAttackPlan.cardChannelPairA != null && playerAttackPlan.cardChannelPairA.CardData != null)
@@ -43,7 +43,7 @@ public class CardInteractionController
             CombatManager.instance.CombatAnimationManager.SetCardOnBurnPile(playerAttackPlan.cardChannelPairA.CardData.CardUIController,
                 CharacterSelect.Player);
 
-            CalculateMechDamage(playerAttackPlan.cardChannelPairA, CharacterSelect.Opponent);
+            CalculateMechDamage(playerAttackPlan.cardChannelPairA, CharacterSelect.Player, null, CharacterSelect.Opponent);
             CombatManager.instance.CardPlayManager.EffectController.EnableEffects(playerAttackPlan.cardChannelPairA, CharacterSelect.Opponent);
         }
 
@@ -52,7 +52,7 @@ public class CardInteractionController
             CombatManager.instance.CombatAnimationManager.SetCardOnBurnPile(opponentAttackPlan.cardChannelPairA.CardData.CardUIController,
                 CharacterSelect.Opponent);
 
-            CalculateMechDamage(opponentAttackPlan.cardChannelPairA, CharacterSelect.Player);
+            CalculateMechDamage(opponentAttackPlan.cardChannelPairA, CharacterSelect.Opponent, null, CharacterSelect.Player);
             CombatManager.instance.CardPlayManager.EffectController.EnableEffects(opponentAttackPlan.cardChannelPairA, CharacterSelect.Player);
         }
 
@@ -61,7 +61,7 @@ public class CardInteractionController
             CombatManager.instance.CombatAnimationManager.SetCardOnBurnPile(playerAttackPlan.cardChannelPairB.CardData.CardUIController,
                 CharacterSelect.Player);
 
-            CalculateMechDamage(playerAttackPlan.cardChannelPairB, CharacterSelect.Opponent);
+            CalculateMechDamage(playerAttackPlan.cardChannelPairB, CharacterSelect.Player, null, CharacterSelect.Opponent);
             CombatManager.instance.CardPlayManager.EffectController.EnableEffects(playerAttackPlan.cardChannelPairB, CharacterSelect.Opponent);
         }
 
@@ -70,69 +70,101 @@ public class CardInteractionController
             CombatManager.instance.CombatAnimationManager.SetCardOnBurnPile(opponentAttackPlan.cardChannelPairB.CardData.CardUIController,
                 CharacterSelect.Opponent);
 
-            CalculateMechDamage(opponentAttackPlan.cardChannelPairB, CharacterSelect.Player);
+            CalculateMechDamage(opponentAttackPlan.cardChannelPairB, CharacterSelect.Opponent, null, CharacterSelect.Player);
             CombatManager.instance.CardPlayManager.EffectController.EnableEffects(opponentAttackPlan.cardChannelPairB, CharacterSelect.Player);
         }
 
         ClearAllCards();
     }
 
-    private void CalculateDefensiveInteraction(CardChannelPairObject offensiveCard, CharacterSelect offensiveCharacter, CardChannelPairObject defensiveCard)
+    private void CalculateDefensiveInteraction(CardChannelPairObject offensiveCard, CharacterSelect offensiveCharacter, 
+                                               CardChannelPairObject defensiveCard, CharacterSelect defensiveCharacter)
     {
-        
+        //Card is a Guard Type
         if (defensiveCard.CardData.CardCategory == CardCategory.Guard)
         {
+            //Enable guard effects whether it's successful or not.
             CombatManager.instance.CardPlayManager.EffectController.EnableEffects(defensiveCard, offensiveCharacter);
 
+            //Guard affects all possible channels.
             if(defensiveCard.CardData.AffectedChannels == AffectedChannels.AllPossibleChannels)
             {
+                //Guard affects all possible channels and is successful.
                 if (defensiveCard.CardData.PossibleChannels.HasFlag(offensiveCard.CardChannel))
                 {
-                    CalculateMechDamage(offensiveCard, GetOtherMech(offensiveCharacter), false, true);
-                    CombatManager.instance.CardPlayManager.EffectController.EnableEffects(offensiveCard, GetOtherMech(offensiveCharacter));
+                    //Deal damage with guarded caveat, enable offensive attack's effects.
+                    CalculateMechDamage(offensiveCard, offensiveCharacter, defensiveCard, defensiveCharacter, false, true);
+                    CombatManager.instance.CardPlayManager.EffectController.EnableEffects(offensiveCard, defensiveCharacter);
                 }
+
+                //Guard affects all possible channels, but was not successful.
                 else
                 {
-                    CalculateMechDamage(offensiveCard, GetOtherMech(offensiveCharacter));
-                    CombatManager.instance.CardPlayManager.EffectController.EnableEffects(offensiveCard, GetOtherMech(offensiveCharacter));
-                }
-
-            }
-            else if (offensiveCard.CardChannel == defensiveCard.CardChannel)
-            {
-                CalculateMechDamage(offensiveCard, GetOtherMech(offensiveCharacter), false, true);
-                CombatManager.instance.CardPlayManager.EffectController.EnableEffects(offensiveCard, GetOtherMech(offensiveCharacter));
-            }
-            else
-            {
-                CalculateMechDamage(offensiveCard, GetOtherMech(offensiveCharacter));
-                CombatManager.instance.CardPlayManager.EffectController.EnableEffects(offensiveCard, GetOtherMech(offensiveCharacter));
-            }
-
-        }
-
-        if (defensiveCard.CardData.CardCategory.HasFlag(CardCategory.Counter))
-        {
-            if (defensiveCard.CardData.AffectedChannels == AffectedChannels.AllPossibleChannels)
-            {
-                if (defensiveCard.CardData.PossibleChannels.HasFlag(offensiveCard.CardChannel))
-                {
-                    CalculateMechDamage(offensiveCard, GetOtherMech(offensiveCharacter), false, true);
-                    CombatManager.instance.CardPlayManager.EffectController.EnableEffects(offensiveCard, GetOtherMech(offensiveCharacter));
+                    //Calculate damage normally, enable offensive attack's effects.
+                    CalculateMechDamage(offensiveCard, offensiveCharacter, defensiveCard, defensiveCharacter);
+                    CombatManager.instance.CardPlayManager.EffectController.EnableEffects(offensiveCard, defensiveCharacter);
                 }
             }
+
+            //Guard doesn't affect all possible channels, but is still successful.
             else if (offensiveCard.CardChannel.HasFlag(defensiveCard.CardChannel))
             {
-                CombatManager.instance.CardPlayManager.EffectController.EnableEffects(defensiveCard, offensiveCharacter);
-                CalculateMechDamage(offensiveCard, GetOtherMech(offensiveCharacter), true);
+                //Calculate damage with guarded caveat, enable offensive attack's effects.
+                CalculateMechDamage(offensiveCard, offensiveCharacter, defensiveCard, defensiveCharacter, false, true);
+                CombatManager.instance.CardPlayManager.EffectController.EnableEffects(offensiveCard, defensiveCharacter);
             }
+
+            //Guard doesn't affect all channels and was not successful.
             else
             {
-                CalculateMechDamage(offensiveCard, GetOtherMech(offensiveCharacter));
-                CombatManager.instance.CardPlayManager.EffectController.EnableEffects(offensiveCard, GetOtherMech(offensiveCharacter));
+                //Calculate damage normally, enable offensive attack's effects.
+                CalculateMechDamage(offensiveCard, offensiveCharacter, defensiveCard, defensiveCharacter);
+                CombatManager.instance.CardPlayManager.EffectController.EnableEffects(offensiveCard, defensiveCharacter);
+            }
+
+        }
+
+        //Card type is a counter
+        if (defensiveCard.CardData.CardCategory.HasFlag(CardCategory.Counter))
+        {
+            //Counter affects all possible channels
+            if (defensiveCard.CardData.AffectedChannels == AffectedChannels.AllPossibleChannels)
+            {
+                //Counter was successful
+                if (defensiveCard.CardData.PossibleChannels.HasFlag(offensiveCard.CardChannel))
+                {
+                    //Calculate damage with counter caveat, enable defensive effects.
+                    CalculateMechDamage(offensiveCard, offensiveCharacter, defensiveCard, defensiveCharacter, true, false);
+                    CombatManager.instance.CardPlayManager.EffectController.EnableEffects(defensiveCard, offensiveCharacter);
+                }
+
+                //Counter affects all possible channels but was not successful.
+                else
+                {
+                    //Calculate damage normally and enable offensive effects.
+                    CalculateMechDamage(offensiveCard, offensiveCharacter, defensiveCard, defensiveCharacter);
+                    CombatManager.instance.CardPlayManager.EffectController.EnableEffects(offensiveCard, defensiveCharacter);
+                }
+            }
+
+            //Counter doesn't affect all channels but was still successful.
+            else if (offensiveCard.CardChannel.HasFlag(defensiveCard.CardChannel))
+            {
+                //Calculate damage with counter caveat and enable defensive effects.
+                CalculateMechDamage(offensiveCard, offensiveCharacter, defensiveCard, defensiveCharacter, true);
+                CombatManager.instance.CardPlayManager.EffectController.EnableEffects(defensiveCard, offensiveCharacter);
+            }
+
+            //Counter doesn't affect all channels and was not successful.
+            else
+            {
+                //Calculate damage normally and enable offensive effects.
+                CalculateMechDamage(offensiveCard, offensiveCharacter, defensiveCard, defensiveCharacter);
+                CombatManager.instance.CardPlayManager.EffectController.EnableEffects(offensiveCard, defensiveCharacter);
             }
         }
 
+        //Clear the attacks from further checks.
         ClearCardsAfterDefenses(offensiveCharacter);
     }
 
@@ -156,21 +188,17 @@ public class CardInteractionController
         opponentAttackPlan = null;
     }
 
-    private CharacterSelect GetOtherMech(CharacterSelect firstMech)
-    {
-        return firstMech == CharacterSelect.Player ? CharacterSelect.Opponent : CharacterSelect.Player;
-    }
 
-    private void CalculateMechDamage(CardChannelPairObject offensiveAttack, CharacterSelect defensiveMech, bool counterDamage = false, bool guardDamage = false)
+    private void CalculateMechDamage(CardChannelPairObject offensiveAttack, CharacterSelect offensiveMech, 
+                                     CardChannelPairObject defensiveCard,CharacterSelect defensiveMech, 
+                                        bool counterDamage = false, bool guardDamage = false)
     {
         if (offensiveAttack == null || offensiveAttack.CardData == null)
             return;
 
         int repeatPlay = 1;
-        bool hasDefended = false;
 
-
-        combatLog += GetOtherMech(defensiveMech) + " starting HP: " + (GetOtherMech(defensiveMech) == CharacterSelect.Player ?
+        combatLog += offensiveMech + " starting HP: " + (offensiveMech == CharacterSelect.Player ?
             CombatManager.instance.PlayerFighter.FighterMech.MechCurrentHP.ToString() : CombatManager.instance.OpponentFighter.FighterMech.MechCurrentHP.ToString());
         combatLog += ". ";
         combatLog += defensiveMech + " starting HP: " + (defensiveMech == CharacterSelect.Player ?
@@ -184,7 +212,7 @@ public class CardInteractionController
                     repeatPlay = effect.EffectMagnitude;
 
                 if (effect.EffectType == CardEffectTypes.KeyWord && effect.CardKeyWord == CardKeyWord.Flurry)
-                    repeatPlay += CombatManager.instance.CardPlayManager.EffectController.GetAndConsumeFlurryBonus(GetOtherMech(defensiveMech));
+                    repeatPlay += CombatManager.instance.CardPlayManager.EffectController.GetAndConsumeFlurryBonus(offensiveMech);
             }
 
         if (offensiveAttack.CardData != null)
@@ -193,73 +221,57 @@ public class CardInteractionController
             {
                 int damageToDeal = CombatManager.instance.CardPlayManager.EffectController.GetMechDamageWithAndConsumeModifiers(offensiveAttack, defensiveMech);
                 
-                if(counterDamage && !hasDefended)
+                if(counterDamage)
                 {
-                    CombatManager.instance.CombatAnimationManager.SetMechAnimation(defensiveMech, AnimationType.Counter, 
-                        GetOtherMech(defensiveMech), CombatManager.instance.CombatAnimationManager.GetAnimationFromCategory(offensiveAttack.CardData.CardCategory));
-                    
-                    CombatManager.instance.RemoveHealthFromMech(GetOtherMech(defensiveMech), damageToDeal * Mathf.RoundToInt(CombatManager.instance.CounterDamageMultiplier));
+                    CombatManager.instance.CombatAnimationManager.SetMechAnimation(offensiveMech, offensiveAttack.CardData.AnimationType,
+                                                                                    defensiveMech, defensiveCard.CardData.AnimationType);
+
+                    CombatManager.instance.RemoveHealthFromMech(offensiveMech, damageToDeal * Mathf.RoundToInt(CombatManager.instance.CounterDamageMultiplier));
                     //CalculateComponentDamage(offensiveAttack, defensiveMech);
-                    
-                    hasDefended = true;
 
                     if (CombatManager.instance.NarrateCombat)
                     {
-                        combatLog += (GetOtherMech(defensiveMech) + " is playing " + offensiveAttack.CardData.CardName + " but is Countered by " + defensiveMech + ". ");
-                        combatLog += (GetOtherMech(defensiveMech) + " would have dealt " + offensiveAttack.CardData.BaseDamage + " damage but will instead be dealt " +
+                        combatLog += (offensiveMech + " is playing " + offensiveAttack.CardData.CardName + " but is Countered by " + defensiveMech + ". ");
+                        combatLog += (offensiveMech + " would have dealt " + offensiveAttack.CardData.BaseDamage + " damage but will instead be dealt " +
                             (damageToDeal * Mathf.RoundToInt(CombatManager.instance.CounterDamageMultiplier)) + ". ");
-                        combatLog += (GetOtherMech(defensiveMech) + "'s attack is " + i + " of " + repeatPlay + " total attacks. ");
+                        combatLog += (offensiveMech + "'s attack is " + i + " of " + repeatPlay + " total attacks. ");
                     }
                 }
-                else if(guardDamage && !hasDefended)
+                else if(guardDamage)
                 {
-                    CombatManager.instance.CombatAnimationManager.SetMechAnimation(defensiveMech, AnimationType.Guard,
-                        GetOtherMech(defensiveMech), CombatManager.instance.CombatAnimationManager.GetAnimationFromCategory(offensiveAttack.CardData.CardCategory));
-                    
+                    CombatManager.instance.CombatAnimationManager.SetMechAnimation(offensiveMech, offensiveAttack.CardData.AnimationType,
+                                                                                   defensiveMech, defensiveCard.CardData.AnimationType);
+
                     CombatManager.instance.RemoveHealthFromMech(defensiveMech, damageToDeal * Mathf.RoundToInt(CombatManager.instance.GuardDamageMultiplier));
                     //CalculateComponentDamage(offensiveAttack, defensiveMech);
-                    
-                    hasDefended = true;
 
                     if (CombatManager.instance.NarrateCombat)
                     {
-                        combatLog += (GetOtherMech(defensiveMech) + " is playing " + offensiveAttack.CardData.CardName + " but is guarded by " + defensiveMech + ". ");
-                        combatLog += (GetOtherMech(defensiveMech) + " would have dealt " + offensiveAttack.CardData.BaseDamage + " damage but this was reduced to " +
+                        combatLog += (offensiveMech + " is playing " + offensiveAttack.CardData.CardName + " but is guarded by " + defensiveMech + ". ");
+                        combatLog += (offensiveMech + " would have dealt " + offensiveAttack.CardData.BaseDamage + " damage but this was reduced to " +
                             (Mathf.RoundToInt(damageToDeal * CombatManager.instance.GuardDamageMultiplier)) + ". ");
-                        combatLog += (GetOtherMech(defensiveMech) + "'s attack is " + i + " of " + repeatPlay + " total attacks. ");
-                    }
-                }
-                else if(CardCategory.Defensive.HasFlag(offensiveAttack.CardData.CardCategory))
-                {
-                    CombatManager.instance.CombatAnimationManager.SetMechAnimation(defensiveMech, AnimationType.Idle,
-                        GetOtherMech(defensiveMech), CombatManager.instance.CombatAnimationManager.GetAnimationFromCategory(offensiveAttack.CardData.CardCategory));
-                    CombatManager.instance.RemoveHealthFromMech(defensiveMech, damageToDeal);
-                    CalculateComponentDamage(offensiveAttack, defensiveMech);
-                    
-                    if(CombatManager.instance.NarrateCombat)
-                    {
-                        combatLog += (GetOtherMech(defensiveMech) + " is playing " + offensiveAttack.CardData.CardName + " for " + damageToDeal + " damage. ");
-                        combatLog += (GetOtherMech(defensiveMech) + "'s attack is " + i + " of " + repeatPlay + " total attacks. ");
+                        combatLog += (offensiveMech + "'s attack is " + i + " of " + repeatPlay + " total attacks. ");
                     }
                 }
                 else
                 {
-                    CombatManager.instance.CombatAnimationManager.SetMechAnimation(defensiveMech, AnimationType.Damaged,
-                        GetOtherMech(defensiveMech), CombatManager.instance.CombatAnimationManager.GetAnimationFromCategory(offensiveAttack.CardData.CardCategory));
+                    CombatManager.instance.CombatAnimationManager.SetMechAnimation(offensiveMech, offensiveAttack.CardData.AnimationType,
+                                                                                   defensiveMech, AnimationType.Damaged);
+
                     CombatManager.instance.RemoveHealthFromMech(defensiveMech, damageToDeal);
                     CalculateComponentDamage(offensiveAttack, defensiveMech);
 
                     if (CombatManager.instance.NarrateCombat)
                     {
-                        combatLog += (GetOtherMech(defensiveMech) + " is playing " + offensiveAttack.CardData.CardName + " for " + damageToDeal + " damage. ");
-                        combatLog += (GetOtherMech(defensiveMech) + "'s attack is " + i + " of " + repeatPlay + " total attacks. ");
+                        combatLog += (offensiveMech + " is playing " + offensiveAttack.CardData.CardName + " for " + damageToDeal + " damage. ");
+                        combatLog += (offensiveMech + "'s attack is " + i + " of " + repeatPlay + " total attacks. ");
                     }
                 }
             }
 
             if(CombatManager.instance.NarrateCombat)
             {
-                combatLog += GetOtherMech(defensiveMech) + " ending HP: " + (GetOtherMech(defensiveMech) == CharacterSelect.Player ?
+                combatLog += offensiveMech + " ending HP: " + (offensiveMech == CharacterSelect.Player ?
                     CombatManager.instance.PlayerFighter.FighterMech.MechCurrentHP : CombatManager.instance.OpponentFighter.FighterMech.MechCurrentHP);
                 combatLog += ". ";
 

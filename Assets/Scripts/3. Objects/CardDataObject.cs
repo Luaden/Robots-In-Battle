@@ -5,20 +5,21 @@ using UnityEngine;
 public class CardDataObject
 {
     [Header("Card UI")]
-    [SerializeField] private string cardName;
-    [SerializeField] private string cardDescription;
+    private string cardName;
+    private string cardDescription;
 
     [Header("Card Attributes")]
-    [SerializeField] private CardType cardType;
-    [SerializeField] private CardCategory cardCategory;
-    [SerializeField] private Channels possibleChannels;
-    [SerializeField] private AffectedChannels affectedChannels;
-    [SerializeField] private Channels selectedChannels;
-    [SerializeField] private int energyCost;
-    [SerializeField] private int baseDamage;
+    private CardType cardType;
+    private CardCategory cardCategory;
+    private AnimationType animationType;
+    private Channels possibleChannels;
+    private AffectedChannels affectedChannels;
+    private Channels selectedChannels;
+    private int energyCost;
+    private int baseDamage;
 
     [Header("Effect Attributes")]
-    [SerializeField] private List<SOCardEffectObject> cardEffects;
+    private List<SOCardEffectObject> cardEffects;
 
     private GameObject cardUIObject;
     private CardUIController cardUIController;
@@ -28,6 +29,7 @@ public class CardDataObject
     public string CardDescription { get => cardDescription; }
     public CardType CardType { get => cardType; }
     public CardCategory CardCategory { get => cardCategory; }
+    public AnimationType AnimationType { get => animationType; }
     public Channels PossibleChannels { get => possibleChannels; }
     public AffectedChannels AffectedChannels { get => affectedChannels; }
     public Channels SelectedChannels { get => selectedChannels; set => SelectChannel(value); }
@@ -49,6 +51,7 @@ public class CardDataObject
         
         cardType = data.CardType;
         cardCategory = data.CardCategory;
+        animationType = data.AnimationType;
         possibleChannels = data.PossibleChannels;
         affectedChannels = data.AffectedChannels;
         selectedChannels = Channels.None;

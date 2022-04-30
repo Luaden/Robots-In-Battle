@@ -27,10 +27,8 @@ public class ShopItemUIObject
     private int componentHP;
     private int componentEnergy;
     private ElementType componentElement;
-    private int bonusDamageFromComponent;
-    private bool bonusDamageAsPercent;
-    private int reduceDamageToComponent;
-    private bool reduceDamageAsPercent;
+    private float cDMFromComponent;
+    private float cDMToComponent;
     private int extraElementStacks;
     private int energyGainModifier;
 
@@ -62,10 +60,8 @@ public class ShopItemUIObject
     public int ComponentHP { get => componentHP; }
     public int ComponentEnergy { get => componentEnergy; }
     public ElementType ComponentElement { get => componentElement; }
-    public int BonusDamageFromComponent { get => bonusDamageFromComponent; }
-    public bool BonusDamageAsPercent { get => bonusDamageAsPercent; }
-    public int ReduceDamageToComponent { get => reduceDamageToComponent; }
-    public bool ReduceDamageAsPercent { get => reduceDamageAsPercent; }
+    public float CDMFromComponent { get => cDMFromComponent; }
+    public float CDMToComponent { get => cDMToComponent; }
     public int ExtraElementStacks { get => extraElementStacks; }
     public int EnergyGainModifier { get => energyGainModifier; }
 
@@ -99,11 +95,8 @@ public class ShopItemUIObject
 
             // is it needed to display?
             extraElementStacks = data.ExtraElementStacks;
-            bonusDamageFromComponent = data.BonusDamageFromComponent;
-            bonusDamageAsPercent = data.BonusDamageAsPercent;
-            reduceDamageToComponent = data.ReduceDamageToComponent;
-            reduceDamageAsPercent = data.ReduceDamageAsPercent;
-            
+            cDMFromComponent = data.CDMFromComponent;
+            cDMToComponent = data.CDMToComponent;            
         }
 
         this.currencyCost = data.CurrencyCost;

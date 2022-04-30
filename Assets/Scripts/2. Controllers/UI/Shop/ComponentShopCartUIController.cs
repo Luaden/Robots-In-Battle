@@ -107,10 +107,12 @@ public class ComponentShopCartUIController : MonoBehaviour, IPointerDownHandler,
 
     public void OnPointerEnter(PointerEventData eventData)
     {
+        DowntimeManager.instance.PopupUIManager.HandlePopup(ShopItemUIObject);
     }
 
     public void OnPointerExit(PointerEventData eventData)
     {
+        DowntimeManager.instance.PopupUIManager.InactivatePopup();
     }
 
     public void OnPointerUp(PointerEventData eventData)

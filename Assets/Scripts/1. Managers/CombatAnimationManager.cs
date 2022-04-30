@@ -21,14 +21,17 @@ public class CombatAnimationManager : MonoBehaviour
 
     public void SetMechAnimation(CharacterSelect firstMech, AnimationType firstAnimation, CharacterSelect secondMech, AnimationType secondAnimation)
     {
+        Debug.Log(firstMech + " animating: " + firstAnimation);
+        Debug.Log(secondMech + " animating: " + secondAnimation);
+
         if (firstMech == CharacterSelect.Player)
             playerAnimations.Enqueue(firstAnimation);
-        else
+        else if(firstMech == CharacterSelect.Opponent)
             opponentAnimations.Enqueue(firstAnimation);
 
         if (secondMech == CharacterSelect.Player)
             playerAnimations.Enqueue(secondAnimation);
-        else
+        else if (secondMech == CharacterSelect.Opponent)
             opponentAnimations.Enqueue(secondAnimation);
 
         animationComplete = false;
@@ -38,29 +41,6 @@ public class CombatAnimationManager : MonoBehaviour
     public void SetCardOnBurnPile(CardUIController firstCard, CharacterSelect firstCardOwner, CardUIController secondCard = null)
     {
         burnPileController.SetCardOnBurnPile(firstCard, firstCardOwner, secondCard);
-    }
-
-    public AnimationType GetAnimationFromCategory(CardCategory cardCategory)
-    {
-        switch (cardCategory)
-        {
-            case CardCategory.Punch:
-                return AnimationType.Punch;
-
-            case CardCategory.Kick:
-                return AnimationType.Kick;
-
-            case CardCategory.Special:
-                return AnimationType.Special;
-
-            case CardCategory.Guard:
-                return AnimationType.Guard;
-
-            case CardCategory.Counter:
-                return AnimationType.Counter;
-        }
-
-        return AnimationType.Idle;
     }
 
     private void Awake()

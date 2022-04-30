@@ -660,22 +660,13 @@ public class EffectController
             switch (attack.CardData.CardCategory)
             {
                 case CardCategory.Punch:
-                    if (CombatManager.instance.PlayerFighter.FighterMech.MechArms.BonusDamageAsPercent)
-                        damageToReturn *= CombatManager.instance.PlayerFighter.FighterMech.MechArms.BonusDamageFromComponent;
-                    else
-                        damageToReturn += CombatManager.instance.PlayerFighter.FighterMech.MechArms.BonusDamageFromComponent;
+                    damageToReturn = Mathf.RoundToInt(damageToReturn *CombatManager.instance.PlayerFighter.FighterMech.MechArms.CDMFromComponent);
                     break;
                 case CardCategory.Kick:
-                    if (CombatManager.instance.PlayerFighter.FighterMech.MechLegs.BonusDamageAsPercent)
-                        damageToReturn *= CombatManager.instance.PlayerFighter.FighterMech.MechLegs.BonusDamageFromComponent;
-                    else
-                        damageToReturn += CombatManager.instance.PlayerFighter.FighterMech.MechLegs.BonusDamageFromComponent;
+                    damageToReturn = Mathf.RoundToInt(damageToReturn * CombatManager.instance.PlayerFighter.FighterMech.MechLegs.CDMFromComponent);
                     break;
                 case CardCategory.Special:
-                    if (CombatManager.instance.PlayerFighter.FighterMech.MechLegs.BonusDamageAsPercent)
-                        damageToReturn *= CombatManager.instance.PlayerFighter.FighterMech.MechLegs.BonusDamageFromComponent;
-                    else
-                        damageToReturn += CombatManager.instance.PlayerFighter.FighterMech.MechLegs.BonusDamageFromComponent;
+                    damageToReturn = Mathf.RoundToInt(damageToReturn * CombatManager.instance.PlayerFighter.FighterMech.MechTorso.CDMFromComponent);
                     break;
             }
 
@@ -686,22 +677,13 @@ public class EffectController
             switch (attack.CardData.CardCategory)
             {
                 case CardCategory.Punch:
-                    if (CombatManager.instance.OpponentFighter.FighterMech.MechArms.BonusDamageAsPercent)
-                        damageToReturn *= CombatManager.instance.OpponentFighter.FighterMech.MechArms.BonusDamageFromComponent;
-                    else
-                        damageToReturn += CombatManager.instance.OpponentFighter.FighterMech.MechArms.BonusDamageFromComponent;
+                    damageToReturn = Mathf.RoundToInt(damageToReturn * CombatManager.instance.OpponentFighter.FighterMech.MechArms.CDMFromComponent);
                     break;
                 case CardCategory.Kick:
-                    if (CombatManager.instance.OpponentFighter.FighterMech.MechLegs.BonusDamageAsPercent)
-                        damageToReturn *= CombatManager.instance.OpponentFighter.FighterMech.MechLegs.BonusDamageFromComponent;
-                    else
-                        damageToReturn += CombatManager.instance.OpponentFighter.FighterMech.MechLegs.BonusDamageFromComponent;
+                    damageToReturn = Mathf.RoundToInt(damageToReturn * CombatManager.instance.OpponentFighter.FighterMech.MechLegs.CDMFromComponent);
                     break;
                 case CardCategory.Special:
-                    if (CombatManager.instance.OpponentFighter.FighterMech.MechLegs.BonusDamageAsPercent)
-                        damageToReturn *= CombatManager.instance.OpponentFighter.FighterMech.MechLegs.BonusDamageFromComponent;
-                    else
-                        damageToReturn += CombatManager.instance.OpponentFighter.FighterMech.MechLegs.BonusDamageFromComponent;
+                    damageToReturn = Mathf.RoundToInt(damageToReturn * CombatManager.instance.OpponentFighter.FighterMech.MechTorso.CDMFromComponent);
                     break;
             }
 

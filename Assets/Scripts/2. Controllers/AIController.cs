@@ -325,15 +325,15 @@ public class AIController : MonoBehaviour
             switch (cardData.CardCategory)
             {
                 case CardCategory.Punch:
-                    componentDamageMultiplier += CombatManager.instance.OpponentFighter.FighterMech.MechArms.BonusDamageFromComponent;
+                    componentDamageMultiplier += CombatManager.instance.OpponentFighter.FighterMech.MechArms.CDMFromComponent;
                     break;
 
                 case CardCategory.Kick:
-                    componentDamageMultiplier += CombatManager.instance.OpponentFighter.FighterMech.MechLegs.BonusDamageFromComponent;
+                    componentDamageMultiplier += CombatManager.instance.OpponentFighter.FighterMech.MechLegs.CDMFromComponent;
                     break;
 
                 case CardCategory.Special:
-                    componentDamageMultiplier += CombatManager.instance.OpponentFighter.FighterMech.MechHead.BonusDamageFromComponent;
+                    componentDamageMultiplier += CombatManager.instance.OpponentFighter.FighterMech.MechHead.CDMFromComponent;
                     break;
             }
 
