@@ -8,7 +8,8 @@ public class CombatAnimationManager : MonoBehaviour
     [SerializeField] private MechAnimationController opponentMechAnimationController;
     [SerializeField] private BurnPileController burnPileController;
 
-    private bool animationComplete = true;
+    private bool startedAnimations = false;
+    private bool allAnimationsComplete = true;
     private bool turnComplete = true;
 
     private Queue<AnimationType> playerAnimations = new Queue<AnimationType>();
@@ -16,6 +17,8 @@ public class CombatAnimationManager : MonoBehaviour
 
     public delegate void onStartNewAnimation();
     public static event onStartNewAnimation OnStartNewAnimation;
+    public delegate void onEndAnimation();
+    public static event onEndAnimation OnEndedAnimation;
     public delegate void onAnimationsComplete();
     public static event onAnimationsComplete OnAnimationsComplete;
 
@@ -34,7 +37,7 @@ public class CombatAnimationManager : MonoBehaviour
         else if (secondMech == CharacterSelect.Opponent)
             opponentAnimations.Enqueue(secondAnimation);
 
-        animationComplete = false;
+        allAnimationsComplete = false;
         turnComplete = false;
     }
 
@@ -65,19 +68,35 @@ public class CombatAnimationManager : MonoBehaviour
 
     private void PlayMechAnimations()
     {
+        if (turnComplete)
+            return;
+
         if (CheckMechIsAnimating(CharacterSelect.Player) || CheckMechIsAnimating(CharacterSelect.Opponent))
             return;
+
+        if (startedAnimations)
+            OnEndedAnimation?.Invoke();
 
         OnStartNewAnimation?.Invoke();
 
         if (playerAnimations.Count > 0)
+        {
             playerMechAnimationController.SetMechAnimation(playerAnimations.Dequeue());
+            startedAnimations = true;
+        }
 
         if (opponentAnimations.Count > 0)
+        {
             opponentMechAnimationController.SetMechAnimation(opponentAnimations.Dequeue());
+            startedAnimations = true;
+        }
 
-        if (!animationComplete && playerAnimations.Count == 0 && opponentAnimations.Count == 0)
-            animationComplete = true;
+        if (!allAnimationsComplete && playerAnimations.Count == 0 && opponentAnimations.Count == 0)
+        {
+            Debug.Log("All animations complete.");
+            allAnimationsComplete = true;
+            startedAnimations = false;
+        }
     }
 
     private void CheckAllAnimationsComplete()
@@ -85,8 +104,9 @@ public class CombatAnimationManager : MonoBehaviour
         if (CheckMechIsAnimating(CharacterSelect.Player) || CheckMechIsAnimating(CharacterSelect.Opponent))
             return;
 
-        if (animationComplete && burnPileController.BurnComplete && !turnComplete)
+        if (allAnimationsComplete && burnPileController.BurnComplete && !turnComplete)
         {
+            Debug.Log("Raising event.");
             OnAnimationsComplete.Invoke();
             turnComplete = true;
         }
