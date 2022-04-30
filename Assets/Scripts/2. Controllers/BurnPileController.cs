@@ -49,6 +49,7 @@ public class BurnPileController : MonoBehaviour
             burnCardCharacterQueue.Enqueue(newCardList);
             return;
         }
+
         if(firstCardOwner == CharacterSelect.Opponent)
         {
             CardCharacterPairObject cardCharacterPair = new CardCharacterPairObject();
@@ -75,24 +76,8 @@ public class BurnPileController : MonoBehaviour
         }
     }
 
-    public void BurnCards()
+    public void PrepCardsToBurn()
     {
-        for(int i = 0; i < destroyQueue.Count; i++)
-        {
-            List<CardCharacterPairObject> cardCharacterPairs = new List<CardCharacterPairObject>(destroyQueue.Dequeue());
-
-            foreach (CardCharacterPairObject cardCharacterPair in cardCharacterPairs)
-            {
-                if (cardCharacterPair.character == CharacterSelect.Player)
-                    CombatManager.instance.DeckManager.ReturnCardToPlayerDeck(cardCharacterPair.card.CardData);
-                else
-                    CombatManager.instance.DeckManager.ReturnCardToOpponentDeck(cardCharacterPair.card.CardData);
-            }
-
-            if (destroyQueue.Count == 0 && burnCardCharacterQueue.Count == 0)
-                burnComplete = true;
-        }
-
         if (burnCardCharacterQueue.Count > 0)
         {
             List<CardCharacterPairObject> newDestroyCardList = new List<CardCharacterPairObject>();
@@ -148,6 +133,31 @@ public class BurnPileController : MonoBehaviour
         }
     }
 
+    private void BurnCards()
+    {
+        for (int i = 0; i < destroyQueue.Count; i++)
+        {
+            List<CardCharacterPairObject> cardCharacterPairs = new List<CardCharacterPairObject>(destroyQueue.Dequeue());
+
+            foreach (CardCharacterPairObject cardCharacterPair in cardCharacterPairs)
+            {
+                if (cardCharacterPair.character == CharacterSelect.Player)
+                    CombatManager.instance.DeckManager.ReturnCardToPlayerDeck(cardCharacterPair.card.CardData);
+                else
+                    CombatManager.instance.DeckManager.ReturnCardToOpponentDeck(cardCharacterPair.card.CardData);
+            }
+
+            Debug.Log("Burn prep queue: " + burnCardCharacterQueue.Count);
+            Debug.Log("Burn queue: " + destroyQueue.Count);
+
+            if (destroyQueue.Count == 0 && burnCardCharacterQueue.Count == 0)
+            {
+                burnComplete = true;
+                Debug.Log("Burn complete.");
+            }
+        }
+    }
+
     private class CardCharacterPairObject
     {
         public CharacterSelect character;
@@ -156,11 +166,13 @@ public class BurnPileController : MonoBehaviour
 
     private void Start()
     {
-        CombatAnimationManager.OnStartNewAnimation += BurnCards;
+        CombatAnimationManager.OnStartNewAnimation += PrepCardsToBurn;
+        CombatAnimationManager.OnEndedAnimation += BurnCards;
     }
 
     private void OnDestroy()
     {
-        CombatAnimationManager.OnStartNewAnimation -= BurnCards;
+        CombatAnimationManager.OnStartNewAnimation -= PrepCardsToBurn;
+        CombatAnimationManager.OnEndedAnimation -= BurnCards;
     }
 }

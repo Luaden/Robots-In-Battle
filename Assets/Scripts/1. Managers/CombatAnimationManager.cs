@@ -22,11 +22,8 @@ public class CombatAnimationManager : MonoBehaviour
     public delegate void onAnimationsComplete();
     public static event onAnimationsComplete OnAnimationsComplete;
 
-    public void SetMechAnimation(CharacterSelect firstMech, AnimationType firstAnimation, CharacterSelect secondMech, AnimationType secondAnimation)
+    public void AddAnimationToQueue(CharacterSelect firstMech, AnimationType firstAnimation, CharacterSelect secondMech, AnimationType secondAnimation)
     {
-        Debug.Log(firstMech + " animating: " + firstAnimation);
-        Debug.Log(secondMech + " animating: " + secondAnimation);
-
         if (firstMech == CharacterSelect.Player)
             playerAnimations.Enqueue(firstAnimation);
         else if(firstMech == CharacterSelect.Opponent)
@@ -93,9 +90,9 @@ public class CombatAnimationManager : MonoBehaviour
 
         if (!allAnimationsComplete && playerAnimations.Count == 0 && opponentAnimations.Count == 0)
         {
-            Debug.Log("All animations complete.");
             allAnimationsComplete = true;
             startedAnimations = false;
+            OnEndedAnimation?.Invoke();
         }
     }
 
@@ -106,7 +103,6 @@ public class CombatAnimationManager : MonoBehaviour
 
         if (allAnimationsComplete && burnPileController.BurnComplete && !turnComplete)
         {
-            Debug.Log("Raising event.");
             OnAnimationsComplete.Invoke();
             turnComplete = true;
         }

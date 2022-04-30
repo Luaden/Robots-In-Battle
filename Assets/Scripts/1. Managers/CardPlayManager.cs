@@ -79,7 +79,8 @@ public class CardPlayManager : MonoBehaviour
     private void OnDestroy()
     {
         CombatAnimationManager.OnAnimationsComplete -= TurnComplete;
-        EffectController.DisableEffectListeners();    
+        EffectController.DisableEffectListeners();
+        cardInteractionController.DisableDamageListeners();
     }
 
     private void TurnComplete()

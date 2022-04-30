@@ -236,7 +236,7 @@ public class CombatManager : MonoBehaviour
         if (playerFighter.FighterMech.MechCurrentHP <= 0)
         {
             winLossPanel.SetActive(true);
-            CombatAnimationManager.SetMechAnimation(CharacterSelect.Player, AnimationType.Lose, CharacterSelect.Opponent, AnimationType.Win);
+            CombatAnimationManager.AddAnimationToQueue(CharacterSelect.Player, AnimationType.Lose, CharacterSelect.Opponent, AnimationType.Win);
             reloadGameButton.SetActive(true);
 
             GameManager.instance.PlayerMechController.SetNewPlayerMech(playerFighter.FighterMech);
@@ -247,7 +247,7 @@ public class CombatManager : MonoBehaviour
         {
             winLossPanel.SetActive(true);
             loadShoppingButton.SetActive(true);
-            CombatAnimationManager.SetMechAnimation(CharacterSelect.Player, AnimationType.Win, CharacterSelect.Opponent, AnimationType.Lose);
+            CombatAnimationManager.AddAnimationToQueue(CharacterSelect.Player, AnimationType.Win, CharacterSelect.Opponent, AnimationType.Lose);
             return;
         }
 

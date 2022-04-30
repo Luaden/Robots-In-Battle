@@ -8,10 +8,21 @@ public class CardInteractionController
     private AttackPlanObject playerAttackPlan;
     private AttackPlanObject opponentAttackPlan;
 
+    private Queue<DamageMechPair> damageQueue;
+
     #region Debug
     private string combatLog;
     #endregion
 
+    public CardInteractionController()
+    {
+        damageQueue = new Queue<DamageMechPair>();
+        CombatAnimationManager.OnEndedAnimation += DealDamage;
+    }
+    public void DisableDamageListeners()
+    {
+        CombatAnimationManager.OnEndedAnimation -= DealDamage;
+    }
 
     public void DetermineCardInteractions(AttackPlanObject newPlayerAttackPlan, AttackPlanObject newOpponentAttackPlan)
     {
@@ -188,7 +199,6 @@ public class CardInteractionController
         opponentAttackPlan = null;
     }
 
-
     private void CalculateMechDamage(CardChannelPairObject offensiveAttack, CharacterSelect offensiveMech, 
                                      CardChannelPairObject defensiveCard,CharacterSelect defensiveMech, 
                                         bool counterDamage = false, bool guardDamage = false)
@@ -223,11 +233,11 @@ public class CardInteractionController
                 
                 if(counterDamage)
                 {
-                    CombatManager.instance.CombatAnimationManager.SetMechAnimation(offensiveMech, offensiveAttack.CardData.AnimationType,
+                    CombatManager.instance.CombatAnimationManager.AddAnimationToQueue(offensiveMech, offensiveAttack.CardData.AnimationType,
                                                                                     defensiveMech, defensiveCard.CardData.AnimationType);
 
-                    CombatManager.instance.RemoveHealthFromMech(offensiveMech, damageToDeal * Mathf.RoundToInt(CombatManager.instance.CounterDamageMultiplier));
-                    //CalculateComponentDamage(offensiveAttack, defensiveMech);
+                    AddDamageToQueue(new DamageMechPair(damageToDeal * Mathf.RoundToInt(CombatManager.instance.CounterDamageMultiplier), offensiveMech));
+                    //CalculateComponentDamage(offensiveAttack, offensiveMech);
 
                     if (CombatManager.instance.NarrateCombat)
                     {
@@ -239,10 +249,10 @@ public class CardInteractionController
                 }
                 else if(guardDamage)
                 {
-                    CombatManager.instance.CombatAnimationManager.SetMechAnimation(offensiveMech, offensiveAttack.CardData.AnimationType,
+                    CombatManager.instance.CombatAnimationManager.AddAnimationToQueue(offensiveMech, offensiveAttack.CardData.AnimationType,
                                                                                    defensiveMech, defensiveCard.CardData.AnimationType);
 
-                    CombatManager.instance.RemoveHealthFromMech(defensiveMech, damageToDeal * Mathf.RoundToInt(CombatManager.instance.GuardDamageMultiplier));
+                    AddDamageToQueue(new DamageMechPair(damageToDeal * Mathf.RoundToInt(CombatManager.instance.GuardDamageMultiplier), defensiveMech));
                     //CalculateComponentDamage(offensiveAttack, defensiveMech);
 
                     if (CombatManager.instance.NarrateCombat)
@@ -255,11 +265,11 @@ public class CardInteractionController
                 }
                 else
                 {
-                    CombatManager.instance.CombatAnimationManager.SetMechAnimation(offensiveMech, offensiveAttack.CardData.AnimationType,
+                    CombatManager.instance.CombatAnimationManager.AddAnimationToQueue(offensiveMech, offensiveAttack.CardData.AnimationType,
                                                                                    defensiveMech, AnimationType.Damaged);
 
-                    CombatManager.instance.RemoveHealthFromMech(defensiveMech, damageToDeal);
-                    CalculateComponentDamage(offensiveAttack, defensiveMech);
+                    AddDamageToQueue(new DamageMechPair(damageToDeal, defensiveMech));
+                    //CalculateComponentDamage(offensiveAttack, defensiveMech);
 
                     if (CombatManager.instance.NarrateCombat)
                     {
@@ -282,13 +292,39 @@ public class CardInteractionController
                 Debug.Log(combatLog);
                 combatLog = "";
             }
-
-            CombatManager.instance.CardPlayManager.EffectController.UpdateFighterBuffs();
         }
     }
 
     private void CalculateComponentDamage(CardChannelPairObject originAttack, CharacterSelect destinationMech)
     {
         //Need to figure out the carddata damage + multiplier and figure out what component we're affecting.
+    }
+
+    private void AddDamageToQueue(DamageMechPair damageToDeal)
+    {
+        damageQueue.Enqueue(damageToDeal);
+    }
+
+    private void DealDamage()
+    {
+        if (damageQueue.Count == 0)
+            return;
+
+        DamageMechPair newDamage = damageQueue.Dequeue();
+        Debug.Log("Dealing damage");
+
+        CombatManager.instance.RemoveHealthFromMech(newDamage.characterTakingDamage, newDamage.damageToDeal);
+    }
+
+    private class DamageMechPair
+    {
+        public int damageToDeal;
+        public CharacterSelect characterTakingDamage;
+
+        public DamageMechPair(int damage, CharacterSelect character)
+        {
+            damageToDeal = damage;
+            characterTakingDamage = character;
+        }
     }
 }

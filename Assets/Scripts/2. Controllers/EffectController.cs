@@ -11,7 +11,7 @@ public class EffectController
     public FighterEffectObject PlayerEffects { get => playerFighterEffectObject; }
     public FighterEffectObject OpponentEffects { get => opponentFighterEffectObject; }
 
-    private Queue<CardCharacterPair> effectQueue;
+    private Queue<CardCharacterPairObject> effectQueue;
 
     public EffectController()
     {
@@ -20,7 +20,7 @@ public class EffectController
 
         playerFighterEffectObject = new FighterEffectObject();
         opponentFighterEffectObject = new FighterEffectObject();
-        effectQueue = new Queue<CardCharacterPair>();
+        effectQueue = new Queue<CardCharacterPairObject>();
 
         CombatAnimationManager.OnEndedAnimation += EnableEffects;
     }
@@ -32,7 +32,7 @@ public class EffectController
 
     public void AddToEffectQueue(CardChannelPairObject cardChannelPairObject, CharacterSelect destinationMech)
     {
-        CardCharacterPair newEffect = new CardCharacterPair();
+        CardCharacterPairObject newEffect = new CardCharacterPairObject();
         newEffect.cardChannelPair = cardChannelPairObject;
         newEffect.character = destinationMech;
 
@@ -208,7 +208,7 @@ public class EffectController
         if (effectQueue.Count == 0)
             return;
 
-        CardCharacterPair currentEffect = effectQueue.Dequeue();
+        CardCharacterPairObject currentEffect = effectQueue.Dequeue();
         CardChannelPairObject cardChannelPair = currentEffect.cardChannelPair;
         CharacterSelect destinationMech = currentEffect.character;
 
@@ -1301,11 +1301,5 @@ public class EffectController
             channelList.Add(Channels.Low);
 
         return channelList;
-    }
-
-    private class CardCharacterPair
-    {
-        public CardChannelPairObject cardChannelPair;
-        public CharacterSelect character;
     }
 }
