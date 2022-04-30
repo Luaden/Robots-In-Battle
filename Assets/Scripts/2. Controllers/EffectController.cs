@@ -682,13 +682,13 @@ public class EffectController
             switch (attack.CardData.CardCategory)
             {
                 case CardCategory.Punch:
-                    damageToReturn = Mathf.RoundToInt(damageToReturn *CombatManager.instance.PlayerFighter.FighterMech.MechArms.CDMFromComponent);
+                    damageToReturn = Mathf.RoundToInt(damageToReturn * (1 + CombatManager.instance.PlayerFighter.FighterMech.MechArms.CDMFromComponent));
                     break;
                 case CardCategory.Kick:
-                    damageToReturn = Mathf.RoundToInt(damageToReturn * CombatManager.instance.PlayerFighter.FighterMech.MechLegs.CDMFromComponent);
+                    damageToReturn = Mathf.RoundToInt(damageToReturn * (1 +CombatManager.instance.PlayerFighter.FighterMech.MechLegs.CDMFromComponent));
                     break;
                 case CardCategory.Special:
-                    damageToReturn = Mathf.RoundToInt(damageToReturn * CombatManager.instance.PlayerFighter.FighterMech.MechTorso.CDMFromComponent);
+                    damageToReturn = Mathf.RoundToInt(damageToReturn * (1 + CombatManager.instance.PlayerFighter.FighterMech.MechTorso.CDMFromComponent));
                     break;
             }
 
@@ -699,13 +699,13 @@ public class EffectController
             switch (attack.CardData.CardCategory)
             {
                 case CardCategory.Punch:
-                    damageToReturn = Mathf.RoundToInt(damageToReturn * CombatManager.instance.OpponentFighter.FighterMech.MechArms.CDMFromComponent);
+                    damageToReturn = Mathf.RoundToInt(damageToReturn * (1 + CombatManager.instance.OpponentFighter.FighterMech.MechArms.CDMFromComponent));
                     break;
                 case CardCategory.Kick:
-                    damageToReturn = Mathf.RoundToInt(damageToReturn * CombatManager.instance.OpponentFighter.FighterMech.MechLegs.CDMFromComponent);
+                    damageToReturn = Mathf.RoundToInt(damageToReturn * (1 + CombatManager.instance.OpponentFighter.FighterMech.MechLegs.CDMFromComponent));
                     break;
                 case CardCategory.Special:
-                    damageToReturn = Mathf.RoundToInt(damageToReturn * CombatManager.instance.OpponentFighter.FighterMech.MechTorso.CDMFromComponent);
+                    damageToReturn = Mathf.RoundToInt(damageToReturn * (1 + CombatManager.instance.OpponentFighter.FighterMech.MechTorso.CDMFromComponent));
                     break;
             }
 

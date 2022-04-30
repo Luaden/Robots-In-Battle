@@ -233,13 +233,15 @@ public class CardInteractionController
             for (int i = 0; i < repeatPlay; i++)
             {
                 int damageToDeal = CombatManager.instance.CardPlayManager.EffectController.GetMechDamageWithAndConsumeModifiers(offensiveAttack, defensiveMech);
-                
-                if(counterDamage)
+
+                if (counterDamage)
                 {
                     CombatManager.instance.CombatAnimationManager.AddAnimationToQueue(offensiveMech, offensiveAttack.CardData.AnimationType,
                                                                                     defensiveMech, defensiveCard.CardData.AnimationType);
 
-                    AddDamageToQueue(new DamageMechPair(damageToDeal * Mathf.RoundToInt(CombatManager.instance.CounterDamageMultiplier), offensiveMech));
+                    damageToDeal = Mathf.RoundToInt(damageToDeal * CombatManager.instance.CounterDamageMultiplier);
+
+                    AddDamageToQueue(new DamageMechPair(damageToDeal, offensiveMech));
                     //CalculateComponentDamage(offensiveAttack, offensiveMech);
 
                     if (CombatManager.instance.NarrateCombat)
@@ -255,7 +257,9 @@ public class CardInteractionController
                     CombatManager.instance.CombatAnimationManager.AddAnimationToQueue(offensiveMech, offensiveAttack.CardData.AnimationType,
                                                                                    defensiveMech, defensiveCard.CardData.AnimationType);
 
-                    AddDamageToQueue(new DamageMechPair(damageToDeal * Mathf.RoundToInt(CombatManager.instance.GuardDamageMultiplier), defensiveMech));
+                    damageToDeal = Mathf.RoundToInt(damageToDeal * CombatManager.instance.GuardDamageMultiplier);
+                    
+                    AddDamageToQueue(new DamageMechPair(damageToDeal, defensiveMech));
                     //CalculateComponentDamage(offensiveAttack, defensiveMech);
 
                     if (CombatManager.instance.NarrateCombat)
