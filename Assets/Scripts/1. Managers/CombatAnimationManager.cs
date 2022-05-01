@@ -8,59 +8,41 @@ public class CombatAnimationManager : MonoBehaviour
     [SerializeField] private MechAnimationController opponentMechAnimationController;
     [SerializeField] private BurnPileController burnPileController;
 
-    private bool animationComplete = true;
+    private bool startedAnimations = false;
+    private bool allAnimationsComplete = true;
     private bool turnComplete = true;
 
-    private Queue<AnimationType> playerAnimations = new Queue<AnimationType>();
-    private Queue<AnimationType> opponentAnimations = new Queue<AnimationType>();
+    private Queue<AnimationQueueObject> animationQueue = new Queue<AnimationQueueObject>();
 
     public delegate void onStartNewAnimation();
     public static event onStartNewAnimation OnStartNewAnimation;
+    public delegate void onEndAnimation();
+    public static event onEndAnimation OnEndedAnimation;
     public delegate void onAnimationsComplete();
     public static event onAnimationsComplete OnAnimationsComplete;
 
-    public void SetMechAnimation(CharacterSelect firstMech, AnimationType firstAnimation, CharacterSelect secondMech, AnimationType secondAnimation)
+    public void AddAnimationToQueue(CharacterSelect firstMech, AnimationType firstAnimation, CharacterSelect secondMech, AnimationType secondAnimation)
     {
-        if (firstMech == CharacterSelect.Player)
-            playerAnimations.Enqueue(firstAnimation);
-        else
-            opponentAnimations.Enqueue(firstAnimation);
+        AnimationQueueObject newAnimation = new AnimationQueueObject();
+        newAnimation.firstMech = firstMech;
+        newAnimation.firstAnimation = firstAnimation;
+        newAnimation.secondMech = secondMech;
+        newAnimation.secondAnimation = secondAnimation;
 
-        if (secondMech == CharacterSelect.Player)
-            playerAnimations.Enqueue(secondAnimation);
-        else
-            opponentAnimations.Enqueue(secondAnimation);
+        animationQueue.Enqueue(newAnimation);
 
-        animationComplete = false;
+        allAnimationsComplete = false;
         turnComplete = false;
+    }
+
+    public void ClearAnimationQueue()
+    {
+        animationQueue.Clear();
     }
 
     public void SetCardOnBurnPile(CardUIController firstCard, CharacterSelect firstCardOwner, CardUIController secondCard = null)
     {
         burnPileController.SetCardOnBurnPile(firstCard, firstCardOwner, secondCard);
-    }
-
-    public AnimationType GetAnimationFromCategory(CardCategory cardCategory)
-    {
-        switch (cardCategory)
-        {
-            case CardCategory.Punch:
-                return AnimationType.Punch;
-
-            case CardCategory.Kick:
-                return AnimationType.Kick;
-
-            case CardCategory.Special:
-                return AnimationType.Special;
-
-            case CardCategory.Guard:
-                return AnimationType.Guard;
-
-            case CardCategory.Counter:
-                return AnimationType.Counter;
-        }
-
-        return AnimationType.Idle;
     }
 
     private void Awake()
@@ -85,19 +67,44 @@ public class CombatAnimationManager : MonoBehaviour
 
     private void PlayMechAnimations()
     {
+        if (turnComplete)
+            return;
+
         if (CheckMechIsAnimating(CharacterSelect.Player) || CheckMechIsAnimating(CharacterSelect.Opponent))
             return;
 
+        //I'm like 90% sure the issue is here or in the burn pile controller. Like everything is waiting on this and the burn pile to finish up
+        //and raise events. So its either here or maybe the MechAnimationController with the animation event.
+
+        if(startedAnimations)
+            OnEndedAnimation?.Invoke();
+
         OnStartNewAnimation?.Invoke();
 
-        if (playerAnimations.Count > 0)
-            playerMechAnimationController.SetMechAnimation(playerAnimations.Dequeue());
+        if (animationQueue.Count > 0)
+        {
+            AnimationQueueObject currentAnimation = animationQueue.Dequeue();
 
-        if (opponentAnimations.Count > 0)
-            opponentMechAnimationController.SetMechAnimation(opponentAnimations.Dequeue());
+            if (currentAnimation.firstMech == CharacterSelect.Player)
+                playerMechAnimationController.SetMechAnimation(currentAnimation.firstAnimation);
+            if (currentAnimation.firstMech == CharacterSelect.Opponent) 
+                opponentMechAnimationController.SetMechAnimation(currentAnimation.firstAnimation);
 
-        if (!animationComplete && playerAnimations.Count == 0 && opponentAnimations.Count == 0)
-            animationComplete = true;
+            if (currentAnimation.secondMech == CharacterSelect.Player)
+                playerMechAnimationController.SetMechAnimation(currentAnimation.secondAnimation);
+            if (currentAnimation.secondMech == CharacterSelect.Opponent)
+                opponentMechAnimationController.SetMechAnimation(currentAnimation.secondAnimation);
+
+            startedAnimations = true;
+        }
+
+        if (!CheckMechIsAnimating(CharacterSelect.Player) || !CheckMechIsAnimating(CharacterSelect.Opponent))
+            if (!allAnimationsComplete && animationQueue.Count == 0)
+            {
+                allAnimationsComplete = true;
+                startedAnimations = false;
+                OnEndedAnimation?.Invoke();
+            }
     }
 
     private void CheckAllAnimationsComplete()
@@ -105,10 +112,18 @@ public class CombatAnimationManager : MonoBehaviour
         if (CheckMechIsAnimating(CharacterSelect.Player) || CheckMechIsAnimating(CharacterSelect.Opponent))
             return;
 
-        if (animationComplete && burnPileController.BurnComplete && !turnComplete)
+        if (allAnimationsComplete && burnPileController.BurnComplete && !turnComplete)
         {
             OnAnimationsComplete.Invoke();
             turnComplete = true;
         }
+    }
+
+    private class AnimationQueueObject
+    {
+        public CharacterSelect firstMech;
+        public AnimationType firstAnimation;
+        public CharacterSelect secondMech;
+        public AnimationType secondAnimation;
     }
 }

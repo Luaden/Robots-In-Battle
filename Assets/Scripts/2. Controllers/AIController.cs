@@ -69,7 +69,7 @@ public class AIController : MonoBehaviour
 
 
     private List<CardDataObject> opponentHand;
-
+    List<CardPlayPriorityObject> cardPlays;
     private CardChannelPairObject attackA;
     private CardChannelPairObject attackB;
 
@@ -226,7 +226,7 @@ public class AIController : MonoBehaviour
                 foreach (Channels channel in GetChannelListFromFlags(card.PossibleChannels))
                     cardPlays.Add(CreateCardPlayPriorityObject(card, channel));
 
-            if (!aSlot && (card.CardType == CardType.Defense || card.CardType == CardType.Neutral))
+            if (!aSlot && (card.CardType == CardType.Defense || card.CardType == CardType.Neutral) && card != attackA.CardData)
                 foreach (Channels channel in GetChannelListFromFlags(card.PossibleChannels))
                     cardPlays.Add(CreateCardPlayPriorityObject(card, channel));
         }
@@ -325,15 +325,15 @@ public class AIController : MonoBehaviour
             switch (cardData.CardCategory)
             {
                 case CardCategory.Punch:
-                    componentDamageMultiplier += CombatManager.instance.OpponentFighter.FighterMech.MechArms.BonusDamageFromComponent;
+                    componentDamageMultiplier += CombatManager.instance.OpponentFighter.FighterMech.MechArms.CDMFromComponent;
                     break;
 
                 case CardCategory.Kick:
-                    componentDamageMultiplier += CombatManager.instance.OpponentFighter.FighterMech.MechLegs.BonusDamageFromComponent;
+                    componentDamageMultiplier += CombatManager.instance.OpponentFighter.FighterMech.MechLegs.CDMFromComponent;
                     break;
 
                 case CardCategory.Special:
-                    componentDamageMultiplier += CombatManager.instance.OpponentFighter.FighterMech.MechHead.BonusDamageFromComponent;
+                    componentDamageMultiplier += CombatManager.instance.OpponentFighter.FighterMech.MechHead.CDMFromComponent;
                     break;
             }
 

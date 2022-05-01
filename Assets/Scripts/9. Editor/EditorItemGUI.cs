@@ -33,17 +33,18 @@ public class EditorItemGUI : Editor
     private void DisplayAttackCardAttributes()
     {
         EditorGUILayout.PropertyField(serializedObject.FindProperty("cardCategory"));
+        EditorGUILayout.PropertyField(serializedObject.FindProperty("animationType"));
         EditorGUILayout.PropertyField(serializedObject.FindProperty("possibleChannels"));
         EditorGUILayout.PropertyField(serializedObject.FindProperty("affectedChannels"));
         EditorGUILayout.PropertyField(serializedObject.FindProperty("energyCost"));
         EditorGUILayout.PropertyField(serializedObject.FindProperty("baseDamage"));
-        EditorGUILayout.PropertyField(serializedObject.FindProperty("componentDamageMultiplier"));
         EditorGUILayout.PropertyField(serializedObject.FindProperty("cardEffects"));
     }
 
     private void DisplayDefenseCardAttributes()
     {
         EditorGUILayout.PropertyField(serializedObject.FindProperty("cardCategory"));
+        EditorGUILayout.PropertyField(serializedObject.FindProperty("animationType"));
         EditorGUILayout.PropertyField(serializedObject.FindProperty("possibleChannels"));
         EditorGUILayout.PropertyField(serializedObject.FindProperty("affectedChannels"));
         EditorGUILayout.PropertyField(serializedObject.FindProperty("energyCost"));
@@ -53,11 +54,11 @@ public class EditorItemGUI : Editor
     private void DisplayNeutralCardAttributes()
     {
         EditorGUILayout.PropertyField(serializedObject.FindProperty("cardCategory"));
+        EditorGUILayout.PropertyField(serializedObject.FindProperty("animationType"));
         EditorGUILayout.PropertyField(serializedObject.FindProperty("possibleChannels"));
         EditorGUILayout.PropertyField(serializedObject.FindProperty("affectedChannels"));
         EditorGUILayout.PropertyField(serializedObject.FindProperty("energyCost"));
         EditorGUILayout.PropertyField(serializedObject.FindProperty("baseDamage"));
-        EditorGUILayout.PropertyField(serializedObject.FindProperty("componentDamageMultiplier"));
         EditorGUILayout.PropertyField(serializedObject.FindProperty("cardEffects"));
     }
 
@@ -65,8 +66,8 @@ public class EditorItemGUI : Editor
     {
         EditorGUILayout.PropertyField(serializedObject.FindProperty("itemName"));
         EditorGUILayout.PropertyField(serializedObject.FindProperty("itemDescription"));
-        EditorGUILayout.PropertyField(serializedObject.FindProperty("timeCost"));
         EditorGUILayout.PropertyField(serializedObject.FindProperty("currencyCost"));
+        EditorGUILayout.PropertyField(serializedObject.FindProperty("timeCost"));
         EditorGUILayout.PropertyField(serializedObject.FindProperty("chanceToSpawn"));
 
 
@@ -108,10 +109,8 @@ public class EditorItemGUI : Editor
 
         EditorGUILayout.Space();
 
-        EditorGUILayout.PropertyField(serializedObject.FindProperty("bonusDamageFromComponent"));
-        EditorGUILayout.PropertyField(serializedObject.FindProperty("bonusDamageAsPercent"));
-        EditorGUILayout.PropertyField(serializedObject.FindProperty("reduceDamageToComponent"));
-        EditorGUILayout.PropertyField(serializedObject.FindProperty("reduceDamageAsPercent"));
+        EditorGUILayout.PropertyField(serializedObject.FindProperty("cDMFromComponent"));
+        EditorGUILayout.PropertyField(serializedObject.FindProperty("cDMToComponent"));
         EditorGUILayout.PropertyField(serializedObject.FindProperty("extraElementStacks"));
         EditorGUILayout.PropertyField(serializedObject.FindProperty("energyGainModifier"));
     }

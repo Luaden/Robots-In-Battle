@@ -24,18 +24,15 @@ public class SOItemDataObject : ScriptableObject
     [SerializeField] private int componentEnergy;
     [Tooltip("Component applies one stack of this element when an attack is used that utilizes this component.")]
     [SerializeField] private ElementType componentElement;
-    [Tooltip("Give bonus damage to an attack that utilizes this component.")]
-    [SerializeField] private int bonusDamageFromComponent;
-    [Tooltip("Treat bonus damage to an attack that utilizes this component as a percentage of base damage.")]
-    [SerializeField] private bool bonusDamageAsPercent;
-    [Tooltip("Component takes reduced damage from an attack that targets this component.")]
-    [SerializeField] private int reduceDamageToComponent;
-    [Tooltip("Treat incoming damage reduction to this component as a percentage of base damage.")]
-    [SerializeField] private bool reduceDamageAsPercent;
+    [Tooltip("Component Damage Multiplier adds bonus component damage to an attack that utilizes this component.")]
+    [SerializeField] private float cDMFromComponent;
+    [Tooltip("Component Damage Multiplier reduces damage from an attack that targets this component.")]
+    [SerializeField] private float cDMToComponent;
     [Tooltip("Gives bonus element stacks to an attack that utilizes this component. This includes element stacks from cards as well as this component.")]
     [SerializeField] private int extraElementStacks;
     [Tooltip("Increases overall energy gained at the start of the turn.")]
     [SerializeField] private int energyGainModifier;
+
 
     [Header("Card Attributes")]
     [SerializeField] private CardType cardType;
@@ -50,9 +47,9 @@ public class SOItemDataObject : ScriptableObject
     [SerializeField] private int energyCost;
     [Tooltip("Attacks treat this as damage to deal. Defenses treat this as damage to nullify.")]
     [SerializeField] private int baseDamage;
-    [Tooltip("Damage dealt to components is based on base damage in combination with the Component Damage Multiplier. .5 deals 50% of Base Damage to components. " +
-    "1.5 will deal base damage plus an additional 50%.")]
-    [SerializeField] private int componentDamageMultiplier;
+    [Tooltip("The animation associated with this card.")]
+    [SerializeField] private AnimationType animationType;
+
 
 
     [Header("Effect Attributes")]
@@ -64,6 +61,7 @@ public class SOItemDataObject : ScriptableObject
     public string CardDescription { get => itemDescription; }
     public CardType CardType { get => cardType; }
     public CardCategory CardCategory { get => cardCategory; }
+    public AnimationType AnimationType { get => animationType; }
     public Channels PossibleChannels { get => possibleChannels; }
     public AffectedChannels AffectedChannels { get => affectedChannels; }
     public int EnergyCost { get => energyCost; }
@@ -77,10 +75,8 @@ public class SOItemDataObject : ScriptableObject
     public int ComponentHP { get => componentHP; }
     public int ComponentEnergy { get => componentEnergy; }
     public ElementType ComponentElement { get => componentElement; }
-    public int BonusDamageFromComponent { get => bonusDamageFromComponent; }
-    public bool BonusDamageAsPercent { get => bonusDamageAsPercent; }
-    public int ReduceDamageToComponent { get => reduceDamageToComponent; }
-    public bool ReduceDamageAsPercent { get => reduceDamageAsPercent; }
+    public float CDMFromComponent { get => cDMFromComponent; }
+    public float CDMToComponent { get => cDMToComponent; }
     public int ExtraElementStacks { get => extraElementStacks; }
     public int EnergyGainModifier { get => energyGainModifier; }
     #endregion

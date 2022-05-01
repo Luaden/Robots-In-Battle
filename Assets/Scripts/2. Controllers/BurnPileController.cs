@@ -7,15 +7,21 @@ public class BurnPileController : MonoBehaviour
     [SerializeField] private GameObject playerHighBurnPile;
     [SerializeField] private GameObject playerMidBurnPile;
     [SerializeField] private GameObject playerLowBurnPile;
+    [SerializeField] private GameObject playerHighMidBurnPile;
+    [SerializeField] private GameObject playerLowMidBurnPile;
     [SerializeField] private GameObject opponentHighBurnPile;
     [SerializeField] private GameObject opponentMidBurnPile;
     [SerializeField] private GameObject opponentLowBurnPile;
+    [SerializeField] private GameObject opponentHighMidBurnPile;
+    [SerializeField] private GameObject opponentLowMidBurnPile;
 
+    private bool prepComplete = false;
     private bool burnComplete = false;
 
     private Queue<List<CardCharacterPairObject>> burnCardCharacterQueue = new Queue<List<CardCharacterPairObject>>();
     private Queue<List<CardCharacterPairObject>> destroyQueue = new Queue<List<CardCharacterPairObject>>();
 
+    public bool PrepComplete { get => prepComplete; }
     public bool BurnComplete { get => burnComplete; }
 
     public void SetCardOnBurnPile(CardUIController firstCard, CharacterSelect firstCardOwner, CardUIController secondCard = null)
@@ -47,8 +53,8 @@ public class BurnPileController : MonoBehaviour
             }
 
             burnCardCharacterQueue.Enqueue(newCardList);
-            return;
         }
+
         if(firstCardOwner == CharacterSelect.Opponent)
         {
             CardCharacterPairObject cardCharacterPair = new CardCharacterPairObject();
@@ -70,29 +76,15 @@ public class BurnPileController : MonoBehaviour
                 newCardList.Add(cardCharacterPair);
             }
 
+
             burnCardCharacterQueue.Enqueue(newCardList);
-            burnComplete = false;
         }
+
+        burnComplete = false;
     }
 
-    public void BurnCards()
+    public void PrepCardsToBurn()
     {
-        for(int i = 0; i < destroyQueue.Count; i++)
-        {
-            List<CardCharacterPairObject> cardCharacterPairs = new List<CardCharacterPairObject>(destroyQueue.Dequeue());
-
-            foreach (CardCharacterPairObject cardCharacterPair in cardCharacterPairs)
-            {
-                if (cardCharacterPair.character == CharacterSelect.Player)
-                    CombatManager.instance.DeckManager.ReturnCardToPlayerDeck(cardCharacterPair.card.CardData);
-                else
-                    CombatManager.instance.DeckManager.ReturnCardToOpponentDeck(cardCharacterPair.card.CardData);
-            }
-
-            if (destroyQueue.Count == 0 && burnCardCharacterQueue.Count == 0)
-                burnComplete = true;
-        }
-
         if (burnCardCharacterQueue.Count > 0)
         {
             List<CardCharacterPairObject> newDestroyCardList = new List<CardCharacterPairObject>();
@@ -102,6 +94,31 @@ public class BurnPileController : MonoBehaviour
             {
                 if(cardCharacterPair.character == CharacterSelect.Player)
                 {
+                    if(cardCharacterPair.card.CardData.AffectedChannels == AffectedChannels.AllPossibleChannels)
+                    {
+                        Debug.Log("Multiple channels selected.");
+
+                        switch (cardCharacterPair.card.CardData.PossibleChannels)
+                        {
+                            case Channels.HighMid:
+                                cardCharacterPair.card.PreviousParentObject = playerHighMidBurnPile.transform;
+                                cardCharacterPair.card.transform.SetParent(playerHighMidBurnPile.transform);
+                                newDestroyCardList.Add(cardCharacterPair);
+                                Debug.Log("High mid channels selected.");
+                                break;
+
+                            case Channels.LowMid:
+                                cardCharacterPair.card.PreviousParentObject = playerLowMidBurnPile.transform;
+                                cardCharacterPair.card.transform.SetParent(playerLowMidBurnPile.transform);
+                                newDestroyCardList.Add(cardCharacterPair);
+                                Debug.Log("Low mid channels selected.");
+                                break;
+                        }
+
+                        destroyQueue.Enqueue(newDestroyCardList);
+                        return;
+                    }
+
                     switch (cardCharacterPair.card.CardData.SelectedChannels)
                     {
                         case Channels.High:
@@ -148,6 +165,27 @@ public class BurnPileController : MonoBehaviour
         }
     }
 
+    private void BurnCards()
+    {
+        for (int i = 0; i < destroyQueue.Count; i++)
+        {
+            List<CardCharacterPairObject> cardCharacterPairs = new List<CardCharacterPairObject>(destroyQueue.Dequeue());
+
+            foreach (CardCharacterPairObject cardCharacterPair in cardCharacterPairs)
+            {
+                if (cardCharacterPair.character == CharacterSelect.Player)
+                    CombatManager.instance.DeckManager.ReturnCardToPlayerDeck(cardCharacterPair.card.CardData);
+                else
+                    CombatManager.instance.DeckManager.ReturnCardToOpponentDeck(cardCharacterPair.card.CardData);
+            }
+
+            if (destroyQueue.Count == 0 && burnCardCharacterQueue.Count == 0)
+            {
+                burnComplete = true;
+            }
+        }
+    }
+
     private class CardCharacterPairObject
     {
         public CharacterSelect character;
@@ -156,11 +194,13 @@ public class BurnPileController : MonoBehaviour
 
     private void Start()
     {
-        CombatAnimationManager.OnStartNewAnimation += BurnCards;
+        CombatAnimationManager.OnStartNewAnimation += PrepCardsToBurn;
+        CombatAnimationManager.OnEndedAnimation += BurnCards;
     }
 
     private void OnDestroy()
     {
-        CombatAnimationManager.OnStartNewAnimation -= BurnCards;
+        CombatAnimationManager.OnStartNewAnimation -= PrepCardsToBurn;
+        CombatAnimationManager.OnEndedAnimation -= BurnCards;
     }
 }

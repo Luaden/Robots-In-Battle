@@ -53,7 +53,11 @@ public enum Channels
     High = 1 << 0,
     Mid = 1 << 1,
     Low = 1 << 2,
-    All = ~0,
+    All = High | Mid | Low,
+    [InspectorName(null)]
+    HighMid = High | Mid,
+    [InspectorName(null)]
+    LowMid = Low | Mid,
 }
 
 public enum AffectedChannels

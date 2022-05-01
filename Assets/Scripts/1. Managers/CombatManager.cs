@@ -6,6 +6,7 @@ public class CombatManager : MonoBehaviour
 {
     [Header("Combat Modifiers")]
     [SerializeField] private int mechEnergyGain;
+    [SerializeField] private float brokenComponentDamageMultiplier;
     [SerializeField] private float counterDamageMultiplier;
     [SerializeField] private float guardDamageMultiplier;
     [SerializeField] private float acidComponentDamageMultiplier;
@@ -58,6 +59,7 @@ public class CombatManager : MonoBehaviour
     public CombatAnimationManager CombatAnimationManager { get => combatAnimationManager; }
 
     public int MechEnergyGain { get => mechEnergyGain; }
+    public float BrokenCDM { get => brokenComponentDamageMultiplier; }
     public float CounterDamageMultiplier { get => counterDamageMultiplier; }
     public float GuardDamageMultiplier { get => guardDamageMultiplier; }
     public float AcidComponentDamageMultiplier { get => acidComponentDamageMultiplier; }
@@ -77,21 +79,59 @@ public class CombatManager : MonoBehaviour
     }
     #endregion
 
-    public void RemoveHealthFromMech(CharacterSelect character, int damage)
+    public void RemoveHealthFromMech(DamageMechPair damageMechPair)
     {
-        if (character == CharacterSelect.Player)
+        if (damageMechPair.characterTakingDamage == CharacterSelect.Player)
         {
-            playerFighter.FighterMech.MechCurrentHP = Mathf.Clamp(playerFighter.FighterMech.MechCurrentHP - damage, 0, int.MaxValue);
-            mechHUDManager.UpdatePlayerHP(playerFighter.FighterMech.MechCurrentHP);
-            CheckForWinLoss();
+            foreach(Channels channel in GetChannelListFromFlags(damageMechPair.damageChannels))
+            {
+                switch (channel)
+                {
+                    case Channels.High:
+                        playerFighter.FighterMech.DamageComponentHP(
+                            CardPlayManager.EffectController.GetComponentDamageWithModifiers(damageMechPair.damageToDeal, channel, CharacterSelect.Player), MechComponent.Arms);
+                        break;
+
+                    case Channels.Mid:
+                        playerFighter.FighterMech.DamageComponentHP(
+                            CardPlayManager.EffectController.GetComponentDamageWithModifiers(damageMechPair.damageToDeal, channel, CharacterSelect.Player), MechComponent.Torso);
+                        break;
+
+                    case Channels.Low:
+                        playerFighter.FighterMech.DamageComponentHP(
+                            CardPlayManager.EffectController.GetComponentDamageWithModifiers(damageMechPair.damageToDeal, channel, CharacterSelect.Player), MechComponent.Legs);
+                        break;                
+                }
+
+            }
         }
 
-        if (character == CharacterSelect.Opponent)
+        if (damageMechPair.characterTakingDamage == CharacterSelect.Opponent)
         {
-            opponentFighter.FighterMech.MechCurrentHP = Mathf.Clamp(opponentFighter.FighterMech.MechCurrentHP - damage, 0, int.MaxValue);
-            mechHUDManager.UpdateOpponentHP(opponentFighter.FighterMech.MechCurrentHP);
-            CheckForWinLoss();
+            foreach (Channels channel in GetChannelListFromFlags(damageMechPair.damageChannels))
+            {
+                switch (channel)
+                {
+                    case Channels.High:
+                        opponentFighter.FighterMech.DamageComponentHP(
+                            CardPlayManager.EffectController.GetComponentDamageWithModifiers(damageMechPair.damageToDeal, channel, CharacterSelect.Opponent), MechComponent.Arms);
+                        break;
+
+                    case Channels.Mid:
+                        opponentFighter.FighterMech.DamageComponentHP(
+                            CardPlayManager.EffectController.GetComponentDamageWithModifiers(damageMechPair.damageToDeal, channel, CharacterSelect.Opponent), MechComponent.Torso);
+                        break;
+
+                    case Channels.Low:
+                        opponentFighter.FighterMech.DamageComponentHP(
+                            CardPlayManager.EffectController.GetComponentDamageWithModifiers(damageMechPair.damageToDeal, channel, CharacterSelect.Opponent), MechComponent.Legs);
+                        break;
+                }
+            }
         }
+
+        mechHUDManager.UpdatePlayerHP(playerFighter.FighterMech.MechCurrentHP);
+        mechHUDManager.UpdateOpponentHP(opponentFighter.FighterMech.MechCurrentHP);
     }
 
     public void AddHealthToMech(CharacterSelect character, int health)
@@ -162,6 +202,21 @@ public class CombatManager : MonoBehaviour
         if(character == CharacterSelect.Opponent)
             mechHUDManager.UpdatePlayerEnergy(playerFighter.FighterMech.MechCurrentEnergy, playerFighter.FighterMech.MechCurrentEnergy, false);
     }
+
+    public List<Channels> GetChannelListFromFlags(Channels channelToInterpret)
+    {
+        List<Channels> channelList = new List<Channels>();
+
+        if (channelToInterpret.HasFlag(Channels.High))
+            channelList.Add(Channels.High);
+        if (channelToInterpret.HasFlag(Channels.Mid))
+            channelList.Add(Channels.Mid);
+        if (channelToInterpret.HasFlag(Channels.Low))
+            channelList.Add(Channels.Low);
+
+        return channelList;
+    }
+
     private void Awake()
     {
         instance = this;
@@ -184,6 +239,7 @@ public class CombatManager : MonoBehaviour
         CardPlayManager.OnCombatStart += DisableCanPlayCards;
         CardPlayManager.OnCombatComplete += EnableCanPlayCards;
         CardPlayManager.OnCombatComplete += StartNewTurn;
+        CombatAnimationManager.OnEndedAnimation += CheckForWinLoss;
     }
 
     private void DisableCanPlayCards()
@@ -203,6 +259,7 @@ public class CombatManager : MonoBehaviour
         CardPlayManager.OnCombatStart -= DisableCanPlayCards;
         CardPlayManager.OnCombatComplete -= EnableCanPlayCards;
         CardPlayManager.OnCombatComplete -= StartNewTurn;
+        CardPlayManager.OnCombatComplete -= CheckForWinLoss;
     }
 
     private void InitPlayerFighter(FighterDataObject newPlayerFighter)
@@ -235,19 +292,21 @@ public class CombatManager : MonoBehaviour
     {
         if (playerFighter.FighterMech.MechCurrentHP <= 0)
         {
+            CombatAnimationManager.ClearAnimationQueue();
+            CombatAnimationManager.AddAnimationToQueue(CharacterSelect.Player, AnimationType.Lose, CharacterSelect.Opponent, AnimationType.Win);
+
             winLossPanel.SetActive(true);
-            CombatAnimationManager.SetMechAnimation(CharacterSelect.Player, AnimationType.Lose, CharacterSelect.Opponent, AnimationType.Win);
             reloadGameButton.SetActive(true);
 
-            GameManager.instance.PlayerMechController.SetNewPlayerMech(playerFighter.FighterMech);
-            GameManager.instance.PlayerBankController.AddPlayerCurrency(GameManager.instance.PlayerCurrencyGainOnWin);
             return;
         }
         if (opponentFighter.FighterMech.MechCurrentHP <= 0)
         {
+            CombatAnimationManager.ClearAnimationQueue();
+            CombatAnimationManager.AddAnimationToQueue(CharacterSelect.Player, AnimationType.Win, CharacterSelect.Opponent, AnimationType.Lose);
+            
             winLossPanel.SetActive(true);
             loadShoppingButton.SetActive(true);
-            CombatAnimationManager.SetMechAnimation(CharacterSelect.Player, AnimationType.Win, CharacterSelect.Opponent, AnimationType.Lose);
             return;
         }
 

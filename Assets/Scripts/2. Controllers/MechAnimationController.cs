@@ -20,9 +20,9 @@ public class MechAnimationController : MonoBehaviour
             animator.ResetTrigger("isDamaged");
             animator.ResetTrigger("isWinning");
             animator.ResetTrigger("isLosing");
-
             animator.SetTrigger("isIdling");
             isAnimating = false;
+
             return;
         }
 

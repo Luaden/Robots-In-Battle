@@ -5,6 +5,7 @@ using UnityEngine;
 public class PopupUIManager : MonoBehaviour
 {
     private CardUIPopupController cardUIPopupController;
+    private ShopUIPopupController shopUIPopupController;
     private MechUIPopupController mechUIPopupController;
     private HUDPopupController hudPopUpController;
 
@@ -14,6 +15,7 @@ public class PopupUIManager : MonoBehaviour
         cardUIPopupController = GetComponentInChildren<CardUIPopupController>();
         mechUIPopupController = GetComponentInChildren<MechUIPopupController>();
         hudPopUpController = GetComponentInChildren<HUDPopupController>();
+        shopUIPopupController = GetComponentInChildren<ShopUIPopupController>();
     }
 
     public void HandlePopup(CardDataObject cardDataObject)
@@ -31,9 +33,17 @@ public class PopupUIManager : MonoBehaviour
     //    mechUIPopupController.HandlePopup(mechObject, transform, cursorPosition);
     //}
 
+    public void HandlePopup(ShopItemUIObject shopItem)
+    {
+        shopUIPopupController.UpdateUI(shopItem);
+    }
+
     public void InactivatePopup()
     {
-        cardUIPopupController.UpdateUI(null);
+        if(cardUIPopupController != null)
+            cardUIPopupController.UpdateUI(null);
+        if(shopUIPopupController != null)
+            shopUIPopupController.UpdateUI(null);
     }
 
 }

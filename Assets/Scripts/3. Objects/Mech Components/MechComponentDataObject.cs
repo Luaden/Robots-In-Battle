@@ -15,10 +15,8 @@ public class MechComponentDataObject
     private int componentCurrentHP;
    
     //Bonus effects
-    private int bonusDamageFromComponent;
-    private bool bonusDamageAsPercent;
-    private int reduceDamageToComponent;
-    private bool reduceDamageAsPercent;
+    private float cDMFromComponent;
+    private float cDMToComponent;
     private int extraElementStacks;
     private int energyGainModifier;
     private SOItemDataObject sOItemDataObject;
@@ -26,14 +24,12 @@ public class MechComponentDataObject
     public string ComponentName { get => componentName; }
     public MechComponent ComponentType { get => componentType; }
     public Sprite ComponentSprite { get => componentSprite; }
-    public int ComponentCurrentHP { get => componentCurrentHP; }
+    public int ComponentCurrentHP { get => componentCurrentHP; set => componentCurrentHP = value; }
     public int ComponentMaxHP { get => componentMaxHP; }
     public int ComponentMaxEnergy { get => componentEnergy; }
     public ElementType ComponentElement { get => componentElement; }
-    public int BonusDamageFromComponent { get => bonusDamageFromComponent; }
-    public bool BonusDamageAsPercent { get => bonusDamageAsPercent; }
-    public int ReduceDamageToComponent { get => reduceDamageToComponent; }
-    public bool ReduceDamageAsPercent { get => reduceDamageAsPercent; }
+    public float CDMFromComponent { get => cDMFromComponent; }
+    public float CDMToComponent { get => cDMToComponent; }
     public int ExtraElementStacks { get => extraElementStacks; }
     public int EnergyGainModifier { get => energyGainModifier; }
     public SOItemDataObject SOItemDataObject { get => sOItemDataObject; }
@@ -51,10 +47,8 @@ public class MechComponentDataObject
         componentCurrentHP = componentMaxHP;
 
         componentElement = sOMechComponent.ComponentElement;
-        bonusDamageFromComponent = sOMechComponent.BonusDamageFromComponent;
-        bonusDamageAsPercent = sOMechComponent.BonusDamageAsPercent;
-        reduceDamageToComponent = sOMechComponent.ReduceDamageToComponent;
-        reduceDamageAsPercent = sOMechComponent.ReduceDamageAsPercent;
+        cDMFromComponent = sOMechComponent.CDMFromComponent;
+        cDMToComponent = sOMechComponent.CDMToComponent;
         extraElementStacks = sOMechComponent.ExtraElementStacks;
         energyGainModifier = sOMechComponent.EnergyGainModifier;
         sOItemDataObject = sOMechComponent;
