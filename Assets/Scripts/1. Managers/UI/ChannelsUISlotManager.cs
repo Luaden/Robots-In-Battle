@@ -58,7 +58,7 @@ public class ChannelsUISlotManager : BaseSlotManager<CardUIController>
 
             if (attackSlotBFilled && !attackSlotAFilled && playerAttackSlotB.CurrentSlottedItem.CardData.CardType == CardType.Neutral)
             {
-                FillASlot(playerAttackSlotA.CurrentSlottedItem.CardData.CardUIController, playerAttackSlotB);
+                FillASlot(playerAttackSlotB.CurrentSlottedItem.CardData.CardUIController, playerAttackSlotB);
                 FillBSlot(item, slot);
                 return;
             }

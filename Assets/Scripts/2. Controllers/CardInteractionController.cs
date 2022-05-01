@@ -211,12 +211,15 @@ public class CardInteractionController
 
         int repeatPlay = 1;
 
-        combatLog += offensiveMech + " starting HP: " + (offensiveMech == CharacterSelect.Player ?
+        if(CombatManager.instance.NarrateCombat)
+        {
+            combatLog += offensiveMech + " starting HP: " + (offensiveMech == CharacterSelect.Player ?
             CombatManager.instance.PlayerFighter.FighterMech.MechCurrentHP.ToString() : CombatManager.instance.OpponentFighter.FighterMech.MechCurrentHP.ToString());
-        combatLog += ". ";
-        combatLog += defensiveMech + " starting HP: " + (defensiveMech == CharacterSelect.Player ?
-            CombatManager.instance.PlayerFighter.FighterMech.MechCurrentHP.ToString() : CombatManager.instance.OpponentFighter.FighterMech.MechCurrentHP.ToString());
-        combatLog += ". ";
+            combatLog += ". ";
+            combatLog += defensiveMech + " starting HP: " + (defensiveMech == CharacterSelect.Player ?
+                CombatManager.instance.PlayerFighter.FighterMech.MechCurrentHP.ToString() : CombatManager.instance.OpponentFighter.FighterMech.MechCurrentHP.ToString());
+            combatLog += ". ";
+        }
 
         if (offensiveAttack.CardData.CardEffects != null)
             foreach (SOCardEffectObject effect in offensiveAttack.CardData.CardEffects)

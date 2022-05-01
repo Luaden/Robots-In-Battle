@@ -21,6 +21,7 @@ public class EffectController
 
         CombatManager.OnDestroyScene += DisableEffectListeners;
         CombatAnimationManager.OnEndedAnimation += EnableEffects;
+        CombatAnimationManager.OnEndedAnimation += UpdateFighterBuffs;
         CombatAnimationManager.OnAnimationsComplete += UpdateFighterBuffs;
         CardPlayManager.OnCombatComplete += IncrementEffectsAtTurnEnd;
     }
@@ -191,6 +192,7 @@ public class EffectController
     private void DisableEffectListeners()
     {
         CombatAnimationManager.OnEndedAnimation -= EnableEffects;
+        CombatAnimationManager.OnEndedAnimation += UpdateFighterBuffs;
         CombatAnimationManager.OnAnimationsComplete -= UpdateFighterBuffs;
         CardPlayManager.OnCombatComplete -= IncrementEffectsAtTurnEnd;
         CombatManager.OnDestroyScene -= DisableEffectListeners;
@@ -198,6 +200,7 @@ public class EffectController
 
     private void EnableEffects()
     {
+        Debug.Log("Enabling effects.");
         if (effectQueue.Count == 0)
             return;
 
@@ -736,6 +739,7 @@ public class EffectController
     private int GetDamageReducedByShield(CardChannelPairObject attack, int damageToReturn, CharacterSelect defensiveCharacter)
     {
         int initialShield;
+        Debug.Log("Initial damage: " + damageToReturn);
 
         if (defensiveCharacter == CharacterSelect.Opponent)
         {
@@ -756,6 +760,7 @@ public class EffectController
                 }
             }
 
+            UpdateFighterBuffs();
             return damageToReturn;
         }
         else
@@ -777,6 +782,7 @@ public class EffectController
                 }
             }
 
+            UpdateFighterBuffs();
             return damageToReturn;
         }
     }
@@ -809,6 +815,8 @@ public class EffectController
                     opponentFighterEffectObject.ChannelShields.Add(returnedChannel, effect.EffectMagnitude);
             }
         }
+
+        UpdateFighterBuffs();
     }
 
     private void MultiplyShields(SOCardEffectObject effect, Channels channel, CharacterSelect characterGaining)

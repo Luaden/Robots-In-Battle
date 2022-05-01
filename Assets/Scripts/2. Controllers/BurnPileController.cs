@@ -140,6 +140,32 @@ public class BurnPileController : MonoBehaviour
                 }
                 else
                 {
+
+                    if (cardCharacterPair.card.CardData.AffectedChannels == AffectedChannels.AllPossibleChannels)
+                    {
+                        Debug.Log("Multiple channels selected.");
+
+                        switch (cardCharacterPair.card.CardData.PossibleChannels)
+                        {
+                            case Channels.HighMid:
+                                cardCharacterPair.card.PreviousParentObject = opponentHighMidBurnPile.transform;
+                                cardCharacterPair.card.transform.SetParent(opponentHighMidBurnPile.transform);
+                                newDestroyCardList.Add(cardCharacterPair);
+                                Debug.Log("High mid channels selected.");
+                                break;
+
+                            case Channels.LowMid:
+                                cardCharacterPair.card.PreviousParentObject = opponentLowMidBurnPile.transform;
+                                cardCharacterPair.card.transform.SetParent(opponentLowMidBurnPile.transform);
+                                newDestroyCardList.Add(cardCharacterPair);
+                                Debug.Log("Low mid channels selected.");
+                                break;
+                        }
+
+                        destroyQueue.Enqueue(newDestroyCardList);
+                        return;
+                    }
+
                     switch (cardCharacterPair.card.CardData.SelectedChannels)
                     {
                         case Channels.High:
