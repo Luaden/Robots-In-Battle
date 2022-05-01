@@ -83,8 +83,6 @@ public class CombatAnimationManager : MonoBehaviour
 
         if (animationQueue.Count > 0)
         {
-            Debug.Log("Playing mech animations.");
-
             AnimationQueueObject currentAnimation = animationQueue.Dequeue();
 
             if (currentAnimation.firstMech == CharacterSelect.Player)

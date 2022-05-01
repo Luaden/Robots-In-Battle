@@ -7,9 +7,13 @@ public class BurnPileController : MonoBehaviour
     [SerializeField] private GameObject playerHighBurnPile;
     [SerializeField] private GameObject playerMidBurnPile;
     [SerializeField] private GameObject playerLowBurnPile;
+    [SerializeField] private GameObject playerHighMidBurnPile;
+    [SerializeField] private GameObject playerLowMidBurnPile;
     [SerializeField] private GameObject opponentHighBurnPile;
     [SerializeField] private GameObject opponentMidBurnPile;
     [SerializeField] private GameObject opponentLowBurnPile;
+    [SerializeField] private GameObject opponentHighMidBurnPile;
+    [SerializeField] private GameObject opponentLowMidBurnPile;
 
     private bool prepComplete = false;
     private bool burnComplete = false;
@@ -90,6 +94,31 @@ public class BurnPileController : MonoBehaviour
             {
                 if(cardCharacterPair.character == CharacterSelect.Player)
                 {
+                    if(cardCharacterPair.card.CardData.AffectedChannels == AffectedChannels.AllPossibleChannels)
+                    {
+                        Debug.Log("Multiple channels selected.");
+
+                        switch (cardCharacterPair.card.CardData.PossibleChannels)
+                        {
+                            case Channels.HighMid:
+                                cardCharacterPair.card.PreviousParentObject = playerHighMidBurnPile.transform;
+                                cardCharacterPair.card.transform.SetParent(playerHighMidBurnPile.transform);
+                                newDestroyCardList.Add(cardCharacterPair);
+                                Debug.Log("High mid channels selected.");
+                                break;
+
+                            case Channels.LowMid:
+                                cardCharacterPair.card.PreviousParentObject = playerLowMidBurnPile.transform;
+                                cardCharacterPair.card.transform.SetParent(playerLowMidBurnPile.transform);
+                                newDestroyCardList.Add(cardCharacterPair);
+                                Debug.Log("Low mid channels selected.");
+                                break;
+                        }
+
+                        destroyQueue.Enqueue(newDestroyCardList);
+                        return;
+                    }
+
                     switch (cardCharacterPair.card.CardData.SelectedChannels)
                     {
                         case Channels.High:

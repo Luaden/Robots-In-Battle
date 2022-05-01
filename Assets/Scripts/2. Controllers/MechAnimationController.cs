@@ -11,7 +11,6 @@ public class MechAnimationController : MonoBehaviour
 
     public void SetMechAnimation(AnimationType animationType)
     {
-        Debug.Log("New animation given: " + animationType);
         if(animationType == AnimationType.Idle)
         {
             animator.ResetTrigger("isPunching");
