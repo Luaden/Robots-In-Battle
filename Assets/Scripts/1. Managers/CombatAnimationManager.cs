@@ -73,9 +73,6 @@ public class CombatAnimationManager : MonoBehaviour
         if (CheckMechIsAnimating(CharacterSelect.Player) || CheckMechIsAnimating(CharacterSelect.Opponent))
             return;
 
-        //I'm like 90% sure the issue is here or in the burn pile controller. Like everything is waiting on this and the burn pile to finish up
-        //and raise events. So its either here or maybe the MechAnimationController with the animation event.
-
         if(startedAnimations)
             OnEndedAnimation?.Invoke();
 

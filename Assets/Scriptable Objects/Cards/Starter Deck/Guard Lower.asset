@@ -14,7 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   itemType: 0
   itemName: Guard Lower
-  itemDescription: Halves incoming damage and adds 2 Shield in Mid and Low.
+  itemDescription: Creates 2 shields in Mid and Low channels, then halves incoming
+    damage in those channels.
   componentImage: {fileID: 0}
   timeCost: 1
   currencyCost: 1
@@ -33,6 +34,7 @@ MonoBehaviour:
   affectedChannels: 1
   energyCost: 2
   baseDamage: 3
+  applyEffectsFirst: 1
   animationType: 4
   cardEffects:
   - {fileID: 11400000, guid: dc97d90fc2e2b6e46af6a0435a8a2a54, type: 2}

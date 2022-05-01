@@ -81,50 +81,50 @@ public class CombatManager : MonoBehaviour
 
     public void RemoveHealthFromMech(DamageMechPair damageMechPair)
     {
-        if (damageMechPair.characterTakingDamage == CharacterSelect.Player)
+        if (damageMechPair.CharacterTakingDamage == CharacterSelect.Player)
         {
-            foreach(Channels channel in GetChannelListFromFlags(damageMechPair.damageChannels))
+            foreach(Channels channel in GetChannelListFromFlags(damageMechPair.GetDamageChannels()))
             {
                 switch (channel)
                 {
                     case Channels.High:
                         playerFighter.FighterMech.DamageComponentHP(
-                            CardPlayManager.EffectController.GetComponentDamageWithModifiers(damageMechPair.damageToDeal, channel, CharacterSelect.Player), MechComponent.Arms);
+                            CardPlayManager.EffectController.GetComponentDamageWithModifiers(damageMechPair.GetDamageToDeal(), channel, CharacterSelect.Player), MechComponent.Arms);
                         break;
 
                     case Channels.Mid:
                         playerFighter.FighterMech.DamageComponentHP(
-                            CardPlayManager.EffectController.GetComponentDamageWithModifiers(damageMechPair.damageToDeal, channel, CharacterSelect.Player), MechComponent.Torso);
+                            CardPlayManager.EffectController.GetComponentDamageWithModifiers(damageMechPair.GetDamageToDeal(), channel, CharacterSelect.Player), MechComponent.Torso);
                         break;
 
                     case Channels.Low:
                         playerFighter.FighterMech.DamageComponentHP(
-                            CardPlayManager.EffectController.GetComponentDamageWithModifiers(damageMechPair.damageToDeal, channel, CharacterSelect.Player), MechComponent.Legs);
+                            CardPlayManager.EffectController.GetComponentDamageWithModifiers(damageMechPair.GetDamageToDeal(), channel, CharacterSelect.Player), MechComponent.Legs);
                         break;                
                 }
 
             }
         }
 
-        if (damageMechPair.characterTakingDamage == CharacterSelect.Opponent)
+        if (damageMechPair.CharacterTakingDamage == CharacterSelect.Opponent)
         {
-            foreach (Channels channel in GetChannelListFromFlags(damageMechPair.damageChannels))
+            foreach (Channels channel in GetChannelListFromFlags(damageMechPair.GetDamageChannels()))
             {
                 switch (channel)
                 {
                     case Channels.High:
                         opponentFighter.FighterMech.DamageComponentHP(
-                            CardPlayManager.EffectController.GetComponentDamageWithModifiers(damageMechPair.damageToDeal, channel, CharacterSelect.Opponent), MechComponent.Arms);
+                            CardPlayManager.EffectController.GetComponentDamageWithModifiers(damageMechPair.GetDamageToDeal(), channel, CharacterSelect.Opponent), MechComponent.Arms);
                         break;
 
                     case Channels.Mid:
                         opponentFighter.FighterMech.DamageComponentHP(
-                            CardPlayManager.EffectController.GetComponentDamageWithModifiers(damageMechPair.damageToDeal, channel, CharacterSelect.Opponent), MechComponent.Torso);
+                            CardPlayManager.EffectController.GetComponentDamageWithModifiers(damageMechPair.GetDamageToDeal(), channel, CharacterSelect.Opponent), MechComponent.Torso);
                         break;
 
                     case Channels.Low:
                         opponentFighter.FighterMech.DamageComponentHP(
-                            CardPlayManager.EffectController.GetComponentDamageWithModifiers(damageMechPair.damageToDeal, channel, CharacterSelect.Opponent), MechComponent.Legs);
+                            CardPlayManager.EffectController.GetComponentDamageWithModifiers(damageMechPair.GetDamageToDeal(), channel, CharacterSelect.Opponent), MechComponent.Legs);
                         break;
                 }
             }

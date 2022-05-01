@@ -80,11 +80,13 @@ public enum CardEffectTypes
     KeyWord = 1 << 7,
     GainShieldWithFalloff = 1 << 8,
     EnergyDestroy = 1 << 9,
+    ShieldDestroy = 1 << 10,
 
     [InspectorName(null)]
     Defensive = GainShields | MultiplyShield | ReduceOutgoingChannelDamage | GainShieldWithFalloff,
     [InspectorName(null)]
-    Offensive = AdditionalElementStacks | IncreaseOutgoingCardTypeDamage | KeyWord
+    Offensive = PlayMultipleTimes | AdditionalElementStacks | IncreaseOutgoingChannelDamage | 
+        IncreaseOutgoingCardTypeDamage | KeyWord | EnergyDestroy | ShieldDestroy
 }
 
 public enum CardKeyWord
@@ -100,7 +102,7 @@ public enum ElementType
     Ice = 2, // Stacks, raises energy cost in channel
     Plasma = 3, // Stacks, siphons energy at end of turn
     Acid = 4, // Increases damage dealt to components. 
-    //Void = 5, //Stacks,  nullifies elements
+    Void = 5, //Stacks,  nullifies elements
 }
 
 [Flags]

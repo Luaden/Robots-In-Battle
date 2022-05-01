@@ -14,6 +14,8 @@ public class ChannelsUISlotManager : BaseSlotManager<CardUIController>
 
 
     [SerializeField] private GameObject SkipASlotButton;
+    [Range(.01f, 1f)] [SerializeField] private float channelFadeTimeModifier;
+
 
     private CardChannelPairObject cardChannelPairObjectA;
     private CardChannelPairObject cardChannelPairObjectB;
@@ -22,8 +24,7 @@ public class ChannelsUISlotManager : BaseSlotManager<CardUIController>
     private bool attackSlotBFilled = false;
     private Channels selectedChannel;
 
-    public CardDataObject ASlotItem { get => playerAttackSlotA.CurrentSlottedItem.CardData; } 
-    public CardDataObject BSlotItem { get => playerAttackSlotA.CurrentSlottedItem.CardData; }
+    public float ChannelFadeTimeModifier { get => channelFadeTimeModifier; }
 
     public delegate void onASlotFilled();
     public static event onASlotFilled OnASlotFilled;
@@ -162,6 +163,9 @@ public class ChannelsUISlotManager : BaseSlotManager<CardUIController>
 
     private bool ValidateCardChannelSelection(CardUIController newData, BaseSlotController<CardUIController> slot)
     {
+        if (attackSlotAFilled && attackSlotBFilled)
+            return false;
+
         if (newData.CardData.EnergyCost > CombatManager.instance.PlayerFighter.FighterMech.MechCurrentEnergy)
         {
             Debug.Log("Not enough energy to use this card.");

@@ -17,6 +17,7 @@ public class CardDataObject
     private Channels selectedChannels;
     private int energyCost;
     private int baseDamage;
+    private bool applyEffectsFirst = false;
 
     [Header("Effect Attributes")]
     private List<SOCardEffectObject> cardEffects;
@@ -35,6 +36,7 @@ public class CardDataObject
     public Channels SelectedChannels { get => selectedChannels; set => SelectChannel(value); }
     public int EnergyCost { get => energyCost; }
     public int BaseDamage { get => baseDamage; }
+    public bool ApplyEffectsFirst { get => applyEffectsFirst; }
     public List<SOCardEffectObject> CardEffects { get => cardEffects; }
     #endregion
 
@@ -58,6 +60,7 @@ public class CardDataObject
 
         energyCost = data.EnergyCost;
         baseDamage = data.BaseDamage;
+        applyEffectsFirst = data.ApplyEffectsFirst;
 
         cardEffects = data.CardEffects;
     }

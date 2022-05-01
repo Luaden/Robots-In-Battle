@@ -9,7 +9,6 @@ public class CardUISlotController : BaseSlotController<CardUIController>
     [SerializeField] private Image channelImage;
     [SerializeField] private Color fullColor;
     [SerializeField] private Color fadeColor;
-    [Range(.01f, .99f)][SerializeField] private float fadeTimeModifier;
 
     private bool flashChannel = false;
     private bool fadeOut = true;
@@ -47,7 +46,8 @@ public class CardUISlotController : BaseSlotController<CardUIController>
         {
             if(fadeOut)
             {
-                channelImage.color = new Color(fadeColor.r, fadeColor.g, fadeColor.b, channelImage.color.a - (fadeTimeModifier * Time.deltaTime));
+                channelImage.color = new Color(fadeColor.r, fadeColor.g, fadeColor.b, channelImage.color.a - 
+                    (CombatManager.instance.ChannelsUISlotManager.ChannelFadeTimeModifier * Time.deltaTime));
 
                 if (channelImage.color.a <= fadeColor.a)
                     fadeOut = false;
@@ -55,13 +55,15 @@ public class CardUISlotController : BaseSlotController<CardUIController>
 
             if(!fadeOut)
             {
-                channelImage.color = new Color(fadeColor.r, fadeColor.g, fadeColor.b, channelImage.color.a + (fadeTimeModifier * Time.deltaTime));
+                channelImage.color = new Color(fadeColor.r, fadeColor.g, fadeColor.b, channelImage.color.a + 
+                    (CombatManager.instance.ChannelsUISlotManager.ChannelFadeTimeModifier * Time.deltaTime));
 
                 if (channelImage.color.a >= fullColor.a)
                     fadeOut = true;
             }
         }
         else
-            channelImage.color = Color.Lerp(channelImage.color, fullColor, (fadeTimeModifier * Time.deltaTime));
+            channelImage.color = Color.Lerp(channelImage.color, fullColor, 
+                (CombatManager.instance.ChannelsUISlotManager.ChannelFadeTimeModifier * Time.deltaTime));
     }
 }

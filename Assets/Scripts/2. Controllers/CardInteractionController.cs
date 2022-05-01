@@ -51,7 +51,10 @@ public class CardInteractionController
             CombatManager.instance.CombatAnimationManager.SetCardOnBurnPile(playerAttackPlan.cardChannelPairA.CardData.CardUIController,
                 CharacterSelect.Player);
 
-            CombatManager.instance.CardPlayManager.EffectController.AddToEffectQueue(playerAttackPlan.cardChannelPairA, CharacterSelect.Opponent);
+            if(playerAttackPlan.cardChannelPairA.CardData.ApplyEffectsFirst)
+                CombatManager.instance.CardPlayManager.EffectController.AddToPreDamageEffectQueue(playerAttackPlan.cardChannelPairA, CharacterSelect.Opponent);
+            else
+                CombatManager.instance.CardPlayManager.EffectController.AddToPostDamageEffectQueue(playerAttackPlan.cardChannelPairA, CharacterSelect.Opponent);
             CalculateMechDamage(playerAttackPlan.cardChannelPairA, CharacterSelect.Player, null, CharacterSelect.Opponent);
         }
 
@@ -60,7 +63,11 @@ public class CardInteractionController
             CombatManager.instance.CombatAnimationManager.SetCardOnBurnPile(opponentAttackPlan.cardChannelPairA.CardData.CardUIController,
                 CharacterSelect.Opponent);
 
-            CombatManager.instance.CardPlayManager.EffectController.AddToEffectQueue(opponentAttackPlan.cardChannelPairA, CharacterSelect.Player);
+            if(opponentAttackPlan.cardChannelPairA.CardData.ApplyEffectsFirst)
+                CombatManager.instance.CardPlayManager.EffectController.AddToPreDamageEffectQueue(opponentAttackPlan.cardChannelPairA, CharacterSelect.Player);
+            else
+                CombatManager.instance.CardPlayManager.EffectController.AddToPostDamageEffectQueue(opponentAttackPlan.cardChannelPairA, CharacterSelect.Player);
+
             CalculateMechDamage(opponentAttackPlan.cardChannelPairA, CharacterSelect.Opponent, null, CharacterSelect.Player);
         }
 
@@ -69,7 +76,11 @@ public class CardInteractionController
             CombatManager.instance.CombatAnimationManager.SetCardOnBurnPile(playerAttackPlan.cardChannelPairB.CardData.CardUIController,
                 CharacterSelect.Player);
 
-            CombatManager.instance.CardPlayManager.EffectController.AddToEffectQueue(playerAttackPlan.cardChannelPairB, CharacterSelect.Opponent);
+            if(playerAttackPlan.cardChannelPairB.CardData.ApplyEffectsFirst)
+                CombatManager.instance.CardPlayManager.EffectController.AddToPreDamageEffectQueue(playerAttackPlan.cardChannelPairB, CharacterSelect.Opponent);
+            else
+                CombatManager.instance.CardPlayManager.EffectController.AddToPostDamageEffectQueue(playerAttackPlan.cardChannelPairB, CharacterSelect.Opponent);
+
             CalculateMechDamage(playerAttackPlan.cardChannelPairB, CharacterSelect.Player, null, CharacterSelect.Opponent);
         }
 
@@ -78,8 +89,13 @@ public class CardInteractionController
             CombatManager.instance.CombatAnimationManager.SetCardOnBurnPile(opponentAttackPlan.cardChannelPairB.CardData.CardUIController,
                 CharacterSelect.Opponent);
             
-            CombatManager.instance.CardPlayManager.EffectController.AddToEffectQueue(opponentAttackPlan.cardChannelPairB, CharacterSelect.Player);
+            if(opponentAttackPlan.cardChannelPairB.CardData.ApplyEffectsFirst)
+                CombatManager.instance.CardPlayManager.EffectController.AddToPreDamageEffectQueue(opponentAttackPlan.cardChannelPairB, CharacterSelect.Player);
+            else
+                CombatManager.instance.CardPlayManager.EffectController.AddToPostDamageEffectQueue(opponentAttackPlan.cardChannelPairB, CharacterSelect.Player);
+            
             CalculateMechDamage(opponentAttackPlan.cardChannelPairB, CharacterSelect.Opponent, null, CharacterSelect.Player);
+
         }
 
         ClearAllCards();
@@ -97,45 +113,84 @@ public class CardInteractionController
         //Card is a Guard Type
         if (defensiveCard.CardData.CardCategory == CardCategory.Guard)
         {
-            //Enable guard effects whether it's successful or not.
-            CombatManager.instance.CardPlayManager.EffectController.AddToEffectQueue(defensiveCard, offensiveMech);
-
             //Guard affects all possible channels.
             if (defensiveCard.CardData.AffectedChannels == AffectedChannels.AllPossibleChannels)
             {
                 //Guard affects all possible channels and is successful.
                 if (defensiveCard.CardData.PossibleChannels.HasFlag(offensiveCard.CardChannel))
                 {
-                    //Deal damage with guarded caveat, enable offensive attack's effects.
-                    CalculateMechDamage(offensiveCard, offensiveMech, defensiveCard, defensiveMech, false, true);
-                    CombatManager.instance.CardPlayManager.EffectController.AddToEffectQueue(offensiveCard, defensiveMech);
-                }
+                    //Enable offensive attack's effects.
+                    if(offensiveCard.CardData.ApplyEffectsFirst)
+                        CombatManager.instance.CardPlayManager.EffectController.AddToPreDamageEffectQueue(offensiveCard, defensiveMech);
+                    else
+                        CombatManager.instance.CardPlayManager.EffectController.AddToPostDamageEffectQueue(offensiveCard, defensiveMech);
 
+                    //Enable defensive card's effects.
+                    if (defensiveCard.CardData.ApplyEffectsFirst)
+                        CombatManager.instance.CardPlayManager.EffectController.AddToPreDamageEffectQueue(defensiveCard, offensiveMech);
+                    else
+                        CombatManager.instance.CardPlayManager.EffectController.AddToPostDamageEffectQueue(defensiveCard, offensiveMech);
+
+                    //Calculate damage with guarded caveat.
+                    CalculateMechDamage(offensiveCard, offensiveMech, defensiveCard, defensiveMech, false, true);
+                }
                 //Guard affects all possible channels, but was not successful.
                 else
                 {
+                    //Enable offensive attack's effects.
+                    if (offensiveCard.CardData.ApplyEffectsFirst)
+                        CombatManager.instance.CardPlayManager.EffectController.AddToPreDamageEffectQueue(offensiveCard, defensiveMech);
+                    else
+                        CombatManager.instance.CardPlayManager.EffectController.AddToPostDamageEffectQueue(offensiveCard, defensiveMech);
+
+                    //Enable defensive card's effects.
+                    if (defensiveCard.CardData.ApplyEffectsFirst)
+                        CombatManager.instance.CardPlayManager.EffectController.AddToPreDamageEffectQueue(defensiveCard, offensiveMech);
+                    else
+                        CombatManager.instance.CardPlayManager.EffectController.AddToPostDamageEffectQueue(defensiveCard, offensiveMech);
+
                     //Calculate damage normally, enable offensive attack's effects.
                     CalculateMechDamage(offensiveCard, offensiveMech, defensiveCard, defensiveMech);
-                    CombatManager.instance.CardPlayManager.EffectController.AddToEffectQueue(offensiveCard, defensiveMech);
                 }
             }
 
             //Guard doesn't affect all possible channels, but is still successful.
             else if (offensiveCard.CardChannel.HasFlag(defensiveCard.CardChannel))
             {
-                //Calculate damage with guarded caveat, enable offensive attack's effects.
+                //Enable offensive attack's effects.
+                if (offensiveCard.CardData.ApplyEffectsFirst)
+                    CombatManager.instance.CardPlayManager.EffectController.AddToPreDamageEffectQueue(offensiveCard, defensiveMech);
+                else
+                    CombatManager.instance.CardPlayManager.EffectController.AddToPostDamageEffectQueue(offensiveCard, defensiveMech);
+
+                //Enable defensive card's effects.
+                if (defensiveCard.CardData.ApplyEffectsFirst)
+                    CombatManager.instance.CardPlayManager.EffectController.AddToPreDamageEffectQueue(defensiveCard, offensiveMech);
+                else
+                    CombatManager.instance.CardPlayManager.EffectController.AddToPostDamageEffectQueue(defensiveCard, offensiveMech);
+
+                //Calculate damage with guarded caveat.
                 CalculateMechDamage(offensiveCard, offensiveMech, defensiveCard, defensiveMech, false, true);
-                CombatManager.instance.CardPlayManager.EffectController.AddToEffectQueue(offensiveCard, defensiveMech);
             }
 
             //Guard doesn't affect all channels and was not successful.
             else
             {
+                //Enable offensive attack's effects.
+                if (offensiveCard.CardData.ApplyEffectsFirst)
+                    CombatManager.instance.CardPlayManager.EffectController.AddToPreDamageEffectQueue(offensiveCard, defensiveMech);
+                else
+                    CombatManager.instance.CardPlayManager.EffectController.AddToPostDamageEffectQueue(offensiveCard, defensiveMech);
+
+                //Enable defensive card's effects.
+                if (defensiveCard.CardData.ApplyEffectsFirst)
+                    CombatManager.instance.CardPlayManager.EffectController.AddToPreDamageEffectQueue(defensiveCard, offensiveMech);
+                else
+                    CombatManager.instance.CardPlayManager.EffectController.AddToPostDamageEffectQueue(defensiveCard, offensiveMech);
+
                 //Calculate damage normally, enable offensive attack's effects.
                 CalculateMechDamage(offensiveCard, offensiveMech, defensiveCard, defensiveMech);
-                CombatManager.instance.CardPlayManager.EffectController.AddToEffectQueue(offensiveCard, defensiveMech);
             }
-
         }
 
         //Card type is a counter
@@ -147,34 +202,60 @@ public class CardInteractionController
                 //Counter was successful
                 if (defensiveCard.CardData.PossibleChannels.HasFlag(offensiveCard.CardChannel))
                 {
-                    //Calculate damage with counter caveat, enable defensive effects.
+                    //Enable defensive card's effects and ignore the offensive card's effects.
+                    if (defensiveCard.CardData.ApplyEffectsFirst)
+                        CombatManager.instance.CardPlayManager.EffectController.AddToPreDamageEffectQueue(defensiveCard, offensiveMech);
+                    else
+                        CombatManager.instance.CardPlayManager.EffectController.AddToPostDamageEffectQueue(defensiveCard, offensiveMech);
+
+                    //Calculate damage with counter caveat.
                     CalculateMechDamage(offensiveCard, offensiveMech, defensiveCard, defensiveMech, true, false);
-                    CombatManager.instance.CardPlayManager.EffectController.AddToEffectQueue(defensiveCard, offensiveMech);
                 }
 
                 //Counter affects all possible channels but was not successful.
                 else
                 {
+                    //Enable offensive attack's effects.
+                    if (offensiveCard.CardData.ApplyEffectsFirst)
+                        CombatManager.instance.CardPlayManager.EffectController.AddToPreDamageEffectQueue(offensiveCard, defensiveMech);
+                    else
+                        CombatManager.instance.CardPlayManager.EffectController.AddToPostDamageEffectQueue(offensiveCard, defensiveMech);
+
                     //Calculate damage normally and enable offensive effects.
                     CalculateMechDamage(offensiveCard, offensiveMech, defensiveCard, defensiveMech);
-                    CombatManager.instance.CardPlayManager.EffectController.AddToEffectQueue(offensiveCard, defensiveMech);
                 }
             }
 
             //Counter doesn't affect all channels but was still successful.
             else if (offensiveCard.CardChannel.HasFlag(defensiveCard.CardChannel))
             {
-                //Calculate damage with counter caveat and enable defensive effects.
+                //Enable offensive attack's effects.
+                if (offensiveCard.CardData.ApplyEffectsFirst)
+                    CombatManager.instance.CardPlayManager.EffectController.AddToPreDamageEffectQueue(offensiveCard, defensiveMech);
+                else
+                    CombatManager.instance.CardPlayManager.EffectController.AddToPostDamageEffectQueue(offensiveCard, defensiveMech);
+
+                //Enable defensive card's effects.
+                if (defensiveCard.CardData.ApplyEffectsFirst)
+                    CombatManager.instance.CardPlayManager.EffectController.AddToPreDamageEffectQueue(defensiveCard, offensiveMech);
+                else
+                    CombatManager.instance.CardPlayManager.EffectController.AddToPostDamageEffectQueue(defensiveCard, offensiveMech);
+
+                //Calculate damage with counter caveat.
                 CalculateMechDamage(offensiveCard, offensiveMech, defensiveCard, defensiveMech, true);
-                CombatManager.instance.CardPlayManager.EffectController.AddToEffectQueue(defensiveCard, offensiveMech);
             }
 
             //Counter doesn't affect all channels and was not successful.
             else
             {
+                //Enable offensive attack's effects.
+                if (offensiveCard.CardData.ApplyEffectsFirst)
+                    CombatManager.instance.CardPlayManager.EffectController.AddToPreDamageEffectQueue(offensiveCard, defensiveMech);
+                else
+                    CombatManager.instance.CardPlayManager.EffectController.AddToPostDamageEffectQueue(offensiveCard, defensiveMech);
+
                 //Calculate damage normally and enable offensive effects.
                 CalculateMechDamage(offensiveCard, offensiveMech, defensiveCard, defensiveMech);
-                CombatManager.instance.CardPlayManager.EffectController.AddToEffectQueue(offensiveCard, defensiveMech);
             }
         }
 
@@ -235,25 +316,19 @@ public class CardInteractionController
         {
             for (int i = 0; i < repeatPlay; i++)
             {
-                int damageToDeal = CombatManager.instance.CardPlayManager.EffectController.GetMechDamageWithAndConsumeModifiers(offensiveAttack, defensiveMech);
-
                 if (counterDamage)
                 {
                     CombatManager.instance.CombatAnimationManager.AddAnimationToQueue(offensiveMech, offensiveAttack.CardData.AnimationType,
                                                                                     defensiveMech, defensiveCard.CardData.AnimationType);
 
-                    damageToDeal = Mathf.RoundToInt(damageToDeal * CombatManager.instance.CounterDamageMultiplier);
-
-                    if (offensiveAttack.CardData.AffectedChannels == AffectedChannels.AllPossibleChannels)
-                        AddDamageToQueue(new DamageMechPair(damageToDeal, Channels.All, offensiveMech));
-                    else
-                        AddDamageToQueue(new DamageMechPair(damageToDeal, offensiveAttack.CardData.SelectedChannels, offensiveMech));
+                    AddDamageToQueue(new DamageMechPair(offensiveAttack, offensiveMech, true, false));
 
                     if (CombatManager.instance.NarrateCombat)
                     {
                         combatLog += (offensiveMech + " is playing " + offensiveAttack.CardData.CardName + " but is Countered by " + defensiveMech + ". ");
                         combatLog += (offensiveMech + " would have dealt " + offensiveAttack.CardData.BaseDamage + " damage but will instead be dealt " +
-                            (damageToDeal * Mathf.RoundToInt(CombatManager.instance.CounterDamageMultiplier)) + ". ");
+                            (CombatManager.instance.CardPlayManager.GetDamageEstimate(offensiveAttack, defensiveMech) 
+                            * Mathf.RoundToInt(CombatManager.instance.CounterDamageMultiplier)) + ". "); 
                         combatLog += (offensiveMech + "'s attack is " + i + " of " + repeatPlay + " total attacks. ");
                     }
                 }
@@ -262,18 +337,13 @@ public class CardInteractionController
                     CombatManager.instance.CombatAnimationManager.AddAnimationToQueue(offensiveMech, offensiveAttack.CardData.AnimationType,
                                                                                    defensiveMech, defensiveCard.CardData.AnimationType);
 
-                    damageToDeal = Mathf.RoundToInt(damageToDeal * CombatManager.instance.GuardDamageMultiplier);
-
-                    if (offensiveAttack.CardData.AffectedChannels == AffectedChannels.AllPossibleChannels)
-                        AddDamageToQueue(new DamageMechPair(damageToDeal, Channels.All, defensiveMech));
-                    else
-                        AddDamageToQueue(new DamageMechPair(damageToDeal, offensiveAttack.CardData.SelectedChannels, defensiveMech));
+                    AddDamageToQueue(new DamageMechPair(offensiveAttack, defensiveMech, false, true));
 
                     if (CombatManager.instance.NarrateCombat)
                     {
                         combatLog += (offensiveMech + " is playing " + offensiveAttack.CardData.CardName + " but is guarded by " + defensiveMech + ". ");
                         combatLog += (offensiveMech + " would have dealt " + offensiveAttack.CardData.BaseDamage + " damage but this was reduced to " +
-                            (Mathf.RoundToInt(damageToDeal * CombatManager.instance.GuardDamageMultiplier)) + ". ");
+                            (CombatManager.instance.CardPlayManager.GetDamageEstimate(offensiveAttack, defensiveMech) * CombatManager.instance.GuardDamageMultiplier) + ". ");
                         combatLog += (offensiveMech + "'s attack is " + i + " of " + repeatPlay + " total attacks. ");
                     }
                 }
@@ -282,14 +352,12 @@ public class CardInteractionController
                     CombatManager.instance.CombatAnimationManager.AddAnimationToQueue(offensiveMech, offensiveAttack.CardData.AnimationType,
                                                                                    defensiveMech, AnimationType.Damaged);
 
-                    if (offensiveAttack.CardData.AffectedChannels == AffectedChannels.AllPossibleChannels)
-                        AddDamageToQueue(new DamageMechPair(damageToDeal, Channels.All, defensiveMech));
-                    else
-                        AddDamageToQueue(new DamageMechPair(damageToDeal, offensiveAttack.CardData.SelectedChannels, defensiveMech));
+                    AddDamageToQueue(new DamageMechPair(offensiveAttack, defensiveMech, false, false));
 
                     if (CombatManager.instance.NarrateCombat)
                     {
-                        combatLog += (offensiveMech + " is playing " + offensiveAttack.CardData.CardName + " for " + damageToDeal + " damage. ");
+                        combatLog += (offensiveMech + " is playing " + offensiveAttack.CardData.CardName + " for " + 
+                            CombatManager.instance.CardPlayManager.GetDamageEstimate(offensiveAttack, defensiveMech) + " damage. ");
                         combatLog += (offensiveMech + "'s attack is " + i + " of " + repeatPlay + " total attacks. ");
                     }
                 }

@@ -44,9 +44,9 @@ public class ChannelShieldsController : BaseUIElement<Dictionary<Channels, int>>
 
         if(newData.Keys.Count == 0)
         {
-            highChannelShieldText.text = null;
-            midChannelShieldText.text = null;
-            lowChannelShieldText.text = null;
+            highChannelShieldText.text = string.Empty;
+            midChannelShieldText.text = string.Empty;
+            lowChannelShieldText.text = string.Empty;
 
             highChannelShield.SetActive(false);
             midChannelShield.SetActive(false);
@@ -56,19 +56,19 @@ public class ChannelShieldsController : BaseUIElement<Dictionary<Channels, int>>
 
         if(!newData.TryGetValue(Channels.High, out checkValue))
         {
-            highChannelShieldText.text = null;
+            highChannelShieldText.text = string.Empty;
             highChannelShield.SetActive(false);
         }
 
         if (!newData.TryGetValue(Channels.Mid, out checkValue))
         {
-            midChannelShieldText.text = null;
+            midChannelShieldText.text = string.Empty;
             midChannelShield.SetActive(false);
         }
 
         if (!newData.TryGetValue(Channels.Low, out checkValue))
         {
-            lowChannelShieldText.text = null;
+            lowChannelShieldText.text = string.Empty;
             lowChannelShield.SetActive(false);
         }
 

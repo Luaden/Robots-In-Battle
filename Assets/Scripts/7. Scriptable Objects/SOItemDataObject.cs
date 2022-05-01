@@ -47,6 +47,8 @@ public class SOItemDataObject : ScriptableObject
     [SerializeField] private int energyCost;
     [Tooltip("Attacks treat this as damage to deal. Defenses treat this as damage to nullify.")]
     [SerializeField] private int baseDamage;
+    [Tooltip("Applies the effect before damage or interaction with the opponent. E.g. Shields will be applied before combat vs after.")]
+    [SerializeField] private bool applyEffectsFirst = false;
     [Tooltip("The animation associated with this card.")]
     [SerializeField] private AnimationType animationType;
 
@@ -66,6 +68,7 @@ public class SOItemDataObject : ScriptableObject
     public AffectedChannels AffectedChannels { get => affectedChannels; }
     public int EnergyCost { get => energyCost; }
     public int BaseDamage { get => baseDamage; }
+    public bool ApplyEffectsFirst { get => applyEffectsFirst; }
     #endregion
 
     #region Component Attribute Properties

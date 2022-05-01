@@ -11,28 +11,39 @@ public class EffectController
     public FighterEffectObject PlayerEffects { get => playerFighterEffectObject; }
     public FighterEffectObject OpponentEffects { get => opponentFighterEffectObject; }
 
-    private Queue<CardCharacterPairObject> effectQueue;
+    private Queue<CardCharacterPairObject> preDamageEffectQueue;
+    private Queue<CardCharacterPairObject> postDamageEffectQueue;
 
     public EffectController()
     {
         playerFighterEffectObject = new FighterEffectObject();
         opponentFighterEffectObject = new FighterEffectObject();
-        effectQueue = new Queue<CardCharacterPairObject>();
+        preDamageEffectQueue = new Queue<CardCharacterPairObject>();
+        postDamageEffectQueue = new Queue<CardCharacterPairObject>();
 
         CombatManager.OnDestroyScene += DisableEffectListeners;
-        CombatAnimationManager.OnEndedAnimation += EnableEffects;
-        CombatAnimationManager.OnEndedAnimation += UpdateFighterBuffs;
+        CombatAnimationManager.OnStartNewAnimation += EnableEffectsBeforeDamage;
+        CombatAnimationManager.OnEndedAnimation += EnableEffectsAfterDamage;
         CombatAnimationManager.OnAnimationsComplete += UpdateFighterBuffs;
         CardPlayManager.OnCombatComplete += IncrementEffectsAtTurnEnd;
     }
 
-    public void AddToEffectQueue(CardChannelPairObject cardChannelPairObject, CharacterSelect destinationMech)
+    public void AddToPostDamageEffectQueue(CardChannelPairObject cardChannelPairObject, CharacterSelect destinationMech)
     {
         CardCharacterPairObject newEffect = new CardCharacterPairObject();
         newEffect.cardChannelPair = cardChannelPairObject;
         newEffect.character = destinationMech;
 
-        effectQueue.Enqueue(newEffect);
+        postDamageEffectQueue.Enqueue(newEffect);
+    }
+
+    public void AddToPreDamageEffectQueue(CardChannelPairObject cardChannelPairObject, CharacterSelect destinationMech)
+    {
+        CardCharacterPairObject newEffect = new CardCharacterPairObject();
+        newEffect.cardChannelPair = cardChannelPairObject;
+        newEffect.character = destinationMech;
+
+        preDamageEffectQueue.Enqueue(newEffect);
     }
 
     public int GetMechDamageWithAndConsumeModifiers(CardChannelPairObject attack, CharacterSelect defensiveCharacter)
@@ -57,26 +68,6 @@ public class EffectController
         attackDamage = GetComponentElementDamageBonus(attackDamage, channel, defensiveCharacter);
 
         return attackDamage;
-    }
-
-    private void UpdateFighterBuffs()
-    {
-        //This currently doesn't account for decreases in channel damage.
-        CombatManager.instance.BuffUIManager.UpdateChannelDamageBuffs(CharacterSelect.Player, playerFighterEffectObject.ChannelDamageBonus);
-        CombatManager.instance.BuffUIManager.UpdateChannelElementStacks(CharacterSelect.Player, playerFighterEffectObject.IceAcidStacks);
-        CombatManager.instance.BuffUIManager.UpdateChannelShields(CharacterSelect.Player, playerFighterEffectObject.ChannelShields);
-        CombatManager.instance.BuffUIManager.UpdateChannelShieldsFalloff(CharacterSelect.Player, playerFighterEffectObject.ChannelShieldsFalloff);
-        CombatManager.instance.BuffUIManager.UpdateGlobalElementStacks(CharacterSelect.Player, playerFighterEffectObject.FirePlasmaStacks);
-        CombatManager.instance.BuffUIManager.UpdateGlobalCategoryDamageBuffs(CharacterSelect.Player, playerFighterEffectObject.CardCategoryDamageBonus);
-        CombatManager.instance.BuffUIManager.UpdateGlobalKeyWordDamageBuffs(CharacterSelect.Player, playerFighterEffectObject.KeyWordDuration);
-
-        CombatManager.instance.BuffUIManager.UpdateChannelDamageBuffs(CharacterSelect.Opponent, opponentFighterEffectObject.ChannelDamageBonus);
-        CombatManager.instance.BuffUIManager.UpdateChannelElementStacks(CharacterSelect.Opponent, opponentFighterEffectObject.IceAcidStacks);
-        CombatManager.instance.BuffUIManager.UpdateChannelShields(CharacterSelect.Opponent, opponentFighterEffectObject.ChannelShields);
-        CombatManager.instance.BuffUIManager.UpdateChannelShieldsFalloff(CharacterSelect.Opponent, opponentFighterEffectObject.ChannelShieldsFalloff);
-        CombatManager.instance.BuffUIManager.UpdateGlobalElementStacks(CharacterSelect.Opponent, opponentFighterEffectObject.FirePlasmaStacks);
-        CombatManager.instance.BuffUIManager.UpdateGlobalCategoryDamageBuffs(CharacterSelect.Opponent, opponentFighterEffectObject.CardCategoryDamageBonus);
-        CombatManager.instance.BuffUIManager.UpdateGlobalKeyWordDamageBuffs(CharacterSelect.Opponent, opponentFighterEffectObject.KeyWordDuration);
     }
 
     public int GetMechDamageWithModifiers(CardChannelPairObject attack, CharacterSelect defensiveCharacter)
@@ -191,20 +182,20 @@ public class EffectController
 
     private void DisableEffectListeners()
     {
-        CombatAnimationManager.OnEndedAnimation -= EnableEffects;
-        CombatAnimationManager.OnEndedAnimation += UpdateFighterBuffs;
+        CombatAnimationManager.OnStartNewAnimation -= EnableEffectsBeforeDamage;
+        CombatAnimationManager.OnEndedAnimation -= EnableEffectsAfterDamage;
         CombatAnimationManager.OnAnimationsComplete -= UpdateFighterBuffs;
         CardPlayManager.OnCombatComplete -= IncrementEffectsAtTurnEnd;
         CombatManager.OnDestroyScene -= DisableEffectListeners;
     }
 
-    private void EnableEffects()
+    private void EnableEffectsBeforeDamage()
     {
         Debug.Log("Enabling effects.");
-        if (effectQueue.Count == 0)
+        if (preDamageEffectQueue.Count == 0)
             return;
 
-        CardCharacterPairObject currentEffect = effectQueue.Dequeue();
+        CardCharacterPairObject currentEffect = preDamageEffectQueue.Dequeue();
         CardChannelPairObject cardChannelPair = currentEffect.cardChannelPair;
         CharacterSelect destinationMech = currentEffect.character;
 
@@ -231,6 +222,8 @@ public class EffectController
             {
                 switch (effect.EffectType)
                 {
+                    case CardEffectTypes.None:
+                        break;
                     case CardEffectTypes.PlayMultipleTimes:
                         break;
 
@@ -284,11 +277,23 @@ public class EffectController
                             cardChannelPair.CardChannel : cardChannelPair.CardData.PossibleChannels,
                             destinationMech == CharacterSelect.Opponent ? CharacterSelect.Player : CharacterSelect.Opponent);
                         break;
+
+                    case CardEffectTypes.GainShieldWithFalloff:
+                        break;
+                    case CardEffectTypes.EnergyDestroy:
+                        break;
                 }
 
                 //Adding stand alone element stacks from components.
                 switch (cardChannelPair.CardData.CardCategory)
                 {
+                    case CardCategory.None:
+                        break;
+                    case CardCategory.All:
+                        AddComponentElementStacks(cardChannelPair, MechComponent.Arms, destinationMech);
+                        AddComponentElementStacks(cardChannelPair, MechComponent.Legs, destinationMech);
+                        AddComponentElementStacks(cardChannelPair, MechComponent.Head, destinationMech);
+                        break;
                     case CardCategory.Punch:
                         AddComponentElementStacks(cardChannelPair, MechComponent.Arms, destinationMech);
                         break;
@@ -298,23 +303,152 @@ public class EffectController
                     case CardCategory.Special:
                         AddComponentElementStacks(cardChannelPair, MechComponent.Head, destinationMech);
                         break;
+                }
+            }
+        }
+
+        UpdateFighterBuffs();
+    }
+    
+    private void EnableEffectsAfterDamage()
+    {
+        Debug.Log("Enabling effects.");
+        if (postDamageEffectQueue.Count == 0)
+            return;
+
+        CardCharacterPairObject currentEffect = postDamageEffectQueue.Dequeue();
+        CardChannelPairObject cardChannelPair = currentEffect.cardChannelPair;
+        CharacterSelect destinationMech = currentEffect.character;
+
+        if (cardChannelPair == null || cardChannelPair.CardData == null)
+            return;
+
+        if (cardChannelPair.CardData.CardEffects == null)
+            return;
+
+        int repeatPlay = 1;
+
+        foreach (SOCardEffectObject effect in cardChannelPair.CardData.CardEffects)
+        {
+            if (effect.EffectType == CardEffectTypes.PlayMultipleTimes)
+                repeatPlay += effect.EffectMagnitude;
+
+            if (effect.EffectType == CardEffectTypes.KeyWord && effect.CardKeyWord == CardKeyWord.Flurry)
+                repeatPlay += GetFlurryBonus(destinationMech == CharacterSelect.Opponent ? CharacterSelect.Player : CharacterSelect.Opponent);
+        }
+
+        for (int i = 0; i < repeatPlay; i++)
+        {
+            foreach (SOCardEffectObject effect in cardChannelPair.CardData.CardEffects)
+            {
+                switch (effect.EffectType)
+                {
+                    case CardEffectTypes.None:
+                        break;
+                    case CardEffectTypes.PlayMultipleTimes:
+                        break;
+
+                    case CardEffectTypes.AdditionalElementStacks:
+                        //Adding bonus element stacks from card effects
+                        switch (cardChannelPair.CardData.CardCategory)
+                        {
+                            case CardCategory.Punch:
+                                AddElementalStacks(effect, cardChannelPair.CardChannel, MechComponent.Arms, destinationMech);
+                                break;
+                            case CardCategory.Kick:
+                                AddElementalStacks(effect, cardChannelPair.CardChannel, MechComponent.Legs, destinationMech);
+                                break;
+                            case CardCategory.Special:
+                                AddElementalStacks(effect, cardChannelPair.CardChannel, MechComponent.Head, destinationMech);
+                                break;
+                        }
+                        break;
+
+                    case CardEffectTypes.GainShields:
+                        GainShields(effect, cardChannelPair.CardData.AffectedChannels == AffectedChannels.SelectedChannel ?
+                            cardChannelPair.CardChannel : cardChannelPair.CardData.PossibleChannels,
+                            destinationMech == CharacterSelect.Opponent ? CharacterSelect.Player : CharacterSelect.Opponent);
+                        break;
+
+                    case CardEffectTypes.MultiplyShield:
+                        MultiplyShields(effect, cardChannelPair.CardData.AffectedChannels == AffectedChannels.SelectedChannel ?
+                            cardChannelPair.CardChannel : cardChannelPair.CardData.PossibleChannels,
+                            destinationMech == CharacterSelect.Opponent ? CharacterSelect.Player : CharacterSelect.Opponent);
+                        break;
+
+                    case CardEffectTypes.IncreaseOutgoingCardTypeDamage:
+                        BoostCardTypeDamage(effect, cardChannelPair.CardData.AffectedChannels == AffectedChannels.SelectedChannel ?
+                            cardChannelPair.CardChannel : cardChannelPair.CardData.PossibleChannels,
+                            destinationMech == CharacterSelect.Opponent ? CharacterSelect.Player : CharacterSelect.Opponent);
+                        break;
+
+                    case CardEffectTypes.IncreaseOutgoingChannelDamage:
+                        BoostChannelDamage(effect, cardChannelPair.CardData.AffectedChannels == AffectedChannels.SelectedChannel ?
+                            cardChannelPair.CardChannel : cardChannelPair.CardData.PossibleChannels,
+                            destinationMech == CharacterSelect.Opponent ? CharacterSelect.Player : CharacterSelect.Opponent);
+                        break;
+
+                    case CardEffectTypes.ReduceOutgoingChannelDamage:
+                        ReduceChannelDamage(effect, cardChannelPair.CardData.AffectedChannels == AffectedChannels.SelectedChannel ?
+                            cardChannelPair.CardChannel : cardChannelPair.CardData.PossibleChannels, destinationMech);
+                        break;
+
+                    case CardEffectTypes.KeyWord:
+                        GainKeyWord(effect, cardChannelPair.CardData.AffectedChannels == AffectedChannels.SelectedChannel ?
+                            cardChannelPair.CardChannel : cardChannelPair.CardData.PossibleChannels,
+                            destinationMech == CharacterSelect.Opponent ? CharacterSelect.Player : CharacterSelect.Opponent);
+                        break;
+
+                    case CardEffectTypes.GainShieldWithFalloff:
+                        break;
+                    case CardEffectTypes.EnergyDestroy:
+                        break;
+                }
+
+                //Adding stand alone element stacks from components.
+                switch (cardChannelPair.CardData.CardCategory)
+                {
                     case CardCategory.None:
                         break;
-                    case CardCategory.Guard:
-                        break;
-                    case CardCategory.Counter:
-                        break;
-                    case CardCategory.Offensive:
-                        break;
-                    case CardCategory.Defensive:
-                        break;
                     case CardCategory.All:
+                        AddComponentElementStacks(cardChannelPair, MechComponent.Arms, destinationMech);
+                        AddComponentElementStacks(cardChannelPair, MechComponent.Legs, destinationMech);
+                        AddComponentElementStacks(cardChannelPair, MechComponent.Head, destinationMech);
+                        break;
+                    case CardCategory.Punch:
+                        AddComponentElementStacks(cardChannelPair, MechComponent.Arms, destinationMech);
+                        break;
+                    case CardCategory.Kick:
+                        AddComponentElementStacks(cardChannelPair, MechComponent.Legs, destinationMech);
+                        break;
+                    case CardCategory.Special:
+                        AddComponentElementStacks(cardChannelPair, MechComponent.Head, destinationMech);
                         break;
                 }
             }
         }
 
         UpdateFighterBuffs();
+    }
+
+    private void UpdateFighterBuffs()
+    {
+        //This currently doesn't account for decreases in channel damage.
+        CombatManager.instance.BuffUIManager.UpdateChannelDamageBuffs(CharacterSelect.Player, playerFighterEffectObject.ChannelDamageBonus);
+        CombatManager.instance.BuffUIManager.UpdateChannelElementStacks(CharacterSelect.Player, playerFighterEffectObject.IceAcidStacks);
+        CombatManager.instance.BuffUIManager.UpdateChannelShields(CharacterSelect.Player, playerFighterEffectObject.ChannelShields);
+        CombatManager.instance.BuffUIManager.UpdateChannelShieldsFalloff(CharacterSelect.Player, playerFighterEffectObject.ChannelShieldsFalloff);
+        CombatManager.instance.BuffUIManager.UpdateGlobalElementStacks(CharacterSelect.Player, playerFighterEffectObject.FirePlasmaStacks);
+        CombatManager.instance.BuffUIManager.UpdateGlobalCategoryDamageBuffs(CharacterSelect.Player, playerFighterEffectObject.CardCategoryDamageBonus);
+        CombatManager.instance.BuffUIManager.UpdateGlobalKeyWordDamageBuffs(CharacterSelect.Player, playerFighterEffectObject.KeyWordDuration);
+
+        CombatManager.instance.BuffUIManager.UpdateChannelDamageBuffs(CharacterSelect.Opponent, opponentFighterEffectObject.ChannelDamageBonus);
+        CombatManager.instance.BuffUIManager.UpdateChannelElementStacks(CharacterSelect.Opponent, opponentFighterEffectObject.IceAcidStacks);
+        CombatManager.instance.BuffUIManager.UpdateChannelShields(CharacterSelect.Opponent, opponentFighterEffectObject.ChannelShields);
+        CombatManager.instance.BuffUIManager.UpdateChannelShieldsFalloff(CharacterSelect.Opponent, opponentFighterEffectObject.ChannelShieldsFalloff);
+        CombatManager.instance.BuffUIManager.UpdateGlobalElementStacks(CharacterSelect.Opponent, opponentFighterEffectObject.FirePlasmaStacks);
+        CombatManager.instance.BuffUIManager.UpdateGlobalCategoryDamageBuffs(CharacterSelect.Opponent, opponentFighterEffectObject.CardCategoryDamageBonus);
+        CombatManager.instance.BuffUIManager.UpdateGlobalKeyWordDamageBuffs(CharacterSelect.Opponent, opponentFighterEffectObject.KeyWordDuration);
     }
 
     private void IncrementEffectsAtTurnEnd()
@@ -752,7 +886,6 @@ public class EffectController
                     shieldAmount -= damageToReturn;
                     damageToReturn = Mathf.RoundToInt(Mathf.Clamp(damageToReturn - initialShield, 0, Mathf.Infinity));
 
-
                     if (shieldAmount <= 0)
                         opponentFighterEffectObject.ChannelShields.Remove(channel);
                     else
@@ -772,11 +905,16 @@ public class EffectController
                     int shieldAmount = initialShield;
 
                     shieldAmount -= damageToReturn;
+                    Debug.Log("Shield after damage: " + shieldAmount);
+
                     damageToReturn = Mathf.RoundToInt(Mathf.Clamp(damageToReturn - initialShield, 0, Mathf.Infinity));
 
 
                     if (shieldAmount <= 0)
+                    {
+                        Debug.Log("Removing shield as it was reduced to 0.");
                         playerFighterEffectObject.ChannelShields.Remove(channel);
+                    }
                     else
                         playerFighterEffectObject.ChannelShields[attack.CardChannel] = shieldAmount;
                 }

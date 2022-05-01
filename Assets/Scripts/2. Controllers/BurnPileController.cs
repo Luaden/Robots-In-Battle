@@ -96,22 +96,18 @@ public class BurnPileController : MonoBehaviour
                 {
                     if(cardCharacterPair.card.CardData.AffectedChannels == AffectedChannels.AllPossibleChannels)
                     {
-                        Debug.Log("Multiple channels selected.");
-
                         switch (cardCharacterPair.card.CardData.PossibleChannels)
                         {
                             case Channels.HighMid:
                                 cardCharacterPair.card.PreviousParentObject = playerHighMidBurnPile.transform;
                                 cardCharacterPair.card.transform.SetParent(playerHighMidBurnPile.transform);
                                 newDestroyCardList.Add(cardCharacterPair);
-                                Debug.Log("High mid channels selected.");
                                 break;
 
                             case Channels.LowMid:
                                 cardCharacterPair.card.PreviousParentObject = playerLowMidBurnPile.transform;
                                 cardCharacterPair.card.transform.SetParent(playerLowMidBurnPile.transform);
                                 newDestroyCardList.Add(cardCharacterPair);
-                                Debug.Log("Low mid channels selected.");
                                 break;
                         }
 
@@ -143,22 +139,18 @@ public class BurnPileController : MonoBehaviour
 
                     if (cardCharacterPair.card.CardData.AffectedChannels == AffectedChannels.AllPossibleChannels)
                     {
-                        Debug.Log("Multiple channels selected.");
-
                         switch (cardCharacterPair.card.CardData.PossibleChannels)
                         {
                             case Channels.HighMid:
                                 cardCharacterPair.card.PreviousParentObject = opponentHighMidBurnPile.transform;
                                 cardCharacterPair.card.transform.SetParent(opponentHighMidBurnPile.transform);
                                 newDestroyCardList.Add(cardCharacterPair);
-                                Debug.Log("High mid channels selected.");
                                 break;
 
                             case Channels.LowMid:
                                 cardCharacterPair.card.PreviousParentObject = opponentLowMidBurnPile.transform;
                                 cardCharacterPair.card.transform.SetParent(opponentLowMidBurnPile.transform);
                                 newDestroyCardList.Add(cardCharacterPair);
-                                Debug.Log("Low mid channels selected.");
                                 break;
                         }
 
