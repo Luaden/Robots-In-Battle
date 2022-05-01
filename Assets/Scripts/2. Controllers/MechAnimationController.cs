@@ -11,9 +11,9 @@ public class MechAnimationController : MonoBehaviour
 
     public void SetMechAnimation(AnimationType animationType)
     {
+        Debug.Log("New animation given: " + animationType);
         if(animationType == AnimationType.Idle)
         {
-            isAnimating = false;
             animator.ResetTrigger("isPunching");
             animator.ResetTrigger("isKicking");
             animator.ResetTrigger("isGuarding");
@@ -21,8 +21,9 @@ public class MechAnimationController : MonoBehaviour
             animator.ResetTrigger("isDamaged");
             animator.ResetTrigger("isWinning");
             animator.ResetTrigger("isLosing");
-
             animator.SetTrigger("isIdling");
+            isAnimating = false;
+
             return;
         }
 

@@ -12,8 +12,7 @@ public class CombatAnimationManager : MonoBehaviour
     private bool allAnimationsComplete = true;
     private bool turnComplete = true;
 
-    private Queue<AnimationType> playerAnimations = new Queue<AnimationType>();
-    private Queue<AnimationType> opponentAnimations = new Queue<AnimationType>();
+    private Queue<AnimationQueueObject> animationQueue = new Queue<AnimationQueueObject>();
 
     public delegate void onStartNewAnimation();
     public static event onStartNewAnimation OnStartNewAnimation;
@@ -24,18 +23,21 @@ public class CombatAnimationManager : MonoBehaviour
 
     public void AddAnimationToQueue(CharacterSelect firstMech, AnimationType firstAnimation, CharacterSelect secondMech, AnimationType secondAnimation)
     {
-        if (firstMech == CharacterSelect.Player)
-            playerAnimations.Enqueue(firstAnimation);
-        else if(firstMech == CharacterSelect.Opponent)
-            opponentAnimations.Enqueue(firstAnimation);
+        AnimationQueueObject newAnimation = new AnimationQueueObject();
+        newAnimation.firstMech = firstMech;
+        newAnimation.firstAnimation = firstAnimation;
+        newAnimation.secondMech = secondMech;
+        newAnimation.secondAnimation = secondAnimation;
 
-        if (secondMech == CharacterSelect.Player)
-            playerAnimations.Enqueue(secondAnimation);
-        else if (secondMech == CharacterSelect.Opponent)
-            opponentAnimations.Enqueue(secondAnimation);
+        animationQueue.Enqueue(newAnimation);
 
         allAnimationsComplete = false;
         turnComplete = false;
+    }
+
+    public void ClearAnimationQueue()
+    {
+        animationQueue.Clear();
     }
 
     public void SetCardOnBurnPile(CardUIController firstCard, CharacterSelect firstCardOwner, CardUIController secondCard = null)
@@ -71,25 +73,35 @@ public class CombatAnimationManager : MonoBehaviour
         if (CheckMechIsAnimating(CharacterSelect.Player) || CheckMechIsAnimating(CharacterSelect.Opponent))
             return;
 
+        //I'm like 90% sure the issue is here or in the burn pile controller. Like everything is waiting on this and the burn pile to finish up
+        //and raise events. So its either here or maybe the MechAnimationController with the animation event.
+
         if(startedAnimations)
             OnEndedAnimation?.Invoke();
 
         OnStartNewAnimation?.Invoke();
 
-        if (playerAnimations.Count > 0)
+        if (animationQueue.Count > 0)
         {
-            playerMechAnimationController.SetMechAnimation(playerAnimations.Dequeue());
-            startedAnimations = true;
-        }
+            Debug.Log("Playing mech animations.");
 
-        if (opponentAnimations.Count > 0)
-        {
-            opponentMechAnimationController.SetMechAnimation(opponentAnimations.Dequeue());
+            AnimationQueueObject currentAnimation = animationQueue.Dequeue();
+
+            if (currentAnimation.firstMech == CharacterSelect.Player)
+                playerMechAnimationController.SetMechAnimation(currentAnimation.firstAnimation);
+            if (currentAnimation.firstMech == CharacterSelect.Opponent) 
+                opponentMechAnimationController.SetMechAnimation(currentAnimation.firstAnimation);
+
+            if (currentAnimation.secondMech == CharacterSelect.Player)
+                playerMechAnimationController.SetMechAnimation(currentAnimation.secondAnimation);
+            if (currentAnimation.secondMech == CharacterSelect.Opponent)
+                opponentMechAnimationController.SetMechAnimation(currentAnimation.secondAnimation);
+
             startedAnimations = true;
         }
 
         if (!CheckMechIsAnimating(CharacterSelect.Player) || !CheckMechIsAnimating(CharacterSelect.Opponent))
-            if (!allAnimationsComplete && playerAnimations.Count == 0 && opponentAnimations.Count == 0)
+            if (!allAnimationsComplete && animationQueue.Count == 0)
             {
                 allAnimationsComplete = true;
                 startedAnimations = false;
@@ -107,5 +119,13 @@ public class CombatAnimationManager : MonoBehaviour
             OnAnimationsComplete.Invoke();
             turnComplete = true;
         }
+    }
+
+    private class AnimationQueueObject
+    {
+        public CharacterSelect firstMech;
+        public AnimationType firstAnimation;
+        public CharacterSelect secondMech;
+        public AnimationType secondAnimation;
     }
 }

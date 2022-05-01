@@ -88,23 +88,21 @@ public class CombatManager : MonoBehaviour
                 switch (channel)
                 {
                     case Channels.High:
-                        Debug.Log("Dealing damage to player arms.");
                         playerFighter.FighterMech.DamageComponentHP(
                             CardPlayManager.EffectController.GetComponentDamageWithModifiers(damageMechPair.damageToDeal, channel, CharacterSelect.Player), MechComponent.Arms);
                         break;
+
                     case Channels.Mid:
-                        Debug.Log("Dealing damage to player torso.");
                         playerFighter.FighterMech.DamageComponentHP(
                             CardPlayManager.EffectController.GetComponentDamageWithModifiers(damageMechPair.damageToDeal, channel, CharacterSelect.Player), MechComponent.Torso);
                         break;
+
                     case Channels.Low:
-                        Debug.Log("Dealing damage to player legs.");
                         playerFighter.FighterMech.DamageComponentHP(
                             CardPlayManager.EffectController.GetComponentDamageWithModifiers(damageMechPair.damageToDeal, channel, CharacterSelect.Player), MechComponent.Legs);
                         break;                
                 }
 
-                mechHUDManager.UpdatePlayerHP(playerFighter.FighterMech.MechCurrentHP);
             }
         }
 
@@ -115,28 +113,25 @@ public class CombatManager : MonoBehaviour
                 switch (channel)
                 {
                     case Channels.High:
-                        Debug.Log("Dealing damage to opponent arms.");
                         opponentFighter.FighterMech.DamageComponentHP(
                             CardPlayManager.EffectController.GetComponentDamageWithModifiers(damageMechPair.damageToDeal, channel, CharacterSelect.Opponent), MechComponent.Arms);
                         break;
+
                     case Channels.Mid:
-                        Debug.Log("Dealing damage to opponent torso.");
                         opponentFighter.FighterMech.DamageComponentHP(
                             CardPlayManager.EffectController.GetComponentDamageWithModifiers(damageMechPair.damageToDeal, channel, CharacterSelect.Opponent), MechComponent.Torso);
                         break;
+
                     case Channels.Low:
-                        Debug.Log("Dealing damage to opponent legs.");
                         opponentFighter.FighterMech.DamageComponentHP(
                             CardPlayManager.EffectController.GetComponentDamageWithModifiers(damageMechPair.damageToDeal, channel, CharacterSelect.Opponent), MechComponent.Legs);
                         break;
                 }
-
-                mechHUDManager.UpdateOpponentHP(opponentFighter.FighterMech.MechCurrentHP);
             }
         }
 
-        CheckForWinLoss();
-
+        mechHUDManager.UpdatePlayerHP(playerFighter.FighterMech.MechCurrentHP);
+        mechHUDManager.UpdateOpponentHP(opponentFighter.FighterMech.MechCurrentHP);
     }
 
     public void AddHealthToMech(CharacterSelect character, int health)
@@ -244,6 +239,7 @@ public class CombatManager : MonoBehaviour
         CardPlayManager.OnCombatStart += DisableCanPlayCards;
         CardPlayManager.OnCombatComplete += EnableCanPlayCards;
         CardPlayManager.OnCombatComplete += StartNewTurn;
+        CombatAnimationManager.OnEndedAnimation += CheckForWinLoss;
     }
 
     private void DisableCanPlayCards()
@@ -263,6 +259,7 @@ public class CombatManager : MonoBehaviour
         CardPlayManager.OnCombatStart -= DisableCanPlayCards;
         CardPlayManager.OnCombatComplete -= EnableCanPlayCards;
         CardPlayManager.OnCombatComplete -= StartNewTurn;
+        CardPlayManager.OnCombatComplete -= CheckForWinLoss;
     }
 
     private void InitPlayerFighter(FighterDataObject newPlayerFighter)
@@ -295,19 +292,21 @@ public class CombatManager : MonoBehaviour
     {
         if (playerFighter.FighterMech.MechCurrentHP <= 0)
         {
-            winLossPanel.SetActive(true);
+            CombatAnimationManager.ClearAnimationQueue();
             CombatAnimationManager.AddAnimationToQueue(CharacterSelect.Player, AnimationType.Lose, CharacterSelect.Opponent, AnimationType.Win);
+
+            winLossPanel.SetActive(true);
             reloadGameButton.SetActive(true);
 
-            GameManager.instance.PlayerMechController.SetNewPlayerMech(playerFighter.FighterMech);
-            GameManager.instance.PlayerBankController.AddPlayerCurrency(GameManager.instance.PlayerCurrencyGainOnWin);
             return;
         }
         if (opponentFighter.FighterMech.MechCurrentHP <= 0)
         {
+            CombatAnimationManager.ClearAnimationQueue();
+            CombatAnimationManager.AddAnimationToQueue(CharacterSelect.Player, AnimationType.Win, CharacterSelect.Opponent, AnimationType.Lose);
+            
             winLossPanel.SetActive(true);
             loadShoppingButton.SetActive(true);
-            CombatAnimationManager.AddAnimationToQueue(CharacterSelect.Player, AnimationType.Win, CharacterSelect.Opponent, AnimationType.Lose);
             return;
         }
 

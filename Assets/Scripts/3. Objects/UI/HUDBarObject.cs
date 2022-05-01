@@ -20,7 +20,11 @@ public class HUDBarObject : BaseUIElement<int>
     public override void UpdateUI(int primaryData)
     {
         if (ClearedIfEmpty(primaryData))
+        {
+            currentBar.fillAmount = 0 / barMax;
+            text.text = "0";
             return;
+        }
 
         currentBar.fillAmount = (float)primaryData / barMax;
         text.text = primaryData.ToString();

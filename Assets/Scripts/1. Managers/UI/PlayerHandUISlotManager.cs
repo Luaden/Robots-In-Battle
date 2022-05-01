@@ -8,7 +8,6 @@ public class PlayerHandUISlotManager : BaseSlotManager<CardUIController>
 {
     public override void AddItemToCollection(CardUIController item, BaseSlotController<CardUIController> slot)
     {
-        Debug.Log("Adding items to player hand.");
         if (slot != null && slot.CurrentSlottedItem == null)
         {
             CombatManager.instance.HandManager.AddCardToPlayerHand(item.CardData);
