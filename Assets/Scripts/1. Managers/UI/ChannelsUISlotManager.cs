@@ -96,7 +96,7 @@ public class ChannelsUISlotManager : BaseSlotManager<CardUIController>
             CombatManager.instance.CardPlayManager.PlayerAttackPlan.cardChannelPairA = cardChannelPairObjectA;
 
             //Needs to account for ice.
-            CombatManager.instance.RemoveEnergyFromMech(CharacterSelect.Player, cardChannelPairObjectA.CardData.EnergyCost, true);
+            CombatManager.instance.PreviewEnergyConsumption(CharacterSelect.Player, cardChannelPairObjectA.CardData.EnergyCost);
 
             attackSlotAFilled = true;
             SkipASlotButton.SetActive(false);
@@ -119,9 +119,9 @@ public class ChannelsUISlotManager : BaseSlotManager<CardUIController>
 
             //Needs to account for ice.
             if (cardChannelPairObjectA != null && cardChannelPairObjectA.CardData != null)
-                CombatManager.instance.RemoveEnergyFromMech(CharacterSelect.Player, cardChannelPairObjectA.CardData.EnergyCost + cardChannelPairObjectB.CardData.EnergyCost, true);
+                CombatManager.instance.PreviewEnergyConsumption(CharacterSelect.Player, cardChannelPairObjectA.CardData.EnergyCost + cardChannelPairObjectB.CardData.EnergyCost);
             else
-                CombatManager.instance.RemoveEnergyFromMech(CharacterSelect.Player, cardChannelPairObjectB.CardData.EnergyCost, true);
+                CombatManager.instance.PreviewEnergyConsumption(CharacterSelect.Player, cardChannelPairObjectB.CardData.EnergyCost);
 
             attackSlotBFilled = true;
             OnBSlotFilled?.Invoke();
@@ -200,7 +200,7 @@ public class ChannelsUISlotManager : BaseSlotManager<CardUIController>
             attackSlotAFilled = false;
 
             if (playerAttackSlotB.CurrentSlottedItem != null)
-                CombatManager.instance.RemoveEnergyFromMech(CharacterSelect.Player, cardChannelPairObjectB.CardData.EnergyCost, true);
+                CombatManager.instance.PreviewEnergyConsumption(CharacterSelect.Player, cardChannelPairObjectB.CardData.EnergyCost);
             else
                 CombatManager.instance.ResetMechEnergyHUD(CharacterSelect.Player);
             return;
@@ -213,7 +213,7 @@ public class ChannelsUISlotManager : BaseSlotManager<CardUIController>
             attackSlotBFilled = false;
 
             if (playerAttackSlotA.CurrentSlottedItem != null)
-                CombatManager.instance.RemoveEnergyFromMech(CharacterSelect.Player, cardChannelPairObjectA.CardData.EnergyCost, true);
+                CombatManager.instance.PreviewEnergyConsumption(CharacterSelect.Player, cardChannelPairObjectA.CardData.EnergyCost);
             else
                 CombatManager.instance.ResetMechEnergyHUD(CharacterSelect.Player);
             return;

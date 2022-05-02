@@ -43,6 +43,7 @@ public class CombatManager : MonoBehaviour
 
     private FighterDataObject playerFighter;
     private FighterDataObject opponentFighter;
+    private Queue<EnergyRemovalObject> energyRemovalQueue;
 
     private bool canPlayCards = true;
 
@@ -119,9 +120,6 @@ public class CombatManager : MonoBehaviour
                         break;                
                 }
             }
-
-
-            RemoveEnergyFromMech(CharacterSelect.Opponent, energyCost);
         }
 
         if (damageMechPair.CharacterTakingDamage == CharacterSelect.Opponent)
@@ -159,8 +157,6 @@ public class CombatManager : MonoBehaviour
                             energyCost *= iceChannelEnergyReductionModifier;
                         break;
                 }
-
-                RemoveEnergyFromMech(CharacterSelect.Player, energyCost);
             }
         }
 
@@ -196,33 +192,23 @@ public class CombatManager : MonoBehaviour
         }
     }
 
-    public void RemoveEnergyFromMech(CharacterSelect character, int energyToRemove, bool queueEnergyRemoval = false)
+
+    public void RemoveMechEnergyWithQueue(EnergyRemovalObject newEnergyRemovalObject)
+    {
+        energyRemovalQueue.Enqueue(newEnergyRemovalObject);
+    }
+
+    public void PreviewEnergyConsumption(CharacterSelect character, int energyToRemove)
     {
         if (character == CharacterSelect.Player)
         {
-            if(queueEnergyRemoval)
-            {
-                mechHUDManager.UpdatePlayerEnergy(playerFighter.FighterMech.MechCurrentEnergy, 
-                    playerFighter.FighterMech.MechCurrentEnergy - energyToRemove, 
-                    queueEnergyRemoval);
-                return;
-            }
-
-            playerFighter.FighterMech.MechCurrentEnergy -= energyToRemove;
-            mechHUDManager.UpdatePlayerEnergy(playerFighter.FighterMech.MechCurrentEnergy, playerFighter.FighterMech.MechCurrentEnergy, false);
+            mechHUDManager.UpdatePlayerEnergy(playerFighter.FighterMech.MechCurrentEnergy, playerFighter.FighterMech.MechCurrentEnergy - energyToRemove, true);
+            return;
         }
         if (character == CharacterSelect.Opponent)
         {
-            if (queueEnergyRemoval)
-            {
-                mechHUDManager.UpdateOpponentEnergy(opponentFighter.FighterMech.MechCurrentEnergy, 
-                    opponentFighter.FighterMech.MechCurrentEnergy - energyToRemove, 
-                    queueEnergyRemoval);
-                return;
-            }
-
-            opponentFighter.FighterMech.MechCurrentEnergy -= energyToRemove;
-            mechHUDManager.UpdateOpponentEnergy(opponentFighter.FighterMech.MechCurrentEnergy, playerFighter.FighterMech.MechCurrentEnergy, false);
+            mechHUDManager.UpdateOpponentEnergy(opponentFighter.FighterMech.MechCurrentEnergy, opponentFighter.FighterMech.MechCurrentEnergy - energyToRemove, true);
+            return;
         }
     }
 
@@ -278,6 +264,8 @@ public class CombatManager : MonoBehaviour
         buffUIManager = FindObjectOfType<BuffUIManager>(true);
         combatAnimationManager = FindObjectOfType<CombatAnimationManager>(true);
         effectManager = FindObjectOfType<EffectManager>(true);
+
+        energyRemovalQueue = new Queue<EnergyRemovalObject>();
     }
 
     private void Start()
@@ -285,7 +273,44 @@ public class CombatManager : MonoBehaviour
         CardPlayManager.OnCombatStart += DisableCanPlayCards;
         CardPlayManager.OnCombatComplete += EnableCanPlayCards;
         CardPlayManager.OnCombatComplete += StartNewTurn;
+        CombatAnimationManager.OnRoundEnded += RemoveEnergyFromMechs;
         CombatAnimationManager.OnEndedAnimation += CheckForWinLoss;
+    }
+    private void OnDestroy()
+    {
+        OnDestroyScene?.Invoke();
+        instance = null;
+        CardPlayManager.OnCombatStart -= DisableCanPlayCards;
+        CardPlayManager.OnCombatComplete -= EnableCanPlayCards;
+        CardPlayManager.OnCombatComplete -= StartNewTurn;
+        CombatAnimationManager.OnRoundEnded -= RemoveEnergyFromMechs;
+        CombatAnimationManager.OnEndedAnimation -= CheckForWinLoss;
+    }
+
+    private void RemoveEnergyFromMechs()
+    {
+        if (energyRemovalQueue.Count > 0)
+        {
+            EnergyRemovalObject energyRemovalObject = energyRemovalQueue.Dequeue();
+
+            if (energyRemovalObject.firstMech == CharacterSelect.Player)
+            {
+                playerFighter.FighterMech.MechCurrentEnergy -= energyRemovalObject.firstMechEnergyRemoval;
+
+                if(energyRemovalObject.secondMechEnergyRemoval != 0)
+                    opponentFighter.FighterMech.MechCurrentEnergy -= energyRemovalObject.secondMechEnergyRemoval;
+            }
+            if (energyRemovalObject.firstMech == CharacterSelect.Opponent)
+            {
+                opponentFighter.FighterMech.MechCurrentEnergy -= energyRemovalObject.firstMechEnergyRemoval;
+
+                if (energyRemovalObject.secondMechEnergyRemoval != 0)
+                    playerFighter.FighterMech.MechCurrentEnergy -= energyRemovalObject.secondMechEnergyRemoval;
+            }
+
+            mechHUDManager.UpdatePlayerEnergy(playerFighter.FighterMech.MechCurrentEnergy, playerFighter.FighterMech.MechCurrentEnergy, false);
+            mechHUDManager.UpdateOpponentEnergy(opponentFighter.FighterMech.MechCurrentEnergy, opponentFighter.FighterMech.MechCurrentEnergy, false);
+        }
     }
 
     private void DisableCanPlayCards()
@@ -296,16 +321,6 @@ public class CombatManager : MonoBehaviour
     private void EnableCanPlayCards()
     {
         canPlayCards = true;
-    }
-
-    private void OnDestroy()
-    {
-        OnDestroyScene?.Invoke();
-        instance = null;
-        CardPlayManager.OnCombatStart -= DisableCanPlayCards;
-        CardPlayManager.OnCombatComplete -= EnableCanPlayCards;
-        CardPlayManager.OnCombatComplete -= StartNewTurn;
-        CombatAnimationManager.OnEndedAnimation -= CheckForWinLoss;
     }
 
     private void InitPlayerFighter(FighterDataObject newPlayerFighter)
@@ -338,7 +353,9 @@ public class CombatManager : MonoBehaviour
         if (playerFighter.FighterMech.MechCurrentHP <= 0)
         {
             CombatAnimationManager.ClearAnimationQueue();
-            CombatAnimationManager.AddAnimationToQueue(CharacterSelect.Player, AnimationType.Lose, CharacterSelect.Opponent, AnimationType.Win);
+
+            AnimationQueueObject newAnimationQueueObject = new AnimationQueueObject(CharacterSelect.Player, AnimationType.Lose, CharacterSelect.Opponent, AnimationType.Win);
+            CombatAnimationManager.AddAnimationToQueue(newAnimationQueueObject);
 
             winLossPanel.SetActive(true);
             reloadGameButton.SetActive(true);
@@ -348,12 +365,13 @@ public class CombatManager : MonoBehaviour
         if (opponentFighter.FighterMech.MechCurrentHP <= 0)
         {
             CombatAnimationManager.ClearAnimationQueue();
-            CombatAnimationManager.AddAnimationToQueue(CharacterSelect.Player, AnimationType.Win, CharacterSelect.Opponent, AnimationType.Lose);
+
+            AnimationQueueObject newAnimationQueueObject = new AnimationQueueObject(CharacterSelect.Player, AnimationType.Win, CharacterSelect.Opponent, AnimationType.Lose);
+            CombatAnimationManager.AddAnimationToQueue(newAnimationQueueObject);
             
             winLossPanel.SetActive(true);
             loadShoppingButton.SetActive(true);
             return;
         }
-
     }
 }

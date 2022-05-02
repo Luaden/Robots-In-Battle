@@ -11,7 +11,8 @@ public class AnimationTestTool : MonoBehaviour
 
     public void TestAnimations()
     {
-        mechAnimationManager.AddAnimationToQueue(CharacterSelect.Player, playerMechAnimation, CharacterSelect.Opponent, opponentMechAnimation);
+        AnimationQueueObject newAnimation = new AnimationQueueObject(CharacterSelect.Player, playerMechAnimation, CharacterSelect.Opponent, opponentMechAnimation);
+        mechAnimationManager.AddAnimationToQueue(newAnimation);
     }
 
     private void Start()

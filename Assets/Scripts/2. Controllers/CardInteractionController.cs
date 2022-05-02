@@ -288,9 +288,12 @@ public class CardInteractionController
         if (offensiveAttack == null || offensiveAttack.CardData == null)
             return;
 
+        Queue<AnimationQueueObject> newAnimations = new Queue<AnimationQueueObject>();
+        QueueEnergyRemoval(offensiveAttack, offensiveMech, defensiveCard, defensiveMech);
+
         int repeatPlay = 1;
 
-        if(CombatManager.instance.NarrateCombat)
+        if (CombatManager.instance.NarrateCombat)
         {
             combatLog += offensiveMech + " starting HP: " + (offensiveMech == CharacterSelect.Player ?
             CombatManager.instance.PlayerFighter.FighterMech.MechCurrentHP.ToString() : CombatManager.instance.OpponentFighter.FighterMech.MechCurrentHP.ToString());
@@ -316,25 +319,21 @@ public class CardInteractionController
             {
                 if (counterDamage)
                 {
-                    CombatManager.instance.CombatAnimationManager.AddAnimationToQueue(offensiveMech, offensiveAttack.CardData.AnimationType,
-                                                                                    defensiveMech, defensiveCard.CardData.AnimationType);
-
+                    newAnimations.Enqueue(new AnimationQueueObject(offensiveMech, offensiveAttack.CardData.AnimationType, defensiveMech, defensiveCard.CardData.AnimationType));
                     AddDamageToQueue(new DamageMechPairObject(offensiveAttack, offensiveMech, true, false));
 
                     if (CombatManager.instance.NarrateCombat)
                     {
                         combatLog += (offensiveMech + " is playing " + offensiveAttack.CardData.CardName + " but is Countered by " + defensiveMech + ". ");
                         combatLog += (offensiveMech + " would have dealt " + offensiveAttack.CardData.BaseDamage + " damage but will instead be dealt " +
-                            (CombatManager.instance.EffectManager.GetDamageEstimateWithModifiers(offensiveAttack, defensiveMech) 
-                            * Mathf.RoundToInt(CombatManager.instance.CounterDamageMultiplier)) + ". "); 
+                            (CombatManager.instance.EffectManager.GetDamageEstimateWithModifiers(offensiveAttack, defensiveMech)
+                            * Mathf.RoundToInt(CombatManager.instance.CounterDamageMultiplier)) + ". ");
                         combatLog += (offensiveMech + "'s attack is " + i + " of " + repeatPlay + " total attacks. ");
                     }
                 }
-                else if(guardDamage)
+                else if (guardDamage)
                 {
-                    CombatManager.instance.CombatAnimationManager.AddAnimationToQueue(offensiveMech, offensiveAttack.CardData.AnimationType,
-                                                                                   defensiveMech, defensiveCard.CardData.AnimationType);
-
+                    newAnimations.Enqueue(new AnimationQueueObject(offensiveMech, offensiveAttack.CardData.AnimationType, defensiveMech, defensiveCard.CardData.AnimationType));
                     AddDamageToQueue(new DamageMechPairObject(offensiveAttack, defensiveMech, false, true));
 
                     if (CombatManager.instance.NarrateCombat)
@@ -347,21 +346,21 @@ public class CardInteractionController
                 }
                 else
                 {
-                    CombatManager.instance.CombatAnimationManager.AddAnimationToQueue(offensiveMech, offensiveAttack.CardData.AnimationType,
-                                                                                   defensiveMech, AnimationType.Damaged);
-
+                    newAnimations.Enqueue(new AnimationQueueObject(offensiveMech, offensiveAttack.CardData.AnimationType, defensiveMech, AnimationType.Damaged));
                     AddDamageToQueue(new DamageMechPairObject(offensiveAttack, defensiveMech, false, false));
 
                     if (CombatManager.instance.NarrateCombat)
                     {
-                        combatLog += (offensiveMech + " is playing " + offensiveAttack.CardData.CardName + " for " + 
+                        combatLog += (offensiveMech + " is playing " + offensiveAttack.CardData.CardName + " for " +
                             CombatManager.instance.EffectManager.GetDamageEstimateWithModifiers(offensiveAttack, defensiveMech) + " damage. ");
                         combatLog += (offensiveMech + "'s attack is " + i + " of " + repeatPlay + " total attacks. ");
                     }
                 }
             }
 
-            if(CombatManager.instance.NarrateCombat)
+            CombatManager.instance.CombatAnimationManager.AddAnimationToQueue(newAnimations);
+
+            if (CombatManager.instance.NarrateCombat)
             {
                 combatLog += offensiveMech + " ending HP: " + (offensiveMech == CharacterSelect.Player ?
                     CombatManager.instance.PlayerFighter.FighterMech.MechCurrentHP : CombatManager.instance.OpponentFighter.FighterMech.MechCurrentHP);
@@ -375,6 +374,50 @@ public class CardInteractionController
                 combatLog = "";
             }
         }
+    }
+
+    private void QueueEnergyRemoval(CardChannelPairObject offensiveAttack, CharacterSelect offensiveMech, CardChannelPairObject defensiveCard, CharacterSelect defensiveMech)
+    {
+        EnergyRemovalObject newEnergyToRemove = new EnergyRemovalObject();
+        newEnergyToRemove.firstMech = offensiveMech;
+
+
+        if (offensiveAttack.CardData.AffectedChannels == AffectedChannels.AllPossibleChannels)
+            foreach (Channels channel in CombatManager.instance.GetChannelListFromFlags(offensiveAttack.CardData.PossibleChannels))
+            {
+                if (CombatManager.instance.EffectManager.GetIceElementInChannel(channel, defensiveMech))
+                {
+                    newEnergyToRemove.firstMechEnergyRemoval = Mathf.RoundToInt(offensiveAttack.CardData.EnergyCost * CombatManager.instance.IceChannelEnergyReductionModifier);
+                    break;
+                }
+                else
+                    newEnergyToRemove.firstMechEnergyRemoval = offensiveAttack.CardData.EnergyCost;
+            }
+        else
+            if (CombatManager.instance.EffectManager.GetIceElementInChannel(offensiveAttack.CardChannel, defensiveMech))
+            newEnergyToRemove.firstMechEnergyRemoval = Mathf.RoundToInt(offensiveAttack.CardData.EnergyCost * CombatManager.instance.IceChannelEnergyReductionModifier);
+
+        if (defensiveCard != null && defensiveCard.CardData != null)
+            if (defensiveCard.CardData.AffectedChannels == AffectedChannels.AllPossibleChannels)
+                foreach (Channels channel in CombatManager.instance.GetChannelListFromFlags(defensiveCard.CardData.PossibleChannels))
+                {
+                    if (CombatManager.instance.EffectManager.GetIceElementInChannel(channel, offensiveMech))
+                    {
+                        newEnergyToRemove.secondMechEnergyRemoval = Mathf.RoundToInt(defensiveCard.CardData.EnergyCost * CombatManager.instance.IceChannelEnergyReductionModifier);
+                        break;
+                    }
+                    else
+                        newEnergyToRemove.secondMechEnergyRemoval = defensiveCard.CardData.EnergyCost;
+                }
+            else
+            {
+                if (CombatManager.instance.EffectManager.GetIceElementInChannel(defensiveCard.CardChannel, offensiveMech))
+                    newEnergyToRemove.secondMechEnergyRemoval = Mathf.RoundToInt(defensiveCard.CardData.EnergyCost * CombatManager.instance.IceChannelEnergyReductionModifier);
+                else
+                    newEnergyToRemove.secondMechEnergyRemoval = defensiveCard.CardData.EnergyCost;
+            }
+
+        CombatManager.instance.RemoveMechEnergyWithQueue(newEnergyToRemove);
     }
 
     private void AddDamageToQueue(DamageMechPairObject damageToDeal)

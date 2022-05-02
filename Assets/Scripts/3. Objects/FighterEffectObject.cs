@@ -141,8 +141,11 @@ public class FighterEffectObject
             }
             if(pair.Key == ElementType.Plasma)
             {
-                Debug.Log("Stealing energy.");
-                CombatManager.instance.RemoveEnergyFromMech(character, pair.Value);
+                EnergyRemovalObject newEnergyToRemove = new EnergyRemovalObject();
+                newEnergyToRemove.firstMech = character;
+                newEnergyToRemove.firstMechEnergyRemoval = pair.Value;
+
+                CombatManager.instance.RemoveMechEnergyWithQueue(newEnergyToRemove);
                 CombatManager.instance.AddEnergyToMech(character == CharacterSelect.Player ? CharacterSelect.Opponent : CharacterSelect.Player, pair.Value);
             }
         }

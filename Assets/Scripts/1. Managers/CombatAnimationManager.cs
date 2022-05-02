@@ -13,24 +13,33 @@ public class CombatAnimationManager : MonoBehaviour
     private bool allAnimationsComplete = true;
     private bool turnComplete = true;
 
-    private Queue<AnimationQueueObject> animationQueue = new Queue<AnimationQueueObject>();
+    private Queue<Queue<AnimationQueueObject>> animationCollection = new Queue<Queue<AnimationQueueObject>>();
+    private Queue<AnimationQueueObject> currentAnimationQueue = new Queue<AnimationQueueObject>();
+    private AnimationQueueObject currentAnimationObject;
 
     public delegate void onStartNewAnimation();
     public static event onStartNewAnimation OnStartNewAnimation;
     public delegate void onEndAnimation();
     public static event onEndAnimation OnEndedAnimation;
+    public delegate void onEndRound();
+    public static event onEndRound OnRoundEnded;
     public delegate void onAnimationsComplete();
     public static event onAnimationsComplete OnAnimationsComplete;
 
-    public void AddAnimationToQueue(CharacterSelect firstMech, AnimationType firstAnimation, CharacterSelect secondMech, AnimationType secondAnimation)
+    public void AddAnimationToQueue(Queue<AnimationQueueObject> animations)
     {
-        AnimationQueueObject newAnimation = new AnimationQueueObject();
-        newAnimation.firstMech = firstMech;
-        newAnimation.firstAnimation = firstAnimation;
-        newAnimation.secondMech = secondMech;
-        newAnimation.secondAnimation = secondAnimation;
+        animationCollection.Enqueue(animations);
 
-        animationQueue.Enqueue(newAnimation);
+        allAnimationsComplete = false;
+        turnComplete = false;
+    }
+
+    public void AddAnimationToQueue(AnimationQueueObject animation)
+    {
+        Queue<AnimationQueueObject> newAnimations = new Queue<AnimationQueueObject>();
+        newAnimations.Enqueue(animation);
+
+        animationCollection.Enqueue(newAnimations);
 
         allAnimationsComplete = false;
         turnComplete = false;
@@ -38,7 +47,7 @@ public class CombatAnimationManager : MonoBehaviour
 
     public void ClearAnimationQueue()
     {
-        animationQueue.Clear();
+        animationCollection.Clear();
     }
 
     public void SetCardOnBurnPile(CardUIController firstCard, CharacterSelect firstCardOwner, CardUIController secondCard = null)
@@ -75,36 +84,54 @@ public class CombatAnimationManager : MonoBehaviour
             return;
 
         if(startedAnimations)
+        {
             OnEndedAnimation?.Invoke();
+            currentAnimationObject = null;
+        }
 
         OnStartNewAnimation?.Invoke();
 
-        if (animationQueue.Count > 0)
+        if (currentAnimationObject == null)
         {
-            AnimationQueueObject currentAnimation = animationQueue.Dequeue();
+            if (currentAnimationQueue.Count == 0)
+            {
+                if (animationCollection.Count > 0)
+                {
+                    currentAnimationQueue = animationCollection.Dequeue();
+                    currentAnimationObject = currentAnimationQueue.Dequeue();
+                    OnRoundEnded?.Invoke();
+                    return;
+                }
+                else
+                {
+                    if (!CheckMechIsAnimating(CharacterSelect.Player) || !CheckMechIsAnimating(CharacterSelect.Opponent))
+                        if (!allAnimationsComplete && animationCollection.Count == 0)
+                        {
+                            allAnimationsComplete = true;
+                            startedAnimations = false;
+                            //OnEndedAnimation?.Invoke();
+                            return;
+                        }
+                    return;
+                }
+            }
+            else
+                currentAnimationObject = currentAnimationQueue.Dequeue();
+        }
+        else
+        {
+            if (currentAnimationObject.firstMech == CharacterSelect.Player)
+                playerMechAnimationController.SetMechAnimation(currentAnimationObject.firstAnimation);
+            if (currentAnimationObject.firstMech == CharacterSelect.Opponent)
+                opponentMechAnimationController.SetMechAnimation(currentAnimationObject.firstAnimation);
 
-            if (currentAnimation.firstMech == CharacterSelect.Player)
-                playerMechAnimationController.SetMechAnimation(currentAnimation.firstAnimation);
-            if (currentAnimation.firstMech == CharacterSelect.Opponent) 
-                opponentMechAnimationController.SetMechAnimation(currentAnimation.firstAnimation);
-
-            if (currentAnimation.secondMech == CharacterSelect.Player)
-                playerMechAnimationController.SetMechAnimation(currentAnimation.secondAnimation);
-            if (currentAnimation.secondMech == CharacterSelect.Opponent)
-                opponentMechAnimationController.SetMechAnimation(currentAnimation.secondAnimation);
-
+            if (currentAnimationObject.secondMech == CharacterSelect.Player)
+                playerMechAnimationController.SetMechAnimation(currentAnimationObject.secondAnimation);
+            if (currentAnimationObject.secondMech == CharacterSelect.Opponent)
+                opponentMechAnimationController.SetMechAnimation(currentAnimationObject.secondAnimation);
             startedAnimations = true;
         }
-
-        if (!CheckMechIsAnimating(CharacterSelect.Player) || !CheckMechIsAnimating(CharacterSelect.Opponent))
-            if (!allAnimationsComplete && animationQueue.Count == 0)
-            {
-                allAnimationsComplete = true;
-                startedAnimations = false;
-                OnEndedAnimation?.Invoke();
-            }
     }
-
     private void CheckAllAnimationsComplete()
     {
         if (CheckMechIsAnimating(CharacterSelect.Player) || CheckMechIsAnimating(CharacterSelect.Opponent))
@@ -115,13 +142,5 @@ public class CombatAnimationManager : MonoBehaviour
             OnAnimationsComplete.Invoke();
             turnComplete = true;
         }
-    }
-
-    private class AnimationQueueObject
-    {
-        public CharacterSelect firstMech;
-        public AnimationType firstAnimation;
-        public CharacterSelect secondMech;
-        public AnimationType secondAnimation;
     }
 }

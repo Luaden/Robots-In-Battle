@@ -1088,7 +1088,11 @@ public class EffectManager : MonoBehaviour
 
     private void DestroyEnergy(SOCardEffectObject effect, CharacterSelect defensiveCharacter)
     {
-            CombatManager.instance.RemoveEnergyFromMech(defensiveCharacter, effect.EffectMagnitude);
+        EnergyRemovalObject newEnergyToRemove = new EnergyRemovalObject();
+        newEnergyToRemove.firstMech = defensiveCharacter;
+        newEnergyToRemove.firstMechEnergyRemoval = effect.EffectMagnitude;
+
+        CombatManager.instance.RemoveMechEnergyWithQueue(newEnergyToRemove);
     }
 
     private void BoostCardTypeDamage(SOCardEffectObject effect, Channels channel, CharacterSelect characterBoosting)
