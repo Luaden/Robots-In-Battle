@@ -32,9 +32,7 @@ public class MechHUDManager : MonoBehaviour
         if(!queuedEnergy)
             opponentHudBarController.UpdateEnergyBar(opponentEnergy);
         else
-        {
             opponentHudBarController.UpdateEnergyQueueBar(opponentEnergy, opponentQueuedEnergy);
-        }
     }
 
     public void SetPlayerMaxStats(int playerHealth, int playerEnergy)

@@ -198,9 +198,7 @@ public class BurnPileController : MonoBehaviour
             }
 
             if (destroyQueue.Count == 0 && burnCardCharacterQueue.Count == 0)
-            {
                 burnComplete = true;
-            }
         }
     }
 
@@ -213,12 +211,12 @@ public class BurnPileController : MonoBehaviour
     private void Start()
     {
         CombatAnimationManager.OnStartNewAnimation += PrepCardsToBurn;
-        CombatAnimationManager.OnEndedAnimation += BurnCards;
+        CombatAnimationManager.OnRoundEnded += BurnCards;
     }
 
     private void OnDestroy()
     {
         CombatAnimationManager.OnStartNewAnimation -= PrepCardsToBurn;
-        CombatAnimationManager.OnEndedAnimation -= BurnCards;
+        CombatAnimationManager.OnRoundEnded -= BurnCards;
     }
 }

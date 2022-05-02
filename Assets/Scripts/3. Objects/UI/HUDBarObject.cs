@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
-public class HUDBarObject : BaseUIElement<int>
+public class HUDBarObject : BaseUIElement<int, bool>
 {
     private TMP_Text text;
     private Image currentBar;
@@ -17,9 +17,9 @@ public class HUDBarObject : BaseUIElement<int>
         text = GetComponentInChildren<TMP_Text>();
     }
 
-    public override void UpdateUI(int primaryData)
+    public override void UpdateUI(int primaryData, bool updateText = true)
     {
-        if (ClearedIfEmpty(primaryData))
+        if (ClearedIfEmpty(primaryData, updateText))
         {
             currentBar.fillAmount = 0 / barMax;
             text.text = "0";
@@ -27,10 +27,12 @@ public class HUDBarObject : BaseUIElement<int>
         }
 
         currentBar.fillAmount = (float)primaryData / barMax;
-        text.text = primaryData.ToString();
+
+        if(updateText)
+            text.text = primaryData.ToString();
     }
 
-    protected override bool ClearedIfEmpty(int newData)
+    protected override bool ClearedIfEmpty(int newData, bool updateText)
     {
         if (newData < 0)
             return true;

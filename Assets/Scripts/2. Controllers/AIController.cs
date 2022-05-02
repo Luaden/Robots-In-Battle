@@ -217,18 +217,18 @@ public class AIController : MonoBehaviour
 
         foreach (CardDataObject card in opponentHand)
         {
-            //CONSIDER ICE HERE.
+            foreach(Channels channel in CombatManager.instance.GetChannelListFromFlags(card.PossibleChannels))
+            {
+                if (CombatManager.instance.EffectManager.GetIceElementInChannel(channel, CharacterSelect.Player))
+                    if (card.EnergyCost * CombatManager.instance.IceChannelEnergyReductionModifier > CombatManager.instance.OpponentFighter.FighterMech.MechCurrentEnergy)
+                        continue;
 
-            if (card.EnergyCost > CombatManager.instance.OpponentFighter.FighterMech.MechCurrentEnergy)
-                continue;
-
-            if (aSlot && (card.CardType == CardType.Attack || card.CardType == CardType.Neutral))
-                foreach (Channels channel in GetChannelListFromFlags(card.PossibleChannels))
+                if (aSlot && (card.CardType == CardType.Attack || card.CardType == CardType.Neutral))
                     cardPlays.Add(CreateCardPlayPriorityObject(card, channel));
 
-            if (!aSlot && (card.CardType == CardType.Defense || card.CardType == CardType.Neutral) && card != attackA.CardData)
-                foreach (Channels channel in GetChannelListFromFlags(card.PossibleChannels))
+                if (!aSlot && (card.CardType == CardType.Defense || card.CardType == CardType.Neutral) && card != attackA.CardData)
                     cardPlays.Add(CreateCardPlayPriorityObject(card, channel));
+            }
         }
 
         return cardPlays;

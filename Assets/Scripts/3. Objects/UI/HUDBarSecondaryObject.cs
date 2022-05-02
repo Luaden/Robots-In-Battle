@@ -6,7 +6,7 @@ using TMPro;
 
 public class HUDBarSecondaryObject : BaseUIElement<int, string>
 {
-    private TMP_Text text;
+    [SerializeField] private TMP_Text text;
     private Image barImage;
     private int barMaxValue;
     private int barCurrentValue;
@@ -16,7 +16,6 @@ public class HUDBarSecondaryObject : BaseUIElement<int, string>
     private void Awake()
     {
         barImage = GetComponent<Image>();
-        text = GetComponentInChildren<TMP_Text>();
     }
 
     public override void UpdateUI(int primaryData, string secondaryData)

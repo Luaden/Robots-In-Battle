@@ -87,7 +87,7 @@ public class CombatManager : MonoBehaviour
         if (damageMechPair.CharacterTakingDamage == CharacterSelect.Player)
         {
             int energyCost = damageMechPair.CardChannelPair.CardData.EnergyCost;
-
+            Debug.Log("Removing health from player.");
             foreach(Channels channel in GetChannelListFromFlags(damageMechPair.GetDamageChannels()))
             {
                 switch (channel)
@@ -191,7 +191,6 @@ public class CombatManager : MonoBehaviour
             CheckForWinLoss();
         }
     }
-
 
     public void RemoveMechEnergyWithQueue(EnergyRemovalObject newEnergyRemovalObject)
     {

@@ -15,7 +15,7 @@ public class CombatAnimationManager : MonoBehaviour
 
     private Queue<Queue<AnimationQueueObject>> animationCollection = new Queue<Queue<AnimationQueueObject>>();
     private Queue<AnimationQueueObject> currentAnimationQueue = new Queue<AnimationQueueObject>();
-    private AnimationQueueObject currentAnimationObject;
+    private AnimationQueueObject currentAnimationObject = null;
 
     public delegate void onStartNewAnimation();
     public static event onStartNewAnimation OnStartNewAnimation;
@@ -89,17 +89,48 @@ public class CombatAnimationManager : MonoBehaviour
             currentAnimationObject = null;
         }
 
-        OnStartNewAnimation?.Invoke();
-
         if (currentAnimationObject == null)
         {
-            if (currentAnimationQueue.Count == 0)
+            if (currentAnimationQueue.Count > 0)
+            {
+                currentAnimationObject = currentAnimationQueue.Dequeue();
+
+                if (currentAnimationObject.firstMech == CharacterSelect.Player)
+                    playerMechAnimationController.SetMechAnimation(currentAnimationObject.firstAnimation);
+                if (currentAnimationObject.firstMech == CharacterSelect.Opponent)
+                    opponentMechAnimationController.SetMechAnimation(currentAnimationObject.firstAnimation);
+
+                if (currentAnimationObject.secondMech == CharacterSelect.Player)
+                    playerMechAnimationController.SetMechAnimation(currentAnimationObject.secondAnimation);
+                if (currentAnimationObject.secondMech == CharacterSelect.Opponent)
+                    opponentMechAnimationController.SetMechAnimation(currentAnimationObject.secondAnimation);
+                
+                OnStartNewAnimation?.Invoke();
+                startedAnimations = true;
+            }
+            else
             {
                 if (animationCollection.Count > 0)
                 {
                     currentAnimationQueue = animationCollection.Dequeue();
                     currentAnimationObject = currentAnimationQueue.Dequeue();
-                    OnRoundEnded?.Invoke();
+
+                    OnStartNewAnimation?.Invoke();
+
+                    if (currentAnimationObject.firstMech == CharacterSelect.Player)
+                        playerMechAnimationController.SetMechAnimation(currentAnimationObject.firstAnimation);
+                    if (currentAnimationObject.firstMech == CharacterSelect.Opponent)
+                        opponentMechAnimationController.SetMechAnimation(currentAnimationObject.firstAnimation);
+
+                    if (currentAnimationObject.secondMech == CharacterSelect.Player)
+                        playerMechAnimationController.SetMechAnimation(currentAnimationObject.secondAnimation);
+                    if (currentAnimationObject.secondMech == CharacterSelect.Opponent)
+                        opponentMechAnimationController.SetMechAnimation(currentAnimationObject.secondAnimation);
+
+                    if (startedAnimations)
+                        OnRoundEnded?.Invoke();
+
+                    startedAnimations = true;
                     return;
                 }
                 else
@@ -109,27 +140,14 @@ public class CombatAnimationManager : MonoBehaviour
                         {
                             allAnimationsComplete = true;
                             startedAnimations = false;
-                            //OnEndedAnimation?.Invoke();
+                            OnRoundEnded?.Invoke();
+                            OnEndedAnimation?.Invoke();
                             return;
                         }
+
                     return;
                 }
             }
-            else
-                currentAnimationObject = currentAnimationQueue.Dequeue();
-        }
-        else
-        {
-            if (currentAnimationObject.firstMech == CharacterSelect.Player)
-                playerMechAnimationController.SetMechAnimation(currentAnimationObject.firstAnimation);
-            if (currentAnimationObject.firstMech == CharacterSelect.Opponent)
-                opponentMechAnimationController.SetMechAnimation(currentAnimationObject.firstAnimation);
-
-            if (currentAnimationObject.secondMech == CharacterSelect.Player)
-                playerMechAnimationController.SetMechAnimation(currentAnimationObject.secondAnimation);
-            if (currentAnimationObject.secondMech == CharacterSelect.Opponent)
-                opponentMechAnimationController.SetMechAnimation(currentAnimationObject.secondAnimation);
-            startedAnimations = true;
         }
     }
     private void CheckAllAnimationsComplete()

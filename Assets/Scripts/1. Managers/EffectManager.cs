@@ -43,20 +43,12 @@ public class EffectManager : MonoBehaviour
 
         //Get Damage Reductions and Modifiers
         mechDamageToReturn = GetCardChannelDamageReduction(attack, mechDamageToReturn, defensiveCharacter);
-        mechDamageToReturn = GetDamageReducedByShield(attack, mechDamageToReturn, defensiveCharacter);
+        mechDamageToReturn = GetDamageAndReduceShield(attack, mechDamageToReturn, defensiveCharacter);
 
         return mechDamageToReturn;
     }
 
-    public int GetComponentDamageWithModifiers(int attackDamage, Channels channel, CharacterSelect defensiveCharacter)
-    {
-        attackDamage = GetComponentDamageBonus(attackDamage, channel, defensiveCharacter);
-        attackDamage = GetAcidDamageBonus(attackDamage, channel, defensiveCharacter);
-
-        return attackDamage;
-    }
-
-    public int GetDamageEstimateWithModifiers(CardChannelPairObject attack, CharacterSelect defensiveCharacter)
+    public int GetDamageWithModifiers(CardChannelPairObject attack, CharacterSelect defensiveCharacter)
     {
         int damageToReturn = attack.CardData.BaseDamage;
 
@@ -70,6 +62,14 @@ public class EffectManager : MonoBehaviour
         damageToReturn = GetDamageReducedByShield(attack, damageToReturn, defensiveCharacter);
 
         return damageToReturn;
+    }
+
+    public int GetComponentDamageWithModifiers(int attackDamage, Channels channel, CharacterSelect defensiveCharacter)
+    {
+        attackDamage = GetComponentDamageBonus(attackDamage, channel, defensiveCharacter);
+        attackDamage = GetAcidDamageBonus(attackDamage, channel, defensiveCharacter);
+
+        return attackDamage;
     }
 
     public int GetAndConsumeFlurryBonus(CharacterSelect characterToCheck)
@@ -166,11 +166,11 @@ public class EffectManager : MonoBehaviour
         return flurryBonus;
     }
 
-    public bool GetIceElementInChannel(Channels channel, CharacterSelect defensiveCharacter)
+    public bool GetIceElementInChannel(Channels channel, CharacterSelect checkCharacter)
     {
         List<ElementStackObject> previousElementChannelEffects = new List<ElementStackObject>();
 
-        if (defensiveCharacter == CharacterSelect.Opponent)
+        if (checkCharacter == CharacterSelect.Opponent)
         {
             if (opponentFighterEffectObject.IceAcidStacks.TryGetValue(channel, out previousElementChannelEffects))
                 foreach (ElementStackObject element in previousElementChannelEffects)
@@ -918,6 +918,28 @@ public class EffectManager : MonoBehaviour
         if (defensiveCharacter == CharacterSelect.Opponent)
         {
             foreach (Channels channel in CombatManager.instance.GetChannelListFromFlags(attack.CardChannel))
+                if (opponentFighterEffectObject.ChannelShields.TryGetValue(channel, out initialShield))
+                    damageToReturn = Mathf.Clamp(damageToReturn - initialShield, 0, int.MaxValue);
+
+            return damageToReturn;
+        }
+        else
+        {
+            foreach (Channels channel in CombatManager.instance.GetChannelListFromFlags(attack.CardChannel))
+                if (playerFighterEffectObject.ChannelShields.TryGetValue(channel, out initialShield))
+                    damageToReturn = Mathf.Clamp(damageToReturn - initialShield, 0, int.MaxValue);
+
+            return damageToReturn;
+        }
+    }
+
+    private int GetDamageAndReduceShield(CardChannelPairObject attack, int damageToReturn, CharacterSelect defensiveCharacter)
+    {
+        int initialShield;
+
+        if (defensiveCharacter == CharacterSelect.Opponent)
+        {
+            foreach (Channels channel in CombatManager.instance.GetChannelListFromFlags(attack.CardChannel))
             {
                 if (opponentFighterEffectObject.ChannelShields.TryGetValue(channel, out initialShield))
                 {
@@ -945,7 +967,6 @@ public class EffectManager : MonoBehaviour
                     int shieldAmount = initialShield;
 
                     shieldAmount -= damageToReturn;
-
                     damageToReturn = Mathf.RoundToInt(Mathf.Clamp(damageToReturn - initialShield, 0, Mathf.Infinity));
 
                     if (shieldAmount <= 0)

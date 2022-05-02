@@ -28,6 +28,6 @@ public class HUDBarController : MonoBehaviour
         int queuedValue = currentEnergy - queuedEnergyTotal;
         string queuedString = "(" + queuedValue.ToString() + ")";
         currentEnergyBar.UpdateUI(currentEnergyBar.BarCurretValue, queuedString);
-        queuedEnergyBar.UpdateUI(queuedEnergyTotal);
+        queuedEnergyBar.UpdateUI(queuedEnergyTotal, false);
     }
 }

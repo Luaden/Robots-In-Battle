@@ -95,8 +95,27 @@ public class ChannelsUISlotManager : BaseSlotManager<CardUIController>
             cardChannelPairObjectA = new CardChannelPairObject(item.CardData, selectedChannel);
             CombatManager.instance.CardPlayManager.PlayerAttackPlan.cardChannelPairA = cardChannelPairObjectA;
 
-            //Needs to account for ice.
-            CombatManager.instance.PreviewEnergyConsumption(CharacterSelect.Player, cardChannelPairObjectA.CardData.EnergyCost);
+            int aCardEnergyCost = cardChannelPairObjectA.CardData.EnergyCost;
+
+            if (CombatManager.instance.EffectManager.GetIceElementInChannel(cardChannelPairObjectA.CardChannel, CharacterSelect.Player))
+                aCardEnergyCost = Mathf.RoundToInt(aCardEnergyCost * CombatManager.instance.IceChannelEnergyReductionModifier);
+
+            if (cardChannelPairObjectB != null && cardChannelPairObjectB.CardData != null)
+            {
+                int bCardEnergyCost = cardChannelPairObjectB.CardData.EnergyCost;
+
+                if (CombatManager.instance.EffectManager.GetIceElementInChannel(cardChannelPairObjectB.CardChannel, CharacterSelect.Player))
+                    bCardEnergyCost = Mathf.RoundToInt(bCardEnergyCost * CombatManager.instance.IceChannelEnergyReductionModifier);
+
+                    CombatManager.instance.PreviewEnergyConsumption(CharacterSelect.Player, aCardEnergyCost + bCardEnergyCost);
+            }
+            else
+            {
+                if (CombatManager.instance.EffectManager.GetIceElementInChannel(cardChannelPairObjectA.CardChannel, CharacterSelect.Player))
+                    aCardEnergyCost = Mathf.RoundToInt(aCardEnergyCost * CombatManager.instance.IceChannelEnergyReductionModifier);
+
+                CombatManager.instance.PreviewEnergyConsumption(CharacterSelect.Player, aCardEnergyCost);
+            }
 
             attackSlotAFilled = true;
             SkipASlotButton.SetActive(false);
@@ -117,11 +136,27 @@ public class ChannelsUISlotManager : BaseSlotManager<CardUIController>
             cardChannelPairObjectB = new CardChannelPairObject(item.CardData, selectedChannel);
             CombatManager.instance.CardPlayManager.PlayerAttackPlan.cardChannelPairB = cardChannelPairObjectB;
 
-            //Needs to account for ice.
+            int bCardEnergyCost = cardChannelPairObjectB.CardData.EnergyCost;
+
+            if (CombatManager.instance.EffectManager.GetIceElementInChannel(cardChannelPairObjectB.CardChannel, CharacterSelect.Player))
+                bCardEnergyCost = Mathf.RoundToInt(bCardEnergyCost * CombatManager.instance.IceChannelEnergyReductionModifier);
+
             if (cardChannelPairObjectA != null && cardChannelPairObjectA.CardData != null)
-                CombatManager.instance.PreviewEnergyConsumption(CharacterSelect.Player, cardChannelPairObjectA.CardData.EnergyCost + cardChannelPairObjectB.CardData.EnergyCost);
+            {
+                int aCardEnergyCost = cardChannelPairObjectA.CardData.EnergyCost;
+
+                if (CombatManager.instance.EffectManager.GetIceElementInChannel(cardChannelPairObjectA.CardChannel, CharacterSelect.Player))
+                    aCardEnergyCost = Mathf.RoundToInt(aCardEnergyCost * CombatManager.instance.IceChannelEnergyReductionModifier);
+
+                CombatManager.instance.PreviewEnergyConsumption(CharacterSelect.Player, aCardEnergyCost + bCardEnergyCost);
+            }
             else
-                CombatManager.instance.PreviewEnergyConsumption(CharacterSelect.Player, cardChannelPairObjectB.CardData.EnergyCost);
+            {
+                if (CombatManager.instance.EffectManager.GetIceElementInChannel(cardChannelPairObjectB.CardChannel, CharacterSelect.Player))
+                    bCardEnergyCost = Mathf.RoundToInt(bCardEnergyCost * CombatManager.instance.IceChannelEnergyReductionModifier);
+
+                CombatManager.instance.PreviewEnergyConsumption(CharacterSelect.Player, bCardEnergyCost);
+            }
 
             attackSlotBFilled = true;
             OnBSlotFilled?.Invoke();
