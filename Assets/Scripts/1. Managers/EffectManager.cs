@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
 
-public class EffectController
+public class EffectManager : MonoBehaviour
 {
     private FighterEffectObject playerFighterEffectObject;
     private FighterEffectObject opponentFighterEffectObject;
@@ -13,19 +13,6 @@ public class EffectController
 
     private Queue<CardCharacterPairObject> preDamageEffectQueue;
     private Queue<CardCharacterPairObject> postDamageEffectQueue;
-
-    public EffectController()
-    {
-        playerFighterEffectObject = new FighterEffectObject(CharacterSelect.Player);
-        opponentFighterEffectObject = new FighterEffectObject(CharacterSelect.Opponent);
-        preDamageEffectQueue = new Queue<CardCharacterPairObject>();
-        postDamageEffectQueue = new Queue<CardCharacterPairObject>();
-
-        CombatAnimationManager.OnStartNewAnimation += EnableEffectsBeforeDamage;
-        CombatAnimationManager.OnEndedAnimation += EnableEffectsAfterDamage;
-        CombatAnimationManager.OnAnimationsComplete += UpdateFighterBuffs;
-        CardPlayManager.OnCombatComplete += IncrementEffectsAtTurnEnd;
-    }
 
     public void AddToPostDamageEffectQueue(CardChannelPairObject cardChannelPairObject, CharacterSelect destinationMech)
     {
@@ -69,7 +56,7 @@ public class EffectController
         return attackDamage;
     }
 
-    public int GetMechDamageWithModifiers(CardChannelPairObject attack, CharacterSelect defensiveCharacter)
+    public int GetDamageEstimateWithModifiers(CardChannelPairObject attack, CharacterSelect defensiveCharacter)
     {
         int damageToReturn = attack.CardData.BaseDamage;
 
@@ -179,7 +166,20 @@ public class EffectController
         return flurryBonus;
     }
 
-    public void DisableEffectListeners()
+    private void Awake()
+    {
+        playerFighterEffectObject = new FighterEffectObject(CharacterSelect.Player);
+        opponentFighterEffectObject = new FighterEffectObject(CharacterSelect.Opponent);
+        preDamageEffectQueue = new Queue<CardCharacterPairObject>();
+        postDamageEffectQueue = new Queue<CardCharacterPairObject>();
+
+        CombatAnimationManager.OnStartNewAnimation += EnableEffectsBeforeDamage;
+        CombatAnimationManager.OnEndedAnimation += EnableEffectsAfterDamage;
+        CombatAnimationManager.OnAnimationsComplete += UpdateFighterBuffs;
+        CardPlayManager.OnCombatComplete += IncrementEffectsAtTurnEnd;
+    }
+
+    private void OnDestroy()
     {
         CombatAnimationManager.OnStartNewAnimation -= EnableEffectsBeforeDamage;
         CombatAnimationManager.OnEndedAnimation -= EnableEffectsAfterDamage;
@@ -1532,6 +1532,28 @@ public class EffectController
             }
 
             return damageToDeal;
+        }
+    }
+
+    private bool CheckIceElementInChannel(Channels channel, CharacterSelect defensiveCharacter)
+    {
+        List<ElementStackObject> previousElementChannelEffects = new List<ElementStackObject>();
+
+        if (defensiveCharacter == CharacterSelect.Opponent)
+        {
+            if (opponentFighterEffectObject.IceAcidStacks.TryGetValue(channel, out previousElementChannelEffects))
+                foreach (ElementStackObject element in previousElementChannelEffects)
+                    if (element.ElementType == ElementType.Ice)
+                        return true;
+            return false;
+        }
+        else
+        {
+            if (playerFighterEffectObject.IceAcidStacks.TryGetValue(channel, out previousElementChannelEffects))
+                foreach (ElementStackObject element in previousElementChannelEffects)
+                    if (element.ElementType == ElementType.Ice)
+                        return true;
+            return false;
         }
     }
 }

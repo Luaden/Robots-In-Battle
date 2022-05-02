@@ -299,7 +299,7 @@ public class AIController : MonoBehaviour
 
     private void WeightPriorityWithComponentDamage(List<CardPlayPriorityObject> cardPlayPriorityObjects)
     {
-        FighterEffectObject playerEffectObject = CombatManager.instance.CardPlayManager.GetFighterEffects(CharacterSelect.Player);
+        FighterEffectObject playerEffectObject = CombatManager.instance.EffectManager.PlayerEffects;
         List<ElementStackObject> channelElementStacks = new List<ElementStackObject>();
         int maximumComponentDamage = 0;
 
