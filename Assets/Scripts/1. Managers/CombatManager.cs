@@ -85,50 +85,82 @@ public class CombatManager : MonoBehaviour
     {
         if (damageMechPair.CharacterTakingDamage == CharacterSelect.Player)
         {
+            int energyCost = damageMechPair.CardChannelPair.CardData.EnergyCost;
+
             foreach(Channels channel in GetChannelListFromFlags(damageMechPair.GetDamageChannels()))
             {
                 switch (channel)
                 {
                     case Channels.High:
                         playerFighter.FighterMech.DamageComponentHP(
-                            effectManager.GetComponentDamageWithModifiers(damageMechPair.GetDamageToDeal(), channel, CharacterSelect.Player), MechComponent.Arms);
+                            effectManager.GetComponentDamageWithModifiers(
+                                damageMechPair.GetDamageToDeal(), channel, CharacterSelect.Player), MechComponent.Arms);
+
+                        if (effectManager.GetIceElementInChannel(channel, CharacterSelect.Opponent))
+                            energyCost *= iceChannelEnergyReductionModifier;
                         break;
 
                     case Channels.Mid:
                         playerFighter.FighterMech.DamageComponentHP(
-                            effectManager.GetComponentDamageWithModifiers(damageMechPair.GetDamageToDeal(), channel, CharacterSelect.Player), MechComponent.Torso);
+                            effectManager.GetComponentDamageWithModifiers(
+                                damageMechPair.GetDamageToDeal(), channel, CharacterSelect.Player), MechComponent.Torso);
+
+                        if (effectManager.GetIceElementInChannel(channel, CharacterSelect.Opponent))
+                            energyCost *= iceChannelEnergyReductionModifier;
                         break;
 
                     case Channels.Low:
                         playerFighter.FighterMech.DamageComponentHP(
-                            effectManager.GetComponentDamageWithModifiers(damageMechPair.GetDamageToDeal(), channel, CharacterSelect.Player), MechComponent.Legs);
+                            effectManager.GetComponentDamageWithModifiers(
+                                damageMechPair.GetDamageToDeal(), channel, CharacterSelect.Player), MechComponent.Legs);
+
+                        if (effectManager.GetIceElementInChannel(channel, CharacterSelect.Opponent))
+                            energyCost *= iceChannelEnergyReductionModifier;
                         break;                
                 }
-
             }
+
+
+            RemoveEnergyFromMech(CharacterSelect.Opponent, energyCost);
         }
 
         if (damageMechPair.CharacterTakingDamage == CharacterSelect.Opponent)
         {
+            int energyCost = damageMechPair.CardChannelPair.CardData.EnergyCost;
+
             foreach (Channels channel in GetChannelListFromFlags(damageMechPair.GetDamageChannels()))
             {
                 switch (channel)
                 {
                     case Channels.High:
                         opponentFighter.FighterMech.DamageComponentHP(
-                            effectManager.GetComponentDamageWithModifiers(damageMechPair.GetDamageToDeal(), channel, CharacterSelect.Opponent), MechComponent.Arms);
+                            effectManager.GetComponentDamageWithModifiers(
+                                damageMechPair.GetDamageToDeal(), channel, CharacterSelect.Opponent), MechComponent.Arms);
+
+                        if (effectManager.GetIceElementInChannel(channel, CharacterSelect.Player))
+                            energyCost *= iceChannelEnergyReductionModifier;
                         break;
 
                     case Channels.Mid:
                         opponentFighter.FighterMech.DamageComponentHP(
-                            effectManager.GetComponentDamageWithModifiers(damageMechPair.GetDamageToDeal(), channel, CharacterSelect.Opponent), MechComponent.Torso);
+                            effectManager.GetComponentDamageWithModifiers(
+                                damageMechPair.GetDamageToDeal(), channel, CharacterSelect.Opponent), MechComponent.Torso);
+
+                        if (effectManager.GetIceElementInChannel(channel, CharacterSelect.Opponent))
+                            energyCost *= iceChannelEnergyReductionModifier;
                         break;
 
                     case Channels.Low:
                         opponentFighter.FighterMech.DamageComponentHP(
-                            effectManager.GetComponentDamageWithModifiers(damageMechPair.GetDamageToDeal(), channel, CharacterSelect.Opponent), MechComponent.Legs);
+                            effectManager.GetComponentDamageWithModifiers(
+                                damageMechPair.GetDamageToDeal(), channel, CharacterSelect.Opponent), MechComponent.Legs);
+
+                        if (effectManager.GetIceElementInChannel(channel, CharacterSelect.Opponent))
+                            energyCost *= iceChannelEnergyReductionModifier;
                         break;
                 }
+
+                RemoveEnergyFromMech(CharacterSelect.Player, energyCost);
             }
         }
 

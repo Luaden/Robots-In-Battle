@@ -51,7 +51,7 @@ public class EffectManager : MonoBehaviour
     public int GetComponentDamageWithModifiers(int attackDamage, Channels channel, CharacterSelect defensiveCharacter)
     {
         attackDamage = GetComponentDamageBonus(attackDamage, channel, defensiveCharacter);
-        attackDamage = GetComponentElementDamageBonus(attackDamage, channel, defensiveCharacter);
+        attackDamage = GetAcidDamageBonus(attackDamage, channel, defensiveCharacter);
 
         return attackDamage;
     }
@@ -164,6 +164,28 @@ public class EffectManager : MonoBehaviour
             }
 
         return flurryBonus;
+    }
+
+    public bool GetIceElementInChannel(Channels channel, CharacterSelect defensiveCharacter)
+    {
+        List<ElementStackObject> previousElementChannelEffects = new List<ElementStackObject>();
+
+        if (defensiveCharacter == CharacterSelect.Opponent)
+        {
+            if (opponentFighterEffectObject.IceAcidStacks.TryGetValue(channel, out previousElementChannelEffects))
+                foreach (ElementStackObject element in previousElementChannelEffects)
+                    if (element.ElementType == ElementType.Ice)
+                        return true;
+            return false;
+        }
+        else
+        {
+            if (playerFighterEffectObject.IceAcidStacks.TryGetValue(channel, out previousElementChannelEffects))
+                foreach (ElementStackObject element in previousElementChannelEffects)
+                    if (element.ElementType == ElementType.Ice)
+                        return true;
+            return false;
+        }
     }
 
     private void Awake()
@@ -1503,7 +1525,7 @@ public class EffectManager : MonoBehaviour
         UpdateFighterBuffs();
     }
 
-    private int GetComponentElementDamageBonus(int damageToDeal, Channels channel, CharacterSelect defensiveCharacter)
+    private int GetAcidDamageBonus(int damageToDeal, Channels channel, CharacterSelect defensiveCharacter)
     {
         List<ElementStackObject> previousElementChannelEffects = new List<ElementStackObject>();
 
@@ -1532,28 +1554,6 @@ public class EffectManager : MonoBehaviour
             }
 
             return damageToDeal;
-        }
-    }
-
-    private bool CheckIceElementInChannel(Channels channel, CharacterSelect defensiveCharacter)
-    {
-        List<ElementStackObject> previousElementChannelEffects = new List<ElementStackObject>();
-
-        if (defensiveCharacter == CharacterSelect.Opponent)
-        {
-            if (opponentFighterEffectObject.IceAcidStacks.TryGetValue(channel, out previousElementChannelEffects))
-                foreach (ElementStackObject element in previousElementChannelEffects)
-                    if (element.ElementType == ElementType.Ice)
-                        return true;
-            return false;
-        }
-        else
-        {
-            if (playerFighterEffectObject.IceAcidStacks.TryGetValue(channel, out previousElementChannelEffects))
-                foreach (ElementStackObject element in previousElementChannelEffects)
-                    if (element.ElementType == ElementType.Ice)
-                        return true;
-            return false;
         }
     }
 }
