@@ -10,12 +10,12 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 36bc40fa79bff934fb1579cc2f9655ef, type: 3}
-  m_Name: Shatter (unfinished)
+  m_Name: Shatter
   m_EditorClassIdentifier: 
   itemType: 0
   itemName: Shatter
   itemDescription: 
-  itemImage: {fileID: 0}
+  componentImage: {fileID: 0}
   timeCost: 0
   currencyCost: 0
   chanceToSpawn: 42
@@ -23,18 +23,17 @@ MonoBehaviour:
   componentHP: 0
   componentEnergy: 0
   componentElement: 0
-  bonusDamageFromComponent: 0
-  bonusDamageAsPercent: 0
-  reduceDamageToComponent: 0
-  reduceDamageAsPercent: 0
+  cDMFromComponent: 0
+  cDMToComponent: 0
   extraElementStacks: 0
   energyGainModifier: 0
-  cardBackground: {fileID: 0}
   cardType: 0
   cardCategory: 2
   possibleChannels: 3
   affectedChannels: 0
   energyCost: 7
   baseDamage: 6
-  componentDamageMultiplier: 0
-  cardEffects: []
+  applyEffectsFirst: 0
+  animationType: 0
+  cardEffects:
+  - {fileID: 11400000, guid: d97b865ee2330d84990a1adedefe642e, type: 2}
