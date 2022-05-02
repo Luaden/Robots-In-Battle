@@ -23,11 +23,24 @@ public class GameManager : MonoBehaviour
     public static event onUpdatePlayerCurrencies OnUpdatePlayerCurrencies;
 
     #region Playtesting
+    [Header("Player Demo Mech")]
     [SerializeField] private SOItemDataObject starterMechHead;
     [SerializeField] private SOItemDataObject starterMechTorso;
     [SerializeField] private SOItemDataObject starterMechArms;
     [SerializeField] private SOItemDataObject starterMechLegs;
+    [Header("Opponent Demo Mech")]
+    [SerializeField] private SOItemDataObject opponentMechHead;
+    [SerializeField] private SOItemDataObject opponentMechTorso;
+    [SerializeField] private SOItemDataObject opponentMechArms;
+    [SerializeField] private SOItemDataObject opponentMechLegs;
+
+    [Header("Player Demo Deck")]
     [SerializeField] private List<SOItemDataObject> starterDeck;
+
+    [Header("Opponent Demo Deck")]
+    [SerializeField] private List<SOItemDataObject> starterOpponentDeck;
+
+    [Header("Starting Economy")]
     [SerializeField] protected int starterPlayerCurrency;
     [SerializeField] protected float timeBetweenFights;
     [SerializeField] protected int playerCurrencyGainOnWin;
@@ -39,8 +52,25 @@ public class GameManager : MonoBehaviour
     public void BuildMech()
     {
         LoadPlayer();
+        MechObject opponentMech;
+        List<SOItemDataObject> opponentDeck;
         
-        MechObject opponentMech = instance.PlayerMechController.BuildNewMech(starterMechHead, starterMechTorso, starterMechArms, starterMechLegs);
+        if(CheckOpponentComponentsAvailable())
+        {
+            opponentMech =
+                instance.PlayerMechController.BuildNewMech(opponentMechHead, opponentMechTorso, opponentMechArms, opponentMechLegs);
+        }
+        else
+        {
+            opponentMech =
+                instance.PlayerMechController.BuildNewMech(starterMechHead, starterMechTorso, starterMechArms, starterMechLegs);
+        }
+
+        if (CheckOpponentDeckAvailable())
+            opponentDeck = starterOpponentDeck;
+        else
+            opponentDeck = starterDeck;
+            
         PilotDataObject opponentPilot = new PilotDataObject();
         FighterDataObject opponentFighter = new FighterDataObject(opponentMech, opponentPilot, starterDeck);
 
@@ -48,6 +78,26 @@ public class GameManager : MonoBehaviour
         CombatManager.instance.OpponentFighter = opponentFighter;
 
         CombatManager.instance.StartGame();
+    }
+
+    private bool CheckOpponentComponentsAvailable()
+    {
+        if (opponentMechArms == null)
+            return false;
+        if (opponentMechHead == null)
+            return false;
+        if (opponentMechLegs == null)
+            return false;
+        if (opponentMechTorso == null)
+            return false;
+        return true;
+    }
+
+    private bool CheckOpponentDeckAvailable()
+    {
+        if (starterOpponentDeck != null)
+            return true;
+        return false;
     }
     #endregion
 

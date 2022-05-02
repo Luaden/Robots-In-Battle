@@ -4,16 +4,17 @@ using UnityEngine;
 
 public class DamageMechPairObject
 {
-    private CardChannelPairObject attack;
+    private CardChannelPairObject cardChannelPair;
     private bool counterDamage;
     private bool guardDamage;
     private CharacterSelect characterTakingDamage;
 
     public CharacterSelect CharacterTakingDamage { get => characterTakingDamage; }
+    public CardChannelPairObject CardChannelPair { get => cardChannelPair; }
 
     public DamageMechPairObject(CardChannelPairObject attack, CharacterSelect characterTakingDamage, bool counter, bool guard)
     {
-        this.attack = attack;
+        this.cardChannelPair = attack;
         this.characterTakingDamage = characterTakingDamage;
         counterDamage = counter;
         guardDamage = guard;
@@ -22,7 +23,7 @@ public class DamageMechPairObject
     public int GetDamageToDeal()
     {
         int damageToReturn = 
-            CombatManager.instance.EffectManager.GetMechDamageWithAndConsumeModifiers(attack, characterTakingDamage);
+            CombatManager.instance.EffectManager.GetMechDamageWithAndConsumeModifiers(cardChannelPair, characterTakingDamage);
 
         if (counterDamage)
             return Mathf.RoundToInt(damageToReturn * CombatManager.instance.CounterDamageMultiplier);
@@ -34,9 +35,9 @@ public class DamageMechPairObject
 
     public Channels GetDamageChannels()
     {
-        if (attack.CardData.AffectedChannels == AffectedChannels.AllPossibleChannels)
-            return attack.CardData.PossibleChannels;
+        if (cardChannelPair.CardData.AffectedChannels == AffectedChannels.AllPossibleChannels)
+            return cardChannelPair.CardData.PossibleChannels;
         else
-            return attack.CardChannel;
+            return cardChannelPair.CardChannel;
     }
 }
