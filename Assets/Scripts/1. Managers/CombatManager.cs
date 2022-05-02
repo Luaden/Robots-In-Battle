@@ -39,6 +39,7 @@ public class CombatManager : MonoBehaviour
     private PopupUIManager popupUIManager;
     private BuffUIManager buffUIManager;
     private CombatAnimationManager combatAnimationManager;
+    private EffectManager effectManager;
 
     private FighterDataObject playerFighter;
     private FighterDataObject opponentFighter;
@@ -57,6 +58,7 @@ public class CombatManager : MonoBehaviour
     public PopupUIManager PopupUIManager { get => popupUIManager; }
     public BuffUIManager BuffUIManager { get => buffUIManager; }
     public CombatAnimationManager CombatAnimationManager { get => combatAnimationManager; }
+    public EffectManager EffectManager { get => effectManager; }
 
     public int MechEnergyGain { get => mechEnergyGain; }
     public float BrokenCDM { get => brokenComponentDamageMultiplier; }
@@ -89,17 +91,17 @@ public class CombatManager : MonoBehaviour
                 {
                     case Channels.High:
                         playerFighter.FighterMech.DamageComponentHP(
-                            CardPlayManager.EffectController.GetComponentDamageWithModifiers(damageMechPair.GetDamageToDeal(), channel, CharacterSelect.Player), MechComponent.Arms);
+                            effectManager.GetComponentDamageWithModifiers(damageMechPair.GetDamageToDeal(), channel, CharacterSelect.Player), MechComponent.Arms);
                         break;
 
                     case Channels.Mid:
                         playerFighter.FighterMech.DamageComponentHP(
-                            CardPlayManager.EffectController.GetComponentDamageWithModifiers(damageMechPair.GetDamageToDeal(), channel, CharacterSelect.Player), MechComponent.Torso);
+                            effectManager.GetComponentDamageWithModifiers(damageMechPair.GetDamageToDeal(), channel, CharacterSelect.Player), MechComponent.Torso);
                         break;
 
                     case Channels.Low:
                         playerFighter.FighterMech.DamageComponentHP(
-                            CardPlayManager.EffectController.GetComponentDamageWithModifiers(damageMechPair.GetDamageToDeal(), channel, CharacterSelect.Player), MechComponent.Legs);
+                            effectManager.GetComponentDamageWithModifiers(damageMechPair.GetDamageToDeal(), channel, CharacterSelect.Player), MechComponent.Legs);
                         break;                
                 }
 
@@ -114,17 +116,17 @@ public class CombatManager : MonoBehaviour
                 {
                     case Channels.High:
                         opponentFighter.FighterMech.DamageComponentHP(
-                            CardPlayManager.EffectController.GetComponentDamageWithModifiers(damageMechPair.GetDamageToDeal(), channel, CharacterSelect.Opponent), MechComponent.Arms);
+                            effectManager.GetComponentDamageWithModifiers(damageMechPair.GetDamageToDeal(), channel, CharacterSelect.Opponent), MechComponent.Arms);
                         break;
 
                     case Channels.Mid:
                         opponentFighter.FighterMech.DamageComponentHP(
-                            CardPlayManager.EffectController.GetComponentDamageWithModifiers(damageMechPair.GetDamageToDeal(), channel, CharacterSelect.Opponent), MechComponent.Torso);
+                            effectManager.GetComponentDamageWithModifiers(damageMechPair.GetDamageToDeal(), channel, CharacterSelect.Opponent), MechComponent.Torso);
                         break;
 
                     case Channels.Low:
                         opponentFighter.FighterMech.DamageComponentHP(
-                            CardPlayManager.EffectController.GetComponentDamageWithModifiers(damageMechPair.GetDamageToDeal(), channel, CharacterSelect.Opponent), MechComponent.Legs);
+                            effectManager.GetComponentDamageWithModifiers(damageMechPair.GetDamageToDeal(), channel, CharacterSelect.Opponent), MechComponent.Legs);
                         break;
                 }
             }
@@ -243,6 +245,7 @@ public class CombatManager : MonoBehaviour
         popupUIManager = FindObjectOfType<PopupUIManager>(true);
         buffUIManager = FindObjectOfType<BuffUIManager>(true);
         combatAnimationManager = FindObjectOfType<CombatAnimationManager>(true);
+        effectManager = FindObjectOfType<EffectManager>(true);
     }
 
     private void Start()
@@ -270,7 +273,7 @@ public class CombatManager : MonoBehaviour
         CardPlayManager.OnCombatStart -= DisableCanPlayCards;
         CardPlayManager.OnCombatComplete -= EnableCanPlayCards;
         CardPlayManager.OnCombatComplete -= StartNewTurn;
-        CardPlayManager.OnCombatComplete -= CheckForWinLoss;
+        CombatAnimationManager.OnEndedAnimation -= CheckForWinLoss;
     }
 
     private void InitPlayerFighter(FighterDataObject newPlayerFighter)

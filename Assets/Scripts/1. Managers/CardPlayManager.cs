@@ -8,9 +8,7 @@ public class CardPlayManager : MonoBehaviour
     private AttackPlanObject opponentAttackPlan;
 
     private CardInteractionController cardInteractionController;
-    private EffectController effectController;
 
-    public EffectController EffectController { get => effectController; }
     public AttackPlanObject PlayerAttackPlan { get => playerAttackPlan; }
 
     public delegate void onCombatStart();
@@ -36,19 +34,6 @@ public class CardPlayManager : MonoBehaviour
         }
     }
 
-    public int GetDamageEstimate(CardChannelPairObject checkAttack, CharacterSelect target)
-    {
-        return effectController.GetMechDamageWithModifiers(checkAttack, target);
-    }
-
-    public FighterEffectObject GetFighterEffects(CharacterSelect character)
-    {
-        if(character == CharacterSelect.Player)
-            return effectController.PlayerEffects;
-        else 
-            return effectController.OpponentEffects;
-    }
-
     private void ClearAttackPlans()
     {
         if(playerAttackPlan != null && playerAttackPlan.cardChannelPairA != null && playerAttackPlan.cardChannelPairA.CardData != null)
@@ -71,7 +56,6 @@ public class CardPlayManager : MonoBehaviour
     {
         cardInteractionController = new CardInteractionController();
         playerAttackPlan = new AttackPlanObject(null, null, CharacterSelect.Player, CharacterSelect.Opponent);
-        effectController = new EffectController();
 
         CombatAnimationManager.OnAnimationsComplete += TurnComplete;
     }
@@ -79,7 +63,6 @@ public class CardPlayManager : MonoBehaviour
     private void OnDestroy()
     {
         CombatAnimationManager.OnAnimationsComplete -= TurnComplete;
-        effectController.DisableEffectListeners();
         cardInteractionController.DisableDamageListeners();
     }
 

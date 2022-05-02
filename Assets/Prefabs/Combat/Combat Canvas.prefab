@@ -8431,7 +8431,7 @@ MonoBehaviour:
   playerAttackSlotA: {fileID: 129746561551062944}
   playerAttackSlotB: {fileID: 129746561224329455}
   SkipASlotButton: {fileID: 129746561454339981}
-  channelFadeTimeModifier: 0
+  channelFadeTimeModifier: 1
 --- !u!1 &129746560713854579
 GameObject:
   m_ObjectHideFlags: 0
@@ -16305,6 +16305,7 @@ GameObject:
   - component: {fileID: 1646574084020073057}
   - component: {fileID: 1646574084020073059}
   - component: {fileID: 1646574084020073056}
+  - component: {fileID: 6467128728770128019}
   m_Layer: 0
   m_Name: Combat Manager
   m_TagString: Untagged
@@ -16382,6 +16383,18 @@ MonoBehaviour:
   baseDamageWeight: 5
   cDMWeight: 5
   componentHealthWeight: 2
+--- !u!114 &6467128728770128019
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1646574084020073071}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 27d48f000cdb9d74cb6241a979445be0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &2245919304587867374
 GameObject:
   m_ObjectHideFlags: 0

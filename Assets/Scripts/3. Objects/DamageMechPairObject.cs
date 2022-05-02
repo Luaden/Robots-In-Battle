@@ -22,7 +22,7 @@ public class DamageMechPairObject
     public int GetDamageToDeal()
     {
         int damageToReturn = 
-            CombatManager.instance.CardPlayManager.EffectController.GetMechDamageWithAndConsumeModifiers(attack, characterTakingDamage);
+            CombatManager.instance.EffectManager.GetMechDamageWithAndConsumeModifiers(attack, characterTakingDamage);
 
         if (counterDamage)
             return Mathf.RoundToInt(damageToReturn * CombatManager.instance.CounterDamageMultiplier);
