@@ -426,7 +426,6 @@ public class EffectController
                 }
             }
 
-            Debug.Log("Adding component elemental stacks.");
             //Adding stand alone element stacks from components.
             switch (cardChannelPair.CardData.CardCategory)
             {
