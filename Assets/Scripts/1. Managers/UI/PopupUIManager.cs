@@ -23,16 +23,6 @@ public class PopupUIManager : MonoBehaviour
         cardUIPopupController.UpdateUI(cardDataObject);
     }
 
-    //public void HandlePopup(List<SOCardEffectObject> cardEffects, Transform transform, Vector3 cursorPosition)
-    //{
-    //    hudPopUpController.HandlePopup(cardEffects, transform, cursorPosition);
-    //}
-
-    //public void HandlePopup(MechObject mechObject, Transform transform, Vector3 cursorPosition)
-    //{
-    //    mechUIPopupController.HandlePopup(mechObject, transform, cursorPosition);
-    //}
-
     public void HandlePopup(ShopItemUIObject shopItem)
     {
         shopUIPopupController.UpdateUI(shopItem);
