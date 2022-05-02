@@ -11,7 +11,7 @@ public class MechComponentDataObject
     private ElementType componentElement;
     private Sprite componentSprite;
     private int componentMaxHP;
-    private int componentEnergy;
+    private int componentMaxEnergy;
     private int componentCurrentHP;
    
     //Bonus effects
@@ -26,7 +26,7 @@ public class MechComponentDataObject
     public Sprite ComponentSprite { get => componentSprite; }
     public int ComponentCurrentHP { get => componentCurrentHP; set => componentCurrentHP = value; }
     public int ComponentMaxHP { get => componentMaxHP; }
-    public int ComponentMaxEnergy { get => componentEnergy; }
+    public int ComponentMaxEnergy { get => componentMaxEnergy; }
     public ElementType ComponentElement { get => componentElement; }
     public float CDMFromComponent { get => cDMFromComponent; }
     public float CDMToComponent { get => cDMToComponent; }
@@ -43,7 +43,7 @@ public class MechComponentDataObject
         componentElement = sOMechComponent.ComponentElement;
         componentSprite = sOMechComponent.ComponentSprite;
         componentMaxHP = sOMechComponent.ComponentHP;
-        componentEnergy = sOMechComponent.ComponentEnergy;
+        componentMaxEnergy = sOMechComponent.ComponentEnergy;
         componentCurrentHP = componentMaxHP;
 
         componentElement = sOMechComponent.ComponentElement;

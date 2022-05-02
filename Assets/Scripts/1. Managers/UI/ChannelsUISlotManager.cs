@@ -43,7 +43,7 @@ public class ChannelsUISlotManager : BaseSlotManager<CardUIController>
 
             if(attackSlotAFilled && !attackSlotBFilled && playerAttackSlotA.CurrentSlottedItem.CardData.CardType == CardType.Neutral)
             {
-                FillBSlot(playerAttackSlotA.CurrentSlottedItem.CardData.CardUIController, playerAttackSlotB);
+                FillBSlot(playerAttackSlotA.CurrentSlottedItem.CardData.CardUIController, playerAttackSlotB, false);
                 FillASlot(item, slot);
                 return;
             }
@@ -59,7 +59,7 @@ public class ChannelsUISlotManager : BaseSlotManager<CardUIController>
 
             if (attackSlotBFilled && !attackSlotAFilled && playerAttackSlotB.CurrentSlottedItem.CardData.CardType == CardType.Neutral)
             {
-                FillASlot(playerAttackSlotB.CurrentSlottedItem.CardData.CardUIController, playerAttackSlotB);
+                FillASlot(playerAttackSlotB.CurrentSlottedItem.CardData.CardUIController, playerAttackSlotB, false);
                 FillBSlot(item, slot);
                 return;
             }
@@ -81,12 +81,13 @@ public class ChannelsUISlotManager : BaseSlotManager<CardUIController>
         }
 
 
-        void FillASlot(CardUIController item, BaseSlotController<CardUIController> slot)
+        void FillASlot(CardUIController item, BaseSlotController<CardUIController> slot, bool newSelectedChannel = true)
         {
             playerAttackSlotA.CurrentSlottedItem = item;
             item.CardSlotController = playerAttackSlotA;
 
-            item.CardData.SelectedChannels = selectedChannel;
+            if(newSelectedChannel)
+                item.CardData.SelectedChannels = selectedChannel;
 
             if (CombatManager.instance.NarrateCardSelection)
                 Debug.Log("Player selected " + item.CardData.CardName + " for their A Slot.");
@@ -102,12 +103,13 @@ public class ChannelsUISlotManager : BaseSlotManager<CardUIController>
             OnASlotFilled?.Invoke();
         }
 
-        void FillBSlot(CardUIController item, BaseSlotController<CardUIController> slot)
+        void FillBSlot(CardUIController item, BaseSlotController<CardUIController> slot, bool newSelectedChannel = true)
         {
             playerAttackSlotB.CurrentSlottedItem = item;
             item.CardSlotController = playerAttackSlotB;
 
-            item.CardData.SelectedChannels = selectedChannel;
+            if(newSelectedChannel)
+                item.CardData.SelectedChannels = selectedChannel;
 
             if (CombatManager.instance.NarrateCardSelection)
                 Debug.Log("Player selected " + item.CardData.CardName + " for their B Slot.");

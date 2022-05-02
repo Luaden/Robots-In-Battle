@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class DamageMechPair
+public class DamageMechPairObject
 {
     private CardChannelPairObject attack;
     private bool counterDamage;
@@ -11,7 +11,7 @@ public class DamageMechPair
 
     public CharacterSelect CharacterTakingDamage { get => characterTakingDamage; }
 
-    public DamageMechPair(CardChannelPairObject attack, CharacterSelect characterTakingDamage, bool counter, bool guard)
+    public DamageMechPairObject(CardChannelPairObject attack, CharacterSelect characterTakingDamage, bool counter, bool guard)
     {
         this.attack = attack;
         this.characterTakingDamage = characterTakingDamage;

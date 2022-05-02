@@ -34,6 +34,8 @@ public class GlobalElementBuffController : BaseUIElement<Dictionary<ElementType,
     protected override bool ClearedIfEmpty(Dictionary<ElementType, int> newData)
     {
         int checkValue;
+        if (newData == null)
+            return true;
 
         if (newData.Keys.Count == 0)
         {

@@ -8,7 +8,7 @@ public class CardInteractionController
     private AttackPlanObject playerAttackPlan;
     private AttackPlanObject opponentAttackPlan;
 
-    private Queue<DamageMechPair> damageQueue;
+    private Queue<DamageMechPairObject> damageQueue;
 
     #region Debug
     private string combatLog;
@@ -16,7 +16,7 @@ public class CardInteractionController
 
     public CardInteractionController()
     {
-        damageQueue = new Queue<DamageMechPair>();
+        damageQueue = new Queue<DamageMechPairObject>();
         CombatAnimationManager.OnEndedAnimation += DealDamage;
         CombatManager.OnDestroyScene += DisableDamageListeners;
     }
@@ -321,7 +321,7 @@ public class CardInteractionController
                     CombatManager.instance.CombatAnimationManager.AddAnimationToQueue(offensiveMech, offensiveAttack.CardData.AnimationType,
                                                                                     defensiveMech, defensiveCard.CardData.AnimationType);
 
-                    AddDamageToQueue(new DamageMechPair(offensiveAttack, offensiveMech, true, false));
+                    AddDamageToQueue(new DamageMechPairObject(offensiveAttack, offensiveMech, true, false));
 
                     if (CombatManager.instance.NarrateCombat)
                     {
@@ -337,7 +337,7 @@ public class CardInteractionController
                     CombatManager.instance.CombatAnimationManager.AddAnimationToQueue(offensiveMech, offensiveAttack.CardData.AnimationType,
                                                                                    defensiveMech, defensiveCard.CardData.AnimationType);
 
-                    AddDamageToQueue(new DamageMechPair(offensiveAttack, defensiveMech, false, true));
+                    AddDamageToQueue(new DamageMechPairObject(offensiveAttack, defensiveMech, false, true));
 
                     if (CombatManager.instance.NarrateCombat)
                     {
@@ -352,7 +352,7 @@ public class CardInteractionController
                     CombatManager.instance.CombatAnimationManager.AddAnimationToQueue(offensiveMech, offensiveAttack.CardData.AnimationType,
                                                                                    defensiveMech, AnimationType.Damaged);
 
-                    AddDamageToQueue(new DamageMechPair(offensiveAttack, defensiveMech, false, false));
+                    AddDamageToQueue(new DamageMechPairObject(offensiveAttack, defensiveMech, false, false));
 
                     if (CombatManager.instance.NarrateCombat)
                     {
@@ -379,7 +379,7 @@ public class CardInteractionController
         }
     }
 
-    private void AddDamageToQueue(DamageMechPair damageToDeal)
+    private void AddDamageToQueue(DamageMechPairObject damageToDeal)
     {
         damageQueue.Enqueue(damageToDeal);
     }
@@ -389,7 +389,7 @@ public class CardInteractionController
         if (damageQueue.Count == 0)
             return;
 
-        DamageMechPair newDamage = damageQueue.Dequeue();
+        DamageMechPairObject newDamage = damageQueue.Dequeue();
 
         CombatManager.instance.RemoveHealthFromMech(newDamage);
     }

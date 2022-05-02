@@ -79,7 +79,7 @@ public class CombatManager : MonoBehaviour
     }
     #endregion
 
-    public void RemoveHealthFromMech(DamageMechPair damageMechPair)
+    public void RemoveHealthFromMech(DamageMechPairObject damageMechPair)
     {
         if (damageMechPair.CharacterTakingDamage == CharacterSelect.Player)
         {
@@ -129,6 +129,17 @@ public class CombatManager : MonoBehaviour
                 }
             }
         }
+
+        mechHUDManager.UpdatePlayerHP(playerFighter.FighterMech.MechCurrentHP);
+        mechHUDManager.UpdateOpponentHP(opponentFighter.FighterMech.MechCurrentHP);
+    }
+
+    public void RemoveHealthFromMech(DamageEffectMechPairObject effectDamage)
+    {
+        if (effectDamage.characterToTakeDamage == CharacterSelect.Player)
+            playerFighter.FighterMech.DamageComponentHP(effectDamage.damageToTake, MechComponent.None);
+        else
+            opponentFighter.FighterMech.DamageComponentHP(effectDamage.damageToTake, MechComponent.None);
 
         mechHUDManager.UpdatePlayerHP(playerFighter.FighterMech.MechCurrentHP);
         mechHUDManager.UpdateOpponentHP(opponentFighter.FighterMech.MechCurrentHP);
@@ -266,8 +277,7 @@ public class CombatManager : MonoBehaviour
     {
         playerFighter = newPlayerFighter;
         deckManager.SetPlayerDeck(newPlayerFighter.FighterDeck);
-        mechHUDManager.SetPlayerMaxStats(playerFighter.FighterMech.MechMaxHP, playerFighter.FighterMech.MechMaxHP);
-        mechHUDManager.UpdatePlayerHP(playerFighter.FighterMech.MechCurrentHP);
+        mechHUDManager.SetPlayerMaxStats(playerFighter.FighterMech.MechMaxHP, playerFighter.FighterMech.MechMaxEnergy);
     }
 
     private void InitOpponentFighter(FighterDataObject newOpponentFighter)
