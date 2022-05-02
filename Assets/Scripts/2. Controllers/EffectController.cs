@@ -21,7 +21,6 @@ public class EffectController
         preDamageEffectQueue = new Queue<CardCharacterPairObject>();
         postDamageEffectQueue = new Queue<CardCharacterPairObject>();
 
-        CombatManager.OnDestroyScene += DisableEffectListeners;
         CombatAnimationManager.OnStartNewAnimation += EnableEffectsBeforeDamage;
         CombatAnimationManager.OnEndedAnimation += EnableEffectsAfterDamage;
         CombatAnimationManager.OnAnimationsComplete += UpdateFighterBuffs;
@@ -180,13 +179,12 @@ public class EffectController
         return flurryBonus;
     }
 
-    private void DisableEffectListeners()
+    public void DisableEffectListeners()
     {
         CombatAnimationManager.OnStartNewAnimation -= EnableEffectsBeforeDamage;
         CombatAnimationManager.OnEndedAnimation -= EnableEffectsAfterDamage;
         CombatAnimationManager.OnAnimationsComplete -= UpdateFighterBuffs;
         CardPlayManager.OnCombatComplete -= IncrementEffectsAtTurnEnd;
-        CombatManager.OnDestroyScene -= DisableEffectListeners;
     }
 
     private void EnableEffectsBeforeDamage()

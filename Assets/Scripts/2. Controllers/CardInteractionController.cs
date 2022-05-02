@@ -18,7 +18,6 @@ public class CardInteractionController
     {
         damageQueue = new Queue<DamageMechPairObject>();
         CombatAnimationManager.OnEndedAnimation += DealDamage;
-        CombatManager.OnDestroyScene += DisableDamageListeners;
     }
 
     public void DetermineCardInteractions(AttackPlanObject newPlayerAttackPlan, AttackPlanObject newOpponentAttackPlan)
@@ -104,7 +103,6 @@ public class CardInteractionController
     private void DisableDamageListeners()
     {
         CombatAnimationManager.OnEndedAnimation -= DealDamage;
-        CombatManager.OnDestroyScene -= DisableDamageListeners;
     }
 
     private void CalculateDefensiveInteraction(CardChannelPairObject offensiveCard, CharacterSelect offensiveMech, 
