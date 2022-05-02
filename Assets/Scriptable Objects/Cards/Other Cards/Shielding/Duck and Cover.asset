@@ -14,27 +14,27 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   itemType: 0
   itemName: Duck and Cover
-  itemDescription: 
-  itemImage: {fileID: 0}
+  itemDescription: Creates 6 shields in Mid and Low channels, then halves incoming
+    damage in those channels.
+  componentImage: {fileID: 0}
   timeCost: 0
   currencyCost: 0
-  chanceToSpawn: 1
+  chanceToSpawn: 90
   componentType: 0
   componentHP: 0
   componentEnergy: 0
   componentElement: 0
-  bonusDamageFromComponent: 0
-  bonusDamageAsPercent: 0
-  reduceDamageToComponent: 0
-  reduceDamageAsPercent: 0
+  cDMFromComponent: 0
+  cDMToComponent: 0
   extraElementStacks: 0
   energyGainModifier: 0
-  cardBackground: {fileID: 0}
   cardType: 0
   cardCategory: 8
   possibleChannels: 6
   affectedChannels: 0
   energyCost: 4
   baseDamage: 6
-  componentDamageMultiplier: 0
-  cardEffects: []
+  applyEffectsFirst: 0
+  animationType: 4
+  cardEffects:
+  - {fileID: 11400000, guid: d7aa28002df1f05498984a2ec30b5ee6, type: 2}

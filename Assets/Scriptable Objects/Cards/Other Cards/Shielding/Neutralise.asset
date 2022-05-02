@@ -14,28 +14,26 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   itemType: 0
   itemName: Neutralise
-  itemDescription: 
-  itemImage: {fileID: 0}
+  itemDescription: Counter, if successful then double the block in that channel.
+  componentImage: {fileID: 0}
   timeCost: 0
   currencyCost: 0
-  chanceToSpawn: 1
+  chanceToSpawn: 90
   componentType: 0
   componentHP: 0
   componentEnergy: 0
   componentElement: 0
-  bonusDamageFromComponent: 0
-  bonusDamageAsPercent: 0
-  reduceDamageToComponent: 0
-  reduceDamageAsPercent: 0
+  cDMFromComponent: 0
+  cDMToComponent: 0
   extraElementStacks: 0
   energyGainModifier: 0
-  cardBackground: {fileID: 0}
   cardType: 1
   cardCategory: 16
   possibleChannels: -1
   affectedChannels: 0
   energyCost: 2
   baseDamage: 3
-  componentDamageMultiplier: 0
+  applyEffectsFirst: 0
+  animationType: 5
   cardEffects:
   - {fileID: 11400000, guid: 17d7e098b3b492248a6c6ebff6c810d9, type: 2}

@@ -14,28 +14,27 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   itemType: 0
   itemName: Daze
-  itemDescription: 
-  itemImage: {fileID: 0}
+  itemDescription: Deals damage in High or Mid, then reduces the target's energy
+    by 1.
+  componentImage: {fileID: 0}
   timeCost: 0
   currencyCost: 0
-  chanceToSpawn: 1
+  chanceToSpawn: 90
   componentType: 0
   componentHP: 0
   componentEnergy: 0
   componentElement: 0
-  bonusDamageFromComponent: 0
-  bonusDamageAsPercent: 0
-  reduceDamageToComponent: 0
-  reduceDamageAsPercent: 0
+  cDMFromComponent: 0
+  cDMToComponent: 0
   extraElementStacks: 0
   energyGainModifier: 0
-  cardBackground: {fileID: 0}
   cardType: 2
   cardCategory: 8
   possibleChannels: 3
   affectedChannels: 0
   energyCost: 4
   baseDamage: 4
-  componentDamageMultiplier: 0
+  applyEffectsFirst: 0
+  animationType: 4
   cardEffects:
   - {fileID: 11400000, guid: e58736cbbcf25fe43826529baf2352e5, type: 2}

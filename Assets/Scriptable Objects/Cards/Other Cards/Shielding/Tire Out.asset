@@ -14,28 +14,27 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   itemType: 0
   itemName: Tire Out
-  itemDescription: 
-  itemImage: {fileID: 0}
+  itemDescription: Gain 3 Shield then gain 2 shield next turn and 1 shield the turn
+    after.
+  componentImage: {fileID: 0}
   timeCost: 0
   currencyCost: 0
-  chanceToSpawn: 1
+  chanceToSpawn: 90
   componentType: 0
   componentHP: 0
   componentEnergy: 0
   componentElement: 0
-  bonusDamageFromComponent: 0
-  bonusDamageAsPercent: 0
-  reduceDamageToComponent: 0
-  reduceDamageAsPercent: 0
+  cDMFromComponent: 0
+  cDMToComponent: 0
   extraElementStacks: 0
   energyGainModifier: 0
-  cardBackground: {fileID: 0}
   cardType: 1
   cardCategory: 8
   possibleChannels: -1
   affectedChannels: 0
   energyCost: 5
   baseDamage: 3
-  componentDamageMultiplier: 0
+  applyEffectsFirst: 0
+  animationType: 4
   cardEffects:
   - {fileID: 11400000, guid: f540a47b2265b304eb88eebf0c665f39, type: 2}
