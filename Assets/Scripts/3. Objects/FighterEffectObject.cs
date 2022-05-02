@@ -4,14 +4,15 @@ using UnityEngine;
 
 public class FighterEffectObject
 {
-    private Dictionary<Channels, List<ElementStackObject>> iceAcidStacks = new Dictionary<Channels, List<ElementStackObject>>();
-    private Dictionary<Channels, List<CardEffectObject>> channelDamageBonus = new Dictionary<Channels, List<CardEffectObject>>();
-    private Dictionary<Channels, List<CardEffectObject>> channelDamageReduction = new Dictionary<Channels, List<CardEffectObject>>();
-    private Dictionary<Channels, List<ChannelShieldFalloffObject>> channelShieldFalloff = new Dictionary<Channels, List<ChannelShieldFalloffObject>>();
-    private Dictionary<Channels, int> channelShields = new Dictionary<Channels, int>();
-    private Dictionary<ElementType, int> firePlasmaStacks = new Dictionary<ElementType, int>();
-    private Dictionary<CardKeyWord, List<CardEffectObject>> keywordDuration = new Dictionary<CardKeyWord, List<CardEffectObject>>();
-    private Dictionary<CardCategory, List<CardEffectObject>> cardCategoryDamageBonus = new Dictionary<CardCategory, List<CardEffectObject>>();
+    private CharacterSelect character;
+    private Dictionary<Channels, List<ElementStackObject>> iceAcidStacks;
+    private Dictionary<Channels, List<CardEffectObject>> channelDamageBonus;
+    private Dictionary<Channels, List<CardEffectObject>> channelDamageReduction;
+    private Dictionary<Channels, List<ChannelShieldFalloffObject>> channelShieldFalloff;
+    private Dictionary<Channels, int> channelShields;
+    private Dictionary<ElementType, int> firePlasmaStacks;
+    private Dictionary<CardKeyWord, List<CardEffectObject>> keywordDuration;
+    private Dictionary<CardCategory, List<CardEffectObject>> cardCategoryDamageBonus;
 
     public Dictionary<Channels, List<ElementStackObject>> IceAcidStacks { get => iceAcidStacks; }
     public Dictionary<ElementType, int> FirePlasmaStacks { get => firePlasmaStacks; }
@@ -22,6 +23,19 @@ public class FighterEffectObject
     public Dictionary<Channels, List<ChannelShieldFalloffObject>> ChannelShieldsFalloff { get => channelShieldFalloff; }
     public Dictionary<CardKeyWord, List<CardEffectObject>> KeyWordDuration { get => keywordDuration; }
 
+    public FighterEffectObject(CharacterSelect character)
+    {
+        this.character = character;
+        iceAcidStacks = new Dictionary<Channels, List<ElementStackObject>>();
+        firePlasmaStacks = new Dictionary<ElementType, int>();
+        channelDamageBonus = new Dictionary<Channels, List<CardEffectObject>>();
+        channelDamageReduction = new Dictionary<Channels, List<CardEffectObject>>();
+        channelShieldFalloff = new Dictionary<Channels, List<ChannelShieldFalloffObject>>();
+        channelShields = new Dictionary<Channels, int>();
+        keywordDuration = new Dictionary<CardKeyWord, List<CardEffectObject>>();
+        cardCategoryDamageBonus = new Dictionary<CardCategory, List<CardEffectObject>>();
+    }
+
     public void IncrementFighterEffects()
     {
         ReduceElementStacks(IceAcidStacks);
@@ -30,6 +44,56 @@ public class FighterEffectObject
         ReduceChannelEffects(ChannelDamageBonus);
         ReduceKeyWordEffects(KeyWordDuration);
         ReduceChannelEffects(ChannelDamageReduction);
+        ReduceChannelShieldsWithFalloff(ChannelShieldsFalloff);
+    }
+
+    private void ReduceChannelShieldsWithFalloff(Dictionary<Channels, List<ChannelShieldFalloffObject>> channelShieldsFalloff)
+    {
+        List<KeyValuePair<Channels, List<ChannelShieldFalloffObject>>> shieldsKVPairList = new List<KeyValuePair<Channels, List<ChannelShieldFalloffObject>>>();
+        List<KeyValuePair<Channels, List<ChannelShieldFalloffObject>>> shieldsKVPairRemovalList = new List<KeyValuePair<Channels, List<ChannelShieldFalloffObject>>>();
+
+        //Foreach KeyValue pair in the dictionary
+        foreach (KeyValuePair<Channels, List<ChannelShieldFalloffObject>> shieldFalloffKVPair in channelShieldFalloff)
+        {
+            List<ChannelShieldFalloffObject> removalObjects = new List<ChannelShieldFalloffObject>();
+
+            //Foreach ChannelShieldFalloffObject in each KeyValue pair
+            foreach (ChannelShieldFalloffObject channelShieldFalloffObject in shieldFalloffKVPair.Value)
+            {
+                //Add shields
+                AddShields(shieldFalloffKVPair.Key, channelShieldFalloffObject.StartingShieldPerTurn);
+
+                //Shields falloff
+                channelShieldFalloffObject.StartingShieldPerTurn -= channelShieldFalloffObject.FalloffPerTurn;
+
+                //If the shield gain is less than or equal to zero, add it to the removal list
+                if (channelShieldFalloffObject.StartingShieldPerTurn <= 0)
+                    removalObjects.Add(channelShieldFalloffObject);
+            }
+
+            //Foreach item in the removal list, remove it from the KeyValue pair list (value)
+            foreach (ChannelShieldFalloffObject channelShieldFalloffObject in removalObjects)
+                shieldFalloffKVPair.Value.Remove(channelShieldFalloffObject);
+
+            //If the KeyValuePair no longer has any Channel Shield Fall Off Objects, add it to the KeyValuePair removal list
+            if (channelShieldFalloff[shieldFalloffKVPair.Key].Count == 0)
+                shieldsKVPairRemovalList.Add(shieldFalloffKVPair);
+        }
+
+        //Foreach item in the KeyValuePair removal list, remove the key from the dictionary because it's empty now.
+        foreach (KeyValuePair<Channels, List<ChannelShieldFalloffObject>> shieldKVPair in shieldsKVPairRemovalList)
+            channelShieldFalloff.Remove(shieldKVPair.Key);
+    }
+
+    private void AddShields(Channels channel, int shieldsToGain)
+    {
+        int oldShield;
+
+        if (ChannelShields.TryGetValue(channel, out oldShield))
+            ChannelShields[channel] =
+                ChannelShields[channel] + shieldsToGain;
+        else
+            ChannelShields.Add(channel, shieldsToGain);
     }
 
     private void ReduceElementStacks(Dictionary<Channels, List<ElementStackObject>> elementDict)
@@ -53,29 +117,37 @@ public class FighterEffectObject
 
             elementDict[pair.Key] = newElementStackList;
         }
-
-        //Update buff popups
     }
 
     private void ReduceElementStacks(Dictionary<ElementType, int> elementDict)
     {
-        List<KeyValuePair<ElementType, int>> elementKVPairList = new List<KeyValuePair<ElementType, int>>();
+        Dictionary<ElementType, int> newElementDict = new Dictionary<ElementType, int>();
+
         int newStacks;
+
         foreach (KeyValuePair<ElementType, int> pair in elementDict)
         {
-            //Deal damage or steal energy (get rid of all stacks of plasma)
-            newStacks = pair.Value - 1;
+            if (pair.Key == ElementType.Fire)
+            {
+                DamageEffectMechPairObject damageEffectMechPair = new DamageEffectMechPairObject();
+                damageEffectMechPair.damageToTake = pair.Value;
+                damageEffectMechPair.characterToTakeDamage = character;
+                CombatManager.instance.RemoveHealthFromMech(damageEffectMechPair);
 
-            elementDict[pair.Key] = newStacks;
+                newStacks = pair.Value - 1;
 
-            if (elementDict[pair.Key] == 0)
-                elementKVPairList.Add(pair);
+                if (newStacks > 0)
+                    newElementDict.Add(pair.Key, newStacks);
+            }
+            if(pair.Key == ElementType.Plasma)
+            {
+                Debug.Log("Stealing energy.");
+                CombatManager.instance.RemoveEnergyFromMech(character, pair.Value);
+                CombatManager.instance.AddEnergyToMech(character == CharacterSelect.Player ? CharacterSelect.Opponent : CharacterSelect.Player, pair.Value);
+            }
         }
 
-        foreach (KeyValuePair<ElementType, int> pair in elementKVPairList)
-            elementDict.Remove(pair.Key);
-
-        //Update buff popups
+        firePlasmaStacks = new Dictionary<ElementType, int>(newElementDict);
     }
 
     private void ReduceCategoryDamageBonusEffects(Dictionary<CardCategory, List<CardEffectObject>> cardCategoryDict)
@@ -105,9 +177,6 @@ public class FighterEffectObject
 
         foreach (KeyValuePair<CardCategory, List<CardEffectObject>> pair in categoryKVPairList)
             cardCategoryDict.Remove(pair.Key);
-
-        //Update buff popups
-
     }
 
     private void ReduceChannelEffects(Dictionary<Channels, List<CardEffectObject>> channelDamageDict)
@@ -137,8 +206,6 @@ public class FighterEffectObject
 
         foreach (KeyValuePair<Channels, List<CardEffectObject>> pair in channelsKVPairList)
             channelDamageDict.Remove(pair.Key);
-
-        //Update buff popups
 
     }
 
@@ -170,5 +237,4 @@ public class FighterEffectObject
         foreach (KeyValuePair<CardKeyWord, List<CardEffectObject>> pair in keyWordKVPair)
             keyWordDict.Remove(pair.Key);
     }
-
 }

@@ -36,10 +36,10 @@ public class MechObject
         mechMaxHP += arms.ComponentMaxHP;
         mechMaxHP += legs.ComponentMaxHP;
 
-        mechMaxEnergy += head.ComponentMaxHP;
-        mechMaxEnergy += torso.ComponentMaxHP;
-        mechMaxEnergy += arms.ComponentMaxHP;
-        mechMaxEnergy += legs.ComponentMaxHP;
+        mechMaxEnergy += head.ComponentMaxEnergy;
+        mechMaxEnergy += torso.ComponentMaxEnergy;
+        mechMaxEnergy += arms.ComponentMaxEnergy;
+        mechMaxEnergy += legs.ComponentMaxEnergy;
 
         mechCurrentHP = mechMaxHP;
         mechCurrentEnergy = mechMaxEnergy;
@@ -121,7 +121,7 @@ public class MechObject
                 }
 
             case MechComponent.Arms:
-                if(mechArms.ComponentCurrentHP >= 0)
+                if (mechArms.ComponentCurrentHP >= 0)
                 {
                     mechArms.ComponentCurrentHP -= damageToDeal;
 
@@ -136,7 +136,7 @@ public class MechObject
                 }
 
             case MechComponent.Legs:
-                if(mechLegs.ComponentCurrentHP >= 0)
+                if (mechLegs.ComponentCurrentHP >= 0)
                 {
                     mechLegs.ComponentCurrentHP -= damageToDeal;
 
@@ -149,10 +149,17 @@ public class MechObject
                     bonusDamage = damageToDeal;
                     break;
                 }
+
+            case MechComponent.None:
+                break;
+            case MechComponent.Head:
+                break;
+            case MechComponent.Back:
+                break;
         }
-        
-        mechCurrentHP -= (damageToDeal - bonusDamage);
-        mechCurrentHP -= Mathf.RoundToInt(bonusDamage * CombatManager.instance.BrokenCDM);
+
+        DamageMechHP(damageToDeal - bonusDamage);
+        DamageMechHP(Mathf.RoundToInt(bonusDamage * CombatManager.instance.BrokenCDM));
     }
 
     public void ResetHealth()
@@ -181,5 +188,10 @@ public class MechObject
     {
         mechMaxHP += componentAdded.ComponentMaxHP;
         mechCurrentHP += componentAdded.ComponentCurrentHP;
+    }
+
+    private void DamageMechHP(int damageToDeal)
+    {
+        mechCurrentHP -= damageToDeal;
     }
 }
