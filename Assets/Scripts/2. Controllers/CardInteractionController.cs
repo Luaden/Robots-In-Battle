@@ -100,7 +100,7 @@ public class CardInteractionController
         ClearAllCards();
     }
     
-    private void DisableDamageListeners()
+    public void DisableDamageListeners()
     {
         CombatAnimationManager.OnEndedAnimation -= DealDamage;
     }
