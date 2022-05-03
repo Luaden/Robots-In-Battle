@@ -9,8 +9,7 @@ public class NodeUIController : MonoBehaviour, IPointerDownHandler, IPointerUpHa
                               IPointerEnterHandler, IPointerExitHandler, IBeginDragHandler,
                               IEndDragHandler, IDragHandler
 {
-    [SerializeField] protected Image componentImage;
-    [SerializeField] protected TMP_Text componentName;
+    [SerializeField] protected TMP_Text fighterName;
 
     private bool isPickedUp = false;
     private Transform previousParentObject;
@@ -20,8 +19,8 @@ public class NodeUIController : MonoBehaviour, IPointerDownHandler, IPointerUpHa
     private CanvasGroup draggableCanvasGroup;
 
 
-    [SerializeField] private NodeDataObject nodeDataObject;
-    public NodeDataObject NodeDataObject { get => nodeDataObject; }
+    [SerializeField] private GameObject nodeDataObject;
+    public GameObject NodeDataObject { get => nodeDataObject; }
 
     [SerializeField] private BaseSlotController<NodeUIController> nodeSlotController;
     public BaseSlotController<NodeUIController> NodeSlotController
@@ -50,8 +49,10 @@ public class NodeUIController : MonoBehaviour, IPointerDownHandler, IPointerUpHa
     }
     public void InitUI(NodeDataObject newNodeData)
     {
-        nodeDataObject = newNodeData;
-        newNodeData.NodeUIController = this;
+        fighterName.text = newNodeData.FighterName;
+
+        nodeDataObject = newNodeData.gameObject;
+        newNodeData.NodeUIController = this.gameObject;
         //nodeData
         // information about the mech
         // name, hp, description?
@@ -76,6 +77,13 @@ public class NodeUIController : MonoBehaviour, IPointerDownHandler, IPointerUpHa
         isPickedUp = false;
         draggableCanvasGroup.blocksRaycasts = true;
         draggableCanvasGroup.alpha = 1f;
+
+        if(eventData.pointerDrag.GetComponent<NodeDataObject>() != null)
+        {
+            eventData.pointerDrag.GetComponent<NodeDataObject>().NextNode = nodeSlotController.GetComponent<NodeDataObject>().NextNode;
+            eventData.pointerDrag.GetComponent<NodeDataObject>().PairNode = nodeSlotController.GetComponent<NodeDataObject>().PairNode;
+
+        }
     }
 
     public void OnPointerDown(PointerEventData eventData)
@@ -85,10 +93,12 @@ public class NodeUIController : MonoBehaviour, IPointerDownHandler, IPointerUpHa
 
     public void OnPointerEnter(PointerEventData eventData)
     {
+        // popup appears
     }
 
     public void OnPointerExit(PointerEventData eventData)
     {
+        // popup removed
     }
 
     public void OnPointerUp(PointerEventData eventData)
