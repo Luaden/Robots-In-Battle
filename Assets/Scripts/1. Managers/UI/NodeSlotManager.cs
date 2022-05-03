@@ -5,6 +5,7 @@ using UnityEngine.EventSystems;
 
 public class NodeSlotManager : BaseSlotManager<NodeUIController>
 {
+
     public override void AddItemToCollection(NodeUIController item, BaseSlotController<NodeUIController> slot)
     {
         if (slot != null && slot.CurrentSlottedItem == null)

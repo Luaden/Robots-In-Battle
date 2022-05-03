@@ -17,7 +17,4 @@ public class FighterPairObject
         this.fighterB = fighterB;
     }
 
-
-
-
 }

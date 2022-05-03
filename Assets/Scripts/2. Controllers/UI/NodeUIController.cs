@@ -19,17 +19,11 @@ public class NodeUIController : MonoBehaviour, IPointerDownHandler, IPointerUpHa
     private RectTransform draggableRectTransform;
     private CanvasGroup draggableCanvasGroup;
 
-/*    [Header("Component Icons")]
-    [SerializeField] protected Sprite headIcon;
-    [SerializeField] protected Sprite torsoIcon;
-    [SerializeField] protected Sprite armsIcon;
-    [SerializeField] protected Sprite legsIcon;*/
 
+    [SerializeField] private NodeDataObject nodeDataObject;
+    public NodeDataObject NodeDataObject { get => nodeDataObject; }
 
-/*    private MechComponentUIObject mechComponentUIObject;
-    public MechComponentUIObject MechComponentUIObject { get => mechComponentUIObject; }*/
-
-    private BaseSlotController<NodeUIController> nodeSlotController;
+    [SerializeField] private BaseSlotController<NodeUIController> nodeSlotController;
     public BaseSlotController<NodeUIController> NodeSlotController
     {
         get => nodeSlotController;
@@ -54,33 +48,14 @@ public class NodeUIController : MonoBehaviour, IPointerDownHandler, IPointerUpHa
     {
         
     }
-    public void InitUI(MechComponentUIObject mechComponent)
+    public void InitUI(NodeDataObject newNodeData)
     {
-/*        componentName.text = mechComponent.ComponentName;
-        switch (mechComponent.ComponentType)
-        {
-            case MechComponent.None:
-                break;
-            case MechComponent.Head:
-                componentImage.sprite = headIcon;
-                break;
-            case MechComponent.Torso:
-                componentImage.sprite = torsoIcon;
-                break;
-            case MechComponent.Arms:
-                componentImage.sprite = armsIcon;
-                break;
-            case MechComponent.Legs:
-                componentImage.sprite = legsIcon;
-                break;
-            case MechComponent.Back:
-                break;
-            default:
-                break;
-        }
+        nodeDataObject = newNodeData;
+        newNodeData.NodeUIController = this;
+        //nodeData
+        // information about the mech
+        // name, hp, description?
 
-        this.mechComponentUIObject = mechComponent;
-        mechComponent.MechComponentUIController = this.gameObject;*/
     }
 
     public void OnDrag(PointerEventData eventData)

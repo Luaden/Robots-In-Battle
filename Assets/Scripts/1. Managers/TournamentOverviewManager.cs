@@ -5,6 +5,8 @@ using UnityEngine;
 public class TournamentOverviewManager : MonoBehaviour
 {
     private NodeSlotManager nodeSlotManager;
+    private NodeController nodeController;
+    [SerializeField] protected GameObject pilotGameObject;
     /* 
      * 
      * reference to playerfights
@@ -25,8 +27,24 @@ public class TournamentOverviewManager : MonoBehaviour
     private void Awake()
     {
         nodeSlotManager = FindObjectOfType<NodeSlotManager>();
+        nodeController = FindObjectOfType<NodeController>();
     }
     private void Start()
     {
+        // test
+        foreach(NodeDataObject n in nodeController.GetAllNodes())
+        {
+            if(n.nodeType == NodeDataObject.NodeType.None)
+            {
+                GameObject newGameObject = Instantiate(pilotGameObject, n.transform.position, Quaternion.identity, n.transform);
+                newGameObject.GetComponent<NodeUIController>().InitUI(n);
+                newGameObject.GetComponent<NodeUIController>().NodeSlotController = n.GetComponent<NodeSlotController>();
+                //Instantiate(pilotGameObject, n.transform.position, Quaternion.identity, n.transform);
+                nodeSlotManager.AddItemToCollection(newGameObject.GetComponent<NodeUIController>(), n.GetComponent<NodeSlotController>());
+            }
+        }
+        Destroy(pilotGameObject);
+
+
     }
 }

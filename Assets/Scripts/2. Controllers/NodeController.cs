@@ -4,16 +4,11 @@ using UnityEngine;
 
 public class NodeController : MonoBehaviour
 {
-    private FighterPairObject currentFighterPairObject;
-    private NodeController previousNode;
-    private NodeController nextNode;
+    [SerializeField] protected List<NodeDataObject> allNodes;
+    [SerializeField] protected List<NodeDataObject> activeNodes;
 
-    public void AssignFighterPairObjectToNode(FighterPairObject fighterPair)
-    {
-        currentFighterPairObject = fighterPair;
-    }
-
-
+    public List<NodeDataObject> GetAllNodes() { return allNodes; }
+    public List<NodeDataObject> GetAllActiveNodes() { return activeNodes; }
 
 
 }
