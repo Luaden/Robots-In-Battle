@@ -1,11 +1,11 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 using UnityEngine.EventSystems;
 
 public class NodeSlotManager : BaseSlotManager<NodeUIController>
 {
-
     public override void AddItemToCollection(NodeUIController item, BaseSlotController<NodeUIController> slot)
     {
         if (slot != null && slot.CurrentSlottedItem == null)
@@ -30,11 +30,26 @@ public class NodeSlotManager : BaseSlotManager<NodeUIController>
 
     public override void HandleDrop(PointerEventData eventData, NodeUIController newData, BaseSlotController<NodeUIController> slot)
     {
-        throw new System.NotImplementedException();
+        if (newData == null)
+            return;
+
+        newData.NodeSlotController.SlotManager.RemoveItemFromCollection(newData);
+        AddItemToCollection(newData, slot);
+
+
     }
 
     public override void RemoveItemFromCollection(NodeUIController item)
     {
-        throw new System.NotImplementedException();
+        foreach (NodeSlotController slot in slotList)
+            if (slot.CurrentSlottedItem == item)
+                slot.CurrentSlottedItem = null;
+    }
+
+    public void OnPilotAssigned(NodeUIController item, BaseSlotController<NodeUIController> slot)
+    {
+        Debug.Log("OnPilotAssigned - Manager");
+        slot.GetComponent<NodeDataObject>().IsCompleted = true;
+        //TournamentOverviewManager.instance.AssignFighterToNodeSlot(item.GetComponent<NodeDataObject>());
     }
 }

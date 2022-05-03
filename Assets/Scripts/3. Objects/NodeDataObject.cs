@@ -6,14 +6,39 @@ public class NodeDataObject : MonoBehaviour
 {
     private NodeDataObject previousNode;
     [SerializeField] protected NodeDataObject nextNode;
+    [SerializeField] protected NodeDataObject pairNode;
+    public bool isCompleted;
 
     private FighterDataObject currentFighter;
-    private NodeUIController nodeUIController;
-    public NodeUIController NodeUIController { get => nodeUIController; set => nodeUIController = value; }
+    private GameObject nodeUIController;
+
+    public FighterDataObject FighterDataObject { get => currentFighter; }
+    public GameObject NodeUIController { get => nodeUIController; set => nodeUIController = value; }
+    public NodeDataObject NextNode { get => nextNode; set => nextNode = value; }
+    public NodeDataObject PairNode { get => pairNode; set => pairNode = value; }
+    public bool IsCompleted { get => isCompleted; set => isCompleted = value; }
+
 
     public NodeDataObject GetPreviousNode() { return previousNode; }
     public NodeDataObject GetNextNode() { return nextNode; }
 
+    // test
+    private string fighterName;
+    public string FighterName { get => fighterName; }
+
+    public void Init()
+    {
+        switch (nodeType)
+        {
+            case NodeType.Opponent:
+                fighterName = "AI";
+                break;
+            case NodeType.Pilot:
+                Debug.Log("Pilot -- NodeDataObject");
+                fighterName = "Player";
+                break;
+        }
+    }
     //test
     public enum NodeType
     {
@@ -21,7 +46,9 @@ public class NodeDataObject : MonoBehaviour
         Second,
         Third,
         Last,
-        None
+        None,
+        Pilot,
+        Opponent
     }
     public NodeType nodeType;
 

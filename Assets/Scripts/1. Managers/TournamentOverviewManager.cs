@@ -1,12 +1,17 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class TournamentOverviewManager : MonoBehaviour
 {
+    public static TournamentOverviewManager instance;
+
     private NodeSlotManager nodeSlotManager;
     private NodeController nodeController;
-    [SerializeField] protected GameObject pilotGameObject;
+    [SerializeField] protected GameObject pilotPrefab;
+
+    public NodeSlotManager NodeSlotManager { get => nodeSlotManager; }
     /* 
      * 
      * reference to playerfights
@@ -28,23 +33,52 @@ public class TournamentOverviewManager : MonoBehaviour
     {
         nodeSlotManager = FindObjectOfType<NodeSlotManager>();
         nodeController = FindObjectOfType<NodeController>();
+
+        if (instance != this && instance != null)
+        {
+            Destroy(gameObject);
+            return;
+        }
+        instance = this;
+
     }
     private void Start()
     {
         // test
+        bool player = true;
+
         foreach(NodeDataObject n in nodeController.GetAllNodes())
         {
             if(n.nodeType == NodeDataObject.NodeType.None)
             {
-                GameObject newGameObject = Instantiate(pilotGameObject, n.transform.position, Quaternion.identity, n.transform);
-                newGameObject.GetComponent<NodeUIController>().InitUI(n);
-                newGameObject.GetComponent<NodeUIController>().NodeSlotController = n.GetComponent<NodeSlotController>();
-                //Instantiate(pilotGameObject, n.transform.position, Quaternion.identity, n.transform);
-                nodeSlotManager.AddItemToCollection(newGameObject.GetComponent<NodeUIController>(), n.GetComponent<NodeSlotController>());
+                GameObject nodeUIGameObject;
+                nodeUIGameObject = Instantiate(pilotPrefab, n.transform.position, Quaternion.identity, n.transform);
+                // set the UI object of the pilot data to be the gameobject
+                
+                n.NodeUIController = nodeUIGameObject;
+                NodeUIController nodeUIObject = nodeUIGameObject.GetComponent<NodeUIController>();
+                NodeDataObject nodeDataObject = nodeUIGameObject.GetComponent<NodeDataObject>();
+                if (player)
+                {
+                    nodeDataObject.nodeType = NodeDataObject.NodeType.Pilot;
+                    player = false;
+
+                }
+                else 
+                    nodeDataObject.nodeType = NodeDataObject.NodeType.Opponent;
+
+                nodeSlotManager.AddItemToCollection(nodeUIObject, n.GetComponent<NodeSlotController>());
+                nodeDataObject.Init();
+                nodeUIObject.InitUI(nodeDataObject);
+
+                nodeUIGameObject.SetActive(true);
             }
         }
-        Destroy(pilotGameObject);
+    }
 
-
+    public void AssignFighterToNodeSlot(NodeDataObject nodeData)
+    {
+/*        FighterPairObject fighterPairObject = new FighterPairObject(nodeData.FighterDataObject, nodeData.FighterDataObject);
+        nodeController.FighterPairs.Add(fighterPairObject);*/
     }
 }
