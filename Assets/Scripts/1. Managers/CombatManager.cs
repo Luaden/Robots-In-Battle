@@ -372,6 +372,7 @@ public class CombatManager : MonoBehaviour
             MechObject playerMech = playerFighter.FighterMech;
 
             GameManager.instance.PlayerMechController.SetNewPlayerMech(playerMech);
+            GameManager.instance.UpdatePlayerAfterFight(playerMech);
 
             winLossPanel.SetActive(true);
             loadShoppingButton.SetActive(true);

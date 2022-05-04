@@ -153,10 +153,16 @@ public class ShopItemUIController : MonoBehaviour, IPointerDownHandler, IPointer
 
             if (shopItemUIObject.PossibleChannels.HasFlag(Channels.High))
                 highChannelIcon.color = fullColor;
+            else
+                highChannelIcon.color = fadeColor;
             if (shopItemUIObject.PossibleChannels.HasFlag(Channels.Mid))
                 midChannelIcon.color = fullColor;
+            else
+                midChannelIcon.color = fadeColor;
             if (shopItemUIObject.PossibleChannels.HasFlag(Channels.Low))
                 lowChannelIcon.color = fullColor;
+            else
+                lowChannelIcon.color = fadeColor;
 
             cardTimeCostText.text = timeCost.ToString();
             cardCurrencyCostText.text = currencyCost.ToString();
