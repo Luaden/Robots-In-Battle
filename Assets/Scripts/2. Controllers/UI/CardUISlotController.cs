@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 public class CardUISlotController : BaseSlotController<CardUIController>
@@ -13,6 +14,19 @@ public class CardUISlotController : BaseSlotController<CardUIController>
     private bool flashChannel = false;
     private bool fadeOut = true;
 
+    public override void OnDrop(PointerEventData eventData)
+    {
+        if (eventData.pointerDrag.GetComponent<CardUIController>() == null)
+        {
+            Debug.Log("Item was dropped in a slot that does not fit it.");
+            return;
+        }
+
+        if (CombatManager.instance.CanPlayCards)
+        {
+            slotManager.HandleDrop(eventData, eventData.pointerDrag.GetComponent<CardUIController>(), this);
+        }
+    }
     private void Update()
     {
         if(channelFlag != Channels.None)

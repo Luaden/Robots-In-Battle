@@ -4,19 +4,17 @@ using UnityEngine;
 
 public class ShopItemUIBuildController : MonoBehaviour
 {
-    [SerializeField] private GameObject ItemPrefab;
-    public void BuildAndDisplayItemUI(ShopItemUIObject shopItem, Transform startPoint)
+    [SerializeField] private GameObject itemPrefab;
+
+    public void BuildAndDisplayItemUI(SOItemDataObject shopItem, BaseSlotManager<ShopItemUIController> slotManager)
     {
         GameObject shopItemUIGameObject;
-        shopItemUIGameObject = Instantiate(ItemPrefab, transform);
-        shopItemUIGameObject.transform.position = startPoint.position;
+        shopItemUIGameObject = Instantiate(itemPrefab);
 
-        shopItem.ShopItemUIController = shopItemUIGameObject;
-        ComponentShopVendorUIController componentShopUIController = shopItemUIGameObject.GetComponent<ComponentShopVendorUIController>();
+        ShopItemUIController shopItemUIController = shopItemUIGameObject.GetComponent<ShopItemUIController>();
+        shopItemUIController.InitUI(shopItem);
 
-        componentShopUIController.InitUI(shopItem);
-        DowntimeManager.instance.ComponentShopManager.ComponentShopVendorSlotManager.AddItemToCollection(componentShopUIController, null);
-
+        slotManager.AddItemToCollection(shopItemUIController, null);
         shopItemUIGameObject.SetActive(true);
     }
 }

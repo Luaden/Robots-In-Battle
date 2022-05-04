@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
 
 public class GameManager : MonoBehaviour
 {
@@ -13,6 +14,7 @@ public class GameManager : MonoBehaviour
 
     public static GameManager instance;
 
+    public int PlayerWins { get => playerData.CurrentWinCount; }
     public DowntimeInventoryController PlayerInventoryController { get => playerInventoryController; }
     public DowntimeMechBuilderController PlayerMechController { get => playerMechController; }
     public DowntimeDeckController PlayerDeckController { get => playerDeckController; }
@@ -243,7 +245,6 @@ public class GameManager : MonoBehaviour
             MechComponentDataObject oldComponent;
 
             oldComponent = instance.playerData.PlayerMech.ReplaceComponent(newComponent);
-            instance.PlayerInventoryController.AddItemToInventory(oldComponent);
         }
     }
 
@@ -270,13 +271,30 @@ public class GameManager : MonoBehaviour
 
         public void RemoveItemFromInventory(MechComponentDataObject mechComponent)
         {
-            if (!instance.playerData.PlayerInventory.Contains(mechComponent))
-            {
-                Debug.Log("Attempted to remove " + mechComponent.ComponentName + " from the inventory, but it was not found there.");
-                return;
-            }
+            MechComponentDataObject componentToRemove = null;
 
-            instance.playerData.PlayerInventory.Remove(mechComponent);
+            foreach (MechComponentDataObject component in instance.playerData.PlayerInventory)
+                if (component == mechComponent)
+                    componentToRemove = component;
+
+            if (componentToRemove == null)
+                return;
+
+            instance.playerData.PlayerInventory.Remove(componentToRemove);
+        }
+
+        public void RemoveItemFromInventory(SOItemDataObject mechComponent)
+        {
+            MechComponentDataObject componentToRemove = null;
+
+            foreach (MechComponentDataObject component in instance.playerData.PlayerInventory)
+                if (component.SOItemDataObject == mechComponent)
+                    componentToRemove = component;
+
+            if (componentToRemove == null)
+                return;
+
+            instance.playerData.PlayerInventory.Remove(componentToRemove);
         }
     }
 

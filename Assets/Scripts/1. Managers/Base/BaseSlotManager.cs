@@ -21,4 +21,11 @@ public abstract class BaseSlotManager<T> : MonoBehaviour
     public abstract void RemoveItemFromCollection(T item);
     public abstract void AddItemToCollection(T item, BaseSlotController<T> slot);
     public abstract void AddSlotToList(BaseSlotController<T> newSlot);
+
+    protected void Awake()
+    {
+        if(slotList != null)
+            foreach (BaseSlotController<T> slot in slotList)
+            slot.SlotManager = this;
+    }
 }

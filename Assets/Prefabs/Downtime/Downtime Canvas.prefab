@@ -1456,7 +1456,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8185624741181863088}
-  - component: {fileID: 6880474028387489957}
+  - component: {fileID: 142322767}
   m_Layer: 5
   m_Name: CardUI Popup Controller
   m_TagString: Untagged
@@ -1480,12 +1480,12 @@ RectTransform:
   m_Father: {fileID: 6190743748548483706}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_AnchorMin: {x: 1, y: 0.5}
+  m_AnchorMax: {x: 1, y: 0.5}
+  m_AnchoredPosition: {x: -960, y: 0}
+  m_SizeDelta: {x: 1920, y: 1080}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &6880474028387489957
+--- !u!114 &142322767
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1494,14 +1494,20 @@ MonoBehaviour:
   m_GameObject: {fileID: 399987998698528822}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2cffc60621361e84ea2be134d12f3690, type: 3}
+  m_Script: {fileID: 11500000, guid: ef1e0231c5ce26049b6c2414e18d556c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   popupObject: {fileID: 1478624323651561576}
   nameText: {fileID: 2526099747196785853}
+  cardTextBlock: {fileID: 3355829536893938056}
+  componentTextBlock: {fileID: 4445559272793923185}
   descriptionText: {fileID: 250178976050906967}
   energyCostText: {fileID: 91587181351013407}
   damageDealtText: {fileID: 2483623953003301423}
+  healthText: {fileID: 2205754016177675561}
+  energyText: {fileID: 8908510923327984409}
+  cDMText: {fileID: 7345492703087369515}
+  elementText: {fileID: 2919486971821123045}
 --- !u!1 &1478624323651561576
 GameObject:
   m_ObjectHideFlags: 0
@@ -1538,10 +1544,10 @@ RectTransform:
   m_Father: {fileID: 8185624741181863088}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 303, y: -162}
-  m_SizeDelta: {x: 856.488, y: 476.385}
+  m_AnchorMin: {x: 1, y: 0.5}
+  m_AnchorMax: {x: 1, y: 0.5}
+  m_AnchoredPosition: {x: -338, y: 42}
+  m_SizeDelta: {x: 856.48804, y: 476.385}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &7000500606445924818
 CanvasRenderer:
@@ -2135,7 +2141,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &3300847253482343348
 RectTransform:
   m_ObjectHideFlags: 0
@@ -4242,7 +4248,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &7335777044888178963
 RectTransform:
   m_ObjectHideFlags: 0
@@ -10994,6 +11000,22 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 7335777044844034340}
     m_Modifications:
+    - target: {fileID: 2485070690976831993, guid: 8a7faf6410fc13c47a8f603196126447, type: 3}
+      propertyPath: m_RaycastTarget
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4467343917187210530, guid: 8a7faf6410fc13c47a8f603196126447, type: 3}
+      propertyPath: m_RaycastTarget
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4765626002056959306, guid: 8a7faf6410fc13c47a8f603196126447, type: 3}
+      propertyPath: m_RaycastTarget
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6612143429404438619, guid: 8a7faf6410fc13c47a8f603196126447, type: 3}
+      propertyPath: m_RaycastTarget
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6612143429712950400, guid: 8a7faf6410fc13c47a8f603196126447, type: 3}
       propertyPath: m_Name
       value: ShopCard
@@ -11092,6 +11114,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6612143429712950406, guid: 8a7faf6410fc13c47a8f603196126447, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8881729301352114508, guid: 8a7faf6410fc13c47a8f603196126447, type: 3}
+      propertyPath: m_RaycastTarget
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []

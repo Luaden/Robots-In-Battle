@@ -23,7 +23,12 @@ public class PopupUIManager : MonoBehaviour
         cardUIPopupController.UpdateUI(cardDataObject);
     }
 
-    public void HandlePopup(ShopItemUIObject shopItem)
+    public void HandlePopup(SOItemDataObject soItemDataObject)
+    {
+
+    }
+
+    public void HandlePopup(ShopItemUIController shopItem)
     {
         shopUIPopupController.UpdateUI(shopItem);
     }
