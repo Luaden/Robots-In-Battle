@@ -301,7 +301,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: -600, y: -425.99994}
-  m_SizeDelta: {x: 50, y: 50}
+  m_SizeDelta: {x: 75, y: 75}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &431136443
 MonoBehaviour:
@@ -329,15 +329,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 0.91053414, b: 0, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 0}
-  m_Type: 0
+  m_Sprite: {fileID: 10905, guid: 0000000000000000f000000000000000, type: 0}
+  m_Type: 1
   m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 4
@@ -369,8 +369,9 @@ MonoBehaviour:
   previousNode: {fileID: 0}
   nextNode: {fileID: 1048879452}
   pairNode: {fileID: 2138255540}
-  isCompleted: 0
-  hasWon: 0
+  hasBeenAssigned: 0
+  hasWonBattle: 0
+  isFinalNode: 0
   nodeType: 0
 --- !u!1 &474354341
 GameObject:
@@ -525,7 +526,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: -400, y: -125}
-  m_SizeDelta: {x: 50, y: 50}
+  m_SizeDelta: {x: 75, y: 75}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &500496116
 MonoBehaviour:
@@ -553,15 +554,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 0.91053414, b: 0, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 0}
-  m_Type: 0
+  m_Sprite: {fileID: 10905, guid: 0000000000000000f000000000000000, type: 0}
+  m_Type: 1
   m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 4
@@ -593,8 +594,9 @@ MonoBehaviour:
   previousNode: {fileID: 0}
   nextNode: {fileID: 633100573}
   pairNode: {fileID: 500496119}
-  isCompleted: 0
-  hasWon: 0
+  hasBeenAssigned: 0
+  hasWonBattle: 0
+  isFinalNode: 0
   nodeType: 1
 --- !u!1 &507540973
 GameObject:
@@ -606,7 +608,6 @@ GameObject:
   m_Component:
   - component: {fileID: 507540974}
   - component: {fileID: 507540978}
-  - component: {fileID: 507540977}
   - component: {fileID: 507540976}
   - component: {fileID: 507540975}
   m_Layer: 5
@@ -633,8 +634,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 475, y: -425.99994}
-  m_SizeDelta: {x: 50, y: 50}
+  m_AnchoredPosition: {x: 500, y: -425.99994}
+  m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &507540975
 MonoBehaviour:
@@ -651,8 +652,9 @@ MonoBehaviour:
   previousNode: {fileID: 0}
   nextNode: {fileID: 0}
   pairNode: {fileID: 0}
-  isCompleted: 0
-  hasWon: 0
+  hasBeenAssigned: 0
+  hasWonBattle: 0
+  isFinalNode: 0
   nodeType: 4
 --- !u!114 &507540976
 MonoBehaviour:
@@ -667,36 +669,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   slotManager: {fileID: 665536003}
---- !u!114 &507540977
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 507540973}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 0, b: 0, a: 1}
-  m_RaycastTarget: 1
-  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
-  m_Maskable: 1
-  m_OnCullStateChanged:
-    m_PersistentCalls:
-      m_Calls: []
-  m_Sprite: {fileID: 0}
-  m_Type: 0
-  m_PreserveAspect: 0
-  m_FillCenter: 1
-  m_FillMethod: 4
-  m_FillAmount: 1
-  m_FillClockwise: 1
-  m_FillOrigin: 0
-  m_UseSpriteMesh: 0
-  m_PixelsPerUnitMultiplier: 1
 --- !u!222 &507540978
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -743,7 +715,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 50, y: 50}
+  m_SizeDelta: {x: 75, y: 75}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &628738490
 MonoBehaviour:
@@ -771,15 +743,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 0.91053414, b: 0, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 0}
-  m_Type: 0
+  m_Sprite: {fileID: 10905, guid: 0000000000000000f000000000000000, type: 0}
+  m_Type: 1
   m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 4
@@ -811,8 +783,9 @@ MonoBehaviour:
   previousNode: {fileID: 0}
   nextNode: {fileID: 628738493}
   pairNode: {fileID: 628738493}
-  isCompleted: 0
-  hasWon: 0
+  hasBeenAssigned: 0
+  hasWonBattle: 0
+  isFinalNode: 1
   nodeType: 3
 --- !u!1 &633100568
 GameObject:
@@ -852,7 +825,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: -200, y: -250}
-  m_SizeDelta: {x: 50, y: 50}
+  m_SizeDelta: {x: 75, y: 75}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &633100570
 MonoBehaviour:
@@ -880,15 +853,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 0.91053414, b: 0, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 0}
-  m_Type: 0
+  m_Sprite: {fileID: 10905, guid: 0000000000000000f000000000000000, type: 0}
+  m_Type: 1
   m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 4
@@ -920,8 +893,9 @@ MonoBehaviour:
   previousNode: {fileID: 0}
   nextNode: {fileID: 628738493}
   pairNode: {fileID: 908287458}
-  isCompleted: 0
-  hasWon: 0
+  hasBeenAssigned: 0
+  hasWonBattle: 0
+  isFinalNode: 0
   nodeType: 2
 --- !u!1 &665535998
 GameObject:
@@ -1101,7 +1075,6 @@ GameObject:
   m_Component:
   - component: {fileID: 675031140}
   - component: {fileID: 675031144}
-  - component: {fileID: 675031143}
   - component: {fileID: 675031142}
   - component: {fileID: 675031141}
   m_Layer: 5
@@ -1128,8 +1101,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 175, y: -425.99994}
-  m_SizeDelta: {x: 50, y: 50}
+  m_AnchoredPosition: {x: 100, y: -425.99994}
+  m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &675031141
 MonoBehaviour:
@@ -1146,8 +1119,9 @@ MonoBehaviour:
   previousNode: {fileID: 0}
   nextNode: {fileID: 0}
   pairNode: {fileID: 0}
-  isCompleted: 0
-  hasWon: 0
+  hasBeenAssigned: 0
+  hasWonBattle: 0
+  isFinalNode: 0
   nodeType: 4
 --- !u!114 &675031142
 MonoBehaviour:
@@ -1162,36 +1136,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   slotManager: {fileID: 665536003}
---- !u!114 &675031143
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 675031139}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 0, b: 0, a: 1}
-  m_RaycastTarget: 1
-  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
-  m_Maskable: 1
-  m_OnCullStateChanged:
-    m_PersistentCalls:
-      m_Calls: []
-  m_Sprite: {fileID: 0}
-  m_Type: 0
-  m_PreserveAspect: 0
-  m_FillCenter: 1
-  m_FillMethod: 4
-  m_FillAmount: 1
-  m_FillClockwise: 1
-  m_FillOrigin: 0
-  m_UseSpriteMesh: 0
-  m_PixelsPerUnitMultiplier: 1
 --- !u!222 &675031144
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -1237,8 +1181,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 200, y: 0}
-  m_SizeDelta: {x: 150, y: 100}
+  m_AnchoredPosition: {x: 400, y: 4}
+  m_SizeDelta: {x: 350, y: 150}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &759000228
 MonoBehaviour:
@@ -1260,8 +1204,8 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 0}
-  m_Type: 0
+  m_Sprite: {fileID: 10905, guid: 0000000000000000f000000000000000, type: 0}
+  m_Type: 1
   m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 4
@@ -1324,7 +1268,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1792040185}
         m_TargetAssemblyTypeName: TournamentOverviewManager, Assembly-CSharp
-        m_MethodName: NextBattle
+        m_MethodName: GoToBattle
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -1376,7 +1320,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 100, y: 100}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &843355710
 GameObject:
@@ -1534,7 +1478,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: -200, y: 250}
-  m_SizeDelta: {x: 50, y: 50}
+  m_SizeDelta: {x: 75, y: 75}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &908287455
 MonoBehaviour:
@@ -1562,15 +1506,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 0.91053414, b: 0, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 0}
-  m_Type: 0
+  m_Sprite: {fileID: 10905, guid: 0000000000000000f000000000000000, type: 0}
+  m_Type: 1
   m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 4
@@ -1602,8 +1546,9 @@ MonoBehaviour:
   previousNode: {fileID: 0}
   nextNode: {fileID: 628738493}
   pairNode: {fileID: 633100573}
-  isCompleted: 0
-  hasWon: 0
+  hasBeenAssigned: 0
+  hasWonBattle: 0
+  isFinalNode: 0
   nodeType: 2
 --- !u!1 &1048879447
 GameObject:
@@ -1643,7 +1588,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: -400, y: -375}
-  m_SizeDelta: {x: 50, y: 50}
+  m_SizeDelta: {x: 75, y: 75}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1048879449
 MonoBehaviour:
@@ -1671,15 +1616,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 0.91053414, b: 0, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 0}
-  m_Type: 0
+  m_Sprite: {fileID: 10905, guid: 0000000000000000f000000000000000, type: 0}
+  m_Type: 1
   m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 4
@@ -1711,8 +1656,9 @@ MonoBehaviour:
   previousNode: {fileID: 0}
   nextNode: {fileID: 633100573}
   pairNode: {fileID: 1048879452}
-  isCompleted: 0
-  hasWon: 0
+  hasBeenAssigned: 0
+  hasWonBattle: 0
+  isFinalNode: 0
   nodeType: 1
 --- !u!1 &1089198744
 GameObject:
@@ -1724,7 +1670,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1089198745}
   - component: {fileID: 1089198749}
-  - component: {fileID: 1089198748}
   - component: {fileID: 1089198747}
   - component: {fileID: 1089198746}
   m_Layer: 5
@@ -1752,7 +1697,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 400, y: -425.99994}
-  m_SizeDelta: {x: 50, y: 50}
+  m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1089198746
 MonoBehaviour:
@@ -1769,8 +1714,9 @@ MonoBehaviour:
   previousNode: {fileID: 0}
   nextNode: {fileID: 0}
   pairNode: {fileID: 0}
-  isCompleted: 0
-  hasWon: 0
+  hasBeenAssigned: 0
+  hasWonBattle: 0
+  isFinalNode: 0
   nodeType: 4
 --- !u!114 &1089198747
 MonoBehaviour:
@@ -1785,36 +1731,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   slotManager: {fileID: 665536003}
---- !u!114 &1089198748
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1089198744}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 0, b: 0, a: 1}
-  m_RaycastTarget: 1
-  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
-  m_Maskable: 1
-  m_OnCullStateChanged:
-    m_PersistentCalls:
-      m_Calls: []
-  m_Sprite: {fileID: 0}
-  m_Type: 0
-  m_PreserveAspect: 0
-  m_FillCenter: 1
-  m_FillMethod: 4
-  m_FillAmount: 1
-  m_FillClockwise: 1
-  m_FillOrigin: 0
-  m_UseSpriteMesh: 0
-  m_PixelsPerUnitMultiplier: 1
 --- !u!222 &1089198749
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -1861,7 +1777,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: -600, y: 174.00008}
-  m_SizeDelta: {x: 50, y: 50}
+  m_SizeDelta: {x: 75, y: 75}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1116599827
 MonoBehaviour:
@@ -1876,15 +1792,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 0.91053414, b: 0, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 0}
-  m_Type: 0
+  m_Sprite: {fileID: 10905, guid: 0000000000000000f000000000000000, type: 0}
+  m_Type: 1
   m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 4
@@ -1929,8 +1845,9 @@ MonoBehaviour:
   previousNode: {fileID: 0}
   nextNode: {fileID: 2145457246}
   pairNode: {fileID: 1541598478}
-  isCompleted: 0
-  hasWon: 0
+  hasBeenAssigned: 0
+  hasWonBattle: 0
+  isFinalNode: 0
   nodeType: 0
 --- !u!1001 &1136094206
 PrefabInstance:
@@ -2044,7 +1961,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1181165362}
   - component: {fileID: 1181165366}
-  - component: {fileID: 1181165365}
   - component: {fileID: 1181165364}
   - component: {fileID: 1181165363}
   m_Layer: 5
@@ -2071,8 +1987,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 100, y: -425.99994}
-  m_SizeDelta: {x: 50, y: 50}
+  m_AnchoredPosition: {x: 0, y: -425.99994}
+  m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1181165363
 MonoBehaviour:
@@ -2089,8 +2005,9 @@ MonoBehaviour:
   previousNode: {fileID: 0}
   nextNode: {fileID: 0}
   pairNode: {fileID: 0}
-  isCompleted: 0
-  hasWon: 0
+  hasBeenAssigned: 0
+  hasWonBattle: 0
+  isFinalNode: 0
   nodeType: 4
 --- !u!114 &1181165364
 MonoBehaviour:
@@ -2105,36 +2022,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   slotManager: {fileID: 665536003}
---- !u!114 &1181165365
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1181165361}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 0, b: 0, a: 1}
-  m_RaycastTarget: 1
-  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
-  m_Maskable: 1
-  m_OnCullStateChanged:
-    m_PersistentCalls:
-      m_Calls: []
-  m_Sprite: {fileID: 0}
-  m_Type: 0
-  m_PreserveAspect: 0
-  m_FillCenter: 1
-  m_FillMethod: 4
-  m_FillAmount: 1
-  m_FillClockwise: 1
-  m_FillOrigin: 0
-  m_UseSpriteMesh: 0
-  m_PixelsPerUnitMultiplier: 1
 --- !u!222 &1181165366
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -2190,7 +2077,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1291613042}
   - component: {fileID: 1291613046}
-  - component: {fileID: 1291613045}
   - component: {fileID: 1291613044}
   - component: {fileID: 1291613043}
   m_Layer: 5
@@ -2217,8 +2103,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 550, y: -425.99994}
-  m_SizeDelta: {x: 50, y: 50}
+  m_AnchoredPosition: {x: 600, y: -425.99994}
+  m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1291613043
 MonoBehaviour:
@@ -2235,8 +2121,9 @@ MonoBehaviour:
   previousNode: {fileID: 0}
   nextNode: {fileID: 0}
   pairNode: {fileID: 0}
-  isCompleted: 0
-  hasWon: 0
+  hasBeenAssigned: 0
+  hasWonBattle: 0
+  isFinalNode: 0
   nodeType: 4
 --- !u!114 &1291613044
 MonoBehaviour:
@@ -2251,36 +2138,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   slotManager: {fileID: 665536003}
---- !u!114 &1291613045
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1291613041}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 0, b: 0, a: 1}
-  m_RaycastTarget: 1
-  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
-  m_Maskable: 1
-  m_OnCullStateChanged:
-    m_PersistentCalls:
-      m_Calls: []
-  m_Sprite: {fileID: 0}
-  m_Type: 0
-  m_PreserveAspect: 0
-  m_FillCenter: 1
-  m_FillMethod: 4
-  m_FillAmount: 1
-  m_FillClockwise: 1
-  m_FillOrigin: 0
-  m_UseSpriteMesh: 0
-  m_PixelsPerUnitMultiplier: 1
 --- !u!222 &1291613046
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -2299,7 +2156,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1306206115}
   - component: {fileID: 1306206119}
-  - component: {fileID: 1306206118}
   - component: {fileID: 1306206117}
   - component: {fileID: 1306206116}
   m_Layer: 5
@@ -2326,8 +2182,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 625, y: -425.99994}
-  m_SizeDelta: {x: 50, y: 50}
+  m_AnchoredPosition: {x: 700, y: -425.99994}
+  m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1306206116
 MonoBehaviour:
@@ -2344,8 +2200,9 @@ MonoBehaviour:
   previousNode: {fileID: 0}
   nextNode: {fileID: 0}
   pairNode: {fileID: 0}
-  isCompleted: 0
-  hasWon: 0
+  hasBeenAssigned: 0
+  hasWonBattle: 0
+  isFinalNode: 0
   nodeType: 4
 --- !u!114 &1306206117
 MonoBehaviour:
@@ -2360,36 +2217,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   slotManager: {fileID: 665536003}
---- !u!114 &1306206118
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1306206114}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 0, b: 0, a: 1}
-  m_RaycastTarget: 1
-  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
-  m_Maskable: 1
-  m_OnCullStateChanged:
-    m_PersistentCalls:
-      m_Calls: []
-  m_Sprite: {fileID: 0}
-  m_Type: 0
-  m_PreserveAspect: 0
-  m_FillCenter: 1
-  m_FillMethod: 4
-  m_FillAmount: 1
-  m_FillClockwise: 1
-  m_FillOrigin: 0
-  m_UseSpriteMesh: 0
-  m_PixelsPerUnitMultiplier: 1
 --- !u!222 &1306206119
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -2475,7 +2302,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1445301495}
   - component: {fileID: 1445301499}
-  - component: {fileID: 1445301498}
   - component: {fileID: 1445301497}
   - component: {fileID: 1445301496}
   m_Layer: 5
@@ -2502,8 +2328,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 325, y: -425.99994}
-  m_SizeDelta: {x: 50, y: 50}
+  m_AnchoredPosition: {x: 300, y: -425.99994}
+  m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1445301496
 MonoBehaviour:
@@ -2520,8 +2346,9 @@ MonoBehaviour:
   previousNode: {fileID: 0}
   nextNode: {fileID: 0}
   pairNode: {fileID: 0}
-  isCompleted: 0
-  hasWon: 0
+  hasBeenAssigned: 0
+  hasWonBattle: 0
+  isFinalNode: 0
   nodeType: 4
 --- !u!114 &1445301497
 MonoBehaviour:
@@ -2536,36 +2363,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   slotManager: {fileID: 665536003}
---- !u!114 &1445301498
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1445301494}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 0, b: 0, a: 1}
-  m_RaycastTarget: 1
-  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
-  m_Maskable: 1
-  m_OnCullStateChanged:
-    m_PersistentCalls:
-      m_Calls: []
-  m_Sprite: {fileID: 0}
-  m_Type: 0
-  m_PreserveAspect: 0
-  m_FillCenter: 1
-  m_FillMethod: 4
-  m_FillAmount: 1
-  m_FillClockwise: 1
-  m_FillOrigin: 0
-  m_UseSpriteMesh: 0
-  m_PixelsPerUnitMultiplier: 1
 --- !u!222 &1445301499
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -2612,7 +2409,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: -600, y: 74.00008}
-  m_SizeDelta: {x: 50, y: 50}
+  m_SizeDelta: {x: 75, y: 75}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1541598474
 MonoBehaviour:
@@ -2627,15 +2424,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 0.91053414, b: 0, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 0}
-  m_Type: 0
+  m_Sprite: {fileID: 10905, guid: 0000000000000000f000000000000000, type: 0}
+  m_Type: 1
   m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 4
@@ -2680,8 +2477,9 @@ MonoBehaviour:
   previousNode: {fileID: 0}
   nextNode: {fileID: 2145457246}
   pairNode: {fileID: 1116599831}
-  isCompleted: 0
-  hasWon: 0
+  hasBeenAssigned: 0
+  hasWonBattle: 0
+  isFinalNode: 0
   nodeType: 0
 --- !u!1 &1553655276
 GameObject:
@@ -2693,7 +2491,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1553655277}
   - component: {fileID: 1553655281}
-  - component: {fileID: 1553655280}
   - component: {fileID: 1553655279}
   - component: {fileID: 1553655278}
   m_Layer: 5
@@ -2720,8 +2517,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 250, y: -425.99994}
-  m_SizeDelta: {x: 50, y: 50}
+  m_AnchoredPosition: {x: 200, y: -425.99994}
+  m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1553655278
 MonoBehaviour:
@@ -2738,8 +2535,9 @@ MonoBehaviour:
   previousNode: {fileID: 0}
   nextNode: {fileID: 0}
   pairNode: {fileID: 0}
-  isCompleted: 0
-  hasWon: 0
+  hasBeenAssigned: 0
+  hasWonBattle: 0
+  isFinalNode: 0
   nodeType: 4
 --- !u!114 &1553655279
 MonoBehaviour:
@@ -2754,36 +2552,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   slotManager: {fileID: 665536003}
---- !u!114 &1553655280
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1553655276}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 0, b: 0, a: 1}
-  m_RaycastTarget: 1
-  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
-  m_Maskable: 1
-  m_OnCullStateChanged:
-    m_PersistentCalls:
-      m_Calls: []
-  m_Sprite: {fileID: 0}
-  m_Type: 0
-  m_PreserveAspect: 0
-  m_FillCenter: 1
-  m_FillMethod: 4
-  m_FillAmount: 1
-  m_FillClockwise: 1
-  m_FillOrigin: 0
-  m_UseSpriteMesh: 0
-  m_PixelsPerUnitMultiplier: 1
 --- !u!222 &1553655281
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -2830,7 +2598,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: -600, y: -175.99992}
-  m_SizeDelta: {x: 50, y: 50}
+  m_SizeDelta: {x: 75, y: 75}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1738004296
 MonoBehaviour:
@@ -2858,15 +2626,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 0.91053414, b: 0, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 0}
-  m_Type: 0
+  m_Sprite: {fileID: 10905, guid: 0000000000000000f000000000000000, type: 0}
+  m_Type: 1
   m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 4
@@ -2898,8 +2666,9 @@ MonoBehaviour:
   previousNode: {fileID: 0}
   nextNode: {fileID: 500496119}
   pairNode: {fileID: 2126143002}
-  isCompleted: 0
-  hasWon: 0
+  hasBeenAssigned: 0
+  hasWonBattle: 0
+  isFinalNode: 0
   nodeType: 0
 --- !u!1 &1768649214
 GameObject:
@@ -3094,7 +2863,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: -600, y: 324.00006}
-  m_SizeDelta: {x: 50, y: 50}
+  m_SizeDelta: {x: 75, y: 75}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1951395505
 MonoBehaviour:
@@ -3109,15 +2878,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 0.91053414, b: 0, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 0}
-  m_Type: 0
+  m_Sprite: {fileID: 10905, guid: 0000000000000000f000000000000000, type: 0}
+  m_Type: 1
   m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 4
@@ -3162,8 +2931,9 @@ MonoBehaviour:
   previousNode: {fileID: 0}
   nextNode: {fileID: 2083423985}
   pairNode: {fileID: 2031536029}
-  isCompleted: 0
-  hasWon: 0
+  hasBeenAssigned: 0
+  hasWonBattle: 0
+  isFinalNode: 0
   nodeType: 0
 --- !u!1 &2031536023
 GameObject:
@@ -3203,7 +2973,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: -600, y: 424}
-  m_SizeDelta: {x: 50, y: 50}
+  m_SizeDelta: {x: 75, y: 75}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2031536025
 MonoBehaviour:
@@ -3218,15 +2988,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 0.91053414, b: 0, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 0}
-  m_Type: 0
+  m_Sprite: {fileID: 10905, guid: 0000000000000000f000000000000000, type: 0}
+  m_Type: 1
   m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 4
@@ -3271,8 +3041,9 @@ MonoBehaviour:
   previousNode: {fileID: 0}
   nextNode: {fileID: 2083423985}
   pairNode: {fileID: 1951395509}
-  isCompleted: 0
-  hasWon: 0
+  hasBeenAssigned: 0
+  hasWonBattle: 0
+  isFinalNode: 0
   nodeType: 0
 --- !u!1 &2083423980
 GameObject:
@@ -3312,7 +3083,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: -400, y: 375}
-  m_SizeDelta: {x: 50, y: 50}
+  m_SizeDelta: {x: 75, y: 75}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2083423982
 MonoBehaviour:
@@ -3340,15 +3111,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 0.91053414, b: 0, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 0}
-  m_Type: 0
+  m_Sprite: {fileID: 10905, guid: 0000000000000000f000000000000000, type: 0}
+  m_Type: 1
   m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 4
@@ -3380,8 +3151,9 @@ MonoBehaviour:
   previousNode: {fileID: 0}
   nextNode: {fileID: 908287458}
   pairNode: {fileID: 2145457246}
-  isCompleted: 0
-  hasWon: 0
+  hasBeenAssigned: 0
+  hasWonBattle: 0
+  isFinalNode: 0
   nodeType: 1
 --- !u!1 &2126142997
 GameObject:
@@ -3421,7 +3193,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: -600, y: -75.99992}
-  m_SizeDelta: {x: 50, y: 50}
+  m_SizeDelta: {x: 75, y: 75}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2126142999
 MonoBehaviour:
@@ -3449,15 +3221,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 0.91053414, b: 0, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 0}
-  m_Type: 0
+  m_Sprite: {fileID: 10905, guid: 0000000000000000f000000000000000, type: 0}
+  m_Type: 1
   m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 4
@@ -3489,8 +3261,9 @@ MonoBehaviour:
   previousNode: {fileID: 0}
   nextNode: {fileID: 500496119}
   pairNode: {fileID: 1738004299}
-  isCompleted: 0
-  hasWon: 0
+  hasBeenAssigned: 0
+  hasWonBattle: 0
+  isFinalNode: 0
   nodeType: 0
 --- !u!1 &2138255535
 GameObject:
@@ -3530,7 +3303,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: -600, y: -325.99994}
-  m_SizeDelta: {x: 50, y: 50}
+  m_SizeDelta: {x: 75, y: 75}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2138255537
 MonoBehaviour:
@@ -3558,15 +3331,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 0.91053414, b: 0, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 0}
-  m_Type: 0
+  m_Sprite: {fileID: 10905, guid: 0000000000000000f000000000000000, type: 0}
+  m_Type: 1
   m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 4
@@ -3598,8 +3371,9 @@ MonoBehaviour:
   previousNode: {fileID: 0}
   nextNode: {fileID: 1048879452}
   pairNode: {fileID: 431136446}
-  isCompleted: 0
-  hasWon: 0
+  hasBeenAssigned: 0
+  hasWonBattle: 0
+  isFinalNode: 0
   nodeType: 0
 --- !u!1 &2145457241
 GameObject:
@@ -3639,7 +3413,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: -400, y: 125}
-  m_SizeDelta: {x: 50, y: 50}
+  m_SizeDelta: {x: 75, y: 75}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2145457243
 MonoBehaviour:
@@ -3667,15 +3441,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 0.91053414, b: 0, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 0}
-  m_Type: 0
+  m_Sprite: {fileID: 10905, guid: 0000000000000000f000000000000000, type: 0}
+  m_Type: 1
   m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 4
@@ -3707,6 +3481,7 @@ MonoBehaviour:
   previousNode: {fileID: 0}
   nextNode: {fileID: 908287458}
   pairNode: {fileID: 2083423985}
-  isCompleted: 0
-  hasWon: 0
+  hasBeenAssigned: 0
+  hasWonBattle: 0
+  isFinalNode: 0
   nodeType: 1

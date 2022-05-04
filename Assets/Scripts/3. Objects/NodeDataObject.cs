@@ -7,8 +7,9 @@ public class NodeDataObject : MonoBehaviour
     public NodeDataObject previousNode;
     [SerializeField] protected NodeDataObject nextNode;
     [SerializeField] protected NodeDataObject pairNode;
-    public bool isCompleted;
-    public bool hasWon;
+    public bool hasBeenAssigned;
+    public bool hasWonBattle;
+    public bool isFinalNode;
 
     private FighterDataObject currentFighter;
     private GameObject nodeUIController;
@@ -18,9 +19,9 @@ public class NodeDataObject : MonoBehaviour
     public NodeDataObject PreviousNode { get => previousNode; set => previousNode = value; }
     public NodeDataObject NextNode { get => nextNode; set => nextNode = value; }
     public NodeDataObject PairNode { get => pairNode; set => pairNode = value; }
-    public bool IsCompleted { get => isCompleted; set => isCompleted = value; }
-    public bool HasWon { get => hasWon; set => hasWon = value; }
-
+    public bool HasBeenAssigned { get => hasBeenAssigned; set => hasBeenAssigned = value; }
+    public bool HasWonBattle { get => hasWonBattle; set => hasWonBattle = value; }
+    public bool IsFinalNode { get => isFinalNode; set => isFinalNode = value; }
 
     public NodeDataObject GetPreviousNode() { return previousNode; }
     public NodeDataObject GetNextNode() { return nextNode; }
@@ -34,7 +35,7 @@ public class NodeDataObject : MonoBehaviour
         switch (nodeType)
         {
             case NodeType.Opponent:
-                fighterName = "AI";
+                fighterName = "Fighter AI";
                 break;
             case NodeType.Pilot:
                 fighterName = "Player";
@@ -48,7 +49,9 @@ public class NodeDataObject : MonoBehaviour
         Second,
         Third,
         Last,
-        PilotStarter,
+        // where the fighter starts
+        FighterStarter,
+        // not supposed to be here
         Pilot,
         Opponent
     }
