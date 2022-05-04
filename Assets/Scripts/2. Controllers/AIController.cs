@@ -13,7 +13,7 @@ public class AIController : MonoBehaviour
     [ContextMenu("Test Choices")]
     public void TestCardSelection()
     {
-        List<CardPlayPriorityObject> cardPlays = GetCurrentHandPossibleAttacks(aSlot);
+        List<CardPlayPriorityObject> cardPlays = GetCurrentPossibleCards(aSlot);
 
         WeightCardPlayValues(cardPlays);
 
@@ -69,9 +69,9 @@ public class AIController : MonoBehaviour
 
 
     private List<CardDataObject> opponentHand;
-    List<CardPlayPriorityObject> cardPlays;
     private CardChannelPairObject attackA;
     private CardChannelPairObject attackB;
+    private string aICombatLog = "";
 
     private void Start()
     {
@@ -87,7 +87,6 @@ public class AIController : MonoBehaviour
         CardPlayManager.OnCombatStart -= FinalCheck;
     }
 
-    #region AI Demo
     private void BuildCardChannelPairA()
     {
         if (attackA != null)
@@ -95,7 +94,7 @@ public class AIController : MonoBehaviour
 
         opponentHand = CombatManager.instance.HandManager.OpponentHand.CharacterHand;
 
-        List<CardPlayPriorityObject> cardPlays = GetCurrentHandPossibleAttacks(true);
+        List<CardPlayPriorityObject> cardPlays = GetCurrentPossibleCards(true);
         CardDataObject selectedCard;
 
         WeightCardPlayValues(cardPlays);
@@ -120,8 +119,6 @@ public class AIController : MonoBehaviour
                 }
             }
 
-            //CONSIDER ICE HERE.
-
             attackA = new CardChannelPairObject(cardPlays[highestCardIndex].card, cardPlays[highestCardIndex].channel);
             attackA.CardData.SelectedChannels = attackA.CardChannel;
 
@@ -139,7 +136,7 @@ public class AIController : MonoBehaviour
 
         opponentHand = CombatManager.instance.HandManager.OpponentHand.CharacterHand;
 
-        List<CardPlayPriorityObject> cardPlays = GetCurrentHandPossibleAttacks(false);
+        List<CardPlayPriorityObject> cardPlays = GetCurrentPossibleCards(false);
         CardDataObject selectedCard;
 
         WeightCardPlayValues(cardPlays);
@@ -164,8 +161,6 @@ public class AIController : MonoBehaviour
                 }
             }
 
-            //CONSIDER ICE HERE.
-
             attackB = new CardChannelPairObject(cardPlays[highestCardIndex].card, cardPlays[highestCardIndex].channel);
             attackB.CardData.SelectedChannels = attackB.CardChannel;
 
@@ -187,6 +182,9 @@ public class AIController : MonoBehaviour
         WeightPriorityWithComponentDamage(cardPlays);
         WeightPriorityWithTargetWeight(cardPlays);
         WeightPriorityWithRanzomization(cardPlays);
+
+        if (CombatManager.instance.NarrateAIDecisionMaking) 
+            Debug.Log(aICombatLog);
     }
 
     private void FinalCheck()
@@ -208,10 +206,11 @@ public class AIController : MonoBehaviour
         attackA = null;
         attackB = null;
     }
-    #endregion
 
-    private List<CardPlayPriorityObject> GetCurrentHandPossibleAttacks(bool aSlot)
+    private List<CardPlayPriorityObject> GetCurrentPossibleCards(bool aSlot)
     {
+        aICombatLog += "AI is card plays hand.";
+
         opponentHand = CombatManager.instance.HandManager.OpponentHand.CharacterHand;
         List<CardPlayPriorityObject> cardPlays = new List<CardPlayPriorityObject>();
 
@@ -230,6 +229,11 @@ public class AIController : MonoBehaviour
                     cardPlays.Add(CreateCardPlayPriorityObject(card, channel));
             }
         }
+
+        aICombatLog += "\nAI found " + cardPlays.Count + " possible cards to play:";
+
+        foreach (CardPlayPriorityObject cardPlay in cardPlays)
+            aICombatLog += "\nCard: " + cardPlay.card.CardName + "." + "\nChannel: " + cardPlay.channel + "." + "\nCard Weight: " + cardPlay.priority;
 
         return cardPlays;
     }
@@ -254,6 +258,8 @@ public class AIController : MonoBehaviour
                         }
                     break;
             }
+
+
         }
     }
 

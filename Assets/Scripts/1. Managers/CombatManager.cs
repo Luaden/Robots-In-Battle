@@ -12,18 +12,23 @@ public class CombatManager : MonoBehaviour
     [SerializeField] private float acidComponentDamageMultiplier;
     [SerializeField] private int iceChannelEnergyReductionModifier;
 
-    #region Debug
-    [Header("Debug / Testing")]
+    [Header("Scene References")]
     [SerializeField] private GameObject winLossPanel;
     [SerializeField] private GameObject reloadGameButton;
     [SerializeField] private GameObject loadShoppingButton;
+
+    #region Debug
+    [Header("Debug / Testing")]
+
     [SerializeField] private bool narrateCardSelection;
     [SerializeField] private bool narrateCombatChoices;
     [SerializeField] private bool narrateAIDecisionMaking;
+    [SerializeField] private bool displayAIDecisionIndicator;
 
     public bool NarrateCardSelection { get => narrateCardSelection; }
     public bool NarrateCombat { get => narrateCombatChoices; }
     public bool NarrateAIDecisionMaking { get => narrateAIDecisionMaking; }
+    public bool DisplayAIDecisionIndicator { get => displayAIDecisionIndicator; }
     #endregion
 
     public static CombatManager instance;

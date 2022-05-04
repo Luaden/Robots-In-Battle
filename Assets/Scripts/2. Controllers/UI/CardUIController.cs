@@ -166,20 +166,23 @@ public class CardUIController : MonoBehaviour, IPointerDownHandler, IPointerUpHa
 
     public void UpdateSelectedChannel(Channels channel)
     {
-        if (channel.HasFlag(Channels.High))
-            highChannelIcon.color = fullColor;
-        else
-            highChannelIcon.color = fadeColor;
+        if(isPlayer || CombatManager.instance.DisplayAIDecisionIndicator)
+        {
+            if (channel.HasFlag(Channels.High))
+                highChannelIcon.color = fullColor;
+            else
+                highChannelIcon.color = fadeColor;
 
-        if (channel.HasFlag(Channels.Mid))
-            midChannelIcon.color = fullColor;
-        else
-            midChannelIcon.color = fadeColor;
+            if (channel.HasFlag(Channels.Mid))
+                midChannelIcon.color = fullColor;
+            else
+                midChannelIcon.color = fadeColor;
 
-        if (channel.HasFlag(Channels.Low))
-            lowChannelIcon.color = fullColor;
-        else
-            lowChannelIcon.color = fadeColor;
+            if (channel.HasFlag(Channels.Low))
+                lowChannelIcon.color = fullColor;
+            else
+                lowChannelIcon.color = fadeColor;
+        }
     }
 
     private void Update()
