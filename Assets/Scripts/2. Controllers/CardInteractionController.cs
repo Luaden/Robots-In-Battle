@@ -300,12 +300,7 @@ public class CardInteractionController
 
         if (CombatManager.instance.NarrateCombat)
         {
-            combatLog += offensiveMech + " starting HP: " + (offensiveMech == CharacterSelect.Player ?
-            CombatManager.instance.PlayerFighter.FighterMech.MechCurrentHP.ToString() : CombatManager.instance.OpponentFighter.FighterMech.MechCurrentHP.ToString());
-            combatLog += ". ";
-            combatLog += defensiveMech + " starting HP: " + (defensiveMech == CharacterSelect.Player ?
-                CombatManager.instance.PlayerFighter.FighterMech.MechCurrentHP.ToString() : CombatManager.instance.OpponentFighter.FighterMech.MechCurrentHP.ToString());
-            combatLog += ". ";
+            
         }
 
         if (offensiveAttack.CardData.CardEffects != null)
@@ -324,9 +319,6 @@ public class CardInteractionController
             {
                 if (counterDamage)
                 {
-                    newAnimations.Enqueue(new AnimationQueueObject(offensiveMech, offensiveAttack.CardData.AnimationType, defensiveMech, defensiveCard.CardData.AnimationType));
-                    newDamageQueue.Enqueue(new DamageMechPairObject(offensiveAttack, offensiveMech, true, false));
-
                     if (CombatManager.instance.NarrateCombat)
                     {
                         combatLog += (offensiveMech + " is playing " + offensiveAttack.CardData.CardName + " but is Countered by " + defensiveMech + ". ");
@@ -335,12 +327,14 @@ public class CardInteractionController
                             * Mathf.RoundToInt(CombatManager.instance.CounterDamageMultiplier)) + ". ");
                         combatLog += (offensiveMech + "'s attack is " + i + " of " + repeatPlay + " total attacks. ");
                     }
+
+                    newAnimations.Enqueue(new AnimationQueueObject(offensiveMech, offensiveAttack.CardData.AnimationType, defensiveMech, defensiveCard.CardData.AnimationType));
+                    newDamageQueue.Enqueue(new DamageMechPairObject(offensiveAttack, offensiveMech, true, false, combatLog));
+
+                    combatLog = string.Empty;
                 }
                 else if (guardDamage)
                 {
-                    newAnimations.Enqueue(new AnimationQueueObject(offensiveMech, offensiveAttack.CardData.AnimationType, defensiveMech, defensiveCard.CardData.AnimationType));
-                    newDamageQueue.Enqueue(new DamageMechPairObject(offensiveAttack, defensiveMech, false, true));
-
                     if (CombatManager.instance.NarrateCombat)
                     {
                         combatLog += (offensiveMech + " is playing " + offensiveAttack.CardData.CardName + " but is guarded by " + defensiveMech + ". ");
@@ -348,37 +342,30 @@ public class CardInteractionController
                             (CombatManager.instance.EffectManager.GetDamageWithModifiers(offensiveAttack, defensiveMech) * CombatManager.instance.GuardDamageMultiplier) + ". ");
                         combatLog += (offensiveMech + "'s attack is " + i + " of " + repeatPlay + " total attacks. ");
                     }
+
+                    newAnimations.Enqueue(new AnimationQueueObject(offensiveMech, offensiveAttack.CardData.AnimationType, defensiveMech, defensiveCard.CardData.AnimationType));
+                    newDamageQueue.Enqueue(new DamageMechPairObject(offensiveAttack, defensiveMech, false, true, combatLog));
+
+                    combatLog = string.Empty;
                 }
                 else
                 {
-                    newAnimations.Enqueue(new AnimationQueueObject(offensiveMech, offensiveAttack.CardData.AnimationType, defensiveMech, AnimationType.Damaged));
-                    newDamageQueue.Enqueue(new DamageMechPairObject(offensiveAttack, defensiveMech, false, false));
-
                     if (CombatManager.instance.NarrateCombat)
                     {
                         combatLog += (offensiveMech + " is playing " + offensiveAttack.CardData.CardName + " for " +
                             CombatManager.instance.EffectManager.GetDamageWithModifiers(offensiveAttack, defensiveMech) + " damage. ");
                         combatLog += (offensiveMech + "'s attack is " + i + " of " + repeatPlay + " total attacks. ");
                     }
+
+                    newAnimations.Enqueue(new AnimationQueueObject(offensiveMech, offensiveAttack.CardData.AnimationType, defensiveMech, AnimationType.Damaged));
+                    newDamageQueue.Enqueue(new DamageMechPairObject(offensiveAttack, defensiveMech, false, false, combatLog));
                 }
             }
 
             CombatManager.instance.CombatAnimationManager.AddAnimationToQueue(newAnimations);
             damagecollection.Enqueue(newDamageQueue);
+            combatLog = string.Empty;
 
-            if (CombatManager.instance.NarrateCombat)
-            {
-                combatLog += offensiveMech + " ending HP: " + (offensiveMech == CharacterSelect.Player ?
-                    CombatManager.instance.PlayerFighter.FighterMech.MechCurrentHP : CombatManager.instance.OpponentFighter.FighterMech.MechCurrentHP);
-                combatLog += ". ";
-
-                combatLog += defensiveMech + " ending HP: " + (defensiveMech == CharacterSelect.Player ?
-                    CombatManager.instance.PlayerFighter.FighterMech.MechCurrentHP : CombatManager.instance.OpponentFighter.FighterMech.MechCurrentHP);
-                combatLog += ". ";
-
-                Debug.Log(combatLog);
-                combatLog = "";
-            }
         }
     }
 

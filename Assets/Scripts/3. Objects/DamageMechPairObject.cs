@@ -8,16 +8,18 @@ public class DamageMechPairObject
     private bool counterDamage;
     private bool guardDamage;
     private CharacterSelect characterTakingDamage;
+    private string combatLog;
 
     public CharacterSelect CharacterTakingDamage { get => characterTakingDamage; }
     public CardChannelPairObject CardChannelPair { get => cardChannelPair; }
 
-    public DamageMechPairObject(CardChannelPairObject attack, CharacterSelect characterTakingDamage, bool counter, bool guard)
+    public DamageMechPairObject(CardChannelPairObject attack, CharacterSelect characterTakingDamage, bool counter, bool guard, string combatLog = null)
     {
         this.cardChannelPair = attack;
         this.characterTakingDamage = characterTakingDamage;
         counterDamage = counter;
         guardDamage = guard;
+        this.combatLog = combatLog;
     }
 
     public int GetDamageToDeal()
@@ -29,6 +31,9 @@ public class DamageMechPairObject
             return Mathf.RoundToInt(damageToReturn * CombatManager.instance.CounterDamageMultiplier);
         if (guardDamage)
             return Mathf.RoundToInt(damageToReturn * CombatManager.instance.GuardDamageMultiplier);
+
+        if (CombatManager.instance.NarrateCombat)
+            Debug.Log(combatLog);
 
         return damageToReturn;
     }
