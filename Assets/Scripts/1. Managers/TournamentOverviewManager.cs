@@ -99,38 +99,25 @@ public class TournamentOverviewManager : MonoBehaviour
         List<NodeDataObject> newActiveNodes = new List<NodeDataObject>();
 
 
-        for (int i = 0; i < nodeController.GetAllActiveNodes().Count; i++)
+        for (int i = 0; i < nodeController.GetAllActiveNodes().Count;)
         {
             // active node
             NodeDataObject currentNode = nodeController.GetAllActiveNodes()[i];
             currentNode.HasWon = true;
-            // pair node has lost..
-
 
             currentNode.PreviousNode = currentNode;
             NodeDataObject pilotObject = currentNode.transform.GetChild(0).GetComponent<NodeDataObject>();
             pilotObject.transform.SetParent(currentNode.NextNode.transform);
             pilotObject.transform.position = currentNode.NextNode.transform.position;
+
             pilotObject.GetComponent<NodeUIController>().NodeSlotController = currentNode.NextNode.GetComponent<NodeSlotController>();
-
+            currentNode.NextNode.isCompleted = true;
             newActiveNodes.Add(currentNode.NextNode);
-            /*            nodeController.GetAllActiveNodes().Add(currentNode.NextNode);
 
-                        NodeDataObject pairNode = nodeController.GetAllActiveNodes()[i].PairNode;
-                        nodeController.GetAllActiveNodes().Remove(pairNode);
-
-                        nodeController.GetAllActiveNodes().Remove(currentNode);*/
+            i += 2;
         }
-
         nodeController.GetAllActiveNodes().Clear();
         nodeController.GetAllActiveNodes().AddRange(newActiveNodes);
-
-/*        for(int i = 0; i < nodeController.GetAllNodes().Count; i++)
-        {
-            if (nodeController.GetAllNodes()[i].HasWon)
-                nodeController.GetAllActiveNodes().Add(nodeController.GetAllNodes()[i]);
-        }
-*/
 
         Debug.Log("battle performed");
 
