@@ -87,7 +87,7 @@ public class CombatManager : MonoBehaviour
         if (damageMechPair.CharacterTakingDamage == CharacterSelect.Player)
         {
             int energyCost = damageMechPair.CardChannelPair.CardData.EnergyCost;
-            Debug.Log("Removing health from player.");
+
             foreach(Channels channel in GetChannelListFromFlags(damageMechPair.GetDamageChannels()))
             {
                 switch (channel)
@@ -325,6 +325,7 @@ public class CombatManager : MonoBehaviour
     private void InitPlayerFighter(FighterDataObject newPlayerFighter)
     {
         playerFighter = newPlayerFighter;
+        playerFighter.FighterMech.ResetEnergy();
         deckManager.SetPlayerDeck(newPlayerFighter.FighterDeck);
         mechHUDManager.SetPlayerMaxStats(playerFighter.FighterMech.MechMaxHP, playerFighter.FighterMech.MechMaxEnergy);
     }
@@ -367,7 +368,11 @@ public class CombatManager : MonoBehaviour
 
             AnimationQueueObject newAnimationQueueObject = new AnimationQueueObject(CharacterSelect.Player, AnimationType.Win, CharacterSelect.Opponent, AnimationType.Lose);
             CombatAnimationManager.AddAnimationToQueue(newAnimationQueueObject);
-            
+
+            MechObject playerMech = playerFighter.FighterMech;
+
+            GameManager.instance.PlayerMechController.SetNewPlayerMech(playerMech);
+
             winLossPanel.SetActive(true);
             loadShoppingButton.SetActive(true);
             return;

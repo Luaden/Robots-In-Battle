@@ -4,23 +4,35 @@ using UnityEngine;
 
 public class DowntimeManager : MonoBehaviour
 {
+    [SerializeField] private GameObject inventory;
+    [SerializeField] private GameObject shopCartWindow;
+
     [SerializeField] private int repairCost;
-    private CardShopManager cardShopManager;
-    private ComponentShopManager componentShopManager;
-    private ShopCollectionRandomizeManager shopCollectionRandomizeManager;
-    private InventoryManager inventoryManager;
+    [SerializeField] private int minimumShopItemCount;
+
+    private ShopManager shopManager;
+    private ShopUISlotManager shopUISlotManager;
+    private ShopItemUIBuildController shopItemUIBuildController;
+    private ShoppingCartManager shoppingCartManager;
+    private ShoppingCartUISlotManager shoppingCartUISlotManager;
+    private InventoryUISlotManager inventoryUISlotManager;
     private PopupUIManager popupUIManager;
 
     public static DowntimeManager instance;
 
     public int RepairCost { get => repairCost; }
+    public int MinimumShopItemCount { get => minimumShopItemCount; }
 
-    public CardShopManager CardShopManager { get => cardShopManager; }
-    public ComponentShopManager ComponentShopManager { get => componentShopManager; }
-    public ShopCollectionRandomizeManager ShopCollectionRandomizeManager { get => shopCollectionRandomizeManager; }
+    public ShopManager ShopManager { get => shopManager; }
+    public ShopUISlotManager ShopUISlotManager { get => shopUISlotManager; }
+    public ShopItemUIBuildController ShopItemUIBuildController { get => shopItemUIBuildController; }
+    public ShoppingCartManager ShoppingCartManager { get => shoppingCartManager; }
+    public ShoppingCartUISlotManager ShoppingCartUISlotManager { get => shoppingCartUISlotManager; }
+    public InventoryUISlotManager InventoryUISlotManager { get => inventoryUISlotManager; }
     public PopupUIManager PopupUIManager { get => popupUIManager; }
 
-    public InventoryManager InventoryManager { get => inventoryManager; }
+    public delegate void onLoadCombatScene();
+    public static event onLoadCombatScene OnLoadCombatScene;
 
     private void Awake()
     {
@@ -31,20 +43,24 @@ public class DowntimeManager : MonoBehaviour
         }
         instance = this;
 
-        cardShopManager = GetComponentInChildren<CardShopManager>(true);
-        componentShopManager = GetComponentInChildren<ComponentShopManager>(true);
-        shopCollectionRandomizeManager = GetComponentInChildren<ShopCollectionRandomizeManager>(true);
-        inventoryManager = GetComponentInChildren<InventoryManager>(true);
+        shopManager = FindObjectOfType<ShopManager>(true);
         popupUIManager = FindObjectOfType<PopupUIManager>(true);
+        shopUISlotManager = FindObjectOfType<ShopUISlotManager>();
+        shoppingCartManager = FindObjectOfType<ShoppingCartManager>(true);
+        shoppingCartUISlotManager = FindObjectOfType<ShoppingCartUISlotManager>(true);
+        shopItemUIBuildController = FindObjectOfType<ShopItemUIBuildController>();
+        inventoryUISlotManager = FindObjectOfType<InventoryUISlotManager>();
 
+    }
 
-        instance.CardShopManager.InitializeShop();
-        instance.ComponentShopManager.InitializeShop();
-
+    public void Start()
+    {
+        instance.ShopManager.InitializeShop();
     }
 
     public void LoadCombatScene()
     {
+        OnLoadCombatScene?.Invoke();
         GameManager.instance.SceneController.LoadCombatScene();
     }
 

@@ -8,7 +8,8 @@ public class CardInteractionController
     private AttackPlanObject playerAttackPlan;
     private AttackPlanObject opponentAttackPlan;
 
-    private Queue<DamageMechPairObject> damageQueue;
+    private Queue<Queue<DamageMechPairObject>> damagecollection;
+    private Queue<DamageMechPairObject> currentDamageQueue;
 
     #region Debug
     private string combatLog;
@@ -16,7 +17,8 @@ public class CardInteractionController
 
     public CardInteractionController()
     {
-        damageQueue = new Queue<DamageMechPairObject>();
+        damagecollection = new Queue<Queue<DamageMechPairObject>>();
+        currentDamageQueue = new Queue<DamageMechPairObject>();
         CombatAnimationManager.OnEndedAnimation += DealDamage;
         CombatManager.OnStartNewTurn += ClearDamageQueue;
     }
@@ -291,6 +293,7 @@ public class CardInteractionController
             return;
 
         Queue<AnimationQueueObject> newAnimations = new Queue<AnimationQueueObject>();
+        Queue<DamageMechPairObject> newDamageQueue = new Queue<DamageMechPairObject>();
         QueueEnergyRemoval(offensiveAttack, offensiveMech, defensiveCard, defensiveMech);
 
         int repeatPlay = 1;
@@ -322,7 +325,7 @@ public class CardInteractionController
                 if (counterDamage)
                 {
                     newAnimations.Enqueue(new AnimationQueueObject(offensiveMech, offensiveAttack.CardData.AnimationType, defensiveMech, defensiveCard.CardData.AnimationType));
-                    damageQueue.Enqueue(new DamageMechPairObject(offensiveAttack, offensiveMech, true, false));
+                    newDamageQueue.Enqueue(new DamageMechPairObject(offensiveAttack, offensiveMech, true, false));
 
                     if (CombatManager.instance.NarrateCombat)
                     {
@@ -336,7 +339,7 @@ public class CardInteractionController
                 else if (guardDamage)
                 {
                     newAnimations.Enqueue(new AnimationQueueObject(offensiveMech, offensiveAttack.CardData.AnimationType, defensiveMech, defensiveCard.CardData.AnimationType));
-                    damageQueue.Enqueue(new DamageMechPairObject(offensiveAttack, defensiveMech, false, true));
+                    newDamageQueue.Enqueue(new DamageMechPairObject(offensiveAttack, defensiveMech, false, true));
 
                     if (CombatManager.instance.NarrateCombat)
                     {
@@ -349,7 +352,7 @@ public class CardInteractionController
                 else
                 {
                     newAnimations.Enqueue(new AnimationQueueObject(offensiveMech, offensiveAttack.CardData.AnimationType, defensiveMech, AnimationType.Damaged));
-                    damageQueue.Enqueue(new DamageMechPairObject(offensiveAttack, defensiveMech, false, false));
+                    newDamageQueue.Enqueue(new DamageMechPairObject(offensiveAttack, defensiveMech, false, false));
 
                     if (CombatManager.instance.NarrateCombat)
                     {
@@ -361,6 +364,7 @@ public class CardInteractionController
             }
 
             CombatManager.instance.CombatAnimationManager.AddAnimationToQueue(newAnimations);
+            damagecollection.Enqueue(newDamageQueue);
 
             if (CombatManager.instance.NarrateCombat)
             {
@@ -430,19 +434,23 @@ public class CardInteractionController
         CombatManager.instance.RemoveMechEnergyWithQueue(newEnergyToRemove);
     }
 
+    //Another way we could handle all of these dequeues from the collection is just setting them to listen for round end.
     private void DealDamage()
     {
-        if (damageQueue.Count == 0)
-            return;
+        if(currentDamageQueue.Count == 0)
+        {
+            if (damagecollection.Count == 0)
+                return;
+            else
+                currentDamageQueue = damagecollection.Dequeue();
 
-        Debug.Log("Dealing damage.");
-        DamageMechPairObject newDamage = damageQueue.Dequeue();
-
-        CombatManager.instance.RemoveHealthFromMech(newDamage);
+            DamageMechPairObject newDamage = currentDamageQueue.Dequeue();
+            CombatManager.instance.RemoveHealthFromMech(newDamage);
+        }
     }
 
     private void ClearDamageQueue()
     {
-        damageQueue.Clear();
+        damagecollection.Clear();
     }
 }

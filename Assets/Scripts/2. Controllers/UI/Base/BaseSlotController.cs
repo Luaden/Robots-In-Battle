@@ -9,7 +9,7 @@ public abstract class BaseSlotController<T> : MonoBehaviour, IDropHandler
     [SerializeField] protected BaseSlotManager<T> slotManager;
     protected T currentSlottedItem;
 
-    public BaseSlotManager<T> SlotManager { get => slotManager; }
+    public BaseSlotManager<T> SlotManager { get => slotManager; set => slotManager = value; }
     public T CurrentSlottedItem { get => currentSlottedItem; set => currentSlottedItem = value; }
 
     public virtual void OnDrop(PointerEventData eventData)
@@ -19,8 +19,6 @@ public abstract class BaseSlotController<T> : MonoBehaviour, IDropHandler
             Debug.Log("Item was dropped in a slot that does not fit it.");
             return;
         }
-
-        slotManager.HandleDrop(eventData, eventData.pointerDrag.GetComponent<T>(), this);
     }
 
     public void HandleDrag(PointerEventData eventData)

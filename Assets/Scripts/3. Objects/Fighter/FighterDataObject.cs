@@ -8,9 +8,6 @@ public class FighterDataObject
     private List<SOItemDataObject> fighterDeck;
     private PilotDataObject fighterPilot;
 
-    private int damageModifier;
-    private int resistanceModifier;
-
     public MechObject FighterMech { get => fighterMech; }
     public List<SOItemDataObject> FighterDeck { get => fighterDeck; set => fighterDeck = value; }
     public PilotDataObject FighterPilot { get => fighterPilot; }
