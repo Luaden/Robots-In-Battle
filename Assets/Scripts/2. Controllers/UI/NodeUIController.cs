@@ -80,6 +80,7 @@ public class NodeUIController : MonoBehaviour, IPointerDownHandler, IPointerUpHa
 
         if(eventData.pointerDrag.GetComponent<NodeDataObject>() != null)
         {
+            
             eventData.pointerDrag.GetComponent<NodeDataObject>().NextNode = nodeSlotController.GetComponent<NodeDataObject>().NextNode;
             eventData.pointerDrag.GetComponent<NodeDataObject>().PairNode = nodeSlotController.GetComponent<NodeDataObject>().PairNode;
 

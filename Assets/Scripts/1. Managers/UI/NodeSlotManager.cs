@@ -43,13 +43,17 @@ public class NodeSlotManager : BaseSlotManager<NodeUIController>
     {
         foreach (NodeSlotController slot in slotList)
             if (slot.CurrentSlottedItem == item)
+            {
+                // if the item has been removed, it has no longer an assigned pilot
+                slot.GetComponent<NodeDataObject>().HasBeenAssigned = false;
                 slot.CurrentSlottedItem = null;
+            }
     }
 
-    public void OnPilotAssigned(NodeUIController item, BaseSlotController<NodeUIController> slot)
+    public void OnFighterAssigned(NodeUIController item, BaseSlotController<NodeUIController> slot)
     {
-        Debug.Log("OnPilotAssigned - Manager");
-        slot.GetComponent<NodeDataObject>().IsCompleted = true;
+        Debug.Log("OnFighterAssigned - Manager");
+        slot.GetComponent<NodeDataObject>().HasBeenAssigned = true;
         //TournamentOverviewManager.instance.AssignFighterToNodeSlot(item.GetComponent<NodeDataObject>());
     }
 }
