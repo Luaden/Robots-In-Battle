@@ -15,6 +15,7 @@ public class BurnPileController : MonoBehaviour
     [SerializeField] private GameObject opponentHighMidBurnPile;
     [SerializeField] private GameObject opponentLowMidBurnPile;
 
+    private bool cardsPrepped = false;
     private bool prepComplete = false;
     private bool burnComplete = false;
 
@@ -85,6 +86,9 @@ public class BurnPileController : MonoBehaviour
 
     public void PrepCardsToBurn()
     {
+        if (cardsPrepped)
+            return; 
+
         if (burnCardCharacterQueue.Count > 0)
         {
             List<CardCharacterPairObject> newDestroyCardList = new List<CardCharacterPairObject>();
@@ -179,6 +183,7 @@ public class BurnPileController : MonoBehaviour
                 }
             }
 
+            cardsPrepped = true;
             destroyQueue.Enqueue(newDestroyCardList);
         }
     }
@@ -200,6 +205,8 @@ public class BurnPileController : MonoBehaviour
             if (destroyQueue.Count == 0 && burnCardCharacterQueue.Count == 0)
                 burnComplete = true;
         }
+
+        cardsPrepped = false;
     }
 
     private class CardCharacterPairObject

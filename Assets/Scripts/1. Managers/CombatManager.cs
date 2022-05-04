@@ -21,12 +21,14 @@ public class CombatManager : MonoBehaviour
     [Header("Debug / Testing")]
 
     [SerializeField] private bool narrateCardSelection;
-    [SerializeField] private bool narrateCombatChoices;
+    [SerializeField] private bool narrateCombat;
+    [SerializeField] private bool narrateEffects;
     [SerializeField] private bool narrateAIDecisionMaking;
     [SerializeField] private bool displayAIDecisionIndicator;
 
     public bool NarrateCardSelection { get => narrateCardSelection; }
-    public bool NarrateCombat { get => narrateCombatChoices; }
+    public bool NarrateCombat { get => narrateCombat; }
+    public bool NarrateEffects { get => narrateEffects; }
     public bool NarrateAIDecisionMaking { get => narrateAIDecisionMaking; }
     public bool DisplayAIDecisionIndicator { get => displayAIDecisionIndicator; }
     #endregion

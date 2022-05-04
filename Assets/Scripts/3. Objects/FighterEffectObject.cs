@@ -226,12 +226,19 @@ public class FighterEffectObject
             {
                 effect.CurrentTurn++;
 
-                if (effect.CurrentTurn >= effect.EffectDuration)
+                if (effect.CurrentTurn > effect.EffectDuration)
                     keyWordEffectList.Add(effect);
             }
 
             foreach (CardEffectObject effect in keyWordEffectList)
+            {
+                if(CombatManager.instance.NarrateEffects)
+                {
+                    Debug.Log("KeyWord effect " + effect.EffectType + " is falling off due to reaching the end of its lifetime.");
+                }
+
                 pair.Value.Remove(effect);
+            }
 
             if (pair.Value.Count == 0)
                 keyWordKVPair.Add(pair);
