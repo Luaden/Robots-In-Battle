@@ -183,7 +183,7 @@ public class BurnPileController : MonoBehaviour
                 }
             }
 
-            cardsPrepped = true;
+            cardsPrepped = false;
             destroyQueue.Enqueue(newDestroyCardList);
         }
     }
