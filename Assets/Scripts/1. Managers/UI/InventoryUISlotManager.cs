@@ -10,6 +10,10 @@ public class InventoryUISlotManager : BaseSlotManager<ShopItemUIController>
 
     public override void AddItemToCollection(ShopItemUIController item, BaseSlotController<ShopItemUIController> slot)
     {
+
+        if (item.MechComponentDataObject == null)
+            item.MechComponentDataObject = new MechComponentDataObject(item.BaseSOItemDataObject);
+
         if (slot != null && slot.CurrentSlottedItem == null)
         {
             item.notInMech = true;
@@ -61,6 +65,12 @@ public class InventoryUISlotManager : BaseSlotManager<ShopItemUIController>
             return;
         }
 
+        if (newData.MechComponentDataObject == null)
+        {
+            MechComponentDataObject newComponent = new MechComponentDataObject(newData.BaseSOItemDataObject);
+            newData.MechComponentDataObject = newComponent;
+        }
+
         AddItemToCollection(newData, slot);
     }
 
@@ -70,26 +80,32 @@ public class InventoryUISlotManager : BaseSlotManager<ShopItemUIController>
             if (slot.CurrentSlottedItem == item)
             {
                 slot.CurrentSlottedItem = null;
-                GameManager.instance.PlayerInventoryController.RemoveItemFromInventory(item.BaseSOItemDataObject);
+                GameManager.instance.PlayerInventoryController.RemoveItemFromInventory(item.MechComponentDataObject);
+                return;
             }
     }
 
     private void Start()
     {
-        Debug.Log("Building current mech Items.");
         foreach (MechComponentDataObject item in GameManager.instance.PlayerInventoryController.PlayerInventory)
             if (item.SOItemDataObject.ItemType == ItemType.Component)
-                DowntimeManager.instance.ShopItemUIBuildController.BuildAndDisplayItemUI(item.SOItemDataObject, this);
+                DowntimeManager.instance.ShopItemUIBuildController.BuildAndDisplayItemUI(item.SOItemDataObject, this, item);
     }
 
     private void UpdatePlayerInventory()
     {
-        List<SOItemDataObject> newSOItemDataObjectList = new List<SOItemDataObject>();
+        List<ShopItemUIController> shopItemUIControllers = new List<ShopItemUIController>();
 
         foreach (BaseSlotController<ShopItemUIController> slot in slotList)
-            newSOItemDataObjectList.Add(slot.CurrentSlottedItem.BaseSOItemDataObject);
+            shopItemUIControllers.Add(slot.CurrentSlottedItem);
 
-        foreach (SOItemDataObject item in newSOItemDataObjectList)
-            GameManager.instance.PlayerInventoryController.AddItemToInventory(new MechComponentDataObject(item));
+        foreach (ShopItemUIController item in shopItemUIControllers)
+        {
+            if (item.MechComponentDataObject != null)
+                GameManager.instance.PlayerInventoryController.AddItemToInventory(item.MechComponentDataObject);
+            else
+                GameManager.instance.PlayerInventoryController.AddItemToInventory(new MechComponentDataObject(item.BaseSOItemDataObject));
+        }
+            
     }
 }

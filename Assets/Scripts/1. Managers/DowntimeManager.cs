@@ -31,6 +31,9 @@ public class DowntimeManager : MonoBehaviour
     public InventoryUISlotManager InventoryUISlotManager { get => inventoryUISlotManager; }
     public PopupUIManager PopupUIManager { get => popupUIManager; }
 
+    public delegate void onLoadCombatScene();
+    public static event onLoadCombatScene OnLoadCombatScene;
+
     private void Awake()
     {
         if(instance != this && instance != null)
@@ -57,6 +60,7 @@ public class DowntimeManager : MonoBehaviour
 
     public void LoadCombatScene()
     {
+        OnLoadCombatScene?.Invoke();
         GameManager.instance.SceneController.LoadCombatScene();
     }
 

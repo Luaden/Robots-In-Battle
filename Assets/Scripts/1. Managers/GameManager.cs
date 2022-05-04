@@ -229,8 +229,7 @@ public class GameManager : MonoBehaviour
 
         public void SetNewPlayerMech(MechObject newMech)
         {
-            MechObject newPlayerMech = new MechObject(newMech.MechHead, newMech.MechTorso, newMech.MechArms, newMech.MechLegs);
-            instance.playerData.PlayerMech = newPlayerMech;
+            instance.playerData.PlayerMech = newMech;
         }
 
         public void SwapPlayerMechPart(SOItemDataObject SOMechComponentDataObject)

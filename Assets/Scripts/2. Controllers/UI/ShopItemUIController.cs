@@ -92,13 +92,15 @@ public class ShopItemUIController : MonoBehaviour, IPointerDownHandler, IPointer
     public bool notInMech = true;
     private Transform previousParentObject; 
     private SOItemDataObject baseSOItemDataObject;
+    private MechComponentDataObject mechComponentDataObject;
     private BaseSlotController<ShopItemUIController> itemShopUISlotController;
 
     public SOItemDataObject BaseSOItemDataObject { get => baseSOItemDataObject; }
+    public MechComponentDataObject MechComponentDataObject { get => mechComponentDataObject; set => mechComponentDataObject = value; }
     public BaseSlotController<ShopItemUIController> ItemSlotController { get => itemShopUISlotController; set => UpdateItemSlot(value); }
     public Transform PreviousParentObject { get => previousParentObject; set => previousParentObject = value; }
 
-    public void InitUI(SOItemDataObject shopItemUIObject)
+    public void InitUI(SOItemDataObject shopItemUIObject, MechComponentDataObject oldMechComponentData = null)
     {
         baseSOItemDataObject = shopItemUIObject;
         itemType = shopItemUIObject.ItemType;
@@ -167,6 +169,7 @@ public class ShopItemUIController : MonoBehaviour, IPointerDownHandler, IPointer
             componentCurrencyCostText.text = currencyCost.ToString();
             componentTimeCostText.text = timeCost.ToString();
             componentUIObject.SetActive(true);
+            mechComponentDataObject = oldMechComponentData;
 
             switch (componentElement)
             {
@@ -238,7 +241,6 @@ public class ShopItemUIController : MonoBehaviour, IPointerDownHandler, IPointer
     {
         if(notInMech)
         {
-            Debug.Log(notInMech);
             isPickedUp = true;
             transform.SetParent(itemShopUISlotController.SlotManager.MainCanvas.transform);
         }

@@ -10,20 +10,12 @@ public class PlayerMechUISlotManager : BaseSlotManager<ShopItemUIController>
     [SerializeField] private BaseSlotController<ShopItemUIController> armsSlot;
     [SerializeField] private BaseSlotController<ShopItemUIController> legsSlot;
 
+    private delegate void onCompletedComponentSwap();
+    private event onCompletedComponentSwap OnCompletedComponentSwap;
+
     public override void AddItemToCollection(ShopItemUIController item, BaseSlotController<ShopItemUIController> slot)
     {
-        void SwapComponentIntoInventory(ShopItemUIController newItem, BaseSlotController<ShopItemUIController> slotToAddTo)
-        {
-            DowntimeManager.instance.InventoryUISlotManager.AddItemToCollection(slotToAddTo.CurrentSlottedItem, slotToAddTo);
-            GameManager.instance.PlayerMechController.SwapPlayerMechPart(new MechComponentDataObject(newItem.BaseSOItemDataObject));
-
-            newItem.ItemSlotController.SlotManager.RemoveItemFromCollection(newItem);
-            item.notInMech = false;
-            slotToAddTo.CurrentSlottedItem = newItem;
-            newItem.ItemSlotController = slot;
-        }
-
-        if(slot == null)
+        if (slot == null)
         {
             switch (item.BaseSOItemDataObject.ComponentType)
             {
@@ -68,7 +60,8 @@ public class PlayerMechUISlotManager : BaseSlotManager<ShopItemUIController>
                         item.ItemSlotController = slot;
                         item.notInMech = false;
 
-                        //Update mech UI content
+                        CheckSlotItems();
+                        UpdateCurrentMech();
                         return;
                     }
                 }
@@ -82,7 +75,8 @@ public class PlayerMechUISlotManager : BaseSlotManager<ShopItemUIController>
                         item.ItemSlotController = slot;
                         item.notInMech = false;
 
-                        //Update mech UI content
+                        CheckSlotItems();
+                        UpdateCurrentMech();
                         return;
                     }
                 }
@@ -96,7 +90,8 @@ public class PlayerMechUISlotManager : BaseSlotManager<ShopItemUIController>
                         item.ItemSlotController = slot;
                         item.notInMech = false;
 
-                        //Update mech UI content
+                        CheckSlotItems();
+                        UpdateCurrentMech();
                         return;
                     }
                 }
@@ -110,7 +105,8 @@ public class PlayerMechUISlotManager : BaseSlotManager<ShopItemUIController>
                         item.ItemSlotController = slot;
                         item.notInMech = false;
 
-                        //Update mech UI content
+                        CheckSlotItems();
+                        UpdateCurrentMech();
                         return;
                     }
                 }
@@ -125,8 +121,6 @@ public class PlayerMechUISlotManager : BaseSlotManager<ShopItemUIController>
                     if (item.BaseSOItemDataObject.ComponentType == MechComponent.Head)
                     {
                         SwapComponentIntoInventory(item, headSlot);
-
-                        //Update mech UI content
                         return;
                     }
                 }
@@ -136,8 +130,6 @@ public class PlayerMechUISlotManager : BaseSlotManager<ShopItemUIController>
                     if (item.BaseSOItemDataObject.ComponentType == MechComponent.Torso)
                     {
                         SwapComponentIntoInventory(item, torsoSlot);
-
-                        //Update mech UI content
                         return;
                     }
                 }
@@ -147,8 +139,6 @@ public class PlayerMechUISlotManager : BaseSlotManager<ShopItemUIController>
                     if (item.BaseSOItemDataObject.ComponentType == MechComponent.Arms)
                     {
                         SwapComponentIntoInventory(item, armsSlot);
-
-                        //Update mech UI content
                         return;
                     }
                 }
@@ -158,15 +148,35 @@ public class PlayerMechUISlotManager : BaseSlotManager<ShopItemUIController>
                     if (item.BaseSOItemDataObject.ComponentType == MechComponent.Legs)
                     {
                         SwapComponentIntoInventory(item, legsSlot);
-
-                        Debug.Log("New " + item.BaseSOItemDataObject.ComponentType + " added.");
-
-                        //Update mech UI content
                         return;
                     }
                 }
             }
         }
+
+        void SwapComponentIntoInventory(ShopItemUIController newItem, BaseSlotController<ShopItemUIController> slotToAddTo)
+        {
+            newItem.ItemSlotController.SlotManager.RemoveItemFromCollection(newItem);
+            DowntimeManager.instance.InventoryUISlotManager.AddItemToCollection(slotToAddTo.CurrentSlottedItem, slotToAddTo);
+
+            newItem.notInMech = false;
+            slotToAddTo.CurrentSlottedItem = newItem;
+            newItem.ItemSlotController = slot;
+            CheckSlotItems();
+            UpdateCurrentMech();
+        }
+    }
+
+    private void CheckSlotItems()
+    {
+        if (headSlot.CurrentSlottedItem == null)
+            Debug.Log("Missing head item.");
+        if (torsoSlot.CurrentSlottedItem == null)
+            Debug.Log("Missing torso item.");
+        if (armsSlot.CurrentSlottedItem == null)
+            Debug.Log("Missing arms item.");
+        if (legsSlot.CurrentSlottedItem == null)
+            Debug.Log("Missing legs item.");
     }
 
     public override void AddSlotToList(BaseSlotController<ShopItemUIController> newSlot)
@@ -194,7 +204,7 @@ public class PlayerMechUISlotManager : BaseSlotManager<ShopItemUIController>
         if (armsSlot.CurrentSlottedItem == item)
             armsSlot.CurrentSlottedItem = null;
         if (legsSlot.CurrentSlottedItem == item)
-            legsSlot = null;
+            legsSlot.CurrentSlottedItem = null;
     }
 
     private void Start()
@@ -208,11 +218,25 @@ public class PlayerMechUISlotManager : BaseSlotManager<ShopItemUIController>
         currentParts.Add(playerMech.MechLegs);
 
         foreach (MechComponentDataObject item in currentParts)
-            DowntimeManager.instance.ShopItemUIBuildController.BuildAndDisplayItemUI(item.SOItemDataObject, this);
+            DowntimeManager.instance.ShopItemUIBuildController.BuildAndDisplayItemUI(item.SOItemDataObject, this, item);
+
     }
 
     private void UpdateCurrentMech()
     {
-        
+        CheckSlotItems();
+
+        Debug.Log(headSlot.CurrentSlottedItem.MechComponentDataObject.ComponentMaxHP);
+        Debug.Log(torsoSlot.CurrentSlottedItem.MechComponentDataObject.ComponentMaxHP);
+        Debug.Log(armsSlot.CurrentSlottedItem.MechComponentDataObject.ComponentMaxHP);
+        Debug.Log(legsSlot.CurrentSlottedItem.MechComponentDataObject.ComponentMaxHP);
+
+
+        MechObject newMech = new MechObject(headSlot.CurrentSlottedItem.MechComponentDataObject, 
+                                            torsoSlot.CurrentSlottedItem.MechComponentDataObject,
+                                            armsSlot.CurrentSlottedItem.MechComponentDataObject,
+                                            legsSlot.CurrentSlottedItem.MechComponentDataObject);
+
+        GameManager.instance.PlayerMechController.SetNewPlayerMech(newMech);
     }
 }
