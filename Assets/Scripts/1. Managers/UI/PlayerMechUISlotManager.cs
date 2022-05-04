@@ -186,7 +186,7 @@ public class PlayerMechUISlotManager : BaseSlotManager<ShopItemUIController>
 
     public override void HandleDrop(PointerEventData eventData, ShopItemUIController newData, BaseSlotController<ShopItemUIController> slot)
     {
-        if (newData == null)
+        if (newData == null || !newData.notInMech)
         {
             Debug.Log("Could not find appropriate data for slot.");
             return;

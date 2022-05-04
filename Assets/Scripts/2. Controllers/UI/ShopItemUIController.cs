@@ -89,7 +89,7 @@ public class ShopItemUIController : MonoBehaviour, IPointerDownHandler, IPointer
     private AnimationType animationType;
 
     public bool isPickedUp = false;
-    public bool notInMech = true;
+    [SerializeField] public bool notInMech = true;
     private Transform previousParentObject; 
     private SOItemDataObject baseSOItemDataObject;
     private MechComponentDataObject mechComponentDataObject;
@@ -232,14 +232,17 @@ public class ShopItemUIController : MonoBehaviour, IPointerDownHandler, IPointer
 
     public virtual void OnEndDrag(PointerEventData eventData)
     {
-        isPickedUp = false;
-        draggableCanvasGroup.blocksRaycasts = true;
-        draggableCanvasGroup.alpha = 1f;
+        if(notInMech)
+        {
+            isPickedUp = false;
+            draggableCanvasGroup.blocksRaycasts = true;
+            draggableCanvasGroup.alpha = 1f;
+        }
     }
 
     public void OnDrop(PointerEventData eventData)
     {
-        if(!notInMech)
+        if(notInMech)
             itemShopUISlotController.OnDrop(eventData);
     }
 
