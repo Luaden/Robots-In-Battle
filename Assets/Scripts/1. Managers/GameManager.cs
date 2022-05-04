@@ -116,6 +116,12 @@ public class GameManager : MonoBehaviour
         playerBankController.ResetPlayerTime();
     }
 
+    public void UpdatePlayerAfterFight(MechObject newMech)
+    {
+        PlayerMechController.SetNewPlayerMech(newMech);
+        playerData.CurrentWinCount += 1;
+    }
+
     private void Awake()
     {
         if (instance != null && instance != this)

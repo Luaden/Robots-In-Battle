@@ -84,6 +84,12 @@ public class CombatManager : MonoBehaviour
 
     public void RemoveHealthFromMech(DamageMechPairObject damageMechPair)
     {
+        if (NarrateCombat)
+        {
+            Debug.Log(CharacterSelect.Player + " starting HP: " + instance.PlayerFighter.FighterMech.MechCurrentHP.ToString());
+            Debug.Log(CharacterSelect.Opponent + " starting HP: " + instance.OpponentFighter.FighterMech.MechCurrentHP.ToString());
+        }
+
         if (damageMechPair.CharacterTakingDamage == CharacterSelect.Player)
         {
             int energyCost = damageMechPair.CardChannelPair.CardData.EnergyCost;
@@ -158,6 +164,12 @@ public class CombatManager : MonoBehaviour
                         break;
                 }
             }
+        }
+
+        if (NarrateCombat)
+        {
+            Debug.Log(CharacterSelect.Player + " ending HP: " + instance.PlayerFighter.FighterMech.MechCurrentHP.ToString());
+            Debug.Log(CharacterSelect.Opponent + " ending HP: " + instance.OpponentFighter.FighterMech.MechCurrentHP.ToString());
         }
 
         mechHUDManager.UpdatePlayerHP(playerFighter.FighterMech.MechCurrentHP);
@@ -372,6 +384,7 @@ public class CombatManager : MonoBehaviour
             MechObject playerMech = playerFighter.FighterMech;
 
             GameManager.instance.PlayerMechController.SetNewPlayerMech(playerMech);
+            GameManager.instance.UpdatePlayerAfterFight(playerMech);
 
             winLossPanel.SetActive(true);
             loadShoppingButton.SetActive(true);

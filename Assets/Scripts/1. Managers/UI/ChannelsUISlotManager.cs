@@ -203,6 +203,31 @@ public class ChannelsUISlotManager : BaseSlotManager<CardUIController>
         if (attackSlotAFilled && attackSlotBFilled)
             return false;
 
+        if(newData.CardData.AffectedChannels == AffectedChannels.AllPossibleChannels)
+        {
+            foreach(Channels channel in CombatManager.instance.GetChannelListFromFlags(newData.CardData.PossibleChannels))
+            {
+                if(CombatManager.instance.EffectManager.GetIceElementInChannel(channel, CharacterSelect.Player))
+                    if (newData.CardData.EnergyCost * CombatManager.instance.IceChannelEnergyReductionModifier > 
+                        CombatManager.instance.PlayerFighter.FighterMech.MechCurrentEnergy)
+                    {
+                        Debug.Log("Not enough energy to use this card.");
+                        return false;
+                    }
+            }
+        }
+
+        if(newData.CardData.AffectedChannels == AffectedChannels.SelectedChannel)
+        {
+            if(CombatManager.instance.EffectManager.GetIceElementInChannel(CheckChannelSlot(slot), CharacterSelect.Player))
+                if(newData.CardData.EnergyCost * CombatManager.instance.IceChannelEnergyReductionModifier >
+                    CombatManager.instance.PlayerFighter.FighterMech.MechCurrentEnergy)
+                {
+                    Debug.Log("Not enough energy to use this card.");
+                    return false;
+                }
+        }
+
         if (newData.CardData.EnergyCost > CombatManager.instance.PlayerFighter.FighterMech.MechCurrentEnergy)
         {
             Debug.Log("Not enough energy to use this card.");
@@ -233,6 +258,9 @@ public class ChannelsUISlotManager : BaseSlotManager<CardUIController>
             playerAttackSlotA.CurrentSlottedItem = null;
             cardChannelPairObjectA = null;
             attackSlotAFilled = false;
+            item.UpdateSelectedChannel(item.CardData.PossibleChannels);
+
+            CombatManager.instance.CardPlayManager.PlayerAttackPlan.cardChannelPairA = null;
 
             if (playerAttackSlotB.CurrentSlottedItem != null)
                 CombatManager.instance.PreviewEnergyConsumption(CharacterSelect.Player, cardChannelPairObjectB.CardData.EnergyCost);
@@ -246,6 +274,9 @@ public class ChannelsUISlotManager : BaseSlotManager<CardUIController>
             playerAttackSlotB.CurrentSlottedItem = null;
             cardChannelPairObjectB = null;
             attackSlotBFilled = false;
+            item.UpdateSelectedChannel(item.CardData.PossibleChannels);
+
+            CombatManager.instance.CardPlayManager.PlayerAttackPlan.cardChannelPairB = null;
 
             if (playerAttackSlotA.CurrentSlottedItem != null)
                 CombatManager.instance.PreviewEnergyConsumption(CharacterSelect.Player, cardChannelPairObjectA.CardData.EnergyCost);
