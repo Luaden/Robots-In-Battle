@@ -329,7 +329,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 1, g: 0.91053414, b: 0, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -366,8 +366,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ea21c054e1c7aca468d9aa0cdbe3d494, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  previousNode: {fileID: 0}
   nextNode: {fileID: 1048879452}
   pairNode: {fileID: 2138255540}
+  isCompleted: 0
+  hasWon: 0
   nodeType: 0
 --- !u!1 &474354341
 GameObject:
@@ -550,7 +553,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 1, g: 0.91053414, b: 0, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -587,8 +590,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ea21c054e1c7aca468d9aa0cdbe3d494, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  previousNode: {fileID: 0}
   nextNode: {fileID: 633100573}
   pairNode: {fileID: 500496119}
+  isCompleted: 0
+  hasWon: 0
   nodeType: 1
 --- !u!1 &507540973
 GameObject:
@@ -642,8 +648,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ea21c054e1c7aca468d9aa0cdbe3d494, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  previousNode: {fileID: 0}
   nextNode: {fileID: 0}
   pairNode: {fileID: 0}
+  isCompleted: 0
+  hasWon: 0
   nodeType: 4
 --- !u!114 &507540976
 MonoBehaviour:
@@ -671,7 +680,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 1, g: 0, b: 0, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -762,7 +771,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 1, g: 0.91053414, b: 0, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -799,8 +808,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ea21c054e1c7aca468d9aa0cdbe3d494, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  previousNode: {fileID: 0}
   nextNode: {fileID: 628738493}
   pairNode: {fileID: 628738493}
+  isCompleted: 0
+  hasWon: 0
   nodeType: 3
 --- !u!1 &633100568
 GameObject:
@@ -868,7 +880,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 1, g: 0.91053414, b: 0, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -905,8 +917,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ea21c054e1c7aca468d9aa0cdbe3d494, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  previousNode: {fileID: 0}
   nextNode: {fileID: 628738493}
   pairNode: {fileID: 908287458}
+  isCompleted: 0
+  hasWon: 0
   nodeType: 2
 --- !u!1 &665535998
 GameObject:
@@ -1128,8 +1143,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ea21c054e1c7aca468d9aa0cdbe3d494, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  previousNode: {fileID: 0}
   nextNode: {fileID: 0}
   pairNode: {fileID: 0}
+  isCompleted: 0
+  hasWon: 0
   nodeType: 4
 --- !u!114 &675031142
 MonoBehaviour:
@@ -1157,7 +1175,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 1, g: 0, b: 0, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -1303,7 +1321,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 759000228}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1792040185}
+        m_TargetAssemblyTypeName: TournamentOverviewManager, Assembly-CSharp
+        m_MethodName: NextBattle
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &829872535
 GameObject:
   m_ObjectHideFlags: 0
@@ -1532,7 +1562,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 1, g: 0.91053414, b: 0, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -1569,8 +1599,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ea21c054e1c7aca468d9aa0cdbe3d494, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  previousNode: {fileID: 0}
   nextNode: {fileID: 628738493}
   pairNode: {fileID: 633100573}
+  isCompleted: 0
+  hasWon: 0
   nodeType: 2
 --- !u!1 &1048879447
 GameObject:
@@ -1638,7 +1671,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 1, g: 0.91053414, b: 0, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -1675,8 +1708,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ea21c054e1c7aca468d9aa0cdbe3d494, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  previousNode: {fileID: 0}
   nextNode: {fileID: 633100573}
   pairNode: {fileID: 1048879452}
+  isCompleted: 0
+  hasWon: 0
   nodeType: 1
 --- !u!1 &1089198744
 GameObject:
@@ -1730,8 +1766,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ea21c054e1c7aca468d9aa0cdbe3d494, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  previousNode: {fileID: 0}
   nextNode: {fileID: 0}
   pairNode: {fileID: 0}
+  isCompleted: 0
+  hasWon: 0
   nodeType: 4
 --- !u!114 &1089198747
 MonoBehaviour:
@@ -1759,7 +1798,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 1, g: 0, b: 0, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -1837,7 +1876,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 1, g: 0.91053414, b: 0, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -1887,8 +1926,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ea21c054e1c7aca468d9aa0cdbe3d494, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  previousNode: {fileID: 0}
   nextNode: {fileID: 2145457246}
   pairNode: {fileID: 1541598478}
+  isCompleted: 0
+  hasWon: 0
   nodeType: 0
 --- !u!1001 &1136094206
 PrefabInstance:
@@ -2044,8 +2086,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ea21c054e1c7aca468d9aa0cdbe3d494, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  previousNode: {fileID: 0}
   nextNode: {fileID: 0}
   pairNode: {fileID: 0}
+  isCompleted: 0
+  hasWon: 0
   nodeType: 4
 --- !u!114 &1181165364
 MonoBehaviour:
@@ -2073,7 +2118,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 1, g: 0, b: 0, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -2187,8 +2232,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ea21c054e1c7aca468d9aa0cdbe3d494, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  previousNode: {fileID: 0}
   nextNode: {fileID: 0}
   pairNode: {fileID: 0}
+  isCompleted: 0
+  hasWon: 0
   nodeType: 4
 --- !u!114 &1291613044
 MonoBehaviour:
@@ -2216,7 +2264,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 1, g: 0, b: 0, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -2293,8 +2341,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ea21c054e1c7aca468d9aa0cdbe3d494, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  previousNode: {fileID: 0}
   nextNode: {fileID: 0}
   pairNode: {fileID: 0}
+  isCompleted: 0
+  hasWon: 0
   nodeType: 4
 --- !u!114 &1306206117
 MonoBehaviour:
@@ -2322,7 +2373,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 1, g: 0, b: 0, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -2466,8 +2517,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ea21c054e1c7aca468d9aa0cdbe3d494, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  previousNode: {fileID: 0}
   nextNode: {fileID: 0}
   pairNode: {fileID: 0}
+  isCompleted: 0
+  hasWon: 0
   nodeType: 4
 --- !u!114 &1445301497
 MonoBehaviour:
@@ -2495,7 +2549,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 1, g: 0, b: 0, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -2573,7 +2627,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 1, g: 0.91053414, b: 0, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -2623,8 +2677,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ea21c054e1c7aca468d9aa0cdbe3d494, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  previousNode: {fileID: 0}
   nextNode: {fileID: 2145457246}
   pairNode: {fileID: 1116599831}
+  isCompleted: 0
+  hasWon: 0
   nodeType: 0
 --- !u!1 &1553655276
 GameObject:
@@ -2678,8 +2735,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ea21c054e1c7aca468d9aa0cdbe3d494, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  previousNode: {fileID: 0}
   nextNode: {fileID: 0}
   pairNode: {fileID: 0}
+  isCompleted: 0
+  hasWon: 0
   nodeType: 4
 --- !u!114 &1553655279
 MonoBehaviour:
@@ -2707,7 +2767,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 1, g: 0, b: 0, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -2798,7 +2858,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 1, g: 0.91053414, b: 0, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -2835,8 +2895,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ea21c054e1c7aca468d9aa0cdbe3d494, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  previousNode: {fileID: 0}
   nextNode: {fileID: 500496119}
   pairNode: {fileID: 2126143002}
+  isCompleted: 0
+  hasWon: 0
   nodeType: 0
 --- !u!1 &1768649214
 GameObject:
@@ -3046,7 +3109,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 1, g: 0.91053414, b: 0, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -3096,8 +3159,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ea21c054e1c7aca468d9aa0cdbe3d494, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  previousNode: {fileID: 0}
   nextNode: {fileID: 2083423985}
   pairNode: {fileID: 2031536029}
+  isCompleted: 0
+  hasWon: 0
   nodeType: 0
 --- !u!1 &2031536023
 GameObject:
@@ -3152,7 +3218,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 1, g: 0.91053414, b: 0, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -3202,8 +3268,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ea21c054e1c7aca468d9aa0cdbe3d494, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  previousNode: {fileID: 0}
   nextNode: {fileID: 2083423985}
   pairNode: {fileID: 1951395509}
+  isCompleted: 0
+  hasWon: 0
   nodeType: 0
 --- !u!1 &2083423980
 GameObject:
@@ -3271,7 +3340,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 1, g: 0.91053414, b: 0, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -3308,8 +3377,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ea21c054e1c7aca468d9aa0cdbe3d494, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  previousNode: {fileID: 0}
   nextNode: {fileID: 908287458}
   pairNode: {fileID: 2145457246}
+  isCompleted: 0
+  hasWon: 0
   nodeType: 1
 --- !u!1 &2126142997
 GameObject:
@@ -3377,7 +3449,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 1, g: 0.91053414, b: 0, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -3414,8 +3486,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ea21c054e1c7aca468d9aa0cdbe3d494, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  previousNode: {fileID: 0}
   nextNode: {fileID: 500496119}
   pairNode: {fileID: 1738004299}
+  isCompleted: 0
+  hasWon: 0
   nodeType: 0
 --- !u!1 &2138255535
 GameObject:
@@ -3483,7 +3558,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 1, g: 0.91053414, b: 0, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -3520,8 +3595,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ea21c054e1c7aca468d9aa0cdbe3d494, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  previousNode: {fileID: 0}
   nextNode: {fileID: 1048879452}
   pairNode: {fileID: 431136446}
+  isCompleted: 0
+  hasWon: 0
   nodeType: 0
 --- !u!1 &2145457241
 GameObject:
@@ -3589,7 +3667,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 1, g: 0.91053414, b: 0, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -3626,6 +3704,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ea21c054e1c7aca468d9aa0cdbe3d494, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  previousNode: {fileID: 0}
   nextNode: {fileID: 908287458}
   pairNode: {fileID: 2083423985}
+  isCompleted: 0
+  hasWon: 0
   nodeType: 1

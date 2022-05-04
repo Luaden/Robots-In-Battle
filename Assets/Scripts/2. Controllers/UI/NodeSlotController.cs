@@ -17,7 +17,7 @@ public class NodeSlotController : BaseSlotController<NodeUIController>
         if (nodeData == null)
             return;
 
-        if (nodeData.nodeType != NodeDataObject.NodeType.Starter && nodeData.nodeType != NodeDataObject.NodeType.None)
+        if (nodeData.nodeType != NodeDataObject.NodeType.Starter && nodeData.nodeType != NodeDataObject.NodeType.PilotStarter)
             return;
 
         onAssignPilot(eventData.pointerDrag.GetComponent<NodeUIController>(), this);
