@@ -202,17 +202,18 @@ public class CardInteractionController
 
         EnergyRemovalObject newEnergyToRemove = QueueEnergyRemoval(offensiveAttack, offensiveMech, defensiveCard, defensiveMech);
 
-        int repeatPlay = 1;
+        int repeatOffense = 1;
+        int repeatDefense = 1;
 
         if (offensiveAttack != null && offensiveAttack.CardData != null && offensiveAttack.CardData.CardEffects != null)
         {
             foreach (SOCardEffectObject effect in offensiveAttack.CardData.CardEffects)
             {
                 if (effect.EffectType == CardEffectTypes.PlayMultipleTimes)
-                    repeatPlay = effect.EffectMagnitude;
+                    repeatOffense = effect.EffectMagnitude;
 
                 if (effect.EffectType == CardEffectTypes.KeyWord && effect.CardKeyWord == CardKeyWord.Flurry)
-                    repeatPlay += CombatManager.instance.EffectManager.GetAndConsumeFlurryBonus(offensiveMech);
+                    repeatOffense += CombatManager.instance.EffectManager.GetAndConsumeFlurryBonus(offensiveMech);
 
                 CombatManager.instance.EffectManager.AddFlurryBonus(effect, offensiveMech);
             }
@@ -220,19 +221,20 @@ public class CardInteractionController
         
         if (defensiveCard != null && defensiveCard.CardData != null & defensiveCard.CardData.CardEffects != null)
         {
-            foreach (SOCardEffectObject effect in offensiveAttack.CardData.CardEffects)
+            Debug.Log("Found defensive card.");
+            foreach (SOCardEffectObject effect in defensiveCard.CardData.CardEffects)
             {
                 if (effect.EffectType == CardEffectTypes.PlayMultipleTimes)
-                    repeatPlay = effect.EffectMagnitude;
+                    repeatDefense = effect.EffectMagnitude;
 
                 if (effect.EffectType == CardEffectTypes.KeyWord && effect.CardKeyWord == CardKeyWord.Flurry)
-                    repeatPlay += CombatManager.instance.EffectManager.GetAndConsumeFlurryBonus(defensiveMech);
+                    repeatDefense += CombatManager.instance.EffectManager.GetAndConsumeFlurryBonus(defensiveMech);
 
                 CombatManager.instance.EffectManager.AddFlurryBonus(effect, defensiveMech);
             }
         }
 
-        for (int i = 0; i < repeatPlay; i++)
+        for (int i = 0; i < repeatOffense; i++)
         {
             if (counterDamage)
             {
@@ -242,11 +244,11 @@ public class CardInteractionController
                     combatLog += (offensiveMech + " would have dealt " + offensiveAttack.CardData.BaseDamage + " damage but will instead be dealt " +
                         (CombatManager.instance.EffectManager.GetDamageWithModifiers(offensiveAttack, defensiveMech)
                         * Mathf.RoundToInt(CombatManager.instance.CounterDamageMultiplier)) + ". ");
-                    combatLog += (offensiveMech + "'s attack is " + (i + 1) + " of " + repeatPlay + " total attacks. ");
+                    combatLog += (offensiveMech + "'s attack is " + (i + 1) + " of " + repeatOffense + " total attacks. ");
                 }
 
                 newDamageQueue.Enqueue(new DamageMechPairObject(new CardCharacterPairObject(offensiveAttack, offensiveMech), 
-                                                                new CardCharacterPairObject(defensiveCard, offensiveMech), true, false, combatLog));
+                                                                new CardCharacterPairObject(defensiveCard, offensiveMech, repeatDefense), true, false, combatLog));
                 newAnimations.Enqueue(new AnimationQueueObject(offensiveMech, offensiveAttack.CardData.AnimationType, defensiveMech, defensiveCard.CardData.AnimationType));
                 combatLog = string.Empty;
             }
@@ -257,12 +259,12 @@ public class CardInteractionController
                     combatLog += (offensiveMech + " is playing " + offensiveAttack.CardData.CardName + " but is guarded by " + defensiveMech + ". ");
                     combatLog += (offensiveMech + " would have dealt " + offensiveAttack.CardData.BaseDamage + " damage but this was reduced to " +
                         (CombatManager.instance.EffectManager.GetDamageWithModifiers(offensiveAttack, defensiveMech) * CombatManager.instance.GuardDamageMultiplier) + ". ");
-                    combatLog += (offensiveMech + "'s attack is " + (i + 1) + " of " + repeatPlay + " total attacks. ");
+                    combatLog += (offensiveMech + "'s attack is " + (i + 1) + " of " + repeatOffense + " total attacks. ");
                 }
 
                 newAnimations.Enqueue(new AnimationQueueObject(offensiveMech, offensiveAttack.CardData.AnimationType, defensiveMech, defensiveCard.CardData.AnimationType));
                 newDamageQueue.Enqueue(new DamageMechPairObject(new CardCharacterPairObject(offensiveAttack, defensiveMech),
-                                                                new CardCharacterPairObject(defensiveCard, offensiveMech), false, true, combatLog));
+                                                                new CardCharacterPairObject(defensiveCard, offensiveMech, repeatDefense), false, true, combatLog));
 
                 combatLog = string.Empty;
             }
@@ -272,11 +274,11 @@ public class CardInteractionController
                 {
                     combatLog += (offensiveMech + " is playing " + offensiveAttack.CardData.CardName + " for " +
                         CombatManager.instance.EffectManager.GetDamageWithModifiers(offensiveAttack, defensiveMech) + " damage. ");
-                    combatLog += (offensiveMech + "'s attack is " + (i + 1) + " of " + repeatPlay + " total attacks. ");
+                    combatLog += (offensiveMech + "'s attack is " + (i + 1) + " of " + repeatOffense + " total attacks. ");
                 }
 
                 newAnimations.Enqueue(new AnimationQueueObject(offensiveMech, offensiveAttack.CardData.AnimationType, defensiveMech, AnimationType.Damaged));
-                newDamageQueue.Enqueue(new DamageMechPairObject(new CardCharacterPairObject(offensiveAttack, defensiveMech), null, false, false, combatLog));
+                newDamageQueue.Enqueue(new DamageMechPairObject(new CardCharacterPairObject(offensiveAttack, defensiveMech, repeatDefense), null, false, false, combatLog));
             }
 
             combatQueueObject.damageQueue = newDamageQueue;

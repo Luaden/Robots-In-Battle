@@ -74,7 +74,7 @@ public class GameManager : MonoBehaviour
             opponentDeck = starterDeck;
             
         PilotDataObject opponentPilot = new PilotDataObject();
-        FighterDataObject opponentFighter = new FighterDataObject(opponentMech, opponentPilot, starterDeck);
+        FighterDataObject opponentFighter = new FighterDataObject(opponentMech, opponentPilot, opponentDeck);
 
         CombatManager.instance.PlayerFighter = new FighterDataObject(playerData.PlayerMech, new PilotDataObject(), playerData.PlayerDeck);
         CombatManager.instance.OpponentFighter = opponentFighter;
@@ -97,8 +97,11 @@ public class GameManager : MonoBehaviour
 
     private bool CheckOpponentDeckAvailable()
     {
-        if (starterOpponentDeck != null)
+        if (starterOpponentDeck != null && starterOpponentDeck.Count > 0)
+        {
+            Debug.Log("Found opponent deck.");
             return true;
+        }
         return false;
     }
     #endregion
