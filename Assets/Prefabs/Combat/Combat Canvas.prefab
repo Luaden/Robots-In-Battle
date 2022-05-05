@@ -16306,6 +16306,7 @@ GameObject:
   - component: {fileID: 1646574084020073059}
   - component: {fileID: 1646574084020073056}
   - component: {fileID: 6467128728770128019}
+  - component: {fileID: 8914077050151925091}
   m_Layer: 0
   m_Name: Combat Manager
   m_TagString: Untagged
@@ -16350,8 +16351,10 @@ MonoBehaviour:
   reloadGameButton: {fileID: 129746561049401200}
   loadShoppingButton: {fileID: 2050768820}
   narrateCardSelection: 1
-  narrateCombatChoices: 1
+  narrateCombat: 0
+  narrateEffects: 0
   narrateAIDecisionMaking: 1
+  displayAIDecisionIndicator: 0
 --- !u!114 &1646574084020073059
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -16393,6 +16396,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 27d48f000cdb9d74cb6241a979445be0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &8914077050151925091
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1646574084020073071}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b0fffde1b2bd8d546bc137312772adf1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &2245919304587867374

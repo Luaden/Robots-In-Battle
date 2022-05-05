@@ -47,6 +47,7 @@ public class CombatManager : MonoBehaviour
     private BuffUIManager buffUIManager;
     private CombatAnimationManager combatAnimationManager;
     private EffectManager effectManager;
+    private CombatSequenceManager combatSequenceManager;
 
     private FighterDataObject playerFighter;
     private FighterDataObject opponentFighter;
@@ -67,6 +68,7 @@ public class CombatManager : MonoBehaviour
     public BuffUIManager BuffUIManager { get => buffUIManager; }
     public CombatAnimationManager CombatAnimationManager { get => combatAnimationManager; }
     public EffectManager EffectManager { get => effectManager; }
+    public CombatSequenceManager CombatSequenceManager { get => combatSequenceManager; }
 
     public int MechEnergyGain { get => mechEnergyGain; }
     public float BrokenCDM { get => brokenComponentDamageMultiplier; }
@@ -99,8 +101,6 @@ public class CombatManager : MonoBehaviour
 
         if (damageMechPair.CharacterTakingDamage == CharacterSelect.Player)
         {
-            int energyCost = damageMechPair.CardChannelPair.CardData.EnergyCost;
-
             foreach(Channels channel in GetChannelListFromFlags(damageMechPair.GetDamageChannels()))
             {
                 switch (channel)
@@ -109,27 +109,18 @@ public class CombatManager : MonoBehaviour
                         playerFighter.FighterMech.DamageComponentHP(
                             effectManager.GetComponentDamageWithModifiers(
                                 damageMechPair.GetDamageToDeal(), channel, CharacterSelect.Player), MechComponent.Arms);
-
-                        if (effectManager.GetIceElementInChannel(channel, CharacterSelect.Opponent))
-                            energyCost *= iceChannelEnergyReductionModifier;
                         break;
 
                     case Channels.Mid:
                         playerFighter.FighterMech.DamageComponentHP(
                             effectManager.GetComponentDamageWithModifiers(
                                 damageMechPair.GetDamageToDeal(), channel, CharacterSelect.Player), MechComponent.Torso);
-
-                        if (effectManager.GetIceElementInChannel(channel, CharacterSelect.Opponent))
-                            energyCost *= iceChannelEnergyReductionModifier;
                         break;
 
                     case Channels.Low:
                         playerFighter.FighterMech.DamageComponentHP(
                             effectManager.GetComponentDamageWithModifiers(
                                 damageMechPair.GetDamageToDeal(), channel, CharacterSelect.Player), MechComponent.Legs);
-
-                        if (effectManager.GetIceElementInChannel(channel, CharacterSelect.Opponent))
-                            energyCost *= iceChannelEnergyReductionModifier;
                         break;                
                 }
             }
@@ -137,8 +128,6 @@ public class CombatManager : MonoBehaviour
 
         if (damageMechPair.CharacterTakingDamage == CharacterSelect.Opponent)
         {
-            int energyCost = damageMechPair.CardChannelPair.CardData.EnergyCost;
-
             foreach (Channels channel in GetChannelListFromFlags(damageMechPair.GetDamageChannels()))
             {
                 switch (channel)
@@ -147,27 +136,18 @@ public class CombatManager : MonoBehaviour
                         opponentFighter.FighterMech.DamageComponentHP(
                             effectManager.GetComponentDamageWithModifiers(
                                 damageMechPair.GetDamageToDeal(), channel, CharacterSelect.Opponent), MechComponent.Arms);
-
-                        if (effectManager.GetIceElementInChannel(channel, CharacterSelect.Player))
-                            energyCost *= iceChannelEnergyReductionModifier;
                         break;
 
                     case Channels.Mid:
                         opponentFighter.FighterMech.DamageComponentHP(
                             effectManager.GetComponentDamageWithModifiers(
                                 damageMechPair.GetDamageToDeal(), channel, CharacterSelect.Opponent), MechComponent.Torso);
-
-                        if (effectManager.GetIceElementInChannel(channel, CharacterSelect.Opponent))
-                            energyCost *= iceChannelEnergyReductionModifier;
                         break;
 
                     case Channels.Low:
                         opponentFighter.FighterMech.DamageComponentHP(
                             effectManager.GetComponentDamageWithModifiers(
                                 damageMechPair.GetDamageToDeal(), channel, CharacterSelect.Opponent), MechComponent.Legs);
-
-                        if (effectManager.GetIceElementInChannel(channel, CharacterSelect.Opponent))
-                            energyCost *= iceChannelEnergyReductionModifier;
                         break;
                 }
             }
@@ -211,9 +191,25 @@ public class CombatManager : MonoBehaviour
         }
     }
 
-    public void RemoveMechEnergyWithQueue(EnergyRemovalObject newEnergyRemovalObject)
+    public void RemoveEnergyFromMechs(EnergyRemovalObject newEnergyRemovalObject)
     {
-        energyRemovalQueue.Enqueue(newEnergyRemovalObject);
+        if (newEnergyRemovalObject.firstMech == CharacterSelect.Player)
+        {
+            playerFighter.FighterMech.MechCurrentEnergy -= newEnergyRemovalObject.firstMechEnergyRemoval;
+
+            if (newEnergyRemovalObject.secondMechEnergyRemoval != 0)
+                opponentFighter.FighterMech.MechCurrentEnergy -= newEnergyRemovalObject.secondMechEnergyRemoval;
+        }
+        if (newEnergyRemovalObject.firstMech == CharacterSelect.Opponent)
+        {
+            opponentFighter.FighterMech.MechCurrentEnergy -= newEnergyRemovalObject.firstMechEnergyRemoval;
+
+            if (newEnergyRemovalObject.secondMechEnergyRemoval != 0)
+                playerFighter.FighterMech.MechCurrentEnergy -= newEnergyRemovalObject.secondMechEnergyRemoval;
+        }
+
+        mechHUDManager.UpdatePlayerEnergy(playerFighter.FighterMech.MechCurrentEnergy, playerFighter.FighterMech.MechCurrentEnergy, false);
+        mechHUDManager.UpdateOpponentEnergy(opponentFighter.FighterMech.MechCurrentEnergy, opponentFighter.FighterMech.MechCurrentEnergy, false);
     }
 
     public void PreviewEnergyConsumption(CharacterSelect character, int energyToRemove)
@@ -282,53 +278,27 @@ public class CombatManager : MonoBehaviour
         buffUIManager = FindObjectOfType<BuffUIManager>(true);
         combatAnimationManager = FindObjectOfType<CombatAnimationManager>(true);
         effectManager = FindObjectOfType<EffectManager>(true);
+        combatSequenceManager = FindObjectOfType<CombatSequenceManager>(true);
 
         energyRemovalQueue = new Queue<EnergyRemovalObject>();
     }
 
     private void Start()
     {
-        CardPlayManager.OnCombatStart += DisableCanPlayCards;
-        CardPlayManager.OnCombatComplete += EnableCanPlayCards;
-        CardPlayManager.OnCombatComplete += StartNewTurn;
-        CombatAnimationManager.OnRoundEnded += RemoveEnergyFromMechs;
-        CombatAnimationManager.OnEndedAnimation += CheckForWinLoss;
+        CombatSequenceManager.OnStartCombat += DisableCanPlayCards;
+        CombatSequenceManager.OnRoundComplete += CheckForWinLoss;
+        CombatSequenceManager.OnCombatComplete += StartNewTurn;
+        CombatSequenceManager.OnCombatComplete += EnableCanPlayCards;
+
     }
     private void OnDestroy()
     {
         OnDestroyScene?.Invoke();
         instance = null;
-        CardPlayManager.OnCombatStart -= DisableCanPlayCards;
-        CardPlayManager.OnCombatComplete -= EnableCanPlayCards;
-        CardPlayManager.OnCombatComplete -= StartNewTurn;
-        CombatAnimationManager.OnRoundEnded -= RemoveEnergyFromMechs;
-        CombatAnimationManager.OnEndedAnimation -= CheckForWinLoss;
-    }
-
-    private void RemoveEnergyFromMechs()
-    {
-        if (energyRemovalQueue.Count > 0)
-        {
-            EnergyRemovalObject energyRemovalObject = energyRemovalQueue.Dequeue();
-
-            if (energyRemovalObject.firstMech == CharacterSelect.Player)
-            {
-                playerFighter.FighterMech.MechCurrentEnergy -= energyRemovalObject.firstMechEnergyRemoval;
-
-                if(energyRemovalObject.secondMechEnergyRemoval != 0)
-                    opponentFighter.FighterMech.MechCurrentEnergy -= energyRemovalObject.secondMechEnergyRemoval;
-            }
-            if (energyRemovalObject.firstMech == CharacterSelect.Opponent)
-            {
-                opponentFighter.FighterMech.MechCurrentEnergy -= energyRemovalObject.firstMechEnergyRemoval;
-
-                if (energyRemovalObject.secondMechEnergyRemoval != 0)
-                    playerFighter.FighterMech.MechCurrentEnergy -= energyRemovalObject.secondMechEnergyRemoval;
-            }
-
-            mechHUDManager.UpdatePlayerEnergy(playerFighter.FighterMech.MechCurrentEnergy, playerFighter.FighterMech.MechCurrentEnergy, false);
-            mechHUDManager.UpdateOpponentEnergy(opponentFighter.FighterMech.MechCurrentEnergy, opponentFighter.FighterMech.MechCurrentEnergy, false);
-        }
+        CombatSequenceManager.OnStartCombat -= DisableCanPlayCards;
+        CombatSequenceManager.OnRoundComplete -= CheckForWinLoss;
+        CombatSequenceManager.OnCombatComplete -= StartNewTurn;
+        CombatSequenceManager.OnCombatComplete -= EnableCanPlayCards;
     }
 
     private void DisableCanPlayCards()
@@ -371,7 +341,7 @@ public class CombatManager : MonoBehaviour
     {
         if (playerFighter.FighterMech.MechCurrentHP <= 0)
         {
-            CombatAnimationManager.ClearAnimationQueue();
+            CombatSequenceManager.ClearCombatQueue();
 
             AnimationQueueObject newAnimationQueueObject = new AnimationQueueObject(CharacterSelect.Player, AnimationType.Lose, CharacterSelect.Opponent, AnimationType.Win);
             CombatAnimationManager.AddAnimationToQueue(newAnimationQueueObject);
@@ -383,7 +353,7 @@ public class CombatManager : MonoBehaviour
         }
         if (opponentFighter.FighterMech.MechCurrentHP <= 0)
         {
-            CombatAnimationManager.ClearAnimationQueue();
+            CombatSequenceManager.ClearCombatQueue();
 
             AnimationQueueObject newAnimationQueueObject = new AnimationQueueObject(CharacterSelect.Player, AnimationType.Win, CharacterSelect.Opponent, AnimationType.Lose);
             CombatAnimationManager.AddAnimationToQueue(newAnimationQueueObject);
