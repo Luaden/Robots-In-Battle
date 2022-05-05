@@ -12,7 +12,7 @@ public class NodeUIController : MonoBehaviour, IPointerDownHandler, IPointerUpHa
     [SerializeField] protected TMP_Text fighterName;
 
     private bool isPickedUp = false;
-    private Transform previousParentObject;
+    public Transform previousParentObject;
     [SerializeField] protected float travelSpeed;
 
     private RectTransform draggableRectTransform;
@@ -52,7 +52,7 @@ public class NodeUIController : MonoBehaviour, IPointerDownHandler, IPointerUpHa
         fighterName.text = newNodeData.FighterName;
 
         nodeDataObject = newNodeData.gameObject;
-        newNodeData.NodeUIController = this.gameObject;
+        newNodeData.NodeUIController = this.GetComponent<NodeUIController>();
         //nodeData
         // information about the mech
         // name, hp, description?
@@ -136,6 +136,15 @@ public class NodeUIController : MonoBehaviour, IPointerDownHandler, IPointerUpHa
         nodeSlotController = newSlot;
         transform.SetParent(newSlot.transform);
         previousParentObject = newSlot.transform;
+    }
+
+    public void SetInactive()
+    {
+        this.enabled = false;
+    }
+    public void SetActive()
+    {
+        this.enabled = true;
     }
 
 }

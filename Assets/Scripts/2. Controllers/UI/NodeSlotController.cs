@@ -13,27 +13,50 @@ public class NodeSlotController : BaseSlotController<NodeUIController>
     }
     public override void OnDrop(PointerEventData eventData)
     {
-        
-        NodeDataObject nodeData = eventData.pointerEnter.GetComponent<NodeDataObject>();
-        if (nodeData == null)
+        if (this.GetComponent<NodeDataObject>().nodeType != NodeDataObject.NodeType.Starter)
             return;
 
-        if (nodeData.nodeType != NodeDataObject.NodeType.Starter && nodeData.nodeType != NodeDataObject.NodeType.FighterStarter)
+        if (currentSlottedItem != null)
+        {
+            // the obj we are dragging
+            NodeUIController draggedObjItem = eventData.pointerDrag.GetComponent<NodeUIController>();
+            // temp cache of the dragged obj
+            NodeUIController tempDraggedObj = draggedObjItem;
+            // temp cache of the current slotted item on this slot
+            NodeUIController tempCurrentSlotItem = this.currentSlottedItem;
+
+
+            Debug.Log("tempDraggedObj: " + tempDraggedObj);
+            Debug.Log("tempCurrentSlotItem: " + tempCurrentSlotItem);
+            // remove the dragged obj from its current slot
+            draggedObjItem.NodeSlotController.SlotManager.RemoveItemFromCollection(draggedObjItem);
+            // remove this slots item from this slot
+            currentSlottedItem.NodeSlotController.SlotManager.RemoveItemFromCollection(currentSlottedItem);
+            // add current slotted item to the slot of the dragged obj
+            tempDraggedObj.NodeSlotController.SlotManager.AddItemToCollection(tempCurrentSlotItem, tempDraggedObj.NodeSlotController);
+            // add the dragged obj to this slot
+            slotManager.AddItemToCollection(tempDraggedObj, this);
+
+            // ping that we have assigned fighters
+            onAssignFighter(tempCurrentSlotItem, tempCurrentSlotItem.NodeSlotController);
+            onAssignFighter(tempDraggedObj, this);
+
+            // if the object has a pair node..
+            if (GetComponent<NodeDataObject>().PairNode != null)
+            {
+                // if the pair node has been assigned a pilot...
+                if (this.GetComponent<NodeDataObject>().PairNode.HasBeenAssigned)
+                {
+                    Debug.Log("the pair has completed");
+                }
+            }
+
+
             return;
 
-        
-
+        }
         onAssignFighter(eventData.pointerDrag.GetComponent<NodeUIController>(), this);
         slotManager.HandleDrop(eventData, eventData.pointerDrag.GetComponent<NodeUIController>(), this);
-
-        if(GetComponent<NodeDataObject>().PairNode != null)
-        {
-            // if the pair node has been assigned a pilot...
-            if (this.GetComponent<NodeDataObject>().PairNode.HasBeenAssigned)
-            {
-                Debug.Log("the pair has completed");
-            }
-        }
 
     }
 

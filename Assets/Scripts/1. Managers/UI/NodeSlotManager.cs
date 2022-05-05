@@ -45,6 +45,8 @@ public class NodeSlotManager : BaseSlotManager<NodeUIController>
             if (slot.CurrentSlottedItem == item)
             {
                 // if the item has been removed, it has no longer an assigned pilot
+                if (TournamentOverviewManager.instance.GetActiveList().Contains(slot.GetComponent<NodeDataObject>()))
+                    TournamentOverviewManager.instance.RemoveInActiveList(slot.GetComponent<NodeDataObject>());
                 slot.GetComponent<NodeDataObject>().HasBeenAssigned = false;
                 slot.CurrentSlottedItem = null;
             }
@@ -54,6 +56,10 @@ public class NodeSlotManager : BaseSlotManager<NodeUIController>
     {
         Debug.Log("OnFighterAssigned - Manager");
         slot.GetComponent<NodeDataObject>().HasBeenAssigned = true;
+        
+        if(!TournamentOverviewManager.instance.GetActiveList().Contains(slot.GetComponent<NodeDataObject>()))
+            TournamentOverviewManager.instance.AddToActiveList(slot.GetComponent<NodeDataObject>());
+
         //TournamentOverviewManager.instance.AssignFighterToNodeSlot(item.GetComponent<NodeDataObject>());
     }
 }
