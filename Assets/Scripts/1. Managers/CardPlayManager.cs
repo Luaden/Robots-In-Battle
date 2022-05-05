@@ -11,10 +11,9 @@ public class CardPlayManager : MonoBehaviour
 
     public AttackPlanObject PlayerAttackPlan { get => playerAttackPlan; }
 
-    public delegate void onCombatStart();
-    public static event onCombatStart OnCombatStart;
-    public delegate void onCombatComplete();
-    public static event onCombatComplete OnCombatComplete;
+    public delegate void onBeginCardPlay();
+    public static event onBeginCardPlay OnBeginCardPlay;
+
 
     public void BuildOpponentAttackPlan(CardChannelPairObject cardChannelPairObjectA, CardChannelPairObject cardChannelPairObjectB)
     {
@@ -24,12 +23,11 @@ public class CardPlayManager : MonoBehaviour
 
     public void PlayCards()
     {
+        OnBeginCardPlay.Invoke();
+
         if(CombatManager.instance.CanPlayCards)
         {
-            OnCombatStart?.Invoke();
-
             cardInteractionController.DetermineCardInteractions(playerAttackPlan, opponentAttackPlan);
-
             ClearAttackPlans();
         }
     }
@@ -44,18 +42,5 @@ public class CardPlayManager : MonoBehaviour
     {
         cardInteractionController = new CardInteractionController();
         playerAttackPlan = new AttackPlanObject(null, null, CharacterSelect.Player, CharacterSelect.Opponent);
-
-        CombatAnimationManager.OnAnimationsComplete += TurnComplete;
-    }
-
-    private void OnDestroy()
-    {
-        CombatAnimationManager.OnAnimationsComplete -= TurnComplete;
-        cardInteractionController.DisableDamageListeners();
-    }
-
-    private void TurnComplete()
-    {
-        OnCombatComplete?.Invoke();
     }
 }

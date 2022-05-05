@@ -85,7 +85,6 @@ public class ShopItemUIController : MonoBehaviour, IPointerDownHandler, IPointer
     private AffectedChannels affectedChannels;
     private int energyCost;
     private int baseDamage;
-    private bool applyEffectsFirst = false;
     private AnimationType animationType;
 
     public bool isPickedUp = false;
@@ -242,7 +241,7 @@ public class ShopItemUIController : MonoBehaviour, IPointerDownHandler, IPointer
 
     public void OnDrop(PointerEventData eventData)
     {
-        if(notInMech)
+        if(!notInMech)
             itemShopUISlotController.OnDrop(eventData);
     }
 

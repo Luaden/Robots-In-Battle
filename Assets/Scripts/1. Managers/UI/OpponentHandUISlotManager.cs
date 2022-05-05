@@ -58,10 +58,5 @@ public class OpponentHandUISlotManager : BaseSlotManager<CardUIController>
     {
         slotList.Add(newSlot);
     }
-
-    private void Awake()
-    {
-        //slotList = new List<BaseSlotController<CardUIController>>();
-    }
 }
 

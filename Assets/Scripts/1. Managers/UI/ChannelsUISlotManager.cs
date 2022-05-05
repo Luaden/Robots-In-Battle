@@ -288,12 +288,12 @@ public class ChannelsUISlotManager : BaseSlotManager<CardUIController>
 
     private void Start()
     {
-        CardPlayManager.OnCombatComplete += ResetChannelSelections;
+        CombatSequenceManager.OnCombatComplete += ResetChannelSelections;
     }
 
     private void OnDestroy()
     {
-        CardPlayManager.OnCombatComplete -= ResetChannelSelections;
+        CombatSequenceManager.OnCombatComplete -= ResetChannelSelections;
     }
 
     private Channels CheckChannelSlot(BaseSlotController<CardUIController> slotToCheck)
