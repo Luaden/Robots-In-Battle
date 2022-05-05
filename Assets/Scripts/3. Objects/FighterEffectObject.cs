@@ -145,7 +145,7 @@ public class FighterEffectObject
                 newEnergyToRemove.firstMech = character;
                 newEnergyToRemove.firstMechEnergyRemoval = pair.Value;
 
-                CombatManager.instance.RemoveMechEnergyWithQueue(newEnergyToRemove);
+                CombatManager.instance.RemoveEnergyFromMechs(newEnergyToRemove);
                 CombatManager.instance.AddEnergyToMech(character == CharacterSelect.Player ? CharacterSelect.Opponent : CharacterSelect.Player, pair.Value);
             }
         }

@@ -15,215 +15,131 @@ public class BurnPileController : MonoBehaviour
     [SerializeField] private GameObject opponentHighMidBurnPile;
     [SerializeField] private GameObject opponentLowMidBurnPile;
 
-    private bool cardsPrepped = false;
-    private bool prepComplete = false;
-    private bool burnComplete = false;
+    private CardBurnObject currentCardBurnObject;
 
-    private Queue<List<CardCharacterPairObject>> burnCardCharacterQueue = new Queue<List<CardCharacterPairObject>>();
-    private Queue<List<CardCharacterPairObject>> destroyQueue = new Queue<List<CardCharacterPairObject>>();
-
-    public bool PrepComplete { get => prepComplete; }
-    public bool BurnComplete { get => burnComplete; }
-
-    public void SetCardOnBurnPile(CardUIController firstCard, CharacterSelect firstCardOwner, CardUIController secondCard = null)
+    public void PrepCardsToBurn(CardBurnObject newCardsToBurn)
     {
-        if (firstCard == null)
-            return;
+        currentCardBurnObject = newCardsToBurn;
 
-        List<CardCharacterPairObject> newCardList = new List<CardCharacterPairObject>();
-
-        if(firstCardOwner == CharacterSelect.Player)
+        if (currentCardBurnObject.firstCharacter == CharacterSelect.Player)
         {
-            CardCharacterPairObject cardCharacterPair = new CardCharacterPairObject();
-            cardCharacterPair.card = firstCard;
-            cardCharacterPair.character = CharacterSelect.Player;
-            firstCard.CardSlotController.SlotManager.RemoveItemFromCollection(firstCard);
-            firstCard.CardSlotController = null;
+            ParentCardUIObject(currentCardBurnObject.firstCard, CharacterSelect.Player);
 
-            newCardList.Add(cardCharacterPair);
-            
-            if(secondCard != null)
-            {
-                cardCharacterPair = new CardCharacterPairObject();
-                cardCharacterPair.card = secondCard;
-                cardCharacterPair.character = CharacterSelect.Opponent;
-                secondCard.CardSlotController.SlotManager.RemoveItemFromCollection(secondCard);
-                secondCard.CardSlotController = null;
-                
-                newCardList.Add(cardCharacterPair);
-            }
-
-            burnCardCharacterQueue.Enqueue(newCardList);
+            if(currentCardBurnObject.secondCard != null)
+                ParentCardUIObject(currentCardBurnObject.secondCard, CharacterSelect.Opponent);
         }
-
-        if(firstCardOwner == CharacterSelect.Opponent)
+        else
         {
-            CardCharacterPairObject cardCharacterPair = new CardCharacterPairObject();
-            cardCharacterPair.card = firstCard;
-            cardCharacterPair.character = CharacterSelect.Opponent;
-            firstCard.CardSlotController.SlotManager.RemoveItemFromCollection(firstCard);
-            firstCard.CardSlotController = null;
+            ParentCardUIObject(currentCardBurnObject.firstCard, CharacterSelect.Opponent);
 
-            newCardList.Add(cardCharacterPair);
-
-            if (secondCard != null)
-            {
-                cardCharacterPair = new CardCharacterPairObject();
-                cardCharacterPair.card = secondCard;
-                cardCharacterPair.character = CharacterSelect.Player;
-                secondCard.CardSlotController.SlotManager.RemoveItemFromCollection(secondCard);
-                secondCard.CardSlotController = null;
-
-                newCardList.Add(cardCharacterPair);
-            }
-
-
-            burnCardCharacterQueue.Enqueue(newCardList);
+            if (currentCardBurnObject.secondCard != null)
+                ParentCardUIObject(currentCardBurnObject.secondCard, CharacterSelect.Player);
         }
-
-        burnComplete = false;
     }
 
-    public void PrepCardsToBurn()
+    public void BurnCards()
     {
-        if (cardsPrepped)
-            return; 
-
-        if (burnCardCharacterQueue.Count > 0)
+        if(currentCardBurnObject.firstCharacter == CharacterSelect.Player)
         {
-            List<CardCharacterPairObject> newDestroyCardList = new List<CardCharacterPairObject>();
-            List<CardCharacterPairObject> cardCharacterPairs = new List<CardCharacterPairObject>(burnCardCharacterQueue.Dequeue());
+            CombatManager.instance.DeckManager.ReturnCardToPlayerDeck(currentCardBurnObject.firstCard.CardData);
 
-            foreach (CardCharacterPairObject cardCharacterPair in cardCharacterPairs)
+            if (currentCardBurnObject.secondCard != null)
+                CombatManager.instance.DeckManager.ReturnCardToOpponentDeck(currentCardBurnObject.secondCard.CardData);
+        }
+
+        if(currentCardBurnObject.firstCharacter == CharacterSelect.Opponent)
+        {
+            CombatManager.instance.DeckManager.ReturnCardToOpponentDeck(currentCardBurnObject.firstCard.CardData);
+
+            if (currentCardBurnObject.secondCard != null)
+                CombatManager.instance.DeckManager.ReturnCardToPlayerDeck(currentCardBurnObject.secondCard.CardData);
+        }
+    }
+
+    private void ParentCardUIObject(CardUIController card, CharacterSelect character)
+    {
+        if (character == CharacterSelect.Player)
+        {
+            if (card.CardData.AffectedChannels == AffectedChannels.AllPossibleChannels)
             {
-                if(cardCharacterPair.character == CharacterSelect.Player)
+                switch (card.CardData.PossibleChannels)
                 {
-                    if(cardCharacterPair.card.CardData.AffectedChannels == AffectedChannels.AllPossibleChannels)
-                    {
-                        switch (cardCharacterPair.card.CardData.PossibleChannels)
-                        {
-                            case Channels.HighMid:
-                                cardCharacterPair.card.PreviousParentObject = playerHighMidBurnPile.transform;
-                                cardCharacterPair.card.transform.SetParent(playerHighMidBurnPile.transform);
-                                newDestroyCardList.Add(cardCharacterPair);
-                                break;
+                    case Channels.HighMid:
+                        card.PreviousParentObject = playerHighMidBurnPile.transform;
+                        card.transform.SetParent(playerHighMidBurnPile.transform);
+                        Debug.Log(character + " card's selected channel: " + Channels.HighMid);
+                        break;
 
-                            case Channels.LowMid:
-                                cardCharacterPair.card.PreviousParentObject = playerLowMidBurnPile.transform;
-                                cardCharacterPair.card.transform.SetParent(playerLowMidBurnPile.transform);
-                                newDestroyCardList.Add(cardCharacterPair);
-                                break;
-                        }
-
-                        destroyQueue.Enqueue(newDestroyCardList);
-                        return;
-                    }
-
-                    switch (cardCharacterPair.card.CardData.SelectedChannels)
-                    {
-                        case Channels.High:
-                            cardCharacterPair.card.PreviousParentObject = playerHighBurnPile.transform;
-                            cardCharacterPair.card.transform.SetParent(playerHighBurnPile.transform);
-                            newDestroyCardList.Add(cardCharacterPair);
-                            break;
-                        case Channels.Mid:
-                            cardCharacterPair.card.PreviousParentObject = playerMidBurnPile.transform;
-                            cardCharacterPair.card.transform.SetParent(playerMidBurnPile.transform);
-                            newDestroyCardList.Add(cardCharacterPair);
-                            break;
-                        case Channels.Low:
-                            cardCharacterPair.card.PreviousParentObject = playerLowBurnPile.transform;
-                            cardCharacterPair.card.transform.SetParent(playerLowBurnPile.transform);
-                            newDestroyCardList.Add(cardCharacterPair);
-                            break;
-                    }
-                }
-                else
-                {
-
-                    if (cardCharacterPair.card.CardData.AffectedChannels == AffectedChannels.AllPossibleChannels)
-                    {
-                        switch (cardCharacterPair.card.CardData.PossibleChannels)
-                        {
-                            case Channels.HighMid:
-                                cardCharacterPair.card.PreviousParentObject = opponentHighMidBurnPile.transform;
-                                cardCharacterPair.card.transform.SetParent(opponentHighMidBurnPile.transform);
-                                newDestroyCardList.Add(cardCharacterPair);
-                                break;
-
-                            case Channels.LowMid:
-                                cardCharacterPair.card.PreviousParentObject = opponentLowMidBurnPile.transform;
-                                cardCharacterPair.card.transform.SetParent(opponentLowMidBurnPile.transform);
-                                newDestroyCardList.Add(cardCharacterPair);
-                                break;
-                        }
-
-                        destroyQueue.Enqueue(newDestroyCardList);
-                        return;
-                    }
-
-                    switch (cardCharacterPair.card.CardData.SelectedChannels)
-                    {
-                        case Channels.High:
-                            cardCharacterPair.card.PreviousParentObject = opponentHighBurnPile.transform;
-                            cardCharacterPair.card.transform.SetParent(opponentHighBurnPile.transform);
-                            newDestroyCardList.Add(cardCharacterPair);
-                            break;
-                        case Channels.Mid:
-                            cardCharacterPair.card.PreviousParentObject = opponentMidBurnPile.transform;
-                            cardCharacterPair.card.transform.SetParent(opponentMidBurnPile.transform);
-                            newDestroyCardList.Add(cardCharacterPair);
-                            break;
-                        case Channels.Low:
-                            cardCharacterPair.card.PreviousParentObject = opponentLowBurnPile.transform;
-                            cardCharacterPair.card.transform.SetParent(opponentLowBurnPile.transform);
-                            newDestroyCardList.Add(cardCharacterPair);
-                            break;
-                    }
+                    case Channels.LowMid:
+                        card.PreviousParentObject = playerLowMidBurnPile.transform;
+                        card.transform.SetParent(playerLowMidBurnPile.transform);
+                        Debug.Log(character + " card's selected channel: " + Channels.LowMid);
+                        break;
                 }
             }
 
-            cardsPrepped = false;
-            destroyQueue.Enqueue(newDestroyCardList);
-        }
-    }
-
-    private void BurnCards()
-    {
-        for (int i = 0; i < destroyQueue.Count; i++)
-        {
-            List<CardCharacterPairObject> cardCharacterPairs = new List<CardCharacterPairObject>(destroyQueue.Dequeue());
-
-            foreach (CardCharacterPairObject cardCharacterPair in cardCharacterPairs)
+            switch (currentCardBurnObject.firstCard.CardData.SelectedChannels)
             {
-                if (cardCharacterPair.character == CharacterSelect.Player)
-                    CombatManager.instance.DeckManager.ReturnCardToPlayerDeck(cardCharacterPair.card.CardData);
-                else
-                    CombatManager.instance.DeckManager.ReturnCardToOpponentDeck(cardCharacterPair.card.CardData);
+                case Channels.High:
+                    card.PreviousParentObject = playerHighBurnPile.transform;
+                    card.transform.SetParent(playerHighBurnPile.transform);
+                    Debug.Log(character + " card's selected channel: " + card.CardData.SelectedChannels);
+                    break;
+                case Channels.Mid:
+                    card.PreviousParentObject = playerMidBurnPile.transform;
+                    card.transform.SetParent(playerMidBurnPile.transform);
+                    Debug.Log(character + " card's selected channel: " + card.CardData.SelectedChannels);
+                    break;
+                case Channels.Low:
+                    card.PreviousParentObject = playerLowBurnPile.transform;
+                    card.transform.SetParent(playerLowBurnPile.transform);
+                    Debug.Log(character + " card's selected channel: " + card.CardData.SelectedChannels);
+                    break;
+            }
+        }
+        else
+        {
+            if (card.CardData.AffectedChannels == AffectedChannels.AllPossibleChannels)
+            {
+                switch (card.CardData.PossibleChannels)
+                {
+                    case Channels.HighMid:
+                        card.PreviousParentObject = opponentHighMidBurnPile.transform;
+                        card.transform.SetParent(opponentHighMidBurnPile.transform);
+                        Debug.Log(character + " card's selected channel: " + Channels.HighMid);
+
+                        break;
+
+                    case Channels.LowMid:
+                        card.PreviousParentObject = opponentLowMidBurnPile.transform;
+                        card.transform.SetParent(opponentLowMidBurnPile.transform);
+                        Debug.Log(character + " card's selected channel: " + Channels.LowMid);
+
+                        break;
+                }
             }
 
-            if (destroyQueue.Count == 0 && burnCardCharacterQueue.Count == 0)
-                burnComplete = true;
+            switch (currentCardBurnObject.firstCard.CardData.SelectedChannels)
+            {
+                case Channels.High:
+                    card.PreviousParentObject = opponentHighBurnPile.transform;
+                    card.transform.SetParent(opponentHighBurnPile.transform);
+                    Debug.Log(character + " card's selected channel: " + card.CardData.SelectedChannels);
+
+                    break;
+                case Channels.Mid:
+                    card.PreviousParentObject = opponentMidBurnPile.transform;
+                    card.transform.SetParent(opponentMidBurnPile.transform);
+                    Debug.Log(character + " card's selected channel: " + card.CardData.SelectedChannels);
+
+                    break;
+                case Channels.Low:
+                    card.PreviousParentObject = opponentLowBurnPile.transform;
+                    card.transform.SetParent(opponentLowBurnPile.transform);
+                    Debug.Log(character + " card's selected channel: " + card.CardData.SelectedChannels);
+
+                    break;
+            }
         }
-
-        cardsPrepped = false;
-    }
-
-    private class CardCharacterPairObject
-    {
-        public CharacterSelect character;
-        public CardUIController card;
-    }
-
-    private void Start()
-    {
-        CombatAnimationManager.OnStartNewAnimation += PrepCardsToBurn;
-        CombatAnimationManager.OnRoundEnded += BurnCards;
-    }
-
-    private void OnDestroy()
-    {
-        CombatAnimationManager.OnStartNewAnimation -= PrepCardsToBurn;
-        CombatAnimationManager.OnRoundEnded -= BurnCards;
     }
 }

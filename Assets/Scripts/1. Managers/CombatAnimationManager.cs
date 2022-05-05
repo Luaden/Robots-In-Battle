@@ -9,50 +9,48 @@ public class CombatAnimationManager : MonoBehaviour
     [SerializeField] private BurnPileController burnPileController;
     //[SerializeField] private BuffAnimationController buffAnimationController;
 
-    private bool startedAnimations = false;
-    private bool allAnimationsComplete = true;
-    private bool turnComplete = true;
+    private bool animationsComplete = true;
 
-    private Queue<Queue<AnimationQueueObject>> animationCollection = new Queue<Queue<AnimationQueueObject>>();
-    private Queue<AnimationQueueObject> currentAnimationQueue = new Queue<AnimationQueueObject>();
-    private AnimationQueueObject currentAnimationObject = null;
+    public bool AnimationsComplete { get => animationsComplete; }
 
-    public delegate void onStartNewAnimation();
-    public static event onStartNewAnimation OnStartNewAnimation;
-    public delegate void onEndAnimation();
-    public static event onEndAnimation OnEndedAnimation;
-    public delegate void onEndRound();
-    public static event onEndRound OnRoundEnded;
-    public delegate void onAnimationsComplete();
-    public static event onAnimationsComplete OnAnimationsComplete;
-
-    public void AddAnimationToQueue(Queue<AnimationQueueObject> animations)
+    public void AddAnimationToQueue(CharacterSelect firstMech, AnimationType firstAnimation, CharacterSelect secondMech, AnimationType secondAnimation)
     {
-        animationCollection.Enqueue(animations);
+        animationsComplete = false;
 
-        allAnimationsComplete = false;
-        turnComplete = false;
+        if (firstMech == CharacterSelect.Player)
+            playerMechAnimationController.SetMechAnimation(firstAnimation);
+        if (firstMech == CharacterSelect.Opponent)
+            opponentMechAnimationController.SetMechAnimation(firstAnimation);
+
+        if (secondMech == CharacterSelect.Player)
+            playerMechAnimationController.SetMechAnimation(secondAnimation);
+        if (secondMech == CharacterSelect.Opponent)
+            opponentMechAnimationController.SetMechAnimation(secondAnimation);
     }
 
-    public void AddAnimationToQueue(AnimationQueueObject animation)
+    public void AddAnimationToQueue(AnimationQueueObject newAnimation)
     {
-        Queue<AnimationQueueObject> newAnimations = new Queue<AnimationQueueObject>();
-        newAnimations.Enqueue(animation);
+        animationsComplete = false;
 
-        animationCollection.Enqueue(newAnimations);
+        if (newAnimation.firstMech == CharacterSelect.Player)
+            playerMechAnimationController.SetMechAnimation(newAnimation.firstAnimation);
+        if (newAnimation.firstMech == CharacterSelect.Opponent)
+            opponentMechAnimationController.SetMechAnimation(newAnimation.firstAnimation);
 
-        allAnimationsComplete = false;
-        turnComplete = false;
+        if (newAnimation.secondMech == CharacterSelect.Player)
+            playerMechAnimationController.SetMechAnimation(newAnimation.secondAnimation);
+        if (newAnimation.secondMech == CharacterSelect.Opponent)
+            opponentMechAnimationController.SetMechAnimation(newAnimation.secondAnimation);
     }
 
-    public void ClearAnimationQueue()
+    public void PrepCardsToBurn(CardBurnObject cardBurnObject)
     {
-        animationCollection.Clear();
+        burnPileController.PrepCardsToBurn(cardBurnObject);
     }
-
-    public void SetCardOnBurnPile(CardUIController firstCard, CharacterSelect firstCardOwner, CardUIController secondCard = null)
+    
+    public void BurnCurrentCards()
     {
-        burnPileController.SetCardOnBurnPile(firstCard, firstCardOwner, secondCard);
+        burnPileController.BurnCards();
     }
 
     private void Awake()
@@ -63,102 +61,19 @@ public class CombatAnimationManager : MonoBehaviour
 
     private void Update()
     {
-        PlayMechAnimations();
         CheckAllAnimationsComplete();
     }
 
-    private bool CheckMechIsAnimating(CharacterSelect mechToCheck)
-    {
-        if (mechToCheck == CharacterSelect.Player)
-            return playerMechAnimationController.IsAnimating;
-        else
-            return opponentMechAnimationController.IsAnimating;
-    }
-
-    private void PlayMechAnimations()
-    {
-        if (turnComplete)
-            return;
-
-        if (CheckMechIsAnimating(CharacterSelect.Player) || CheckMechIsAnimating(CharacterSelect.Opponent))
-            return;
-
-        if(startedAnimations)
-        {
-            OnEndedAnimation?.Invoke();
-            currentAnimationObject = null;
-        }
-
-        if (currentAnimationObject == null)
-        {
-            if (currentAnimationQueue.Count > 0)
-            {
-                currentAnimationObject = currentAnimationQueue.Dequeue();
-
-                if (currentAnimationObject.firstMech == CharacterSelect.Player)
-                    playerMechAnimationController.SetMechAnimation(currentAnimationObject.firstAnimation);
-                if (currentAnimationObject.firstMech == CharacterSelect.Opponent)
-                    opponentMechAnimationController.SetMechAnimation(currentAnimationObject.firstAnimation);
-
-                if (currentAnimationObject.secondMech == CharacterSelect.Player)
-                    playerMechAnimationController.SetMechAnimation(currentAnimationObject.secondAnimation);
-                if (currentAnimationObject.secondMech == CharacterSelect.Opponent)
-                    opponentMechAnimationController.SetMechAnimation(currentAnimationObject.secondAnimation);
-                
-                OnStartNewAnimation?.Invoke();
-                startedAnimations = true;
-            }
-            else
-            {
-                if (animationCollection.Count > 0)
-                {
-                    currentAnimationQueue = animationCollection.Dequeue();
-                    currentAnimationObject = currentAnimationQueue.Dequeue();
-
-                    OnStartNewAnimation?.Invoke();
-
-                    if (currentAnimationObject.firstMech == CharacterSelect.Player)
-                        playerMechAnimationController.SetMechAnimation(currentAnimationObject.firstAnimation);
-                    if (currentAnimationObject.firstMech == CharacterSelect.Opponent)
-                        opponentMechAnimationController.SetMechAnimation(currentAnimationObject.firstAnimation);
-
-                    if (currentAnimationObject.secondMech == CharacterSelect.Player)
-                        playerMechAnimationController.SetMechAnimation(currentAnimationObject.secondAnimation);
-                    if (currentAnimationObject.secondMech == CharacterSelect.Opponent)
-                        opponentMechAnimationController.SetMechAnimation(currentAnimationObject.secondAnimation);
-
-                    if (startedAnimations)
-                        OnRoundEnded?.Invoke();
-
-                    startedAnimations = true;
-                    return;
-                }
-                else
-                {
-                    if (!CheckMechIsAnimating(CharacterSelect.Player) || !CheckMechIsAnimating(CharacterSelect.Opponent))
-                        if (!allAnimationsComplete && animationCollection.Count == 0)
-                        {
-                            allAnimationsComplete = true;
-                            startedAnimations = false;
-                            OnRoundEnded?.Invoke();
-                            OnEndedAnimation?.Invoke();
-                            return;
-                        }
-
-                    return;
-                }
-            }
-        }
-    }
     private void CheckAllAnimationsComplete()
     {
-        if (CheckMechIsAnimating(CharacterSelect.Player) || CheckMechIsAnimating(CharacterSelect.Opponent))
-            return;
-
-        if (allAnimationsComplete && burnPileController.BurnComplete && !turnComplete)
+        if(!animationsComplete)
         {
-            OnAnimationsComplete.Invoke();
-            turnComplete = true;
+            if (playerMechAnimationController.IsAnimating)
+                return;
+            if (opponentMechAnimationController.IsAnimating)
+                return;
+
+            animationsComplete = true;
         }
     }
 }

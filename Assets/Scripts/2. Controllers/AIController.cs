@@ -77,14 +77,14 @@ public class AIController : MonoBehaviour
     {
         CombatManager.OnStartNewTurn += BuildCardChannelPairA;
         ChannelsUISlotManager.OnASlotFilled += BuildCardChannelPairB;
-        CardPlayManager.OnCombatStart += FinalCheck;
+        CardPlayManager.OnBeginCardPlay += FinalCheck;
     }
 
     private void OnDestroy()
     {
         CombatManager.OnStartNewTurn -= BuildCardChannelPairA;
         ChannelsUISlotManager.OnASlotFilled -= BuildCardChannelPairB;
-        CardPlayManager.OnCombatStart -= FinalCheck;
+        CardPlayManager.OnBeginCardPlay -= FinalCheck;
     }
 
     private void BuildCardChannelPairA()

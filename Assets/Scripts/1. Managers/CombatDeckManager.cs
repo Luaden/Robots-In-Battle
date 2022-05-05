@@ -67,8 +67,6 @@ public class CombatDeckManager : MonoBehaviour
 
         CombatManager.instance.CardUIManager.DestroyCardUI(cardToReturn);
 
-        cardToReturn.SelectedChannels = Channels.None;
-
         playerDeck.AddCardToBottom(cardToReturn);
     }
 
@@ -82,8 +80,6 @@ public class CombatDeckManager : MonoBehaviour
 
         CombatManager.instance.CardUIManager.DestroyCardUI(cardToReturn);
 
-        cardToReturn.SelectedChannels = Channels.None;
-        
         opponentDeck.AddCardToBottom(cardToReturn);
     }
 

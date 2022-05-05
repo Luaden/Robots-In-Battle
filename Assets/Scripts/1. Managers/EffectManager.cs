@@ -11,27 +11,6 @@ public class EffectManager : MonoBehaviour
     public FighterEffectObject PlayerEffects { get => playerFighterEffectObject; }
     public FighterEffectObject OpponentEffects { get => opponentFighterEffectObject; }
 
-    private Queue<CardCharacterPairObject> preDamageEffectQueue;
-    private Queue<CardCharacterPairObject> postDamageEffectQueue;
-
-    public void AddToPostDamageEffectQueue(CardChannelPairObject cardChannelPairObject, CharacterSelect destinationMech)
-    {
-        CardCharacterPairObject newEffect = new CardCharacterPairObject();
-        newEffect.cardChannelPair = cardChannelPairObject;
-        newEffect.character = destinationMech;
-
-        postDamageEffectQueue.Enqueue(newEffect);
-    }
-
-    public void AddToPreDamageEffectQueue(CardChannelPairObject cardChannelPairObject, CharacterSelect destinationMech)
-    {
-        CardCharacterPairObject newEffect = new CardCharacterPairObject();
-        newEffect.cardChannelPair = cardChannelPairObject;
-        newEffect.character = destinationMech;
-
-        preDamageEffectQueue.Enqueue(newEffect);
-    }
-
     public int GetMechDamageWithAndConsumeModifiers(CardChannelPairObject attack, CharacterSelect defensiveCharacter)
     {
         int mechDamageToReturn = attack.CardData.BaseDamage;
@@ -70,6 +49,48 @@ public class EffectManager : MonoBehaviour
         attackDamage = GetAcidDamageBonus(attackDamage, channel, defensiveCharacter);
 
         return attackDamage;
+    }
+
+    public void AddFlurryBonus(SOCardEffectObject effect, CharacterSelect characterToAdd)
+    {
+        if (effect.CardKeyWord != CardKeyWord.Flurry)
+            return;
+
+        List<CardEffectObject> currentKeyWordEffectList = new List<CardEffectObject>();
+        CardEffectObject newKeyWordEffect = new CardEffectObject(effect);
+
+        if (effect.EffectMagnitude == 0)
+            return;
+
+        if (characterToAdd == CharacterSelect.Player)
+        {
+            if (playerFighterEffectObject.KeyWordDuration.TryGetValue(effect.CardKeyWord, out currentKeyWordEffectList))
+            {
+                currentKeyWordEffectList.Add(newKeyWordEffect);
+                playerFighterEffectObject.KeyWordDuration[effect.CardKeyWord] = currentKeyWordEffectList;
+            }
+            else
+            {
+                List<CardEffectObject> newKeyWordList = new List<CardEffectObject>();
+                newKeyWordList.Add(newKeyWordEffect);
+                playerFighterEffectObject.KeyWordDuration.Add(effect.CardKeyWord, newKeyWordList);
+            }
+        }
+
+        if (characterToAdd == CharacterSelect.Opponent)
+        {
+            if (opponentFighterEffectObject.KeyWordDuration.TryGetValue(effect.CardKeyWord, out currentKeyWordEffectList))
+            {
+                currentKeyWordEffectList.Add(newKeyWordEffect);
+                opponentFighterEffectObject.KeyWordDuration[effect.CardKeyWord] = currentKeyWordEffectList;
+            }
+            else
+            {
+                List<CardEffectObject> newKeyWordList = new List<CardEffectObject>();
+                newKeyWordList.Add(newKeyWordEffect);
+                opponentFighterEffectObject.KeyWordDuration.Add(effect.CardKeyWord, newKeyWordList);
+            }
+        }
     }
 
     public int GetAndConsumeFlurryBonus(CharacterSelect characterToCheck)
@@ -192,29 +213,22 @@ public class EffectManager : MonoBehaviour
     {
         playerFighterEffectObject = new FighterEffectObject(CharacterSelect.Player);
         opponentFighterEffectObject = new FighterEffectObject(CharacterSelect.Opponent);
-        preDamageEffectQueue = new Queue<CardCharacterPairObject>();
-        postDamageEffectQueue = new Queue<CardCharacterPairObject>();
 
-        CombatAnimationManager.OnStartNewAnimation += EnableEffectsBeforeDamage;
-        CombatAnimationManager.OnEndedAnimation += EnableEffectsAfterDamage;
-        CombatAnimationManager.OnAnimationsComplete += UpdateFighterBuffs;
-        CardPlayManager.OnCombatComplete += IncrementEffectsAtTurnEnd;
+        CombatSequenceManager.OnCombatComplete += IncrementEffectsAtTurnEnd;
+        CombatSequenceManager.OnCombatComplete += UpdateFighterBuffs;
     }
 
     private void OnDestroy()
     {
-        CombatAnimationManager.OnStartNewAnimation -= EnableEffectsBeforeDamage;
-        CombatAnimationManager.OnEndedAnimation -= EnableEffectsAfterDamage;
-        CombatAnimationManager.OnAnimationsComplete -= UpdateFighterBuffs;
-        CardPlayManager.OnCombatComplete -= IncrementEffectsAtTurnEnd;
+        CombatSequenceManager.OnCombatComplete -= UpdateFighterBuffs;
+        CombatSequenceManager.OnCombatComplete -= IncrementEffectsAtTurnEnd;
     }
 
-    private void EnableEffectsBeforeDamage()
+    public void EnableEffects(CardCharacterPairObject currentEffect)
     {
-        if (preDamageEffectQueue.Count == 0)
+        if (currentEffect == null)
             return;
 
-        CardCharacterPairObject currentEffect = preDamageEffectQueue.Dequeue();
         CardChannelPairObject cardChannelPair = currentEffect.cardChannelPair;
         CharacterSelect destinationMech = currentEffect.character;
 
@@ -224,248 +238,101 @@ public class EffectManager : MonoBehaviour
         if (cardChannelPair.CardData.CardEffects == null)
             return;
 
-        int repeatPlay = 1;
-
         foreach (SOCardEffectObject effect in cardChannelPair.CardData.CardEffects)
         {
-            if (effect.EffectType == CardEffectTypes.PlayMultipleTimes)
-                repeatPlay += effect.EffectMagnitude;
-
-            if (effect.EffectType == CardEffectTypes.KeyWord && effect.CardKeyWord == CardKeyWord.Flurry)
-                repeatPlay += GetFlurryBonus(destinationMech == CharacterSelect.Opponent ? CharacterSelect.Player : CharacterSelect.Opponent);
-        }
-
-        for (int i = 0; i < repeatPlay; i++)
-        {
-            foreach (SOCardEffectObject effect in cardChannelPair.CardData.CardEffects)
+            switch (effect.EffectType)
             {
-                switch (effect.EffectType)
-                {
-                    case CardEffectTypes.None:
-                        break;
-                    case CardEffectTypes.PlayMultipleTimes:
-                        break;
-
-                    case CardEffectTypes.AdditionalElementStacks:
-                        //Adding bonus element stacks from card effects
-                        switch (cardChannelPair.CardData.CardCategory)
-                        {
-                            case CardCategory.Punch:
-                                AddElementalStacks(effect, cardChannelPair.CardChannel, MechComponent.Arms, destinationMech);
-                                break;
-                            case CardCategory.Kick:
-                                AddElementalStacks(effect, cardChannelPair.CardChannel, MechComponent.Legs, destinationMech);
-                                break;
-                            case CardCategory.Special:
-                                AddElementalStacks(effect, cardChannelPair.CardChannel, MechComponent.Head, destinationMech);
-                                break;
-                        }
-                        break;
-
-                    case CardEffectTypes.GainShields:
-                        GainShields(effect, cardChannelPair.CardData.AffectedChannels == AffectedChannels.SelectedChannel ?
-                            cardChannelPair.CardChannel : cardChannelPair.CardData.PossibleChannels,
-                            destinationMech == CharacterSelect.Opponent ? CharacterSelect.Player : CharacterSelect.Opponent);
-                        break;
-
-                    case CardEffectTypes.MultiplyShield:
-                        MultiplyShields(effect, cardChannelPair.CardData.AffectedChannels == AffectedChannels.SelectedChannel ?
-                            cardChannelPair.CardChannel : cardChannelPair.CardData.PossibleChannels,
-                            destinationMech == CharacterSelect.Opponent ? CharacterSelect.Player : CharacterSelect.Opponent);
-                        break;
-
-                    case CardEffectTypes.IncreaseOutgoingCardTypeDamage:
-                        BoostCardTypeDamage(effect, cardChannelPair.CardData.AffectedChannels == AffectedChannels.SelectedChannel ?
-                            cardChannelPair.CardChannel : cardChannelPair.CardData.PossibleChannels,
-                            destinationMech == CharacterSelect.Opponent ? CharacterSelect.Player : CharacterSelect.Opponent);
-                        break;
-
-                    case CardEffectTypes.IncreaseOutgoingChannelDamage:
-                        BoostChannelDamage(effect, cardChannelPair.CardData.AffectedChannels == AffectedChannels.SelectedChannel ?
-                            cardChannelPair.CardChannel : cardChannelPair.CardData.PossibleChannels,
-                            destinationMech == CharacterSelect.Opponent ? CharacterSelect.Player : CharacterSelect.Opponent);
-                        break;
-
-                    case CardEffectTypes.ReduceOutgoingChannelDamage:
-                        ReduceChannelDamage(effect, cardChannelPair.CardData.AffectedChannels == AffectedChannels.SelectedChannel ?
-                            cardChannelPair.CardChannel : cardChannelPair.CardData.PossibleChannels, destinationMech);
-                        break;
-
-                    case CardEffectTypes.KeyWord:
-                        GainKeyWord(effect, cardChannelPair.CardData.AffectedChannels == AffectedChannels.SelectedChannel ?
-                            cardChannelPair.CardChannel : cardChannelPair.CardData.PossibleChannels,
-                            destinationMech == CharacterSelect.Opponent ? CharacterSelect.Player : CharacterSelect.Opponent);
-                        break;
-
-                    case CardEffectTypes.GainShieldWithFalloff:
-                        GainShieldsWithFalloff(effect, cardChannelPair.CardData.AffectedChannels == AffectedChannels.SelectedChannel ?
-                            cardChannelPair.CardChannel : cardChannelPair.CardData.PossibleChannels,
-                            destinationMech == CharacterSelect.Opponent ? CharacterSelect.Player : CharacterSelect.Opponent);
-                        break;
-
-                    case CardEffectTypes.EnergyDestroy:
-                        DestroyEnergy(effect, destinationMech);
-                        break;
-
-                    case CardEffectTypes.ShieldDestroy:
-                        DestroyShields(cardChannelPair.CardData.AffectedChannels == AffectedChannels.SelectedChannel ?
-                            cardChannelPair.CardChannel : cardChannelPair.CardData.PossibleChannels, destinationMech == CharacterSelect.Opponent ?
-                            CharacterSelect.Player : CharacterSelect.Opponent);
-                        break;
-                }
-            }
-
-            //Adding stand alone element stacks from components.
-            switch (cardChannelPair.CardData.CardCategory)
-            {
-                case CardCategory.None:
+                case CardEffectTypes.None:
                     break;
-                case CardCategory.All:
-                    AddComponentElementStacks(cardChannelPair, MechComponent.Arms, destinationMech);
-                    AddComponentElementStacks(cardChannelPair, MechComponent.Legs, destinationMech);
-                    AddComponentElementStacks(cardChannelPair, MechComponent.Head, destinationMech);
+                case CardEffectTypes.PlayMultipleTimes:
                     break;
-                case CardCategory.Punch:
-                    AddComponentElementStacks(cardChannelPair, MechComponent.Arms, destinationMech);
+
+                case CardEffectTypes.AdditionalElementStacks:
+                    //Adding bonus element stacks from card effects
+                    switch (cardChannelPair.CardData.CardCategory)
+                    {
+                        case CardCategory.Punch:
+                            AddElementalStacks(effect, cardChannelPair.CardChannel, MechComponent.Arms, destinationMech);
+                            break;
+                        case CardCategory.Kick:
+                            AddElementalStacks(effect, cardChannelPair.CardChannel, MechComponent.Legs, destinationMech);
+                            break;
+                        case CardCategory.Special:
+                            AddElementalStacks(effect, cardChannelPair.CardChannel, MechComponent.Head, destinationMech);
+                            break;
+                    }
                     break;
-                case CardCategory.Kick:
-                    AddComponentElementStacks(cardChannelPair, MechComponent.Legs, destinationMech);
+
+                case CardEffectTypes.GainShields:
+                    GainShields(effect, cardChannelPair.CardData.AffectedChannels == AffectedChannels.SelectedChannel ?
+                        cardChannelPair.CardChannel : cardChannelPair.CardData.PossibleChannels,
+                        destinationMech == CharacterSelect.Opponent ? CharacterSelect.Player : CharacterSelect.Opponent);
                     break;
-                case CardCategory.Special:
-                    AddComponentElementStacks(cardChannelPair, MechComponent.Head, destinationMech);
+
+                case CardEffectTypes.MultiplyShield:
+                    MultiplyShields(effect, cardChannelPair.CardData.AffectedChannels == AffectedChannels.SelectedChannel ?
+                        cardChannelPair.CardChannel : cardChannelPair.CardData.PossibleChannels,
+                        destinationMech == CharacterSelect.Opponent ? CharacterSelect.Player : CharacterSelect.Opponent);
+                    break;
+
+                case CardEffectTypes.IncreaseOutgoingCardTypeDamage:
+                    BoostCardTypeDamage(effect, cardChannelPair.CardData.AffectedChannels == AffectedChannels.SelectedChannel ?
+                        cardChannelPair.CardChannel : cardChannelPair.CardData.PossibleChannels,
+                        destinationMech == CharacterSelect.Opponent ? CharacterSelect.Player : CharacterSelect.Opponent);
+                    break;
+
+                case CardEffectTypes.IncreaseOutgoingChannelDamage:
+                    BoostChannelDamage(effect, cardChannelPair.CardData.AffectedChannels == AffectedChannels.SelectedChannel ?
+                        cardChannelPair.CardChannel : cardChannelPair.CardData.PossibleChannels,
+                        destinationMech == CharacterSelect.Opponent ? CharacterSelect.Player : CharacterSelect.Opponent);
+                    break;
+
+                case CardEffectTypes.ReduceOutgoingChannelDamage:
+                    ReduceChannelDamage(effect, cardChannelPair.CardData.AffectedChannels == AffectedChannels.SelectedChannel ?
+                        cardChannelPair.CardChannel : cardChannelPair.CardData.PossibleChannels, destinationMech);
+                    break;
+
+                case CardEffectTypes.KeyWord:
+                    GainKeyWord(effect, destinationMech == CharacterSelect.Opponent ? CharacterSelect.Player : CharacterSelect.Opponent);
+                    break;
+
+                case CardEffectTypes.GainShieldWithFalloff:
+                    GainShieldsWithFalloff(effect, cardChannelPair.CardData.AffectedChannels == AffectedChannels.SelectedChannel ?
+                        cardChannelPair.CardChannel : cardChannelPair.CardData.PossibleChannels,
+                        destinationMech == CharacterSelect.Opponent ? CharacterSelect.Player : CharacterSelect.Opponent);
+                    break;
+
+                case CardEffectTypes.EnergyDestroy:
+                    DestroyEnergy(effect, destinationMech);
+                    break;
+
+                case CardEffectTypes.ShieldDestroy:
+                    DestroyShields(cardChannelPair.CardData.AffectedChannels == AffectedChannels.SelectedChannel ?
+                        cardChannelPair.CardChannel : cardChannelPair.CardData.PossibleChannels, destinationMech == CharacterSelect.Opponent ?
+                        CharacterSelect.Player : CharacterSelect.Opponent);
                     break;
             }
         }
 
-        UpdateFighterBuffs();
-    }
-
-    private void EnableEffectsAfterDamage()
-    {
-        if (postDamageEffectQueue.Count == 0)
-            return;
-
-        CardCharacterPairObject currentEffect = postDamageEffectQueue.Dequeue();
-        CardChannelPairObject cardChannelPair = currentEffect.cardChannelPair;
-        CharacterSelect destinationMech = currentEffect.character;
-
-        if (cardChannelPair == null || cardChannelPair.CardData == null)
-            return;
-
-        if (cardChannelPair.CardData.CardEffects == null)
-            return;
-
-        int repeatPlay = 1;
-
-        foreach (SOCardEffectObject effect in cardChannelPair.CardData.CardEffects)
+        //Adding stand alone element stacks from components.
+        switch (cardChannelPair.CardData.CardCategory)
         {
-            if (effect.EffectType == CardEffectTypes.PlayMultipleTimes)
-                repeatPlay += effect.EffectMagnitude;
-
-            if (effect.EffectType == CardEffectTypes.KeyWord && effect.CardKeyWord == CardKeyWord.Flurry)
-                repeatPlay += GetFlurryBonus(destinationMech == CharacterSelect.Opponent ? CharacterSelect.Player : CharacterSelect.Opponent);
-        }
-
-        for (int i = 0; i < repeatPlay; i++)
-        {
-            foreach (SOCardEffectObject effect in cardChannelPair.CardData.CardEffects)
-            {
-                switch (effect.EffectType)
-                {
-                    case CardEffectTypes.None:
-                        break;
-                    case CardEffectTypes.PlayMultipleTimes:
-                        break;
-
-                    case CardEffectTypes.AdditionalElementStacks:
-                        //Adding bonus element stacks from card effects
-                        switch (cardChannelPair.CardData.CardCategory)
-                        {
-                            case CardCategory.Punch:
-                                AddElementalStacks(effect, cardChannelPair.CardChannel, MechComponent.Arms, destinationMech);
-                                break;
-                            case CardCategory.Kick:
-                                AddElementalStacks(effect, cardChannelPair.CardChannel, MechComponent.Legs, destinationMech);
-                                break;
-                            case CardCategory.Special:
-                                AddElementalStacks(effect, cardChannelPair.CardChannel, MechComponent.Head, destinationMech);
-                                break;
-                        }
-                        break;
-
-                    case CardEffectTypes.GainShields:
-                        GainShields(effect, cardChannelPair.CardData.AffectedChannels == AffectedChannels.SelectedChannel ?
-                            cardChannelPair.CardChannel : cardChannelPair.CardData.PossibleChannels,
-                            destinationMech == CharacterSelect.Opponent ? CharacterSelect.Player : CharacterSelect.Opponent);
-                        break;
-
-                    case CardEffectTypes.MultiplyShield:
-                        MultiplyShields(effect, cardChannelPair.CardData.AffectedChannels == AffectedChannels.SelectedChannel ?
-                            cardChannelPair.CardChannel : cardChannelPair.CardData.PossibleChannels,
-                            destinationMech == CharacterSelect.Opponent ? CharacterSelect.Player : CharacterSelect.Opponent);
-                        break;
-
-                    case CardEffectTypes.IncreaseOutgoingCardTypeDamage:
-                        BoostCardTypeDamage(effect, cardChannelPair.CardData.AffectedChannels == AffectedChannels.SelectedChannel ?
-                            cardChannelPair.CardChannel : cardChannelPair.CardData.PossibleChannels,
-                            destinationMech == CharacterSelect.Opponent ? CharacterSelect.Player : CharacterSelect.Opponent);
-                        break;
-
-                    case CardEffectTypes.IncreaseOutgoingChannelDamage:
-                        BoostChannelDamage(effect, cardChannelPair.CardData.AffectedChannels == AffectedChannels.SelectedChannel ?
-                            cardChannelPair.CardChannel : cardChannelPair.CardData.PossibleChannels,
-                            destinationMech == CharacterSelect.Opponent ? CharacterSelect.Player : CharacterSelect.Opponent);
-                        break;
-
-                    case CardEffectTypes.ReduceOutgoingChannelDamage:
-                        ReduceChannelDamage(effect, cardChannelPair.CardData.AffectedChannels == AffectedChannels.SelectedChannel ?
-                            cardChannelPair.CardChannel : cardChannelPair.CardData.PossibleChannels, destinationMech);
-                        break;
-
-                    case CardEffectTypes.KeyWord:
-                        GainKeyWord(effect, cardChannelPair.CardData.AffectedChannels == AffectedChannels.SelectedChannel ?
-                            cardChannelPair.CardChannel : cardChannelPair.CardData.PossibleChannels,
-                            destinationMech == CharacterSelect.Opponent ? CharacterSelect.Player : CharacterSelect.Opponent);
-                        break;
-
-                    case CardEffectTypes.GainShieldWithFalloff:
-                        GainShieldsWithFalloff(effect, cardChannelPair.CardData.AffectedChannels == AffectedChannels.SelectedChannel ?
-                            cardChannelPair.CardChannel : cardChannelPair.CardData.PossibleChannels,
-                            destinationMech == CharacterSelect.Opponent ? CharacterSelect.Player : CharacterSelect.Opponent);
-                        break;
-
-                    case CardEffectTypes.EnergyDestroy:
-                        DestroyEnergy(effect, destinationMech);
-                        break;
-
-                    case CardEffectTypes.ShieldDestroy:
-                        DestroyShields(cardChannelPair.CardData.AffectedChannels == AffectedChannels.SelectedChannel ?
-                            cardChannelPair.CardChannel : cardChannelPair.CardData.PossibleChannels, destinationMech == CharacterSelect.Opponent ?
-                            CharacterSelect.Player : CharacterSelect.Opponent);
-                        break;
-                }
-            }
-
-            //Adding stand alone element stacks from components.
-            switch (cardChannelPair.CardData.CardCategory)
-            {
-                case CardCategory.None:
-                    break;
-                case CardCategory.All:
-                    AddComponentElementStacks(cardChannelPair, MechComponent.Arms, destinationMech);
-                    AddComponentElementStacks(cardChannelPair, MechComponent.Legs, destinationMech);
-                    AddComponentElementStacks(cardChannelPair, MechComponent.Torso, destinationMech);
-                    break;
-                case CardCategory.Punch:
-                    AddComponentElementStacks(cardChannelPair, MechComponent.Arms, destinationMech);
-                    break;
-                case CardCategory.Kick:
-                    AddComponentElementStacks(cardChannelPair, MechComponent.Legs, destinationMech);
-                    break;
-                case CardCategory.Special:
-                    AddComponentElementStacks(cardChannelPair, MechComponent.Torso, destinationMech);
-                    break;
-            }
+            case CardCategory.None:
+                break;
+            case CardCategory.All:
+                AddComponentElementStacks(cardChannelPair, MechComponent.Arms, destinationMech);
+                AddComponentElementStacks(cardChannelPair, MechComponent.Legs, destinationMech);
+                AddComponentElementStacks(cardChannelPair, MechComponent.Torso, destinationMech);
+                break;
+            case CardCategory.Punch:
+                AddComponentElementStacks(cardChannelPair, MechComponent.Arms, destinationMech);
+                break;
+            case CardCategory.Kick:
+                AddComponentElementStacks(cardChannelPair, MechComponent.Legs, destinationMech);
+                break;
+            case CardCategory.Special:
+                AddComponentElementStacks(cardChannelPair, MechComponent.Torso, destinationMech);
+                break;
         }
 
         UpdateFighterBuffs();
@@ -1113,7 +980,7 @@ public class EffectManager : MonoBehaviour
         newEnergyToRemove.firstMech = defensiveCharacter;
         newEnergyToRemove.firstMechEnergyRemoval = effect.EffectMagnitude;
 
-        CombatManager.instance.RemoveMechEnergyWithQueue(newEnergyToRemove);
+        CombatManager.instance.RemoveEnergyFromMechs(newEnergyToRemove);
     }
 
     private void BoostCardTypeDamage(SOCardEffectObject effect, Channels channel, CharacterSelect characterBoosting)
@@ -1237,10 +1104,13 @@ public class EffectManager : MonoBehaviour
         }
     }
 
-    private void GainKeyWord(SOCardEffectObject effect, Channels channel, CharacterSelect characterPriming)
+    private void GainKeyWord(SOCardEffectObject effect, CharacterSelect characterPriming)
     {
         List<CardEffectObject> currentKeyWordEffectList = new List<CardEffectObject>();
         CardEffectObject newKeyWordEffect = new CardEffectObject(effect);
+
+        if (effect.CardKeyWord == CardKeyWord.Flurry)
+            return;
 
         if (effect.EffectMagnitude == 0)
             return;

@@ -10,9 +10,6 @@ public class PlayerMechUISlotManager : BaseSlotManager<ShopItemUIController>
     [SerializeField] private BaseSlotController<ShopItemUIController> armsSlot;
     [SerializeField] private BaseSlotController<ShopItemUIController> legsSlot;
 
-    private delegate void onCompletedComponentSwap();
-    private event onCompletedComponentSwap OnCompletedComponentSwap;
-
     public override void AddItemToCollection(ShopItemUIController item, BaseSlotController<ShopItemUIController> slot)
     {
         if (slot == null)
