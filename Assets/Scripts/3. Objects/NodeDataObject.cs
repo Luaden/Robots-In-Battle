@@ -7,24 +7,24 @@ public class NodeDataObject : MonoBehaviour
     public NodeDataObject previousNode;
     [SerializeField] protected NodeDataObject nextNode;
     [SerializeField] protected NodeDataObject pairNode;
-    public bool hasBeenAssigned;
-    public bool hasWonBattle;
-    public bool isFinalNode;
+    private bool hasBeenAssigned;
+    private bool hasWonBattle;
+    [SerializeField] protected bool isFinalNode;
+
+    private NodeDataObject currentNode;
 
     private FighterDataObject currentFighter;
-    private GameObject nodeUIController;
+    private NodeUIController nodeUIController;
 
     public FighterDataObject FighterDataObject { get => currentFighter; }
-    public GameObject NodeUIController { get => nodeUIController; set => nodeUIController = value; }
+    public NodeUIController NodeUIController { get => nodeUIController; set => nodeUIController = value; }
     public NodeDataObject PreviousNode { get => previousNode; set => previousNode = value; }
     public NodeDataObject NextNode { get => nextNode; set => nextNode = value; }
     public NodeDataObject PairNode { get => pairNode; set => pairNode = value; }
+    public NodeDataObject CurrentNode { get => currentNode; set => currentNode = value; }
     public bool HasBeenAssigned { get => hasBeenAssigned; set => hasBeenAssigned = value; }
     public bool HasWonBattle { get => hasWonBattle; set => hasWonBattle = value; }
     public bool IsFinalNode { get => isFinalNode; set => isFinalNode = value; }
-
-    public NodeDataObject GetPreviousNode() { return previousNode; }
-    public NodeDataObject GetNextNode() { return nextNode; }
 
     // test
     private string fighterName;
@@ -32,6 +32,8 @@ public class NodeDataObject : MonoBehaviour
 
     public void Init()
     {
+        // this would be inside a fighter obj?
+        currentNode = transform.parent.GetComponent<NodeDataObject>();
         switch (nodeType)
         {
             case NodeType.Opponent:
@@ -56,5 +58,12 @@ public class NodeDataObject : MonoBehaviour
         Opponent
     }
     public NodeType nodeType;
+
+    public void MoveToNextNode()
+    {
+        nodeUIController.NodeSlotController = nextNode.GetComponent<NodeSlotController>();
+
+        transform.position = nextNode.transform.position;
+    }
 
 }

@@ -31,6 +31,10 @@ public class TournamentOverviewManager : MonoBehaviour
     pilots that can be dragged to first set of nodes
      
      */
+    private void OnDestroy()
+    {
+        Destroy(NodeSlotManager);
+    }
 
     private void Awake()
     {
@@ -61,8 +65,8 @@ public class TournamentOverviewManager : MonoBehaviour
                 nodeUIGameObject = Instantiate(pilotPrefab, n.transform.position, Quaternion.identity, n.transform);
                 // set the UI object of the pilot data to be the gameobject
                 
-                n.NodeUIController = nodeUIGameObject;
                 NodeUIController nodeUIObject = nodeUIGameObject.GetComponent<NodeUIController>();
+                n.NodeUIController = nodeUIObject;
                 NodeDataObject nodeDataObject = nodeUIGameObject.GetComponent<NodeDataObject>();
                 if (player)
                 {
@@ -80,18 +84,31 @@ public class TournamentOverviewManager : MonoBehaviour
             }
         }
 
-        //AssignAllPilotsToStarterNodes();
-
+    }
+    public void AddToActiveList(NodeDataObject node)
+    {
+        nodeController.GetAllActiveNodes().Add(node);
+    }
+    public void RemoveInActiveList(NodeDataObject node)
+    {
+        nodeController.GetAllActiveNodes().Remove(node);
+    }
+    public List<NodeDataObject> GetActiveList()
+    {
+        return nodeController.GetAllActiveNodes();
     }
 
-    public void AssignFighterToNodeSlot(NodeDataObject nodeData)
+    // FighterData?
+    public void AssignFighterToNodeSlot(NodeDataObject nodeA, NodeDataObject nodeB)
     {
-/*        FighterPairObject fighterPairObject = new FighterPairObject(nodeData.FighterDataObject, nodeData.FighterDataObject);
-        nodeController.FighterPairs.Add(fighterPairObject);*/
+        FighterPairObject fighterPairObject = new FighterPairObject(nodeA.FighterDataObject, nodeB.FighterDataObject);
+        nodeController.FighterPairs.Add(fighterPairObject);
     }
 
     public void GoToBattle()
     {
+        // press the button, change scene to battle
+        // who wins?
 
         if(nodeController.GetAllActiveNodes().Any(n => n.HasBeenAssigned == false))
         {
@@ -99,13 +116,24 @@ public class TournamentOverviewManager : MonoBehaviour
             return;
         }
 
-        if(!playedFirstBattle)
+        
+        nodeController.ProgressFighters();
+
+        foreach (NodeDataObject node in nodeController.GetAllNodes())
+        {
+            if (GetActiveList().Contains(node))
+                RemoveInActiveList(node);
+            /*            if (node.HasBeenAssigned)
+                            AddToActiveList(node);*/
+        }
+
+        /*if(!playedFirstBattle)
         {
             foreach (NodeDataObject n in nodeController.GetAllActiveNodes())
             {
-                // if the node has a child (pilot object), set its ui controller to be disabled
+                // if the node has a child (fighter object), set its ui controller to be disabled
                 if (n.transform.GetChild(0) != null)
-                    n.transform.GetChild(0).GetComponent<NodeUIController>().enabled = false;
+                    n.transform.GetChild(0).GetComponent<NodeUIController>().SetInactive();
             }
 
             playedFirstBattle = true;
@@ -125,21 +153,23 @@ public class TournamentOverviewManager : MonoBehaviour
 
                 // the nodes previous node is the current node
                 // the pilot (player/opponent)
-                NodeDataObject pilotObject = currentNode.transform.GetChild(0).GetComponent<NodeDataObject>();
+                NodeDataObject fighterObj = currentNode.transform.GetChild(0).GetComponent<NodeDataObject>();
+                // set the fighters current node to be this node
+                fighterObj.CurrentNode = currentNode;
                 // change its parent to be the next node
-                pilotObject.transform.SetParent(currentNode.NextNode.transform);
+                fighterObj.transform.SetParent(currentNode.NextNode.transform);
                 // change its position to be the next nodes position
-                pilotObject.transform.position = currentNode.NextNode.transform.position;
+                fighterObj.transform.position = currentNode.NextNode.transform.position;
 
-                // assign pilots slotcontroller to be the next nodes
-                pilotObject.GetComponent<NodeUIController>().NodeSlotController = currentNode.NextNode.GetComponent<NodeSlotController>();
+                // assign fighters slotcontroller to be the next nodes
+                fighterObj.GetComponent<NodeUIController>().NodeSlotController = currentNode.NextNode.GetComponent<NodeSlotController>();
                 // the next node has been assigned a pilot
                 currentNode.NextNode.HasBeenAssigned = true;
                 // the next nodes previous node is this current node
                 currentNode.NextNode.PreviousNode = currentNode;
                 // add next node to active list
-                newActiveNodes.Add(currentNode.NextNode);
-                pilotObject.GetComponent<Image>().color = Color.green;
+                //newActiveNodes.Add(currentNode.NextNode);
+                fighterObj.GetComponent<Image>().color = Color.green;
             }
             else
             {
@@ -150,8 +180,6 @@ public class TournamentOverviewManager : MonoBehaviour
                 pilotObject.GetComponent<Image>().color = Color.red;
             }
         }
-        nodeController.GetAllActiveNodes().Clear();
-        nodeController.GetAllActiveNodes().AddRange(newActiveNodes);
 
         // is the final node in the active nodes
         if (nodeController.GetAllActiveNodes().Any(x => x.IsFinalNode))
@@ -161,33 +189,35 @@ public class TournamentOverviewManager : MonoBehaviour
         }
 
         Debug.Log("battle performed");
-
+*/
     }
 
-    // for testing, assigning pilots on startup
-    public void AssignAllPilotsToStarterNodes()
+    // for testing, assigning fighters on startup
+/*    public void AssignAllFightersToStarterNodes()
     {
         
         foreach(NodeDataObject n in nodeController.GetAllNodes())
         {
-            // the node where the pilot starts..
-            if(n.nodeType == NodeDataObject.NodeType.FighterStarter)
+            // the node where the fighter starts..
+            if (n.nodeType == NodeDataObject.NodeType.FighterStarter)
             {
                 // get all nodes
                 for(int i = 0; i < nodeController.GetAllActiveNodes().Count; i++)
                 {
-                    // get the starter nodes.. where the pilots are supposed to fit in
+                    // get the starter nodes.. where the fighters are supposed to fit in
                     NodeDataObject starterNode = nodeController.GetAllActiveNodes()[i];
                     if (starterNode.HasBeenAssigned || n.transform.childCount < 1)
                         continue;
 
-                    NodeDataObject pilotObject = n.transform.GetChild(0).GetComponent<NodeDataObject>();
-                    pilotObject.transform.SetParent(starterNode.transform);
-                    pilotObject.transform.position = starterNode.transform.position;
-                    pilotObject.GetComponent<NodeUIController>().NodeSlotController = starterNode.GetComponent<NodeSlotController>();
+                    NodeDataObject fighterObj = n.transform.GetChild(0).GetComponent<NodeDataObject>();
+                    fighterObj.CurrentNode = starterNode;
+                    fighterObj.transform.SetParent(starterNode.transform);
+                    fighterObj.transform.position = starterNode.transform.position;
+                    fighterObj.GetComponent<NodeUIController>().NodeSlotController = starterNode.GetComponent<NodeSlotController>();
                     starterNode.HasBeenAssigned = true;
                 }
             }
         }
-    }
+    }*/
+
 }

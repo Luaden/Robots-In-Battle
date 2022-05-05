@@ -4,9 +4,8 @@ using UnityEngine;
 
 public class FighterPairObject
 {
-    private FighterDataObject fighterA; // contains previous node?
+    private FighterDataObject fighterA;
     private FighterDataObject fighterB;
-    // node to previous, next
 
     public FighterDataObject FighterA { get => fighterA; }
     public FighterDataObject FighterB { get => fighterB; }
