@@ -39,6 +39,8 @@ public class MechAnimationController : MonoBehaviour
                 break;
 
             case AnimationType.Special:
+                animator.SetTrigger("isKicking");
+                Debug.Log("We're kicking here, but only until we get a proper animation.");
                 break;
 
             case AnimationType.Guard:

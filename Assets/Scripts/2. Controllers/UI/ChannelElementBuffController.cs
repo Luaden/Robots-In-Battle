@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Linq;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
@@ -42,6 +43,17 @@ public class ChannelElementBuffController : BaseUIElement<Dictionary<Channels, L
                     highChannelAcidEffectText.text = elementStack.ElementStacks.ToString();
                 }
             }
+
+            if (!checkValue.Select(x => x.ElementType).Contains(ElementType.Ice))
+            {
+                highChannelIceEffect.SetActive(false);
+                highChannelIceEffectText.text = "";
+            }
+            if (!checkValue.Select(x => x.ElementType).Contains(ElementType.Acid))
+            {
+                highChannelAcidEffect.SetActive(false);
+                highChannelAcidEffectText.text = "";
+            }
         }
 
         if (primaryData.TryGetValue(Channels.Mid, out checkValue))
@@ -60,6 +72,17 @@ public class ChannelElementBuffController : BaseUIElement<Dictionary<Channels, L
                     midChannelAcidEffectText.text = elementStack.ElementStacks.ToString();
                 }
             }
+            
+            if (!checkValue.Select(x => x.ElementType).Contains(ElementType.Ice))
+            {
+                midChannelIceEffect.SetActive(false);
+                midChannelIceEffectText.text = "";
+            }
+            if (!checkValue.Select(x => x.ElementType).Contains(ElementType.Acid))
+            {
+                midChannelAcidEffect.SetActive(false);
+                midChannelAcidEffectText.text = "";
+            }
         }
 
         if (primaryData.TryGetValue(Channels.Low, out checkValue))
@@ -77,6 +100,17 @@ public class ChannelElementBuffController : BaseUIElement<Dictionary<Channels, L
                     lowChannelAcidEffect.SetActive(true);
                     lowChannelAcidEffectText.text = elementStack.ElementStacks.ToString();
                 }
+            }
+
+            if (!checkValue.Select(x => x.ElementType).Contains(ElementType.Ice))
+            {
+                lowChannelIceEffect.SetActive(false);
+                lowChannelIceEffectText.text = "";
+            }
+            if (!checkValue.Select(x => x.ElementType).Contains(ElementType.Acid))
+            {
+                lowChannelAcidEffect.SetActive(false);
+                lowChannelAcidEffectText.text = "";
             }
         }
     }

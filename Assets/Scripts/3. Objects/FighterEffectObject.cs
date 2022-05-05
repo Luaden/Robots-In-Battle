@@ -98,25 +98,27 @@ public class FighterEffectObject
 
     private void ReduceElementStacks(Dictionary<Channels, List<ElementStackObject>> elementDict)
     {
-        List<KeyValuePair<Channels, List<ElementStackObject>>> elementKVPairList = new List<KeyValuePair<Channels, List<ElementStackObject>>>();
-
+        Dictionary<Channels, List<ElementStackObject>> newElementStackDict = new Dictionary<Channels, List<ElementStackObject>>();
+       
         foreach (KeyValuePair<Channels, List<ElementStackObject>> pair in elementDict)
         {
             List<ElementStackObject> newElementStackList = new List<ElementStackObject>();
 
             foreach (ElementStackObject elementStack in elementDict[pair.Key])
             {
-                ElementStackObject newStacks = new ElementStackObject();
+                ElementStackObject newElementStack = new ElementStackObject();
 
-                newStacks.ElementType = elementStack.ElementType;
-                newStacks.ElementStacks = elementStack.ElementStacks - 1;
+                newElementStack.ElementType = elementStack.ElementType;
+                newElementStack.ElementStacks = elementStack.ElementStacks - 1;
 
-                if (newStacks.ElementStacks > 0)
-                    newElementStackList.Add(newStacks);
+                if (newElementStack.ElementStacks > 0)
+                    newElementStackList.Add(newElementStack);
             }
 
-            elementDict[pair.Key] = newElementStackList;
+            newElementStackDict.Add(pair.Key, newElementStackList);
         }
+
+        iceAcidStacks = newElementStackDict;
     }
 
     private void ReduceElementStacks(Dictionary<ElementType, int> elementDict)
@@ -197,7 +199,11 @@ public class FighterEffectObject
                 effect.CurrentTurn++;
 
                 if (effect.CurrentTurn >= effect.EffectDuration)
+                {
                     channelEffectList.Add(effect);
+                    if(CombatManager.instance.NarrateEffects)
+                        Debug.Log("KeyWord effect " + effect.EffectType + " is falling off due to reaching the end of its lifetime.");
+                }
             }
 
             foreach (CardEffectObject effect in channelEffectList)
@@ -209,7 +215,6 @@ public class FighterEffectObject
 
         foreach (KeyValuePair<Channels, List<CardEffectObject>> pair in channelsKVPairList)
             channelDamageDict.Remove(pair.Key);
-
     }
 
     private void ReduceKeyWordEffects(Dictionary<CardKeyWord, List<CardEffectObject>> keyWordDict)

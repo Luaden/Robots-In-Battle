@@ -90,7 +90,11 @@ public class CombatSequenceManager : MonoBehaviour
             }
             
             startedCombatSequences = true;
-            currentCombatSequence = combatSequenceCollection.Dequeue();
+
+            if(combatSequenceCollection.Count > 0)
+            {
+                currentCombatSequence = combatSequenceCollection.Dequeue();
+            }
         }
     }
 
@@ -122,12 +126,16 @@ public class CombatSequenceManager : MonoBehaviour
 
     private void DealCombatEffects()
     {
-        DamageMechPairObject currentDamage = currentCombatSequence.damageQueue.Dequeue();
-        CombatManager.instance.RemoveHealthFromMech(currentDamage);
-        if (!currentDamage.CardCharacterPairA.cardChannelPair.CardData.ApplyEffectsFirst)
-            CombatManager.instance.EffectManager.EnableEffects(currentDamage.CardCharacterPairA);
-        if (currentDamage.CardCharacterPairB != null &&
-            !currentDamage.CardCharacterPairB.cardChannelPair.CardData.ApplyEffectsFirst)
-            CombatManager.instance.EffectManager.EnableEffects(currentDamage.CardCharacterPairB);
+        if(currentCombatSequence.damageQueue.Count > 0)
+        {
+            DamageMechPairObject currentDamage = currentCombatSequence.damageQueue.Dequeue();
+
+            CombatManager.instance.RemoveHealthFromMech(currentDamage);
+            if (!currentDamage.CardCharacterPairA.cardChannelPair.CardData.ApplyEffectsFirst)
+                CombatManager.instance.EffectManager.EnableEffects(currentDamage.CardCharacterPairA);
+            if (currentDamage.CardCharacterPairB != null &&
+                !currentDamage.CardCharacterPairB.cardChannelPair.CardData.ApplyEffectsFirst)
+                CombatManager.instance.EffectManager.EnableEffects(currentDamage.CardCharacterPairB);
+        }        
     }
 }
