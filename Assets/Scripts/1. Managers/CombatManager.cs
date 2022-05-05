@@ -10,7 +10,7 @@ public class CombatManager : MonoBehaviour
     [SerializeField] private float counterDamageMultiplier;
     [SerializeField] private float guardDamageMultiplier;
     [SerializeField] private float acidComponentDamageMultiplier;
-    [SerializeField] private int iceChannelEnergyReductionModifier;
+    [SerializeField] private float iceChannelEnergyReductionModifier;
 
     [Header("Scene References")]
     [SerializeField] private GameObject winLossPanel;
@@ -75,7 +75,7 @@ public class CombatManager : MonoBehaviour
     public float CounterDamageMultiplier { get => counterDamageMultiplier; }
     public float GuardDamageMultiplier { get => guardDamageMultiplier; }
     public float AcidComponentDamageMultiplier { get => acidComponentDamageMultiplier; }
-    public int IceChannelEnergyReductionModifier { get => iceChannelEnergyReductionModifier; }
+    public float IceChannelEnergyReductionModifier { get => iceChannelEnergyReductionModifier; }
     public bool CanPlayCards { get => canPlayCards; }
 
     public delegate void onDestroyScene();

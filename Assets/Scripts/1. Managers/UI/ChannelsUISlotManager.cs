@@ -98,7 +98,11 @@ public class ChannelsUISlotManager : BaseSlotManager<CardUIController>
             int aCardEnergyCost = cardChannelPairObjectA.CardData.EnergyCost;
 
             if (CombatManager.instance.EffectManager.GetIceElementInChannel(cardChannelPairObjectA.CardChannel, CharacterSelect.Player))
+            {
+                Debug.Log("Initial ACard cost: " + aCardEnergyCost);
                 aCardEnergyCost = Mathf.RoundToInt(aCardEnergyCost * CombatManager.instance.IceChannelEnergyReductionModifier);
+                Debug.Log("Icy ACard cost: " + aCardEnergyCost);
+            }
 
             if (cardChannelPairObjectB != null && cardChannelPairObjectB.CardData != null)
             {
@@ -139,7 +143,11 @@ public class ChannelsUISlotManager : BaseSlotManager<CardUIController>
             int bCardEnergyCost = cardChannelPairObjectB.CardData.EnergyCost;
 
             if (CombatManager.instance.EffectManager.GetIceElementInChannel(cardChannelPairObjectB.CardChannel, CharacterSelect.Player))
+            {
+                Debug.Log("Initial BCard cost: " + bCardEnergyCost);
                 bCardEnergyCost = Mathf.RoundToInt(bCardEnergyCost * CombatManager.instance.IceChannelEnergyReductionModifier);
+                Debug.Log("Icy BCard cost: " + bCardEnergyCost);
+            }
 
             if (cardChannelPairObjectA != null && cardChannelPairObjectA.CardData != null)
             {

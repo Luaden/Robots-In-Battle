@@ -48,7 +48,7 @@ public class EffectManager : MonoBehaviour
                                 AddElementalStacks(effect, cardChannelPair.CardChannel, MechComponent.Legs, destinationMech);
                                 break;
                             case CardCategory.Special:
-                                AddElementalStacks(effect, cardChannelPair.CardChannel, MechComponent.Head, destinationMech);
+                                AddElementalStacks(effect, cardChannelPair.CardChannel, MechComponent.Torso, destinationMech);
                                 break;
                         }
                         break;
@@ -611,6 +611,7 @@ public class EffectManager : MonoBehaviour
     private int GetCardChannelDamageBonus(CardChannelPairObject attack, int damageToReturn, CharacterSelect defensiveCharacter)
     {
         List<CardEffectObject> previousChannelEffects = new List<CardEffectObject>();
+        int initialDamage = damageToReturn;
 
         if (defensiveCharacter == CharacterSelect.Opponent)
         {
@@ -619,6 +620,12 @@ public class EffectManager : MonoBehaviour
                 if (playerFighterEffectObject.ChannelDamageBonus.TryGetValue(channel, out previousChannelEffects))
                     foreach (CardEffectObject effect in previousChannelEffects)
                         damageToReturn += effect.EffectMagnitude;
+            }
+
+            if(CombatManager.instance.NarrateEffects)
+            {
+                if (damageToReturn > initialDamage)
+                    Debug.Log("Player damage was boosted due to channel damage bonus. Initial damage: " + initialDamage + ". Boosted damage: " + damageToReturn);
             }
 
             return damageToReturn;
@@ -630,6 +637,12 @@ public class EffectManager : MonoBehaviour
                 if (opponentFighterEffectObject.ChannelDamageBonus.TryGetValue(channel, out previousChannelEffects))
                     foreach (CardEffectObject effect in previousChannelEffects)
                         damageToReturn += effect.EffectMagnitude;
+
+                if (CombatManager.instance.NarrateEffects)
+                {
+                    if (damageToReturn > initialDamage)
+                        Debug.Log("Opponent damage was boosted due to channel damage bonus. Initial damage: " + initialDamage + ". Boosted damage: " + damageToReturn);
+                }
             }
 
             return damageToReturn;
@@ -1157,9 +1170,6 @@ public class EffectManager : MonoBehaviour
 
         switch (component)
         {
-            case MechComponent.Head:
-                break;
-
             case MechComponent.Torso:
                 if (destinationMech == CharacterSelect.Opponent)
                 {
@@ -1188,12 +1198,28 @@ public class EffectManager : MonoBehaviour
 
                         if (opponentFighterEffectObject.IceAcidStacks.TryGetValue(cardChannelPair.CardChannel, out currentStackObject))
                         {
-                            foreach (ElementStackObject elementStack in currentStackObject)
-                                if (elementStack.ElementType == currentElement)
-                                    elementStack.ElementStacks += newStacks;
+                            if (currentStackObject.Select(x => x.ElementType).Contains(currentElement))
+                            {
+                                foreach (ElementStackObject elementStack in currentStackObject)
+                                    if (elementStack.ElementType == currentElement)
+                                    {
+                                        elementStack.ElementStacks += newStacks;
+                                        Debug.Log("Current element: " + currentElement + ": " + elementStack.ElementStacks);
+                                    }
+                            }
+                            else
+                            {
+                                ElementStackObject newStackObject = new ElementStackObject();
+                                newStackObject.ElementType = currentElement;
+                                newStackObject.ElementStacks = newStacks;
+                                currentStackObject.Add(newStackObject);
+                                Debug.Log("Adding " + newStacks + " " + currentElement + " stacks.");
+                                opponentFighterEffectObject.IceAcidStacks[cardChannelPair.CardChannel] = currentStackObject;
+                            }
                         }
                         else
                         {
+                            currentStackObject = new List<ElementStackObject>();
                             ElementStackObject newStackObject = new ElementStackObject();
                             newStackObject.ElementType = currentElement;
                             newStackObject.ElementStacks = newStacks;
@@ -1206,6 +1232,7 @@ public class EffectManager : MonoBehaviour
 
                 if (destinationMech == CharacterSelect.Player)
                 {
+                    Debug.Log("Adding component element stacks.");
                     ElementType currentElement = CombatManager.instance.OpponentFighter.FighterMech.MechTorso.ComponentElement;
                     newStacks += CombatManager.instance.OpponentFighter.FighterMech.MechTorso.ExtraElementStacks;
 
@@ -1231,17 +1258,33 @@ public class EffectManager : MonoBehaviour
 
                         if (playerFighterEffectObject.IceAcidStacks.TryGetValue(cardChannelPair.CardChannel, out currentStackObject))
                         {
-                            foreach (ElementStackObject elementStack in currentStackObject)
-                                if (elementStack.ElementType == currentElement)
-                                    elementStack.ElementStacks += newStacks;
+                            if(currentStackObject.Select(x => x.ElementType).Contains(currentElement))
+                            {
+                                foreach (ElementStackObject elementStack in currentStackObject)
+                                    if (elementStack.ElementType == currentElement)
+                                    {
+                                        elementStack.ElementStacks += newStacks;
+                                        Debug.Log("Current element: " + currentElement + ": " + elementStack.ElementStacks);
+                                    }
+                            }
+                            else
+                            {
+                                ElementStackObject newStackObject = new ElementStackObject();
+                                newStackObject.ElementType = currentElement;
+                                newStackObject.ElementStacks = newStacks;
+                                currentStackObject.Add(newStackObject);
+                                Debug.Log("Adding " + newStacks + " " + currentElement + " stacks.");
+                                playerFighterEffectObject.IceAcidStacks[cardChannelPair.CardChannel] = currentStackObject;
+                            }
                         }
                         else
                         {
+                            currentStackObject = new List<ElementStackObject>();
                             ElementStackObject newStackObject = new ElementStackObject();
                             newStackObject.ElementType = currentElement;
                             newStackObject.ElementStacks = newStacks;
                             currentStackObject.Add(newStackObject);
-
+                            Debug.Log("Adding " + newStacks + " " + currentElement + " stacks.");
                             playerFighterEffectObject.IceAcidStacks.Add(cardChannelPair.CardChannel, currentStackObject);
                         }
                     }
@@ -1251,6 +1294,7 @@ public class EffectManager : MonoBehaviour
             case MechComponent.Arms:
                 if (destinationMech == CharacterSelect.Player)
                 {
+                    Debug.Log("Adding component element stacks.");
                     ElementType currentElement = CombatManager.instance.OpponentFighter.FighterMech.MechArms.ComponentElement;
                     newStacks += CombatManager.instance.OpponentFighter.FighterMech.MechArms.ExtraElementStacks;
 
@@ -1276,16 +1320,33 @@ public class EffectManager : MonoBehaviour
 
                         if (playerFighterEffectObject.IceAcidStacks.TryGetValue(cardChannelPair.CardChannel, out currentStackObject))
                         {
-                            foreach (ElementStackObject elementStack in currentStackObject)
-                                if (elementStack.ElementType == currentElement)
-                                    elementStack.ElementStacks += newStacks;
+                            if (currentStackObject.Select(x => x.ElementType).Contains(currentElement))
+                            {
+                                foreach (ElementStackObject elementStack in currentStackObject)
+                                    if (elementStack.ElementType == currentElement)
+                                    {
+                                        elementStack.ElementStacks += newStacks;
+                                        Debug.Log("Current element: " + currentElement + ": " + elementStack.ElementStacks);
+                                    }
+                            }
+                            else
+                            {
+                                ElementStackObject newStackObject = new ElementStackObject();
+                                newStackObject.ElementType = currentElement;
+                                newStackObject.ElementStacks = newStacks;
+                                currentStackObject.Add(newStackObject);
+                                Debug.Log("Adding " + newStacks + " " + currentElement + " stacks.");
+                                playerFighterEffectObject.IceAcidStacks[cardChannelPair.CardChannel] = currentStackObject;
+                            }
                         }
                         else
                         {
+                            currentStackObject = new List<ElementStackObject>();
                             ElementStackObject newStackObject = new ElementStackObject();
                             newStackObject.ElementType = currentElement;
                             newStackObject.ElementStacks = newStacks;
                             currentStackObject.Add(newStackObject);
+                            Debug.Log("Adding " + newStacks + " " + currentElement + " stacks.");
                             playerFighterEffectObject.IceAcidStacks.Add(cardChannelPair.CardChannel, currentStackObject);
                         }
                     }
@@ -1318,12 +1379,28 @@ public class EffectManager : MonoBehaviour
 
                         if (opponentFighterEffectObject.IceAcidStacks.TryGetValue(cardChannelPair.CardChannel, out currentStackObject))
                         {
-                            foreach (ElementStackObject elementStack in currentStackObject)
-                                if (elementStack.ElementType == currentElement)
-                                    elementStack.ElementStacks += newStacks;
+                            if (currentStackObject.Select(x => x.ElementType).Contains(currentElement))
+                            {
+                                foreach (ElementStackObject elementStack in currentStackObject)
+                                    if (elementStack.ElementType == currentElement)
+                                    {
+                                        elementStack.ElementStacks += newStacks;
+                                        Debug.Log("Current element: " + currentElement + ": " + elementStack.ElementStacks);
+                                    }
+                            }
+                            else
+                            {
+                                ElementStackObject newStackObject = new ElementStackObject();
+                                newStackObject.ElementType = currentElement;
+                                newStackObject.ElementStacks = newStacks;
+                                currentStackObject.Add(newStackObject);
+                                Debug.Log("Adding " + newStacks + " " + currentElement + " stacks.");
+                                opponentFighterEffectObject.IceAcidStacks[cardChannelPair.CardChannel] = currentStackObject;
+                            }
                         }
                         else
                         {
+                            currentStackObject = new List<ElementStackObject>();
                             ElementStackObject newStackObject = new ElementStackObject();
                             newStackObject.ElementType = currentElement;
                             newStackObject.ElementStacks = newStacks;
@@ -1338,6 +1415,7 @@ public class EffectManager : MonoBehaviour
             case MechComponent.Legs:
                 if (destinationMech == CharacterSelect.Player)
                 {
+                    Debug.Log("Adding component element stacks.");
                     ElementType currentElement = CombatManager.instance.OpponentFighter.FighterMech.MechLegs.ComponentElement;
                     newStacks += CombatManager.instance.OpponentFighter.FighterMech.MechLegs.ExtraElementStacks;
 
@@ -1363,16 +1441,33 @@ public class EffectManager : MonoBehaviour
 
                         if (playerFighterEffectObject.IceAcidStacks.TryGetValue(cardChannelPair.CardChannel, out currentStackObject))
                         {
-                            foreach (ElementStackObject elementStack in currentStackObject)
-                                if (elementStack.ElementType == currentElement)
-                                    elementStack.ElementStacks += newStacks;
+                            if (currentStackObject.Select(x => x.ElementType).Contains(currentElement))
+                            {
+                                foreach (ElementStackObject elementStack in currentStackObject)
+                                    if (elementStack.ElementType == currentElement)
+                                    {
+                                        elementStack.ElementStacks += newStacks;
+                                        Debug.Log("Current element: " + currentElement + ": " + elementStack.ElementStacks);
+                                    }
+                            }
+                            else
+                            {
+                                ElementStackObject newStackObject = new ElementStackObject();
+                                newStackObject.ElementType = currentElement;
+                                newStackObject.ElementStacks = newStacks;
+                                currentStackObject.Add(newStackObject);
+                                Debug.Log("Adding " + newStacks + " " + currentElement + " stacks.");
+                                playerFighterEffectObject.IceAcidStacks[cardChannelPair.CardChannel] = currentStackObject;
+                            }
                         }
                         else
                         {
+                            currentStackObject = new List<ElementStackObject>();
                             ElementStackObject newStackObject = new ElementStackObject();
                             newStackObject.ElementType = currentElement;
                             newStackObject.ElementStacks = newStacks;
                             currentStackObject.Add(newStackObject);
+                            Debug.Log("Adding " + newStacks + " " + currentElement + " stacks.");
                             playerFighterEffectObject.IceAcidStacks.Add(cardChannelPair.CardChannel, currentStackObject);
                         }
                     }
@@ -1405,20 +1500,44 @@ public class EffectManager : MonoBehaviour
 
                         if (opponentFighterEffectObject.IceAcidStacks.TryGetValue(cardChannelPair.CardChannel, out currentStackObject))
                         {
-                            foreach (ElementStackObject elementStack in currentStackObject)
-                                if (elementStack.ElementType == currentElement)
-                                    elementStack.ElementStacks += newStacks;
+                            if (currentStackObject.Select(x => x.ElementType).Contains(currentElement))
+                            {
+                                foreach (ElementStackObject elementStack in currentStackObject)
+                                    if (elementStack.ElementType == currentElement)
+                                    {
+                                        elementStack.ElementStacks += newStacks;
+                                        Debug.Log("Current element: " + currentElement + ": " + elementStack.ElementStacks);
+                                    }
+                            }
+                            else
+                            {
+                                ElementStackObject newStackObject = new ElementStackObject();
+                                newStackObject.ElementType = currentElement;
+                                newStackObject.ElementStacks = newStacks;
+                                currentStackObject.Add(newStackObject);
+                                Debug.Log("Adding " + newStacks + " " + currentElement + " stacks.");
+                                opponentFighterEffectObject.IceAcidStacks[cardChannelPair.CardChannel] = currentStackObject;
+                            }
                         }
                         else
                         {
+                            currentStackObject = new List<ElementStackObject>();
                             ElementStackObject newStackObject = new ElementStackObject();
                             newStackObject.ElementType = currentElement;
                             newStackObject.ElementStacks = newStacks;
                             currentStackObject.Add(newStackObject);
+
                             opponentFighterEffectObject.IceAcidStacks.Add(cardChannelPair.CardChannel, currentStackObject);
                         }
                     }
                 }
+                break;
+
+            case MechComponent.None:
+                break;
+            case MechComponent.Head:
+                break;
+            case MechComponent.Back:
                 break;
         }
 
@@ -1436,7 +1555,14 @@ public class EffectManager : MonoBehaviour
                 foreach (ElementStackObject element in previousElementChannelEffects)
                 {
                     if (element.ElementType == ElementType.Acid)
+                    {
+                        if (CombatManager.instance.NarrateEffects)
+                        {
+                            Debug.Log(defensiveCharacter + "is recieving acid damage. Base Damage: " + damageToDeal + ", modified damage: "
+                                + Mathf.RoundToInt(damageToDeal * CombatManager.instance.AcidComponentDamageMultiplier));
+                        }
                         return Mathf.RoundToInt(damageToDeal * CombatManager.instance.AcidComponentDamageMultiplier);
+                    }
                 }
             }
 
@@ -1449,7 +1575,14 @@ public class EffectManager : MonoBehaviour
                 foreach (ElementStackObject element in previousElementChannelEffects)
                 {
                     if (element.ElementType == ElementType.Acid)
+                    {
+                        if(CombatManager.instance.NarrateEffects)
+                        {
+                            Debug.Log(defensiveCharacter + "is recieving acid damage. Base Damage: " + damageToDeal + ", modified damage: " 
+                                + Mathf.RoundToInt(damageToDeal * CombatManager.instance.AcidComponentDamageMultiplier));
+                        }                        
                         return Mathf.RoundToInt(damageToDeal * CombatManager.instance.AcidComponentDamageMultiplier);
+                    }
                 }
             }
 

@@ -221,7 +221,6 @@ public class CardInteractionController
         
         if (defensiveCard != null && defensiveCard.CardData != null & defensiveCard.CardData.CardEffects != null)
         {
-            Debug.Log("Found defensive card.");
             foreach (SOCardEffectObject effect in defensiveCard.CardData.CardEffects)
             {
                 if (effect.EffectType == CardEffectTypes.PlayMultipleTimes)

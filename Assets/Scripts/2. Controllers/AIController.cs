@@ -339,19 +339,15 @@ public class AIController : MonoBehaviour
                     break;
 
                 case CardCategory.Special:
-                    componentDamageMultiplier += CombatManager.instance.OpponentFighter.FighterMech.MechHead.CDMFromComponent;
+                    componentDamageMultiplier += CombatManager.instance.OpponentFighter.FighterMech.MechTorso.CDMFromComponent;
                     break;
             }
 
             if (playerEffectObject.IceAcidStacks.TryGetValue(cardPlayPriorityObject.channel, out channelElementStacks))
             {
-                Debug.Log("Found IceAcid Dictionary.");
                 foreach (ElementStackObject element in channelElementStacks)
                     if (element.ElementType == ElementType.Acid)
-                    {
-                        Debug.Log("Found acid element in channel.");
                         componentDamageMultiplier += CombatManager.instance.AcidComponentDamageMultiplier;
-                    }
             }
 
             return componentDamageMultiplier;
