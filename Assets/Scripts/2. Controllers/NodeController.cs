@@ -29,26 +29,37 @@ public class NodeController : MonoBehaviour
         List<NodeDataObject> tempList = new List<NodeDataObject>();
         tempList.AddRange(activeNodes);
 
-        foreach (NodeDataObject node in tempList)
+        for(int i = 0; i < activeNodes.Count;)
         {
-            if (node == null)
-                continue;
+            activeNodes[i].HasWonBattle = true;
+            i += 2;
+        }
 
-            NodeDataObject fighterNode = node.transform.GetChild(0).GetComponent<NodeDataObject>();
-            
-            if(fighterNode != null)
-                fighterNode.MoveToNextNode();
-            activeNodes.Remove(node.PreviousNode);
-            NodeDataObject otherNode = activeNodes.FirstOrDefault(n => n.NextNode == node.NextNode);
-            if(otherNode != null)
+        foreach (NodeDataObject currentNode in tempList)
+        {
+            if (currentNode != null)
             {
-                if (otherNode.NextNode == node.NextNode)
+                NodeDataObject fighterNode = currentNode.transform.GetChild(0).GetComponent<NodeDataObject>();
+
+                if (fighterNode != null && currentNode.HasWonBattle)
                 {
-                    // --------------
-                    activeNodes.Remove(otherNode);
+                    fighterNode.MoveToNextNode();
+                    activeNodes.Remove(currentNode.PreviousNode);
+                    NodeDataObject newCurrentNode = currentNode.NextNode;
+                    activeNodes.Add(newCurrentNode);
+                    fighterNode.UpdateToParentNode(newCurrentNode);
+                }
+
+                NodeDataObject otherNode = activeNodes.FirstOrDefault(n => n.NextNode == currentNode.NextNode);
+                if (otherNode != null)
+                {
+                    if (otherNode.NextNode == currentNode.NextNode)
+                    {
+                        // --------------
+                        activeNodes.Remove(otherNode);
+                    }
                 }
             }
-
 
         }
     }

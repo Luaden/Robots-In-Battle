@@ -7,11 +7,11 @@ public class NodeDataObject : MonoBehaviour
     public NodeDataObject previousNode;
     [SerializeField] protected NodeDataObject nextNode;
     [SerializeField] protected NodeDataObject pairNode;
-    private bool hasBeenAssigned;
-    private bool hasWonBattle;
+    [SerializeField] protected NodeDataObject parentNode;
+    public bool hasBeenAssigned;
+    public bool hasWonBattle;
     [SerializeField] protected bool isFinalNode;
 
-    private NodeDataObject currentNode;
 
     private FighterDataObject currentFighter;
     private NodeUIController nodeUIController;
@@ -21,7 +21,7 @@ public class NodeDataObject : MonoBehaviour
     public NodeDataObject PreviousNode { get => previousNode; set => previousNode = value; }
     public NodeDataObject NextNode { get => nextNode; set => nextNode = value; }
     public NodeDataObject PairNode { get => pairNode; set => pairNode = value; }
-    public NodeDataObject CurrentNode { get => currentNode; set => currentNode = value; }
+    public NodeDataObject ParentNode { get => parentNode; set => parentNode = value; }
     public bool HasBeenAssigned { get => hasBeenAssigned; set => hasBeenAssigned = value; }
     public bool HasWonBattle { get => hasWonBattle; set => hasWonBattle = value; }
     public bool IsFinalNode { get => isFinalNode; set => isFinalNode = value; }
@@ -33,7 +33,7 @@ public class NodeDataObject : MonoBehaviour
     public void Init()
     {
         // this would be inside a fighter obj?
-        currentNode = transform.parent.GetComponent<NodeDataObject>();
+        parentNode = transform.parent.GetComponent<NodeDataObject>();
         switch (nodeType)
         {
             case NodeType.Opponent:
@@ -62,8 +62,19 @@ public class NodeDataObject : MonoBehaviour
     public void MoveToNextNode()
     {
         nodeUIController.NodeSlotController = nextNode.GetComponent<NodeSlotController>();
-
         transform.position = nextNode.transform.position;
+
+        Debug.Log(this.parentNode);
+    }
+
+    public void UpdateToParentNode(NodeDataObject parentNode)
+    {
+        this.parentNode = parentNode;
+        nextNode = parentNode.nextNode;
+        previousNode = parentNode.previousNode;
+        hasBeenAssigned = parentNode.HasBeenAssigned;
+        hasWonBattle = parentNode.HasWonBattle;
+
     }
 
 }

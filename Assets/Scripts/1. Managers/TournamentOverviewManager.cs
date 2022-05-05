@@ -119,14 +119,6 @@ public class TournamentOverviewManager : MonoBehaviour
         
         nodeController.ProgressFighters();
 
-        foreach (NodeDataObject node in nodeController.GetAllNodes())
-        {
-            if (GetActiveList().Contains(node))
-                RemoveInActiveList(node);
-            /*            if (node.HasBeenAssigned)
-                            AddToActiveList(node);*/
-        }
-
         /*if(!playedFirstBattle)
         {
             foreach (NodeDataObject n in nodeController.GetAllActiveNodes())
