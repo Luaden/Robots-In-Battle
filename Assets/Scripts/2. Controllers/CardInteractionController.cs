@@ -9,7 +9,8 @@ public class CardInteractionController
     private AttackPlanObject opponentAttackPlan;
 
     private CombatQueueObject combatQueueObject;
-
+    Queue<CardCharacterPairObject> preCombatEffectsQueue;
+    Queue<CardCharacterPairObject> postCombatEffectsQueue;
     #region Debug
     private string combatLog;
     #endregion
@@ -19,13 +20,13 @@ public class CardInteractionController
     {
         playerAttackPlan = new AttackPlanObject(newPlayerAttackPlan.cardChannelPairA, newPlayerAttackPlan.cardChannelPairB, CharacterSelect.Player, CharacterSelect.Opponent);
         opponentAttackPlan = new AttackPlanObject(newOpponentAttackPlan.cardChannelPairA, newOpponentAttackPlan.cardChannelPairB, CharacterSelect.Opponent, CharacterSelect.Player);
-
+        preCombatEffectsQueue = new Queue<CardCharacterPairObject>();
+        postCombatEffectsQueue = new Queue<CardCharacterPairObject>();
 
         if (opponentAttackPlan.cardChannelPairB != null && opponentAttackPlan.cardChannelPairB.CardData != null &&
             CardCategory.Defensive.HasFlag(opponentAttackPlan.cardChannelPairB.CardData.CardCategory) &&
             playerAttackPlan.cardChannelPairA != null && playerAttackPlan.cardChannelPairA.CardData != null)
         {
-            Debug.Log("Defensive interaction.");
             combatQueueObject = new CombatQueueObject();
 
             combatQueueObject.cardBurnObject.firstCard = playerAttackPlan.cardChannelPairA.CardData.CardUIController;
@@ -39,7 +40,6 @@ public class CardInteractionController
             CardCategory.Defensive.HasFlag(playerAttackPlan.cardChannelPairB.CardData.CardCategory) && 
             opponentAttackPlan.cardChannelPairA != null && opponentAttackPlan.cardChannelPairA.CardData != null)
         {
-            Debug.Log("Defensive interaction.");
             combatQueueObject = new CombatQueueObject();
 
             combatQueueObject.cardBurnObject.firstCard = opponentAttackPlan.cardChannelPairA.CardData.CardUIController;
@@ -197,8 +197,9 @@ public class CardInteractionController
     {
         Queue<AnimationQueueObject> newAnimations = new Queue<AnimationQueueObject>();
         Queue<DamageMechPairObject> newDamageQueue = new Queue<DamageMechPairObject>();
-        Queue<CardCharacterPairObject> newPreCombatEffectsQueue = new Queue<CardCharacterPairObject>();
-        Queue<CardCharacterPairObject> newPostCombatEffectsQueue = new Queue<CardCharacterPairObject>();
+        List<CardCharacterPairObject> preCombatEffectList = new List<CardCharacterPairObject>();
+        List<CardCharacterPairObject> postCombatEffectList = new List<CardCharacterPairObject>();
+
         EnergyRemovalObject newEnergyToRemove = QueueEnergyRemoval(offensiveAttack, offensiveMech, defensiveCard, defensiveMech);
 
         int repeatPlay = 1;
@@ -244,10 +245,9 @@ public class CardInteractionController
                     combatLog += (offensiveMech + "'s attack is " + (i + 1) + " of " + repeatPlay + " total attacks. ");
                 }
 
-                AddEffectToQueue(defensiveCard, offensiveMech, newPreCombatEffectsQueue, newPostCombatEffectsQueue);
+                newDamageQueue.Enqueue(new DamageMechPairObject(new CardCharacterPairObject(offensiveAttack, offensiveMech), 
+                                                                new CardCharacterPairObject(defensiveCard, offensiveMech), true, false, combatLog));
                 newAnimations.Enqueue(new AnimationQueueObject(offensiveMech, offensiveAttack.CardData.AnimationType, defensiveMech, defensiveCard.CardData.AnimationType));
-                newDamageQueue.Enqueue(new DamageMechPairObject(offensiveAttack, offensiveMech, true, false, combatLog));
-
                 combatLog = string.Empty;
             }
             else if (guardDamage)
@@ -260,10 +260,9 @@ public class CardInteractionController
                     combatLog += (offensiveMech + "'s attack is " + (i + 1) + " of " + repeatPlay + " total attacks. ");
                 }
 
-                AddEffectToQueue(offensiveAttack, offensiveMech, newPreCombatEffectsQueue, newPostCombatEffectsQueue);
-                AddEffectToQueue(defensiveCard, defensiveMech, newPreCombatEffectsQueue, newPostCombatEffectsQueue);
                 newAnimations.Enqueue(new AnimationQueueObject(offensiveMech, offensiveAttack.CardData.AnimationType, defensiveMech, defensiveCard.CardData.AnimationType));
-                newDamageQueue.Enqueue(new DamageMechPairObject(offensiveAttack, defensiveMech, false, true, combatLog));
+                newDamageQueue.Enqueue(new DamageMechPairObject(new CardCharacterPairObject(offensiveAttack, defensiveMech),
+                                                                new CardCharacterPairObject(defensiveCard, offensiveMech), false, true, combatLog));
 
                 combatLog = string.Empty;
             }
@@ -276,46 +275,19 @@ public class CardInteractionController
                     combatLog += (offensiveMech + "'s attack is " + (i + 1) + " of " + repeatPlay + " total attacks. ");
                 }
 
-                AddEffectToQueue(offensiveAttack, offensiveMech, newPreCombatEffectsQueue, newPostCombatEffectsQueue);
-
-                if (defensiveCard != null && defensiveCard.CardData != null && defensiveCard.CardData.CardCategory != CardCategory.Counter)
-                    AddEffectToQueue(defensiveCard, defensiveMech, newPreCombatEffectsQueue, newPostCombatEffectsQueue);
-
                 newAnimations.Enqueue(new AnimationQueueObject(offensiveMech, offensiveAttack.CardData.AnimationType, defensiveMech, AnimationType.Damaged));
-                newDamageQueue.Enqueue(new DamageMechPairObject(offensiveAttack, defensiveMech, false, false, combatLog));
+                newDamageQueue.Enqueue(new DamageMechPairObject(new CardCharacterPairObject(offensiveAttack, defensiveMech), null, false, false, combatLog));
             }
 
-            //Send combat object to combat sequence;
             combatQueueObject.damageQueue = newDamageQueue;
             combatQueueObject.animationQueue = newAnimations;
-            combatQueueObject.preCombatEffectQueue = newPreCombatEffectsQueue;
-            combatQueueObject.postCombatEffectQueue = newPostCombatEffectsQueue;
             combatQueueObject.energyRemovalObject = newEnergyToRemove;
 
             CombatManager.instance.CombatSequenceManager.AddCombatSequenceToQueue(combatQueueObject);
             combatLog = string.Empty;
         }
     }
-
-    private void AddEffectToQueue(CardChannelPairObject cardChannelPairObject, CharacterSelect destinationMech, 
-        Queue<CardCharacterPairObject> preDamageEffectQueue, Queue<CardCharacterPairObject> postDamageEffectQueue)
-    {
-        CardCharacterPairObject newEffect = new CardCharacterPairObject();
-        newEffect.cardChannelPair = cardChannelPairObject;
-        newEffect.character = destinationMech;
-
-        if (cardChannelPairObject.CardData.ApplyEffectsFirst)
-        {
-            preDamageEffectQueue.Enqueue(newEffect);
-            postDamageEffectQueue.Enqueue(null);
-        }
-        else
-        {
-            postDamageEffectQueue.Enqueue(newEffect);
-            preDamageEffectQueue.Enqueue(null);
-        }
-    }
-
+    
     private EnergyRemovalObject QueueEnergyRemoval(CardChannelPairObject offensiveAttack, CharacterSelect offensiveMech, CardChannelPairObject defensiveCard, CharacterSelect defensiveMech)
     {
         EnergyRemovalObject newEnergyToRemove = new EnergyRemovalObject();

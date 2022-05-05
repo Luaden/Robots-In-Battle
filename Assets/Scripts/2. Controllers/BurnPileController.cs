@@ -67,35 +67,36 @@ public class BurnPileController : MonoBehaviour
                     case Channels.HighMid:
                         card.PreviousParentObject = playerHighMidBurnPile.transform;
                         card.transform.SetParent(playerHighMidBurnPile.transform);
-                        Debug.Log(character + " card's selected channel: " + Channels.HighMid);
                         break;
 
                     case Channels.LowMid:
                         card.PreviousParentObject = playerLowMidBurnPile.transform;
                         card.transform.SetParent(playerLowMidBurnPile.transform);
-                        Debug.Log(character + " card's selected channel: " + Channels.LowMid);
                         break;
                 }
+
+                return;
             }
 
-            switch (currentCardBurnObject.firstCard.CardData.SelectedChannels)
+            switch (card.CardData.SelectedChannels)
             {
                 case Channels.High:
                     card.PreviousParentObject = playerHighBurnPile.transform;
                     card.transform.SetParent(playerHighBurnPile.transform);
-                    Debug.Log(character + " card's selected channel: " + card.CardData.SelectedChannels);
                     break;
+
                 case Channels.Mid:
                     card.PreviousParentObject = playerMidBurnPile.transform;
                     card.transform.SetParent(playerMidBurnPile.transform);
-                    Debug.Log(character + " card's selected channel: " + card.CardData.SelectedChannels);
                     break;
+
                 case Channels.Low:
                     card.PreviousParentObject = playerLowBurnPile.transform;
                     card.transform.SetParent(playerLowBurnPile.transform);
-                    Debug.Log(character + " card's selected channel: " + card.CardData.SelectedChannels);
                     break;
             }
+
+            return;
         }
         else
         {
@@ -106,40 +107,36 @@ public class BurnPileController : MonoBehaviour
                     case Channels.HighMid:
                         card.PreviousParentObject = opponentHighMidBurnPile.transform;
                         card.transform.SetParent(opponentHighMidBurnPile.transform);
-                        Debug.Log(character + " card's selected channel: " + Channels.HighMid);
-
                         break;
 
                     case Channels.LowMid:
                         card.PreviousParentObject = opponentLowMidBurnPile.transform;
                         card.transform.SetParent(opponentLowMidBurnPile.transform);
-                        Debug.Log(character + " card's selected channel: " + Channels.LowMid);
-
                         break;
                 }
+
+                return;
             }
 
-            switch (currentCardBurnObject.firstCard.CardData.SelectedChannels)
+            switch (card.CardData.SelectedChannels)
             {
                 case Channels.High:
                     card.PreviousParentObject = opponentHighBurnPile.transform;
                     card.transform.SetParent(opponentHighBurnPile.transform);
-                    Debug.Log(character + " card's selected channel: " + card.CardData.SelectedChannels);
-
                     break;
+
                 case Channels.Mid:
                     card.PreviousParentObject = opponentMidBurnPile.transform;
                     card.transform.SetParent(opponentMidBurnPile.transform);
-                    Debug.Log(character + " card's selected channel: " + card.CardData.SelectedChannels);
-
                     break;
+
                 case Channels.Low:
                     card.PreviousParentObject = opponentLowBurnPile.transform;
                     card.transform.SetParent(opponentLowBurnPile.transform);
-                    Debug.Log(character + " card's selected channel: " + card.CardData.SelectedChannels);
-
                     break;
             }
+
+            return;
         }
     }
 }

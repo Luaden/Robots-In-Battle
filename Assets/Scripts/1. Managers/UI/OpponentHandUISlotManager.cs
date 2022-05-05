@@ -30,7 +30,6 @@ public class OpponentHandUISlotManager : BaseSlotManager<CardUIController>
 
     public override void RemoveItemFromCollection(CardUIController item)
     {
-        Debug.Log("Removing a card from the opponent hand.");
         foreach (CardUISlotController slot in slotList)
             if (slot.CurrentSlottedItem == item)
             {

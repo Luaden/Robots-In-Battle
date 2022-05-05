@@ -4,19 +4,19 @@ using UnityEngine;
 
 public class DamageMechPairObject
 {
-    private CardChannelPairObject cardChannelPair;
+    private CardCharacterPairObject cardCharacterPairA;
+    private CardCharacterPairObject cardCharacterPairB;
     private bool counterDamage;
     private bool guardDamage;
-    private CharacterSelect characterTakingDamage;
     private string combatLog;
 
-    public CharacterSelect CharacterTakingDamage { get => characterTakingDamage; }
-    public CardChannelPairObject CardChannelPair { get => cardChannelPair; }
-
-    public DamageMechPairObject(CardChannelPairObject attack, CharacterSelect characterTakingDamage, bool counter, bool guard, string combatLog = null)
+    public CharacterSelect CharacterTakingDamage { get => cardCharacterPairA.character; }
+    public CardCharacterPairObject CardCharacterPairA { get => cardCharacterPairA; }
+    public CardCharacterPairObject CardCharacterPairB { get => cardCharacterPairB; }
+    public DamageMechPairObject(CardCharacterPairObject attackA, CardCharacterPairObject attackB, bool counter, bool guard, string combatLog = null)
     {
-        this.cardChannelPair = attack;
-        this.characterTakingDamage = characterTakingDamage;
+        cardCharacterPairA = attackA;
+        cardCharacterPairB = attackB;
         counterDamage = counter;
         guardDamage = guard;
         this.combatLog = combatLog;
@@ -25,7 +25,7 @@ public class DamageMechPairObject
     public int GetDamageToDeal()
     {
         int damageToReturn = 
-            CombatManager.instance.EffectManager.GetMechDamageWithAndConsumeModifiers(cardChannelPair, characterTakingDamage);
+            CombatManager.instance.EffectManager.GetMechDamageWithAndConsumeModifiers(cardCharacterPairA.cardChannelPair, cardCharacterPairA.character);
 
         if (counterDamage)
             return Mathf.RoundToInt(damageToReturn * CombatManager.instance.CounterDamageMultiplier);
@@ -40,9 +40,9 @@ public class DamageMechPairObject
 
     public Channels GetDamageChannels()
     {
-        if (cardChannelPair.CardData.AffectedChannels == AffectedChannels.AllPossibleChannels)
-            return cardChannelPair.CardData.PossibleChannels;
+        if (cardCharacterPairA.cardChannelPair.CardData.AffectedChannels == AffectedChannels.AllPossibleChannels)
+            return cardCharacterPairA.cardChannelPair.CardData.PossibleChannels;
         else
-            return cardChannelPair.CardChannel;
+            return cardCharacterPairA.cardChannelPair.CardChannel;
     }
 }
