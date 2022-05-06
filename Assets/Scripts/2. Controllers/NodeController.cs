@@ -8,8 +8,7 @@ public class NodeController : MonoBehaviour
     [SerializeField] protected List<NodeDataObject> allNodes;
     [SerializeField] protected List<NodeDataObject> activeNodes;
 
-    //test
-    [SerializeField] protected List<FighterPairObject> fighterPairs;
+    protected List<FighterPairObject> fighterPairs;
 
     public List<NodeDataObject> GetAllNodes() { return allNodes; }
     public List<NodeDataObject> GetAllActiveNodes() { return activeNodes; }
@@ -24,16 +23,16 @@ public class NodeController : MonoBehaviour
 
     public void ProgressFighters()
     {
-        //List<FighterDataObject> fighters = new List<FighterDataObject>();
-
         List<NodeDataObject> tempList = new List<NodeDataObject>();
         tempList.AddRange(activeNodes);
-
-        for(int i = 0; i < activeNodes.Count;)
+        // test, assign the winners
+        for (int i = 0; i < activeNodes.Count;)
         {
             activeNodes[i].HasWonBattle = true;
+            TournamentOverviewManager.instance.AssignFighterToNodeSlot(activeNodes[i], activeNodes[i].PairNode);
             i += 2;
         }
+
 
         foreach (NodeDataObject currentNode in tempList)
         {
@@ -41,21 +40,25 @@ public class NodeController : MonoBehaviour
             {
                 NodeDataObject fighterNode = currentNode.transform.GetChild(0).GetComponent<NodeDataObject>();
 
+                // if we have a winner
                 if (fighterNode != null && currentNode.HasWonBattle)
                 {
-                    fighterNode.MoveToNextNode();
-                    activeNodes.Remove(currentNode.PreviousNode);
                     NodeDataObject newCurrentNode = currentNode.NextNode;
-                    activeNodes.Add(newCurrentNode);
+                    newCurrentNode.PreviousNode = currentNode;
                     fighterNode.UpdateToParentNode(newCurrentNode);
+                    fighterNode.MoveToNextNode();
+                    activeNodes.Remove(newCurrentNode.PreviousNode);
+                    activeNodes.Add(newCurrentNode);
+                    newCurrentNode.HasBeenAssigned = true;
                 }
 
-                NodeDataObject otherNode = activeNodes.FirstOrDefault(n => n.NextNode == currentNode.NextNode);
-                if (otherNode != null)
+                if(activeNodes.Contains(currentNode.PairNode) && !currentNode.PairNode.HasWonBattle)
                 {
-                    if (otherNode.NextNode == currentNode.NextNode)
+                    NodeDataObject otherNode = currentNode.PairNode;
+                    if(otherNode.NextNode == currentNode.NextNode)
                     {
-                        // --------------
+                        // --------------------------
+                        otherNode.transform.GetChild(0).GetComponent<NodeDataObject>().NodeUIController.SetInactive();
                         activeNodes.Remove(otherNode);
                     }
                 }
@@ -63,8 +66,5 @@ public class NodeController : MonoBehaviour
 
         }
     }
-
-
-
 
 }
