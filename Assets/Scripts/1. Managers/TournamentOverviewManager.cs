@@ -79,7 +79,7 @@ public class TournamentOverviewManager : MonoBehaviour
             }
         }
 
-        AssignAllFightersToStarterNodes();
+        //AssignAllFightersToStarterNodes();
         DisplayStatsOverview();
 
     }
@@ -149,6 +149,10 @@ public class TournamentOverviewManager : MonoBehaviour
     {
         if (GameManager.instance == null)
             return;
+
+        // test
+        GameManager.instance.LoadPlayer();
+        Debug.Log(GameManager.instance.PlayerBankController);
 
         playerMoney.text = ("Money: ") + GameManager.instance.PlayerBankController.GetPlayerCurrency().ToString();
         playerHealth.text = ("Health: ") +GameManager.instance.PlayerMechController.PlayerMech.MechCurrentHP.ToString();
