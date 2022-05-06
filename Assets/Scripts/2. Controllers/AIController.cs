@@ -256,6 +256,9 @@ public class AIController : MonoBehaviour
                 if (CombatManager.instance.EffectManager.GetIceElementInChannel(channel, CharacterSelect.Player))
                     if (card.EnergyCost * CombatManager.instance.IceChannelEnergyReductionModifier > CombatManager.instance.OpponentFighter.FighterMech.MechCurrentEnergy)
                         continue;
+                else
+                    if (card.EnergyCost > CombatManager.instance.OpponentFighter.FighterMech.MechCurrentEnergy)
+                        continue;
 
                 if (aSlot && (card.CardType == CardType.Attack || card.CardType == CardType.Neutral))
                     cardPlays.Add(CreateCardPlayPriorityObject(card, channel));
