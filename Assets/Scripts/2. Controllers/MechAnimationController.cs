@@ -5,8 +5,14 @@ using UnityEngine;
 public class MechAnimationController : MonoBehaviour
 {
     [SerializeField] private Animator animator;
+    [SerializeField] private CharacterSelect mechController;
     private bool isAnimating;
 
+    public delegate void onAttackingPlayer();
+    public static event onAttackingPlayer OnAttackingPlayer;
+
+    public delegate void onAttackingOpponent();
+    public static event onAttackingOpponent OnAttackingOpponent;
     public bool IsAnimating { get => isAnimating; }
 
     public void SetMechAnimation(AnimationType animationType)
@@ -63,5 +69,13 @@ public class MechAnimationController : MonoBehaviour
                 animator.SetTrigger("isLosing");
                 break;
         }
+    }
+
+    private void MoveCameraToAttack()
+    {
+        if(mechController == CharacterSelect.Player)
+            OnAttackingOpponent?.Invoke();
+        if (mechController == CharacterSelect.Opponent)
+            OnAttackingPlayer?.Invoke();
     }
 }

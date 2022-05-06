@@ -136,3 +136,8 @@ public enum CharacterSelect
     Player,
     Opponent
 }
+
+public enum EventType
+{
+    
+}

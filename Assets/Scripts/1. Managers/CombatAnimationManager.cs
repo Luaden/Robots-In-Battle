@@ -13,21 +13,6 @@ public class CombatAnimationManager : MonoBehaviour
 
     public bool AnimationsComplete { get => animationsComplete; }
 
-    public void AddAnimationToQueue(CharacterSelect firstMech, AnimationType firstAnimation, CharacterSelect secondMech, AnimationType secondAnimation)
-    {
-        animationsComplete = false;
-
-        if (firstMech == CharacterSelect.Player)
-            playerMechAnimationController.SetMechAnimation(firstAnimation);
-        if (firstMech == CharacterSelect.Opponent)
-            opponentMechAnimationController.SetMechAnimation(firstAnimation);
-
-        if (secondMech == CharacterSelect.Player)
-            playerMechAnimationController.SetMechAnimation(secondAnimation);
-        if (secondMech == CharacterSelect.Opponent)
-            opponentMechAnimationController.SetMechAnimation(secondAnimation);
-    }
-
     public void AddAnimationToQueue(AnimationQueueObject newAnimation)
     {
         animationsComplete = false;
