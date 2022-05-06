@@ -31,6 +31,8 @@ public class CameraMoveController : MonoBehaviour
         yMin = transform.position.y - yDriftMinimum;
         startPos = transform.position;
 
+        Debug.Log("Start position: " + startPos);
+
         CombatSequenceManager.OnCombatComplete += EnablePlayerHasControl;
         MechAnimationController.OnAttackingPlayer += AttackingPlayer;
         MechAnimationController.OnAttackingOpponent += AttackingOpponent;
@@ -80,7 +82,7 @@ public class CameraMoveController : MonoBehaviour
             transform.position = Vector3.Slerp(Camera.main.transform.position, mousePosMax, driftSpeed * Time.deltaTime);
         }
 
-        if(cameraMovementDisabled)
+        if (cameraMovementDisabled)
         {
             if (transform.position == startPos)
                 return;

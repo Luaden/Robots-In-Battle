@@ -65,7 +65,7 @@ public class CombatDeckManager : MonoBehaviour
             slotController.SlotManager.RemoveItemFromCollection(cardToReturn.CardUIController);
         }
 
-        CombatManager.instance.CardUIManager.DestroyCardUI(cardToReturn);
+        cardToReturn.CardUIController.CardAnimator.enabled = true;
 
         playerDeck.AddCardToBottom(cardToReturn);
     }
@@ -78,7 +78,7 @@ public class CombatDeckManager : MonoBehaviour
             slotController.SlotManager.RemoveItemFromCollection(cardToReturn.CardUIController);
         }
 
-        CombatManager.instance.CardUIManager.DestroyCardUI(cardToReturn);
+        cardToReturn.CardUIController.CardAnimator.enabled = true;
 
         opponentDeck.AddCardToBottom(cardToReturn);
     }

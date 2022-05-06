@@ -2,22 +2,19 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MechUIPopupController : MonoBehaviour
+public class MechUIPopupController : BaseUIElement<Channels>
 {
-    [SerializeField] protected GameObject popupObject;
-    private RectTransform rectTransform;
+    [SerializeField] protected GameObject highChannelPopupObject;
+    [SerializeField] protected GameObject midChannelPopupObject;
+    [SerializeField] protected GameObject lowChannelPopupObject;
 
-    public void HandlePopup(MechObject mechObject,
-                            Transform transform,
-                            Vector3 cursorPosition)
+    public override void UpdateUI(Channels primaryData)
     {
-        //MechPopupObject mechPopup;
-        // create a popup anchored to transform location to display card details
+        throw new System.NotImplementedException();
     }
 
-    public void InactivatePopup()
+    protected override bool ClearedIfEmpty(Channels newData)
     {
-        popupObject.SetActive(false);
+        throw new System.NotImplementedException();
     }
-
 }

@@ -294,11 +294,10 @@ public class CardInteractionController
         EnergyRemovalObject newEnergyToRemove = new EnergyRemovalObject();
         newEnergyToRemove.firstMech = offensiveMech;
 
-
         if (offensiveAttack.CardData.AffectedChannels == AffectedChannels.AllPossibleChannels)
             foreach (Channels channel in CombatManager.instance.GetChannelListFromFlags(offensiveAttack.CardData.PossibleChannels))
             {
-                if (CombatManager.instance.EffectManager.GetIceElementInChannel(channel, defensiveMech))
+                if (CombatManager.instance.EffectManager.GetIceElementInChannel(channel, offensiveMech))
                 {
                     newEnergyToRemove.firstMechEnergyRemoval = Mathf.RoundToInt(offensiveAttack.CardData.EnergyCost * CombatManager.instance.IceChannelEnergyReductionModifier);
                     break;
@@ -308,7 +307,7 @@ public class CardInteractionController
             }
         else
         {
-            if (CombatManager.instance.EffectManager.GetIceElementInChannel(offensiveAttack.CardChannel, defensiveMech))
+            if (CombatManager.instance.EffectManager.GetIceElementInChannel(offensiveAttack.CardChannel, offensiveMech))
             {
                 newEnergyToRemove.firstMechEnergyRemoval = Mathf.RoundToInt(offensiveAttack.CardData.EnergyCost * CombatManager.instance.IceChannelEnergyReductionModifier);
             }
@@ -322,7 +321,7 @@ public class CardInteractionController
             if (defensiveCard.CardData.AffectedChannels == AffectedChannels.AllPossibleChannels)
                 foreach (Channels channel in CombatManager.instance.GetChannelListFromFlags(defensiveCard.CardData.PossibleChannels))
                 {
-                    if (CombatManager.instance.EffectManager.GetIceElementInChannel(channel, offensiveMech))
+                    if (CombatManager.instance.EffectManager.GetIceElementInChannel(channel, defensiveMech))
                     {
                         newEnergyToRemove.secondMechEnergyRemoval = Mathf.RoundToInt(defensiveCard.CardData.EnergyCost * CombatManager.instance.IceChannelEnergyReductionModifier);
                         break;
@@ -332,11 +331,14 @@ public class CardInteractionController
                 }
             else
             {
-                if (CombatManager.instance.EffectManager.GetIceElementInChannel(defensiveCard.CardChannel, offensiveMech))
+                if (CombatManager.instance.EffectManager.GetIceElementInChannel(defensiveCard.CardChannel, defensiveMech))
                     newEnergyToRemove.secondMechEnergyRemoval = Mathf.RoundToInt(defensiveCard.CardData.EnergyCost * CombatManager.instance.IceChannelEnergyReductionModifier);
                 else
                     newEnergyToRemove.secondMechEnergyRemoval = defensiveCard.CardData.EnergyCost;
             }
+
+        Debug.Log("First mech losing: " + newEnergyToRemove.firstMechEnergyRemoval);
+        Debug.Log("Second mech losing: " + newEnergyToRemove.secondMechEnergyRemoval);
 
         return newEnergyToRemove;
     }
