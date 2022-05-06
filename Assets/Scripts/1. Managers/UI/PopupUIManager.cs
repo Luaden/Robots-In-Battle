@@ -4,11 +4,21 @@ using UnityEngine;
 
 public class PopupUIManager : MonoBehaviour
 {
+    [SerializeField] private float textPace;
+    [SerializeField] private string debugName;
+    [TextArea(1, 5)]
+    [SerializeField] private string debugDialogue;
+
+
     private CardUIPopupController cardUIPopupController;
     private ShopUIPopupController shopUIPopupController;
     private MechUIPopupController mechUIPopupController;
     private HUDPopupController hudPopUpController;
+    private AIDialoguePopupController aIDialoguePopupController;
 
+    public float TextPace { get => textPace; }
+    public delegate void onSkipText();
+    public static event onSkipText OnSkipText;
 
     private void Awake()
     {
@@ -16,6 +26,21 @@ public class PopupUIManager : MonoBehaviour
         mechUIPopupController = GetComponentInChildren<MechUIPopupController>();
         hudPopUpController = GetComponentInChildren<HUDPopupController>();
         shopUIPopupController = GetComponentInChildren<ShopUIPopupController>();
+        aIDialoguePopupController = GetComponentInChildren<AIDialoguePopupController>();
+
+        if (CombatManager.instance != null)
+            CombatSequenceManager.OnCombatComplete += InactivatePopup;
+
+        if (aIDialoguePopupController == null)
+        {
+            Debug.Log("Oopsie.");
+        }
+    }
+
+    private void OnDestroy()
+    {
+        if (CombatManager.instance != null)
+            CombatSequenceManager.OnCombatComplete -= InactivatePopup;
     }
 
     public void HandlePopup(CardDataObject cardDataObject)
@@ -25,7 +50,7 @@ public class PopupUIManager : MonoBehaviour
 
     public void HandlePopup(SOItemDataObject soItemDataObject)
     {
-
+        //Handle generic popup.
     }
 
     public void HandlePopup(ShopItemUIController shopItem)
@@ -33,12 +58,22 @@ public class PopupUIManager : MonoBehaviour
         shopUIPopupController.UpdateUI(shopItem);
     }
 
+    public void HandlePopup(string name, string dialogue)
+    {
+        aIDialoguePopupController.UpdateUI(name, dialogue);
+    }
+
     public void InactivatePopup()
     {
         if(cardUIPopupController != null)
             cardUIPopupController.UpdateUI(null);
-        if(shopUIPopupController != null)
+        if(mechUIPopupController != null)
+            mechUIPopupController.UpdateUI(Channels.None);
+        if (shopUIPopupController != null)
             shopUIPopupController.UpdateUI(null);
+        if (aIDialoguePopupController != null)
+            aIDialoguePopupController.UpdateUI(null, null);
+        //if (hudPopUpController != null)
+            //hudPopUpController.UpdateUI(null);
     }
-
 }

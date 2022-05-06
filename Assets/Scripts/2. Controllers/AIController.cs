@@ -254,8 +254,10 @@ public class AIController : MonoBehaviour
             foreach(Channels channel in CombatManager.instance.GetChannelListFromFlags(card.PossibleChannels))
             {
                 if (CombatManager.instance.EffectManager.GetIceElementInChannel(channel, CharacterSelect.Player))
+                {
                     if (card.EnergyCost * CombatManager.instance.IceChannelEnergyReductionModifier > CombatManager.instance.OpponentFighter.FighterMech.MechCurrentEnergy)
                         continue;
+                }                    
                 else
                     if (card.EnergyCost > CombatManager.instance.OpponentFighter.FighterMech.MechCurrentEnergy)
                         continue;
@@ -297,6 +299,11 @@ public class AIController : MonoBehaviour
                     break;
             }
         }
+
+        aICombatLog += "\nAI is weighing " + cardPlayPriorityObjects.Count + " cards with aggression:";
+
+        foreach (CardPlayPriorityObject cardPlay in cardPlayPriorityObjects)
+            aICombatLog += "\nCard: " + cardPlay.card.CardName + "." + "\nChannel: " + cardPlay.channel + "." + "\nCard Weight: " + cardPlay.priority;
     }
 
     private void WeightPriorityWithDefensiveness(List<CardPlayPriorityObject> cardPlayPriorityObjects)
@@ -320,6 +327,11 @@ public class AIController : MonoBehaviour
                     break;
             }
         }
+
+        aICombatLog += "\nAI is weighing " + cardPlayPriorityObjects.Count + " cards with defensiveness:";
+
+        foreach (CardPlayPriorityObject cardPlay in cardPlayPriorityObjects)
+            aICombatLog += "\nCard: " + cardPlay.card.CardName + "." + "\nChannel: " + cardPlay.channel + "." + "\nCard Weight: " + cardPlay.priority;
     }
 
     private void WeightPriorityWithDamage(List<CardPlayPriorityObject> cardPlayPriorityObjects)
@@ -337,6 +349,11 @@ public class AIController : MonoBehaviour
 
             cardPlayPriority.priority += Mathf.RoundToInt((cardPlayPriority.card.BaseDamage / maximumDamage) * baseDamageWeight);
         }
+
+        aICombatLog += "\nAI is weighing " + cardPlayPriorityObjects.Count + " cards with base damage:";
+
+        foreach (CardPlayPriorityObject cardPlay in cardPlayPriorityObjects)
+            aICombatLog += "\nCard: " + cardPlay.card.CardName + "." + "\nChannel: " + cardPlay.channel + "." + "\nCard Weight: " + cardPlay.priority;
     }
 
     private void WeightPriorityWithComponentDamage(List<CardPlayPriorityObject> cardPlayPriorityObjects)
@@ -388,6 +405,11 @@ public class AIController : MonoBehaviour
 
             return componentDamageMultiplier;
         }
+
+        aICombatLog += "\nAI is weighing " + cardPlayPriorityObjects.Count + " cards by Acid applied and CDM of equipped components:";
+
+        foreach (CardPlayPriorityObject cardPlay in cardPlayPriorityObjects)
+            aICombatLog += "\nCard: " + cardPlay.card.CardName + "." + "\nChannel: " + cardPlay.channel + "." + "\nCard Weight: " + cardPlay.priority;
     }
 
     private void WeightPriorityWithTargetWeight(List<CardPlayPriorityObject> cardPlayPriorityObjects)
@@ -448,6 +470,11 @@ public class AIController : MonoBehaviour
             if (card.channel == lowPriority)
                 continue;
         }
+
+        aICombatLog += "\nAI is weighing " + cardPlayPriorityObjects.Count + " cards by ability to target weaker components on player:";
+
+        foreach (CardPlayPriorityObject cardPlay in cardPlayPriorityObjects)
+            aICombatLog += "\nCard: " + cardPlay.card.CardName + "." + "\nChannel: " + cardPlay.channel + "." + "\nCard Weight: " + cardPlay.priority;
     }
 
     private void WeightPriorityWithRanzomization(List<CardPlayPriorityObject> cardPlayPriorityObjects)
@@ -456,6 +483,11 @@ public class AIController : MonoBehaviour
         {
             cardPlayPrio.priority += Mathf.RoundToInt(UnityEngine.Random.Range(-randomizationWeight, randomizationWeight));
         }
+
+        aICombatLog += "\nAI is adding " + randomizationWeight + " randomization weight to " + cardPlayPriorityObjects.Count + " cards:";
+
+        foreach (CardPlayPriorityObject cardPlay in cardPlayPriorityObjects)
+            aICombatLog += "\nCard: " + cardPlay.card.CardName + "." + "\nChannel: " + cardPlay.channel + "." + "\nCard Weight: " + cardPlay.priority;
     }
 
     private void WeightPriorityWithBenefit(List<CardPlayPriorityObject> cardPlayPriorityObjects)
@@ -474,5 +506,10 @@ public class AIController : MonoBehaviour
                 //Check for flurry buff
             }
         }
+
+        aICombatLog += "\nAI is weighing " + cardPlayPriorityObjects.Count + " cards that benefit from buffs:";
+
+        foreach (CardPlayPriorityObject cardPlay in cardPlayPriorityObjects)
+            aICombatLog += "\nCard: " + cardPlay.card.CardName + "." + "\nChannel: " + cardPlay.channel + "." + "\nCard Weight: " + cardPlay.priority;
     }
 }

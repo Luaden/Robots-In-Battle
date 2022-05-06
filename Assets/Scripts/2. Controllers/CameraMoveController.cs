@@ -80,7 +80,7 @@ public class CameraMoveController : MonoBehaviour
             transform.position = Vector3.Slerp(Camera.main.transform.position, mousePosMax, driftSpeed * Time.deltaTime);
         }
 
-        if(cameraMovementDisabled)
+        if (cameraMovementDisabled)
         {
             if (transform.position == startPos)
                 return;

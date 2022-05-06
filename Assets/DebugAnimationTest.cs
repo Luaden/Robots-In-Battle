@@ -12,6 +12,6 @@ public class DebugAnimationTest : MonoBehaviour
     private void Start()
     {
         //foreach (AnimationType type in Enum.GetValues(typeof(AnimationType)))
-        //    dropDown.AddOptions(Enum.GetName();
+        //    dropDown.AddOptions(Enum.GetName(typeof(AnimationType), type));
     }
 }

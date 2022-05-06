@@ -4,14 +4,12 @@ using UnityEngine;
 
 public class CardUIBuildController : MonoBehaviour
 {
-    [SerializeField] private GameObject PlayerCardPrefab;
-    [SerializeField] private GameObject OpponentCardPrefab;
-    //Builds Card UIs, sets destination.
+    [SerializeField] private GameObject cardPrefab;
 
     public CardUIController BuildPlayerCard(CardDataObject cardToDraw, Transform cardStartPoint)
     {
         GameObject cardUIGameObject;
-        cardUIGameObject = Instantiate(PlayerCardPrefab, transform);
+        cardUIGameObject = Instantiate(cardPrefab, transform);
         cardUIGameObject.transform.position = cardStartPoint.position;
 
         cardToDraw.CardUIObject = cardUIGameObject;
@@ -26,7 +24,7 @@ public class CardUIBuildController : MonoBehaviour
     public CardUIController BuildOpponentCard(CardDataObject cardToDraw, Transform cardStartPoint)
     {
         GameObject cardUIGameObject;
-        cardUIGameObject = Instantiate(PlayerCardPrefab, transform);
+        cardUIGameObject = Instantiate(cardPrefab, transform);
         cardUIGameObject.transform.position = cardStartPoint.position;
 
         cardToDraw.CardUIObject = cardUIGameObject;

@@ -41,6 +41,7 @@ public class CardUIController : MonoBehaviour, IPointerDownHandler, IPointerUpHa
     [SerializeField] private Sprite guardIcon;
 
     private CardDataObject cardData;
+    private Animator cardAnimator;
     private BaseSlotController<CardUIController> cardSlotController;
     
     private bool isPickedUp = false;
@@ -50,6 +51,7 @@ public class CardUIController : MonoBehaviour, IPointerDownHandler, IPointerUpHa
 
     public CardDataObject CardData { get => cardData; }
     public Transform PreviousParentObject { get => previousParentObject; set => previousParentObject = value; }
+    public Animator CardAnimator { get => cardAnimator; }
     public BaseSlotController<CardUIController> CardSlotController { get => cardSlotController; set => UpdateCardSlot(value); }
 
     public void InitCardUI(CardDataObject newCardData, CharacterSelect character)
@@ -57,6 +59,7 @@ public class CardUIController : MonoBehaviour, IPointerDownHandler, IPointerUpHa
         cardName.text = newCardData.CardName;
         cardData = newCardData;
         newCardData.CardUIObject = this.gameObject;
+        cardAnimator = GetComponent<Animator>();
 
         switch (newCardData.CardCategory)
         {
@@ -214,5 +217,10 @@ public class CardUIController : MonoBehaviour, IPointerDownHandler, IPointerUpHa
             previousParentObject = newSlot.transform;
             transform.SetParent(newSlot.transform);
         }
+    }
+
+    private void DestroyCardUI()
+    {
+        Destroy(gameObject);
     }
 }
