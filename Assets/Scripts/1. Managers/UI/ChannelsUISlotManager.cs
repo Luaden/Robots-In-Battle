@@ -174,19 +174,19 @@ public class ChannelsUISlotManager : BaseSlotManager<CardUIController>
         Debug.Log("No slots available in the hand to add a card to.");
     }
 
-    public void SkipASlot()
-    {
-        if(CombatManager.instance.CanPlayCards)
-        {
-            CombatManager.instance.CardPlayManager.PlayerAttackPlan.cardChannelPairA =
-            new CardChannelPairObject(null, Channels.None);
+    //public void SkipASlot()
+    //{
+    //    if(CombatManager.instance.CanPlayCards)
+    //    {
+    //        CombatManager.instance.CardPlayManager.PlayerAttackPlan.cardChannelPairA =
+    //        new CardChannelPairObject(null, Channels.None);
 
-            attackSlotAFilled = true;
-            OnASlotFilled?.Invoke();
+    //        attackSlotAFilled = true;
+    //        OnASlotFilled?.Invoke();
 
-            SkipASlotButton.SetActive(false);
-        }
-    }
+    //        SkipASlotButton.SetActive(false);
+    //    }
+    //}
 
     public override void AddSlotToList(BaseSlotController<CardUIController> newSlot)
     {
