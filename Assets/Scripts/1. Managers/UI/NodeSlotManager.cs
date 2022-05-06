@@ -54,11 +54,14 @@ public class NodeSlotManager : BaseSlotManager<NodeUIController>
 
     public void OnFighterAssigned(NodeUIController item, BaseSlotController<NodeUIController> slot)
     {
-        Debug.Log("OnFighterAssigned - Manager");
-        slot.GetComponent<NodeDataObject>().HasBeenAssigned = true;
-        
-        if(!TournamentOverviewManager.instance.GetActiveList().Contains(slot.GetComponent<NodeDataObject>()))
-            TournamentOverviewManager.instance.AddToActiveList(slot.GetComponent<NodeDataObject>());
+        NodeDataObject fighterParentNode = slot.GetComponent<NodeDataObject>();
+        if (fighterParentNode == null)
+            return;
+        item.GetComponent<NodeDataObject>().ParentNode = fighterParentNode;
+        fighterParentNode.HasBeenAssigned = true;
+
+        if (!TournamentOverviewManager.instance.GetActiveList().Contains(fighterParentNode))
+            TournamentOverviewManager.instance.AddToActiveList(fighterParentNode);
 
         //TournamentOverviewManager.instance.AssignFighterToNodeSlot(item.GetComponent<NodeDataObject>());
     }

@@ -10,6 +10,9 @@ public class NodeUIController : MonoBehaviour, IPointerDownHandler, IPointerUpHa
                               IEndDragHandler, IDragHandler
 {
     [SerializeField] protected TMP_Text fighterName;
+    [SerializeField] protected TMP_Text fighterDescription;
+    [SerializeField] protected TMP_Text health;
+    [SerializeField] protected TMP_Text energy;
 
     private bool isPickedUp = false;
     public Transform previousParentObject;
@@ -50,6 +53,7 @@ public class NodeUIController : MonoBehaviour, IPointerDownHandler, IPointerUpHa
     public void InitUI(NodeDataObject newNodeData)
     {
         fighterName.text = newNodeData.FighterName;
+        
 
         nodeDataObject = newNodeData.gameObject;
         newNodeData.NodeUIController = this.GetComponent<NodeUIController>();
@@ -141,6 +145,8 @@ public class NodeUIController : MonoBehaviour, IPointerDownHandler, IPointerUpHa
     public void SetInactive()
     {
         this.enabled = false;
+        
+        GetComponent<Image>().color = Color.red;
     }
     public void SetActive()
     {
