@@ -26,15 +26,12 @@ public class NodeSlotController : BaseSlotController<NodeUIController>
             // temp cache of the current slotted item on this slot
             NodeUIController tempCurrentSlotItem = this.currentSlottedItem;
 
-
-            Debug.Log("tempDraggedObj: " + tempDraggedObj);
-            Debug.Log("tempCurrentSlotItem: " + tempCurrentSlotItem);
             // remove the dragged obj from its current slot
             draggedObjItem.NodeSlotController.SlotManager.RemoveItemFromCollection(draggedObjItem);
             // remove this slots item from this slot
             currentSlottedItem.NodeSlotController.SlotManager.RemoveItemFromCollection(currentSlottedItem);
             // add current slotted item to the slot of the dragged obj
-            tempDraggedObj.NodeSlotController.SlotManager.AddItemToCollection(tempCurrentSlotItem, tempDraggedObj.NodeSlotController);
+            draggedObjItem.NodeSlotController.SlotManager.AddItemToCollection(tempCurrentSlotItem, tempDraggedObj.NodeSlotController);
             // add the dragged obj to this slot
             slotManager.AddItemToCollection(tempDraggedObj, this);
 
@@ -51,7 +48,6 @@ public class NodeSlotController : BaseSlotController<NodeUIController>
                     Debug.Log("the pair has completed");
                 }
             }
-
 
             return;
 

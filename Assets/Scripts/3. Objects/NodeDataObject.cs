@@ -12,7 +12,6 @@ public class NodeDataObject : MonoBehaviour
     private bool hasWonBattle;
     [SerializeField] protected bool isFinalNode;
 
-
     private FighterDataObject currentFighter;
     [SerializeField] NodeUIController nodeUIController;
 

@@ -29,7 +29,7 @@ public class NodeController : MonoBehaviour
         for (int i = 0; i < activeNodes.Count;)
         {
             activeNodes[i].HasWonBattle = true;
-            TournamentOverviewManager.instance.AssignFighterToNodeSlot(activeNodes[i], activeNodes[i].PairNode);
+            //TournamentOverviewManager.instance.AssignFighterToNodeSlot(activeNodes[i], activeNodes[i].PairNode);
             i += 2;
         }
 
