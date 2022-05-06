@@ -24,8 +24,9 @@ public class CameraRenderController : MonoBehaviour
     [ContextMenu("Capture Screen")]
     private void CaptureScreen()
     {
-        height = 720;
-        width = 1280;
+        mainCanvas.renderMode = RenderMode.ScreenSpaceCamera;
+        height = Screen.width;
+        width = Screen.height;
         depth = 24;
 
         renderTexture = new RenderTexture(width, height, depth);
@@ -51,5 +52,6 @@ public class CameraRenderController : MonoBehaviour
 
         imageObject.SetActive(true);
         imageObject.GetComponent<RectTransform>().pivot = new Vector2(.5f, .5f);
+        mainCanvas.renderMode = RenderMode.ScreenSpaceOverlay;
     }
 }
