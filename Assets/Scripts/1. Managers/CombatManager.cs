@@ -285,7 +285,7 @@ public class CombatManager : MonoBehaviour
 
     private void Start()
     {
-        CombatSequenceManager.OnStartCombat += DisableCanPlayCards;
+        CombatSequenceManager.OnCombatStart += DisableCanPlayCards;
         CombatSequenceManager.OnRoundComplete += CheckForWinLoss;
         CombatSequenceManager.OnCombatComplete += StartNewTurn;
         CombatSequenceManager.OnCombatComplete += EnableCanPlayCards;
@@ -295,7 +295,7 @@ public class CombatManager : MonoBehaviour
     {
         OnDestroyScene?.Invoke();
         instance = null;
-        CombatSequenceManager.OnStartCombat -= DisableCanPlayCards;
+        CombatSequenceManager.OnCombatStart -= DisableCanPlayCards;
         CombatSequenceManager.OnRoundComplete -= CheckForWinLoss;
         CombatSequenceManager.OnCombatComplete -= StartNewTurn;
         CombatSequenceManager.OnCombatComplete -= EnableCanPlayCards;

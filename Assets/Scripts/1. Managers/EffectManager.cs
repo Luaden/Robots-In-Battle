@@ -1202,10 +1202,7 @@ public class EffectManager : MonoBehaviour
                             {
                                 foreach (ElementStackObject elementStack in currentStackObject)
                                     if (elementStack.ElementType == currentElement)
-                                    {
                                         elementStack.ElementStacks += newStacks;
-                                        Debug.Log("Current element: " + currentElement + ": " + elementStack.ElementStacks);
-                                    }
                             }
                             else
                             {
@@ -1213,7 +1210,6 @@ public class EffectManager : MonoBehaviour
                                 newStackObject.ElementType = currentElement;
                                 newStackObject.ElementStacks = newStacks;
                                 currentStackObject.Add(newStackObject);
-                                Debug.Log("Adding " + newStacks + " " + currentElement + " stacks.");
                                 opponentFighterEffectObject.IceAcidStacks[cardChannelPair.CardChannel] = currentStackObject;
                             }
                         }
@@ -1232,7 +1228,6 @@ public class EffectManager : MonoBehaviour
 
                 if (destinationMech == CharacterSelect.Player)
                 {
-                    Debug.Log("Adding component element stacks.");
                     ElementType currentElement = CombatManager.instance.OpponentFighter.FighterMech.MechTorso.ComponentElement;
                     newStacks += CombatManager.instance.OpponentFighter.FighterMech.MechTorso.ExtraElementStacks;
 
@@ -1262,10 +1257,7 @@ public class EffectManager : MonoBehaviour
                             {
                                 foreach (ElementStackObject elementStack in currentStackObject)
                                     if (elementStack.ElementType == currentElement)
-                                    {
                                         elementStack.ElementStacks += newStacks;
-                                        Debug.Log("Current element: " + currentElement + ": " + elementStack.ElementStacks);
-                                    }
                             }
                             else
                             {
@@ -1273,7 +1265,6 @@ public class EffectManager : MonoBehaviour
                                 newStackObject.ElementType = currentElement;
                                 newStackObject.ElementStacks = newStacks;
                                 currentStackObject.Add(newStackObject);
-                                Debug.Log("Adding " + newStacks + " " + currentElement + " stacks.");
                                 playerFighterEffectObject.IceAcidStacks[cardChannelPair.CardChannel] = currentStackObject;
                             }
                         }
@@ -1284,7 +1275,6 @@ public class EffectManager : MonoBehaviour
                             newStackObject.ElementType = currentElement;
                             newStackObject.ElementStacks = newStacks;
                             currentStackObject.Add(newStackObject);
-                            Debug.Log("Adding " + newStacks + " " + currentElement + " stacks.");
                             playerFighterEffectObject.IceAcidStacks.Add(cardChannelPair.CardChannel, currentStackObject);
                         }
                     }
@@ -1294,7 +1284,6 @@ public class EffectManager : MonoBehaviour
             case MechComponent.Arms:
                 if (destinationMech == CharacterSelect.Player)
                 {
-                    Debug.Log("Adding component element stacks.");
                     ElementType currentElement = CombatManager.instance.OpponentFighter.FighterMech.MechArms.ComponentElement;
                     newStacks += CombatManager.instance.OpponentFighter.FighterMech.MechArms.ExtraElementStacks;
 
@@ -1324,10 +1313,7 @@ public class EffectManager : MonoBehaviour
                             {
                                 foreach (ElementStackObject elementStack in currentStackObject)
                                     if (elementStack.ElementType == currentElement)
-                                    {
                                         elementStack.ElementStacks += newStacks;
-                                        Debug.Log("Current element: " + currentElement + ": " + elementStack.ElementStacks);
-                                    }
                             }
                             else
                             {
@@ -1335,7 +1321,6 @@ public class EffectManager : MonoBehaviour
                                 newStackObject.ElementType = currentElement;
                                 newStackObject.ElementStacks = newStacks;
                                 currentStackObject.Add(newStackObject);
-                                Debug.Log("Adding " + newStacks + " " + currentElement + " stacks.");
                                 playerFighterEffectObject.IceAcidStacks[cardChannelPair.CardChannel] = currentStackObject;
                             }
                         }
@@ -1346,7 +1331,6 @@ public class EffectManager : MonoBehaviour
                             newStackObject.ElementType = currentElement;
                             newStackObject.ElementStacks = newStacks;
                             currentStackObject.Add(newStackObject);
-                            Debug.Log("Adding " + newStacks + " " + currentElement + " stacks.");
                             playerFighterEffectObject.IceAcidStacks.Add(cardChannelPair.CardChannel, currentStackObject);
                         }
                     }
@@ -1383,10 +1367,7 @@ public class EffectManager : MonoBehaviour
                             {
                                 foreach (ElementStackObject elementStack in currentStackObject)
                                     if (elementStack.ElementType == currentElement)
-                                    {
                                         elementStack.ElementStacks += newStacks;
-                                        Debug.Log("Current element: " + currentElement + ": " + elementStack.ElementStacks);
-                                    }
                             }
                             else
                             {
@@ -1394,7 +1375,6 @@ public class EffectManager : MonoBehaviour
                                 newStackObject.ElementType = currentElement;
                                 newStackObject.ElementStacks = newStacks;
                                 currentStackObject.Add(newStackObject);
-                                Debug.Log("Adding " + newStacks + " " + currentElement + " stacks.");
                                 opponentFighterEffectObject.IceAcidStacks[cardChannelPair.CardChannel] = currentStackObject;
                             }
                         }
@@ -1415,7 +1395,6 @@ public class EffectManager : MonoBehaviour
             case MechComponent.Legs:
                 if (destinationMech == CharacterSelect.Player)
                 {
-                    Debug.Log("Adding component element stacks.");
                     ElementType currentElement = CombatManager.instance.OpponentFighter.FighterMech.MechLegs.ComponentElement;
                     newStacks += CombatManager.instance.OpponentFighter.FighterMech.MechLegs.ExtraElementStacks;
 
@@ -1445,10 +1424,7 @@ public class EffectManager : MonoBehaviour
                             {
                                 foreach (ElementStackObject elementStack in currentStackObject)
                                     if (elementStack.ElementType == currentElement)
-                                    {
                                         elementStack.ElementStacks += newStacks;
-                                        Debug.Log("Current element: " + currentElement + ": " + elementStack.ElementStacks);
-                                    }
                             }
                             else
                             {
@@ -1456,7 +1432,6 @@ public class EffectManager : MonoBehaviour
                                 newStackObject.ElementType = currentElement;
                                 newStackObject.ElementStacks = newStacks;
                                 currentStackObject.Add(newStackObject);
-                                Debug.Log("Adding " + newStacks + " " + currentElement + " stacks.");
                                 playerFighterEffectObject.IceAcidStacks[cardChannelPair.CardChannel] = currentStackObject;
                             }
                         }
@@ -1467,7 +1442,6 @@ public class EffectManager : MonoBehaviour
                             newStackObject.ElementType = currentElement;
                             newStackObject.ElementStacks = newStacks;
                             currentStackObject.Add(newStackObject);
-                            Debug.Log("Adding " + newStacks + " " + currentElement + " stacks.");
                             playerFighterEffectObject.IceAcidStacks.Add(cardChannelPair.CardChannel, currentStackObject);
                         }
                     }
@@ -1506,7 +1480,6 @@ public class EffectManager : MonoBehaviour
                                     if (elementStack.ElementType == currentElement)
                                     {
                                         elementStack.ElementStacks += newStacks;
-                                        Debug.Log("Current element: " + currentElement + ": " + elementStack.ElementStacks);
                                     }
                             }
                             else
@@ -1515,7 +1488,6 @@ public class EffectManager : MonoBehaviour
                                 newStackObject.ElementType = currentElement;
                                 newStackObject.ElementStacks = newStacks;
                                 currentStackObject.Add(newStackObject);
-                                Debug.Log("Adding " + newStacks + " " + currentElement + " stacks.");
                                 opponentFighterEffectObject.IceAcidStacks[cardChannelPair.CardChannel] = currentStackObject;
                             }
                         }
@@ -1542,6 +1514,7 @@ public class EffectManager : MonoBehaviour
         }
 
         UpdateFighterBuffs();
+
     }
 
     private int GetAcidDamageBonus(int damageToDeal, Channels channel, CharacterSelect defensiveCharacter)

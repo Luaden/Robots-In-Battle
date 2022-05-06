@@ -8,7 +8,7 @@ public class CombatSequenceManager : MonoBehaviour
     private Queue<CombatQueueObject> combatSequenceCollection;
 
     public delegate void onStartCombat();
-    public static event onStartCombat OnStartCombat;
+    public static event onStartCombat OnCombatStart;
     public delegate void onRoundComplete();
     public static event onRoundComplete OnRoundComplete;
     public delegate void onCombatComplete();
@@ -21,7 +21,7 @@ public class CombatSequenceManager : MonoBehaviour
     public void AddCombatSequenceToQueue(CombatQueueObject newCombatSequence)
     {
         if(currentCombatSequence == null)
-            OnStartCombat?.Invoke();
+            OnCombatStart?.Invoke();
 
         combatSequenceCollection.Enqueue(newCombatSequence);
         combatComplete = false;
@@ -112,6 +112,7 @@ public class CombatSequenceManager : MonoBehaviour
             if (currentCombatSequence.damageQueue.Peek().CardCharacterPairB != null && 
                 currentCombatSequence.damageQueue.Peek().CardCharacterPairB.cardChannelPair.CardData.ApplyEffectsFirst)
                 CombatManager.instance.EffectManager.EnableEffects(currentCombatSequence.damageQueue.Peek().CardCharacterPairB);
+
             CombatManager.instance.CombatAnimationManager.AddAnimationToQueue(currentCombatSequence.animationQueue.Dequeue());
             CombatManager.instance.CombatAnimationManager.PrepCardsToBurn(currentCombatSequence.cardBurnObject);
             animationsComplete = false;
