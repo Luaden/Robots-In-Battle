@@ -17,6 +17,12 @@ public class CameraMoveController : MonoBehaviour
     private float yMax;
     private float yMin;
     private bool playerHasControl = true;
+    private bool cameraMovementDisabled = false;
+
+    public void ToggleCameraMovement()
+    {
+        cameraMovementDisabled = !cameraMovementDisabled;
+    }
 
     private void Start()
     {
@@ -47,42 +53,41 @@ public class CameraMoveController : MonoBehaviour
 
     public void AttackingOpponent()
     {
-        playerHasControl = false;
-        cameraAnim.SetTrigger("isAttackingOpponent");
+        if(!cameraMovementDisabled)
+        {
+            playerHasControl = false;
+            cameraAnim.SetTrigger("isAttackingOpponent");
+        }
     }
 
     public void AttackingPlayer()
     {
-        playerHasControl = false;
-        cameraAnim.SetTrigger("isAttackingPlayer");
+        if(!cameraMovementDisabled)
+        {
+            playerHasControl = false;
+            cameraAnim.SetTrigger("isAttackingPlayer");
+        }        
     }
 
     private void DriftCameraWithMouse()
     {
-        if (playerHasControl)
+        if (playerHasControl && !cameraMovementDisabled)
         {
             mousePosMax = new Vector3(Mathf.Clamp(Input.mousePosition.x - (Screen.width / 2), -xMax, xMax),
                                   Mathf.Clamp(Input.mousePosition.y - (Screen.height / 2), yMin, yMax),
                                   startPos.z);
 
             transform.position = Vector3.Slerp(Camera.main.transform.position, mousePosMax, driftSpeed * Time.deltaTime);
-
         }
 
-        if (!playerHasControl)
+        if(cameraMovementDisabled)
         {
-            //xMax = transform.position.x + xDriftMaximum;
-            //yMax = transform.position.y + yDriftMaximum;
-            //yMin = transform.position.y - yDriftMinimum;
-            //transform.position = Vector3.Slerp(transform.position, startPos, driftSpeed * 10 * Time.deltaTime);
+            if (transform.position == startPos)
+                return;
+
+            transform.position = startPos;
         }
-
     }
-
-    //private void DisablePlayerHasControl()
-    //{
-    //    playerHasControl = false;
-    //}
 
     private void EnablePlayerHasControl()
     {
