@@ -13,6 +13,7 @@ public class DamageMechPairObject
     public CharacterSelect CharacterTakingDamage { get => cardCharacterPairA.character; }
     public CardCharacterPairObject CardCharacterPairA { get => cardCharacterPairA; }
     public CardCharacterPairObject CardCharacterPairB { get => cardCharacterPairB; }
+    public bool DenyOffensiveEffects { get => counterDamage; }
     public DamageMechPairObject(CardCharacterPairObject attackA, CardCharacterPairObject attackB, bool counter, bool guard, string combatLog = null)
     {
         cardCharacterPairA = attackA;
@@ -25,12 +26,7 @@ public class DamageMechPairObject
     public int GetDamageToDeal()
     {
         int damageToReturn = 
-            CombatManager.instance.EffectManager.GetMechDamageWithAndConsumeModifiers(cardCharacterPairA.cardChannelPair, cardCharacterPairA.character);
-
-        if (counterDamage)
-            return Mathf.RoundToInt(damageToReturn * CombatManager.instance.CounterDamageMultiplier);
-        if (guardDamage)
-            return Mathf.RoundToInt(damageToReturn * CombatManager.instance.GuardDamageMultiplier);
+            CombatManager.instance.EffectManager.GetMechDamageWithAndConsumeModifiers(cardCharacterPairA.cardChannelPair, cardCharacterPairA.character, counterDamage, guardDamage);
 
         if (CombatManager.instance.NarrateCombat)
             Debug.Log(combatLog);

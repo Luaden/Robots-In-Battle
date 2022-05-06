@@ -31,8 +31,6 @@ public class CameraMoveController : MonoBehaviour
         yMin = transform.position.y - yDriftMinimum;
         startPos = transform.position;
 
-        Debug.Log("Start position: " + startPos);
-
         CombatSequenceManager.OnCombatComplete += EnablePlayerHasControl;
         MechAnimationController.OnAttackingPlayer += AttackingPlayer;
         MechAnimationController.OnAttackingOpponent += AttackingOpponent;

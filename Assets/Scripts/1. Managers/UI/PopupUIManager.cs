@@ -27,10 +27,20 @@ public class PopupUIManager : MonoBehaviour
         hudPopUpController = GetComponentInChildren<HUDPopupController>();
         shopUIPopupController = GetComponentInChildren<ShopUIPopupController>();
         aIDialoguePopupController = GetComponentInChildren<AIDialoguePopupController>();
+
+        if (CombatManager.instance != null)
+            CombatSequenceManager.OnCombatComplete += InactivatePopup;
+
         if (aIDialoguePopupController == null)
         {
             Debug.Log("Oopsie.");
         }
+    }
+
+    private void OnDestroy()
+    {
+        if (CombatManager.instance != null)
+            CombatSequenceManager.OnCombatComplete -= InactivatePopup;
     }
 
     public void HandlePopup(CardDataObject cardDataObject)

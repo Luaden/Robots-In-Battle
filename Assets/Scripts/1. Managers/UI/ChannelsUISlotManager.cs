@@ -39,12 +39,14 @@ public class ChannelsUISlotManager : BaseSlotManager<CardUIController>
                 return;
             }
 
-            if(attackSlotAFilled && !attackSlotBFilled && playerAttackSlotA.CurrentSlottedItem.CardData.CardType == CardType.Neutral)
+            else if(attackSlotAFilled && !attackSlotBFilled && playerAttackSlotA.CurrentSlottedItem.CardData.CardType == CardType.Neutral)
             {
                 FillBSlot(playerAttackSlotA.CurrentSlottedItem.CardData.CardUIController, playerAttackSlotB, false);
                 FillASlot(item, slot);
                 return;
             }
+            else
+                return;
         }
 
         if (item.CardData.CardType == CardType.Defense)
@@ -55,12 +57,14 @@ public class ChannelsUISlotManager : BaseSlotManager<CardUIController>
                 return;
             }
 
-            if (attackSlotBFilled && !attackSlotAFilled && playerAttackSlotB.CurrentSlottedItem.CardData.CardType == CardType.Neutral)
+            else if (attackSlotBFilled && !attackSlotAFilled && playerAttackSlotB.CurrentSlottedItem.CardData.CardType == CardType.Neutral)
             {
                 FillASlot(playerAttackSlotB.CurrentSlottedItem.CardData.CardUIController, playerAttackSlotB, false);
                 FillBSlot(item, slot);
                 return;
             }
+            else
+                return;
         }
 
         if (item.CardData.CardType == CardType.Neutral)
@@ -71,16 +75,20 @@ public class ChannelsUISlotManager : BaseSlotManager<CardUIController>
                 return;
             }
 
-            if (!attackSlotBFilled)
+            else if (!attackSlotBFilled)
             {
                 FillBSlot(item, slot);
                 return;
             }
+            else
+                return;
         }
 
 
         void FillASlot(CardUIController item, BaseSlotController<CardUIController> slot, bool newSelectedChannel = true)
         {
+            item.CardSlotController.SlotManager.RemoveItemFromCollection(item);
+
             playerAttackSlotA.CurrentSlottedItem = item;
             item.CardSlotController = playerAttackSlotA;
 
@@ -96,11 +104,7 @@ public class ChannelsUISlotManager : BaseSlotManager<CardUIController>
             int aCardEnergyCost = cardChannelPairObjectA.CardData.EnergyCost;
 
             if (CombatManager.instance.EffectManager.GetIceElementInChannel(cardChannelPairObjectA.CardChannel, CharacterSelect.Player))
-            {
-                Debug.Log("Initial ACard cost: " + aCardEnergyCost);
                 aCardEnergyCost = Mathf.RoundToInt(aCardEnergyCost * CombatManager.instance.IceChannelEnergyReductionModifier);
-                Debug.Log("Icy ACard cost: " + aCardEnergyCost);
-            }
 
             if (cardChannelPairObjectB != null && cardChannelPairObjectB.CardData != null)
             {
@@ -125,6 +129,8 @@ public class ChannelsUISlotManager : BaseSlotManager<CardUIController>
 
         void FillBSlot(CardUIController item, BaseSlotController<CardUIController> slot, bool newSelectedChannel = true)
         {
+            item.CardSlotController.SlotManager.RemoveItemFromCollection(item);
+
             playerAttackSlotB.CurrentSlottedItem = item;
             item.CardSlotController = playerAttackSlotB;
 
@@ -196,11 +202,7 @@ public class ChannelsUISlotManager : BaseSlotManager<CardUIController>
     public override void HandleDrop(PointerEventData eventData, CardUIController newData, BaseSlotController<CardUIController> slot)
     {
         if(ValidateCardChannelSelection(newData, slot))
-        {
-            //Needs to also account for energy cost + ice
-            newData.CardSlotController.SlotManager.RemoveItemFromCollection(newData);
             AddItemToCollection(newData, slot);
-        }
     }
 
     private bool ValidateCardChannelSelection(CardUIController newData, BaseSlotController<CardUIController> slot)

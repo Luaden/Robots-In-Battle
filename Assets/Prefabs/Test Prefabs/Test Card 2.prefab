@@ -294,7 +294,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &4125845404687386520
 RectTransform:
   m_ObjectHideFlags: 0
@@ -303,17 +303,17 @@ RectTransform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4125845404687386527}
   m_LocalRotation: {x: -0.70900255, y: -0.004880748, z: -0.001491841, w: 0.70518756}
-  m_LocalPosition: {x: 0, y: 0, z: 2}
-  m_LocalScale: {x: 62, y: 62, z: 62}
-  m_ConstrainProportionsScale: 0
+  m_LocalPosition: {x: 0, y: 0, z: 1}
+  m_LocalScale: {x: 59, y: 62, z: 62}
+  m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 8417938065247362764}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: -90.412, y: 41.356995, z: -41.872986}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 125, y: -124}
-  m_SizeDelta: {x: 246, y: 247}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
+  m_AnchoredPosition: {x: 121, y: -123}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &4125845404687386500
 CanvasRenderer:
@@ -690,7 +690,7 @@ RectTransform:
   m_GameObject: {fileID: 8417938065247362762}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 173}
-  m_LocalScale: {x: 2.088015, y: 2.088015, z: 2.088015}
+  m_LocalScale: {x: 0.5, y: 0.5, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 8417938063921134232}
@@ -703,7 +703,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 15, y: -11.647733}
+  m_AnchoredPosition: {x: 15, y: -11.647736}
   m_SizeDelta: {x: 242.4838, y: 238.5437}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &8417938065247362767
@@ -726,7 +726,7 @@ MonoBehaviour:
   lowChannelIcon: {fileID: 967488713206494131}
   draggableRectTransform: {fileID: 8417938065247362764}
   draggableCanvasGroup: {fileID: 1295109611286949543}
-  travelSpeed: 1600
+  travelSpeed: 2
   fullColor: {r: 1, g: 1, b: 1, a: 1}
   fadeColor: {r: 1, g: 1, b: 1, a: 0.39215687}
   attackFrame: {fileID: 21300000, guid: 09dd58be520dc824b814af502cbd4f2c, type: 3}
@@ -776,12 +776,12 @@ Animator:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8417938065247362762}
-  m_Enabled: 1
+  m_Enabled: 0
   m_Avatar: {fileID: 0}
   m_Controller: {fileID: 9100000, guid: f0cb46f974df90c42b85e66b57d51c5f, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
-  m_ApplyRootMotion: 0
+  m_ApplyRootMotion: 1
   m_LinearVelocityBlending: 0
   m_StabilizeFeet: 0
   m_WarningMessage: 

@@ -51,7 +51,6 @@ public class CombatManager : MonoBehaviour
 
     private FighterDataObject playerFighter;
     private FighterDataObject opponentFighter;
-    private Queue<EnergyRemovalObject> energyRemovalQueue;
 
     private bool canPlayCards = true;
 
@@ -198,7 +197,7 @@ public class CombatManager : MonoBehaviour
             playerFighter.FighterMech.MechCurrentEnergy -= newEnergyRemovalObject.firstMechEnergyRemoval;
 
             if (newEnergyRemovalObject.secondMechEnergyRemoval != 0)
-                opponentFighter.FighterMech.MechCurrentEnergy -= newEnergyRemovalObject.secondMechEnergyRemoval;
+                opponentFighter.FighterMech.MechCurrentEnergy -= newEnergyRemovalObject.secondMechEnergyRemoval; 
         }
         if (newEnergyRemovalObject.firstMech == CharacterSelect.Opponent)
         {
@@ -279,8 +278,6 @@ public class CombatManager : MonoBehaviour
         combatAnimationManager = FindObjectOfType<CombatAnimationManager>(true);
         effectManager = FindObjectOfType<EffectManager>(true);
         combatSequenceManager = FindObjectOfType<CombatSequenceManager>(true);
-
-        energyRemovalQueue = new Queue<EnergyRemovalObject>();
     }
 
     private void Start()
@@ -328,6 +325,7 @@ public class CombatManager : MonoBehaviour
 
     private void StartNewTurn()
     {
+        CheckForWinLoss();
         deckManager.DrawPlayerCard(5 - HandManager.PlayerHand.CharacterHand.Count);
         deckManager.DrawOpponentCard(5 - HandManager.OpponentHand.CharacterHand.Count);
 

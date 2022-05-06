@@ -129,9 +129,14 @@ public class EffectManager : MonoBehaviour
         UpdateFighterBuffs();
     }
 
-    public int GetMechDamageWithAndConsumeModifiers(CardChannelPairObject attack, CharacterSelect defensiveCharacter)
+    public int GetMechDamageWithAndConsumeModifiers(CardChannelPairObject attack, CharacterSelect defensiveCharacter, bool counter, bool guard)
     {
         int mechDamageToReturn = attack.CardData.BaseDamage;
+
+        if (guard)
+            mechDamageToReturn = Mathf.RoundToInt(mechDamageToReturn * CombatManager.instance.GuardDamageMultiplier);
+        if (counter)
+            mechDamageToReturn = Mathf.RoundToInt(mechDamageToReturn * CombatManager.instance.CounterDamageMultiplier);
 
         //Get Damage Boosts and Modifiers
         mechDamageToReturn = GetCardCategoryDamageBonus(attack, mechDamageToReturn, defensiveCharacter);
@@ -145,9 +150,14 @@ public class EffectManager : MonoBehaviour
         return mechDamageToReturn;
     }
 
-    public int GetDamageWithModifiers(CardChannelPairObject attack, CharacterSelect defensiveCharacter)
+    public int GetDamageWithModifiers(CardChannelPairObject attack, CharacterSelect defensiveCharacter, bool counter, bool guard)
     {
         int damageToReturn = attack.CardData.BaseDamage;
+
+        if (guard)
+            damageToReturn = Mathf.RoundToInt(damageToReturn * CombatManager.instance.GuardDamageMultiplier);
+        if (counter)
+            damageToReturn = Mathf.RoundToInt(damageToReturn * CombatManager.instance.CounterDamageMultiplier);
 
         //Get Damage Boosts and Modifiers
         damageToReturn = GetCardCategoryDamageBonus(attack, damageToReturn, defensiveCharacter);
