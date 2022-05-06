@@ -12,8 +12,6 @@ public class ChannelsUISlotManager : BaseSlotManager<CardUIController>
     [SerializeField] private BaseSlotController<CardUIController> playerAttackSlotA;
     [SerializeField] private BaseSlotController<CardUIController> playerAttackSlotB;
 
-
-    [SerializeField] private GameObject SkipASlotButton;
     [Range(.01f, 1f)] [SerializeField] private float channelFadeTimeModifier;
 
 
@@ -122,7 +120,6 @@ public class ChannelsUISlotManager : BaseSlotManager<CardUIController>
             }
 
             attackSlotAFilled = true;
-            SkipASlotButton.SetActive(false);
             OnASlotFilled?.Invoke();
         }
 

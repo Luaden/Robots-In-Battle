@@ -28,6 +28,9 @@ public class CameraMoveController : MonoBehaviour
         CombatSequenceManager.OnCombatComplete += EnablePlayerHasControl;
         MechAnimationController.OnAttackingPlayer += AttackingPlayer;
         MechAnimationController.OnAttackingOpponent += AttackingOpponent;
+
+        if (cameraAnim == null)
+            cameraAnim = GetComponentInChildren<Animator>();
     }
 
     private void Update()
