@@ -46,32 +46,67 @@ public class AIController : MonoBehaviour
         "that can target weaker components more.")]
     [Range(0, 9)] [SerializeField] private int componentHealthWeight;
 
+
+
     //[Tooltip("A value range between 0 and 5 that represents the AI preference to play cards that benefit from buffs. A value of 5 means that the AI will " +
     //    "value cards that benefit from buffs more than those that do not.")]
-    //[Range(0, 5)] [SerializeField] private int benefitWeight;
+    [Tooltip("This is not currently calculated.")]
+    [Range(0, 5)] [SerializeField] private int benefitWeight;
 
     //[Tooltip("A value range between 0 and 5 that represents the AI preference to play cards that are not mitigated by debuffs. A value of 5 means that the " +
     //    "AI will value cards that are mitigated by buffs and shields less than those that are not.")]
-    //[Range(0, 5)] [SerializeField] private int mitigationWeight;
+    [Tooltip("This is not currently calculated.")]
+    [Range(0, 5)] [SerializeField] private int mitigationWeight;
 
     //[Tooltip("A value range between 0 and 5 that represents the AI preference to play cards that apply effects. A value of 5 means that the AI will value " +
     //    "cards that apply effects such as buffs, debuffs, and shields more than those that do not.")]
-    //[Range(0, 5)] [SerializeField] private int applicationWeight;
+    [Tooltip("This is not currently calculated.")]
+    [Range(0, 5)] [SerializeField] private int applicationWeight;
 
     //[Tooltip("A value range between 0 and 5 that represents the AI ability to accurately defend against attacks. A value of 5 means that the AI will make an " +
     //    "accurate guess as to where to defend given the available information, whereas a value of 0 will randomly guess from the channels able to be guarded.")]
-    //[Range(0, 5)] [SerializeField] private int defensivePredictionAccuracy;
+    [Tooltip("This is not currently calculated.")]
+    [Range(0, 5)] [SerializeField] private int defensivePredictionAccuracy;
 
     //[Tooltip("A value range between 0 and 5 that represents the AI ability to accurately choose attacks that cannot be guarded or countered. A value of 5 " +
     //    "means that the AI will value attacks that cannot be guarded or countered more where a value of 0 means that the AI will not consider the player's " +
     //    "defensive cards when picking where to attack.")]
-    //[Range(0, 5)] [SerializeField] private int offensivePredictionAccuracy;
+    [Tooltip("This is not currently calculated.")]
+    [Range(0, 5)] [SerializeField] private int offensivePredictionAccuracy;
 
+    #region Utility
+    private CardPlayPriorityObject CreateCardPlayPriorityObject(CardDataObject card, Channels channel)
+    {
+        CardPlayPriorityObject newCardPriority = new CardPlayPriorityObject();
+        newCardPriority.card = card;
+        newCardPriority.channel = channel;
+        newCardPriority.priority = 0;
+
+        return newCardPriority;
+    }
+
+    private class CardPlayPriorityObject
+    {
+        public CardDataObject card;
+        public Channels channel;
+        public int priority;
+    }
+    #endregion
 
     private List<CardDataObject> opponentHand;
     private CardChannelPairObject attackA;
     private CardChannelPairObject attackB;
     private string aICombatLog = "";
+
+    public void LoadAIBehavior(SOAIBehaviorObject newBehavior)
+    {
+        randomizationWeight = newBehavior.RandomizationWeight;
+        aggressivenessWeight = newBehavior.AggressivenessWeight;
+        defensivenessWeight = newBehavior.DefensivenessWeight;
+        baseDamageWeight = newBehavior.BaseDamageWeight;
+        cDMWeight = newBehavior.CDMWeight;
+        componentHealthWeight = newBehavior.ComponentHealthWeight;
+    }
 
     private void Start()
     {
@@ -209,7 +244,7 @@ public class AIController : MonoBehaviour
 
     private List<CardPlayPriorityObject> GetCurrentPossibleCards(bool aSlot)
     {
-        aICombatLog += "AI is card plays hand.";
+        aICombatLog += "AI is checking card plays hand.";
 
         opponentHand = CombatManager.instance.HandManager.OpponentHand.CharacterHand;
         List<CardPlayPriorityObject> cardPlays = new List<CardPlayPriorityObject>();
@@ -258,8 +293,6 @@ public class AIController : MonoBehaviour
                         }
                     break;
             }
-
-
         }
     }
 
@@ -272,13 +305,13 @@ public class AIController : MonoBehaviour
                 case CardType.Attack:
                     break;
                 case CardType.Defense:
-                    cardPrioPair.priority += aggressivenessWeight;
+                    cardPrioPair.priority += defensivenessWeight;
                     break;
                 case CardType.Neutral:
                     foreach (SOCardEffectObject cardEffect in cardPrioPair.card.CardEffects)
                         if (CardEffectTypes.Defensive.HasFlag(cardEffect.EffectType))
                         {
-                            cardPrioPair.priority += aggressivenessWeight;
+                            cardPrioPair.priority += defensivenessWeight;
                             break;
                         }
                     break;
@@ -422,37 +455,21 @@ public class AIController : MonoBehaviour
         }
     }
 
-    #region Utility
-    private List<Channels> GetChannelListFromFlags(Channels channelToInterpret)
+    private void WeightPriorityWithBenefit(List<CardPlayPriorityObject> cardPlayPriorityObjects)
     {
-        List<Channels> channelList = new List<Channels>();
+        foreach(Channels channel in CombatManager.instance.GetChannelListFromFlags(Channels.All))
+        {
+            //Check for channel damage buffs
+            //Check for card category buffs
+        }
 
-        if (channelToInterpret.HasFlag(Channels.High))
-            channelList.Add(Channels.High);
-        if (channelToInterpret.HasFlag(Channels.Mid))
-            channelList.Add(Channels.Mid);
-        if (channelToInterpret.HasFlag(Channels.Low))
-            channelList.Add(Channels.Low);
-
-        return channelList;
+        foreach (CardPlayPriorityObject cardPrioPair in cardPlayPriorityObjects)
+        {
+            foreach(SOCardEffectObject effect in cardPrioPair.card.CardEffects)
+            {
+                //if(effect.EffectType.HasFlag(CardEffectTypes.))
+                //Check for flurry buff
+            }
+        }
     }
-
-
-    private CardPlayPriorityObject CreateCardPlayPriorityObject(CardDataObject card, Channels channel)
-    {
-        CardPlayPriorityObject newCardPriority = new CardPlayPriorityObject();
-        newCardPriority.card = card;
-        newCardPriority.channel = channel;
-        newCardPriority.priority = 0;
-
-        return newCardPriority;
-    }
-
-    private class CardPlayPriorityObject
-    {
-        public CardDataObject card;
-        public Channels channel;
-        public int priority;
-    }
-    #endregion
 }

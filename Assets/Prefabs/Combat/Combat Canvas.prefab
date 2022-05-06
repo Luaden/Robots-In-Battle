@@ -284,6 +284,67 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 20}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!1 &637771107
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 637771108}
+  - component: {fileID: 637771109}
+  m_Layer: 5
+  m_Name: AI Manager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &637771108
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 637771107}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 129746560167356353}
+  m_RootOrder: 12
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 100, y: 100}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &637771109
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 637771107}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2f2f2581d0605184fad91dc38ba51a25, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  aSlot: 1
+  randomizationWeight: 9
+  aggressivenessWeight: 5
+  defensivenessWeight: 5
+  baseDamageWeight: 5
+  cDMWeight: 5
+  componentHealthWeight: 2
+  benefitWeight: 0
+  mitigationWeight: 0
+  applicationWeight: 0
+  defensivePredictionAccuracy: 0
+  offensivePredictionAccuracy: 0
 --- !u!1 &1341640241
 GameObject:
   m_ObjectHideFlags: 0
@@ -4522,6 +4583,7 @@ RectTransform:
   - {fileID: 129746561038785520}
   - {fileID: 129746561627348953}
   - {fileID: 129746561203828185}
+  - {fileID: 637771108}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -8282,7 +8344,6 @@ MonoBehaviour:
   - {fileID: 129746560092067420}
   playerAttackSlotA: {fileID: 129746561551062944}
   playerAttackSlotB: {fileID: 129746561224329455}
-  SkipASlotButton: {fileID: 0}
   channelFadeTimeModifier: 1
 --- !u!1 &129746560713854579
 GameObject:
@@ -16022,7 +16083,6 @@ GameObject:
   - component: {fileID: 1646574084020073058}
   - component: {fileID: 1646574084020073057}
   - component: {fileID: 1646574084020073059}
-  - component: {fileID: 1646574084020073056}
   - component: {fileID: 6467128728770128019}
   - component: {fileID: 8914077050151925091}
   m_Layer: 0
@@ -16085,25 +16145,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 58b7de4025d18a64b90b8d082e5fdea3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &1646574084020073056
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1646574084020073071}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2f2f2581d0605184fad91dc38ba51a25, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  aSlot: 1
-  randomizationWeight: 9
-  aggressivenessWeight: 5
-  defensivenessWeight: 5
-  baseDamageWeight: 5
-  cDMWeight: 5
-  componentHealthWeight: 2
 --- !u!114 &6467128728770128019
 MonoBehaviour:
   m_ObjectHideFlags: 0
