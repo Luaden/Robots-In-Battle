@@ -24,10 +24,9 @@ public class ChannelsUISlotManager : BaseSlotManager<CardUIController>
 
     public float ChannelFadeTimeModifier { get => channelFadeTimeModifier; }
 
-    public delegate void onASlotFilled();
-    public static event onASlotFilled OnASlotFilled;
-    public delegate void onBSlotFilled();
-    public static event onBSlotFilled OnBSlotFilled;
+    public delegate void onSlotFilled();
+    public static event onSlotFilled OnSlotFilled;
+
 
     public override void AddItemToCollection(CardUIController item, BaseSlotController<CardUIController> slot)
     {
@@ -39,7 +38,13 @@ public class ChannelsUISlotManager : BaseSlotManager<CardUIController>
                 return;
             }
 
-            else if(attackSlotAFilled && !attackSlotBFilled && playerAttackSlotA.CurrentSlottedItem.CardData.CardType == CardType.Neutral)
+            else if(attackSlotAFilled && playerAttackSlotA.CurrentSlottedItem == item)
+            {
+                FillASlot(item, slot);
+                return;
+            }
+
+            else if (attackSlotAFilled && !attackSlotBFilled && playerAttackSlotA.CurrentSlottedItem.CardData.CardType == CardType.Neutral)
             {
                 FillBSlot(playerAttackSlotA.CurrentSlottedItem.CardData.CardUIController, playerAttackSlotB, false);
                 FillASlot(item, slot);
@@ -52,6 +57,12 @@ public class ChannelsUISlotManager : BaseSlotManager<CardUIController>
         if (item.CardData.CardType == CardType.Defense)
         {
             if(!attackSlotBFilled)
+            {
+                FillBSlot(item, slot);
+                return;
+            }
+
+            else if (attackSlotBFilled && playerAttackSlotB.CurrentSlottedItem == item)
             {
                 FillBSlot(item, slot);
                 return;
@@ -74,11 +85,19 @@ public class ChannelsUISlotManager : BaseSlotManager<CardUIController>
                 FillASlot(item, slot);
                 return;
             }
-
+            else if(attackSlotAFilled && playerAttackSlotA.CurrentSlottedItem == item)
+            {
+                FillASlot(item, slot);
+                return;
+            }
             else if (!attackSlotBFilled)
             {
                 FillBSlot(item, slot);
                 return;
+            }
+            else if(attackSlotBFilled && playerAttackSlotB.CurrentSlottedItem == item)
+            {
+                FillBSlot(item, slot);
             }
             else
                 return;
@@ -87,6 +106,8 @@ public class ChannelsUISlotManager : BaseSlotManager<CardUIController>
 
         void FillASlot(CardUIController item, BaseSlotController<CardUIController> slot, bool newSelectedChannel = true)
         {
+            Debug.Log("Adding: " + item.CardData.CardName + " to A Slot.");
+
             item.CardSlotController.SlotManager.RemoveItemFromCollection(item);
 
             playerAttackSlotA.CurrentSlottedItem = item;
@@ -124,7 +145,7 @@ public class ChannelsUISlotManager : BaseSlotManager<CardUIController>
             }
 
             attackSlotAFilled = true;
-            OnASlotFilled?.Invoke();
+            OnSlotFilled?.Invoke();
         }
 
         void FillBSlot(CardUIController item, BaseSlotController<CardUIController> slot, bool newSelectedChannel = true)
@@ -170,7 +191,7 @@ public class ChannelsUISlotManager : BaseSlotManager<CardUIController>
             }
 
             attackSlotBFilled = true;
-            OnBSlotFilled?.Invoke();
+            OnSlotFilled?.Invoke();
             return;
         }
 
@@ -208,9 +229,10 @@ public class ChannelsUISlotManager : BaseSlotManager<CardUIController>
     private bool ValidateCardChannelSelection(CardUIController newData, BaseSlotController<CardUIController> slot)
     {
         if (attackSlotAFilled && attackSlotBFilled)
-            return false;
+            if(playerAttackSlotA.CurrentSlottedItem != newData && playerAttackSlotB.CurrentSlottedItem != newData)
+                return false;
 
-        if(newData.CardData.AffectedChannels == AffectedChannels.AllPossibleChannels)
+        if (newData.CardData.AffectedChannels == AffectedChannels.AllPossibleChannels)
         {
             foreach(Channels channel in CombatManager.instance.GetChannelListFromFlags(newData.CardData.PossibleChannels))
             {

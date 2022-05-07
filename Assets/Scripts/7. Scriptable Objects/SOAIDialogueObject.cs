@@ -14,4 +14,9 @@ public class SOAIDialogueObject : ScriptableObject
     [SerializeField] private string aILoseDialogue;
     [TextArea(5, 10)]
     [SerializeField] private List<string> randomFightDialogue;
+
+    public string IntroDialogue { get => introDialogue; }
+    public string AIWinDialogue { get => aIWinDialogue; }
+    public string AILoseDialogue { get => aILoseDialogue; }
+    public List<string> RandomFightDialogue { get => randomFightDialogue; }
 }

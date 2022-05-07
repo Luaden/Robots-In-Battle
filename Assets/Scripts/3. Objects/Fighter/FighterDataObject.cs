@@ -4,18 +4,55 @@ using UnityEngine;
 
 public class FighterDataObject
 {
+    private string fighterName;
+    private PilotType fighterType;
+    private Sprite fighterSprite;
+    private Sprite fighterHair;
+    private Sprite fighterHead;
+    private Sprite fighterEyes;
+    private Sprite fighterMouth;
+    private Sprite fighterBody;
     private MechObject fighterMech;
     private List<SOItemDataObject> fighterDeck;
-    private PilotDataObject fighterPilot;
+    private PilotEffects fighterEffects;
+    private int nodeIndex;
 
+    private SOCompleteCharacter completeCharacterBase;
+
+    public string FighterName { get => fighterName; }
+    public PilotType FighterType { get => fighterType; }
+    public Sprite FighterSprite { get => fighterSprite; }
     public MechObject FighterMech { get => fighterMech; }
     public List<SOItemDataObject> FighterDeck { get => fighterDeck; set => fighterDeck = value; }
-    public PilotDataObject FighterPilot { get => fighterPilot; }
 
-    public FighterDataObject(MechObject mech, PilotDataObject pilot, List<SOItemDataObject> deck)
+    public SOAIDialogueObject AIDialogueModule { get => completeCharacterBase.DialogueModule; }
+    public SOAIBehaviorObject AIBehaviorModule { get => completeCharacterBase.BehaviorModule; }
+
+    public FighterDataObject(PlayerDataObject player)
     {
-        fighterMech = mech;
-        fighterPilot = pilot;
-        fighterDeck = deck;        
+        fighterName = player.CompletePilot.PilotName;
+        fighterSprite = player.PilotSprite;
+        fighterMech = player.PlayerMech;
+        fighterDeck = player.PlayerDeck;
+        fighterEffects = player.PilotEffects;
+        fighterType = PilotType.Unique;
+
+        completeCharacterBase = player.CompletePilot; 
+    }
+
+    public FighterDataObject(SOCompleteCharacter opponent)
+    {
+        if (opponent.PilotType == PilotType.Unique)
+            fighterSprite = opponent.PilotSprite;
+        //else
+        //{
+        //    GameManager.instance.AICharacterBuilder.DoSomething();
+        //}
+
+        fighterName = opponent.PilotName;
+        fighterMech = GameManager.instance.PlayerMechController.BuildNewMech(opponent.MechObject);
+        fighterDeck = opponent.DeckList;
+        fighterEffects = opponent.PilotEffects;
+        completeCharacterBase = opponent;
     }
 }

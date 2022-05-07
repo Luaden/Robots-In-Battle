@@ -4,75 +4,27 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class AIController : MonoBehaviour
+public class AIManager : MonoBehaviour
 {
-    #region Debug Functions
+    private int randomizationWeight;
+    private int aggressivenessWeight;
+    private int defensivenessWeight;
+    private int baseDamageWeight;
+    private int cDMWeight;
+    private int componentHealthWeight;
+    private int benefitWeight;
+    private int mitigationWeight;
+    private int applicationWeight;
+    private int defensivePredictionAccuracy;
+    private int offensivePredictionAccuracy;
+    //Need some way to weigh energy consumption as well
 
-    [SerializeField] private bool aSlot = true;
+    private AIDialogueController aIDialogueController;
 
-    [ContextMenu("Test Choices")]
-    public void TestCardSelection()
-    {
-        List<CardPlayPriorityObject> cardPlays = GetCurrentPossibleCards(aSlot);
-
-        WeightCardPlayValues(cardPlays);
-
-        foreach (CardPlayPriorityObject card in cardPlays)
-            Debug.Log(card.card.CardName + ", " + card.channel + ": " + card.priority);
-    }
-    #endregion
-
-    [Tooltip("A value range between 0 and 9 that represents variance for AI priority preference. This value is added or subtracted from each possible move's " +
-        "valuation in order to add variance from rigid strategy. 0 represents an accurate strategy of the weighted values below while 9 represents the most " +
-        "added randomness. Chaos reigns.")]
-    [Range(0, 9)] [SerializeField] private int randomizationWeight;
-    [Tooltip("A value range between 0 and 9 that represents the AI preference for B Slot offense or defense. A value of 5 means the AI will value damaging " +
-        "Neutral cards more than Defense cards.")]
-    [Range(0, 9)] [SerializeField] private int aggressivenessWeight;
-
-    [Tooltip("A value range between 0 and 9 that represents the AI preference for A Slot offense or defense. A value of 5 means the AI will value defensive " +
-        "Neutral cards more than Attack cards.")]
-    [Range(0, 9)] [SerializeField] private int defensivenessWeight;
-
-    [Tooltip("A value range between 0 and 9 that represents the AI preference for base damage. A value of 5 means the AI will value attacks that deal more" +
-    "base damage more than those that do less.")]
-    [Range(0, 9)] [SerializeField] private int baseDamageWeight;
-
-    [Tooltip("(Component Damage Multiplier) A value range between 0 and 9 that represents the AI preference for component damage. A value of 5 means the AI " +
-        "will value attacks that deal or benefit from bonus component damage more than those that do not.")]
-    [Range(0, 9)] [SerializeField] private int cDMWeight;
-
-    [Tooltip("A value range between 0 and 9 that represents the AI preference for targeting weaker components. A value of 5 means that the AI will value attacks " +
-        "that can target weaker components more.")]
-    [Range(0, 9)] [SerializeField] private int componentHealthWeight;
-
-
-
-    //[Tooltip("A value range between 0 and 5 that represents the AI preference to play cards that benefit from buffs. A value of 5 means that the AI will " +
-    //    "value cards that benefit from buffs more than those that do not.")]
-    [Tooltip("This is not currently calculated.")]
-    [Range(0, 5)] [SerializeField] private int benefitWeight;
-
-    //[Tooltip("A value range between 0 and 5 that represents the AI preference to play cards that are not mitigated by debuffs. A value of 5 means that the " +
-    //    "AI will value cards that are mitigated by buffs and shields less than those that are not.")]
-    [Tooltip("This is not currently calculated.")]
-    [Range(0, 5)] [SerializeField] private int mitigationWeight;
-
-    //[Tooltip("A value range between 0 and 5 that represents the AI preference to play cards that apply effects. A value of 5 means that the AI will value " +
-    //    "cards that apply effects such as buffs, debuffs, and shields more than those that do not.")]
-    [Tooltip("This is not currently calculated.")]
-    [Range(0, 5)] [SerializeField] private int applicationWeight;
-
-    //[Tooltip("A value range between 0 and 5 that represents the AI ability to accurately defend against attacks. A value of 5 means that the AI will make an " +
-    //    "accurate guess as to where to defend given the available information, whereas a value of 0 will randomly guess from the channels able to be guarded.")]
-    [Tooltip("This is not currently calculated.")]
-    [Range(0, 5)] [SerializeField] private int defensivePredictionAccuracy;
-
-    //[Tooltip("A value range between 0 and 5 that represents the AI ability to accurately choose attacks that cannot be guarded or countered. A value of 5 " +
-    //    "means that the AI will value attacks that cannot be guarded or countered more where a value of 0 means that the AI will not consider the player's " +
-    //    "defensive cards when picking where to attack.")]
-    [Tooltip("This is not currently calculated.")]
-    [Range(0, 5)] [SerializeField] private int offensivePredictionAccuracy;
+    private List<CardDataObject> opponentHand;
+    private CardChannelPairObject attackA;
+    private CardChannelPairObject attackB;
+    private string aICombatLog = "";
 
     #region Utility
     private CardPlayPriorityObject CreateCardPlayPriorityObject(CardDataObject card, Channels channel)
@@ -93,12 +45,7 @@ public class AIController : MonoBehaviour
     }
     #endregion
 
-    private List<CardDataObject> opponentHand;
-    private CardChannelPairObject attackA;
-    private CardChannelPairObject attackB;
-    private string aICombatLog = "";
-
-    public void LoadAIBehavior(SOAIBehaviorObject newBehavior)
+    public void LoadAIBehaviorModule(SOAIBehaviorObject newBehavior)
     {
         randomizationWeight = newBehavior.RandomizationWeight;
         aggressivenessWeight = newBehavior.AggressivenessWeight;
@@ -108,18 +55,44 @@ public class AIController : MonoBehaviour
         componentHealthWeight = newBehavior.ComponentHealthWeight;
     }
 
+    public void LoadAIDialogueModule(SOAIDialogueObject newDialogue)
+    {
+        aIDialogueController.LoadCombatDialogue(newDialogue);
+    }
+
+    public void PlayAIIntroDialogue()
+    {
+        aIDialogueController.PlayIntroDialogue();
+    }
+
+    public void PlayAIWinDialogue()
+    {
+        aIDialogueController.PlayAIWinDialogue();
+    }
+
+    public void PlayAILoseDialogue()
+    {
+        aIDialogueController.PlayAILoseDialogue();
+    }
+
     private void Start()
     {
+        aIDialogueController = GetComponent<AIDialogueController>();
         CombatManager.OnStartNewTurn += BuildCardChannelPairA;
-        ChannelsUISlotManager.OnASlotFilled += BuildCardChannelPairB;
+        ChannelsUISlotManager.OnSlotFilled += BuildCardChannelPairB;
         CardPlayManager.OnBeginCardPlay += FinalCheck;
     }
 
     private void OnDestroy()
     {
         CombatManager.OnStartNewTurn -= BuildCardChannelPairA;
-        ChannelsUISlotManager.OnASlotFilled -= BuildCardChannelPairB;
+        ChannelsUISlotManager.OnSlotFilled -= BuildCardChannelPairB;
         CardPlayManager.OnBeginCardPlay -= FinalCheck;
+    }
+
+    private void OnCombatComplete()
+    {
+        aIDialogueController.CheckPlayDialogue();
     }
 
     private void BuildCardChannelPairA()
