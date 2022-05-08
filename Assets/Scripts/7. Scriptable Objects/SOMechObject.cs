@@ -13,7 +13,7 @@ public class SOMechObject : ScriptableObject
 
     public SOItemDataObject MechHead { get => mechHead; }
     public SOItemDataObject MechTorso { get => mechTorso; }
-    public SOItemDataObject MechArms { get => mechTorso; }
+    public SOItemDataObject MechArms { get => mechArms; }
     public SOItemDataObject MechLegs { get => mechLegs; }
     public SOItemDataObject MechBack { get => mechBack; }
 }

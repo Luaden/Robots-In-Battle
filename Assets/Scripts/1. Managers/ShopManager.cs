@@ -9,7 +9,7 @@ public class ShopManager : MonoBehaviour
     private List<SOItemDataObject> itemsToDisplay;
 
     private ShopCollectionRandomizationController shopCollectionRandomizationController;
-
+    
     public void InitializeShop()
     {
         itemsToDisplay = shopCollectionRandomizationController.RandomizeShopItemCollection(shopCollectionObjects);

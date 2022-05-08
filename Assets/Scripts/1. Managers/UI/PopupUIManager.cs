@@ -4,19 +4,16 @@ using UnityEngine;
 
 public class PopupUIManager : MonoBehaviour
 {
-    [SerializeField] private float textPace;
-    [SerializeField] private string debugName;
-    [TextArea(1, 5)]
-    [SerializeField] private string debugDialogue;
-
+    [SerializeField] private float textRate;
 
     private CardUIPopupController cardUIPopupController;
     private ShopUIPopupController shopUIPopupController;
     private MechUIPopupController mechUIPopupController;
     private HUDPopupController hudPopUpController;
     private AIDialoguePopupController aIDialoguePopupController;
+    private EventDialoguePopupController eventDialoguePopupController;
 
-    public float TextPace { get => textPace; }
+    public float TextPace { get => textRate; }
 
     private void Awake()
     {
@@ -25,14 +22,10 @@ public class PopupUIManager : MonoBehaviour
         hudPopUpController = GetComponentInChildren<HUDPopupController>();
         shopUIPopupController = GetComponentInChildren<ShopUIPopupController>();
         aIDialoguePopupController = GetComponentInChildren<AIDialoguePopupController>();
+        eventDialoguePopupController = GetComponentInChildren<EventDialoguePopupController>();
 
         if (CombatManager.instance != null)
             CombatSequenceManager.OnCombatComplete += InactivatePopup;
-
-        if (aIDialoguePopupController == null)
-        {
-            Debug.Log("Oopsie.");
-        }
     }
 
     private void OnDestroy()
@@ -46,12 +39,7 @@ public class PopupUIManager : MonoBehaviour
         cardUIPopupController.UpdateUI(cardDataObject);
     }
 
-    public void HandlePopup(SOItemDataObject soItemDataObject)
-    {
-        //Handle generic popup.
-    }
-
-    public void HandlePopup(ShopItemUIController shopItem)
+    public void HandlePopup(SOItemDataObject shopItem)
     {
         shopUIPopupController.UpdateUI(shopItem);
     }
@@ -59,6 +47,11 @@ public class PopupUIManager : MonoBehaviour
     public void HandlePopup(string name, string dialogue)
     {
         aIDialoguePopupController.UpdateUI(name, dialogue);
+    }
+
+    public void HandlePopup(SOEventObject eventDialogue)
+    {
+        eventDialoguePopupController.UpdateUI(eventDialogue);
     }
 
     public void InactivatePopup()

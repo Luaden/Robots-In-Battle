@@ -143,7 +143,30 @@ public enum PilotType
     Generic
 }
 
-public enum EventType
+public enum EventRequirement
 {
-    
+    HasEnoughMoney,
+}
+
+public enum EventOutcome
+{
+    DamageNextEnemy,
+    DamagePlayer,
+    GainOrLoseMoney,
+    GainOrLoseTime,
+    TempWinningsModifier,
+    AddItemToPlayer,
+
+    ////SpecificEvents that will need a different system.
+    //Investment,
+    //ANightOut,
+    //ExperimentalFuel,
+    //BetOnOtherFighter,
+    //BadLuck
+}
+
+public enum EventObjective
+{
+    EndFightBelowHPPercent,
+    EndFightWithEquippedItem,
 }
