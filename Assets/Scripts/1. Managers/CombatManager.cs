@@ -340,6 +340,9 @@ public class CombatManager : MonoBehaviour
         mechHUDManager.SetOpponentMaxStats(opponentFighter.FighterMech.MechMaxHP, opponentFighter.FighterMech.MechMaxEnergy);
         mechHUDManager.UpdateOpponentPilotImage(opponentFighter.FighterSprite);
 
+        opponentFighter.FighterMech.DamageWholeMechHP(GameManager.instance.EnemyHealthModifier);
+        mechHUDManager.UpdateOpponentHP(opponentFighter.FighterMech.MechCurrentHP);
+
         aIManager.LoadAIBehaviorModule(opponentFighter.AIBehaviorModule);
         aIManager.LoadAIDialogueModule(opponentFighter.AIDialogueModule);
 

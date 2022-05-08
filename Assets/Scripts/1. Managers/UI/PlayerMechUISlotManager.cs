@@ -215,8 +215,10 @@ public class PlayerMechUISlotManager : BaseSlotManager<ShopItemUIController>
         currentParts.Add(playerMech.MechLegs);
 
         foreach (MechComponentDataObject item in currentParts)
+        {
+            Debug.Log(item.SOItemDataObject.ItemName);
             DowntimeManager.instance.ShopItemUIBuildController.BuildAndDisplayItemUI(item.SOItemDataObject, this, item);
-
+        }
     }
 
     private void UpdateCurrentMech()

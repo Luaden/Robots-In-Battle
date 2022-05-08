@@ -45,15 +45,14 @@ public class DowntimeManager : MonoBehaviour
 
         shopManager = FindObjectOfType<ShopManager>(true);
         popupUIManager = FindObjectOfType<PopupUIManager>(true);
-        shopUISlotManager = FindObjectOfType<ShopUISlotManager>();
+        shopUISlotManager = FindObjectOfType<ShopUISlotManager>(true);
         shoppingCartManager = FindObjectOfType<ShoppingCartManager>(true);
         shoppingCartUISlotManager = FindObjectOfType<ShoppingCartUISlotManager>(true);
-        shopItemUIBuildController = FindObjectOfType<ShopItemUIBuildController>();
-        inventoryUISlotManager = FindObjectOfType<InventoryUISlotManager>();
-
+        shopItemUIBuildController = FindObjectOfType<ShopItemUIBuildController>(true);
+        inventoryUISlotManager = FindObjectOfType<InventoryUISlotManager>(true);
     }
 
-    public void Start()
+    public void InitializeShop()
     {
         instance.ShopManager.InitializeShop();
     }

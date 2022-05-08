@@ -13,6 +13,9 @@ public class GameManager : MonoBehaviour
     [SerializeField] private SOCompleteCharacter starterPilot;
     [SerializeField] private List<SOCompleteCharacter> potentialAIBuilds;
 
+    private int currencyGainModifier = 0;
+    private int enemyHealthModifier = 0;
+
     private DowntimeMechBuilderController playerMechController;
     private DowntimeInventoryController playerInventoryController;
     private DowntimeDeckController playerDeckController;
@@ -28,12 +31,13 @@ public class GameManager : MonoBehaviour
     public DowntimeBankController PlayerBankController { get => playerBankController; }
     public SceneController SceneController { get => sceneController; }
 
+    public int EnemyHealthModifier { get => enemyHealthModifier; set => enemyHealthModifier = value; }
     public int PlayerWins { get => playerData.CurrentWinCount; }
+    public int PlayerCurrencyGainOnWin { get => playerCurrencyGainOnWin + currencyGainModifier; set => currencyGainModifier = value; }
+    public SOCompleteCharacter StarterPilot { get => starterPilot; }
 
     public delegate void onUpdatePlayerCurrencies();
     public static event onUpdatePlayerCurrencies OnUpdatePlayerCurrencies;
-
-    public int PlayerCurrencyGainOnWin { get => playerCurrencyGainOnWin; }
 
 
     [ContextMenu("Start Game")]
@@ -57,7 +61,7 @@ public class GameManager : MonoBehaviour
     public void LoadShoppingScene()
     {
         sceneController.LoadDowntimeScene();
-        playerBankController.AddPlayerCurrency(playerCurrencyGainOnWin);
+        playerBankController.AddPlayerCurrency(PlayerCurrencyGainOnWin);
         playerBankController.ResetPlayerTime();
     }
 
@@ -160,8 +164,8 @@ public class GameManager : MonoBehaviour
         {
             MechComponentDataObject head = new MechComponentDataObject(mechHead);
             MechComponentDataObject torso = new MechComponentDataObject(mechTorso);
-            MechComponentDataObject legs = new MechComponentDataObject(mechLegs);
             MechComponentDataObject arms = new MechComponentDataObject(mechArms);
+            MechComponentDataObject legs = new MechComponentDataObject(mechLegs);
 
             MechObject newMech = new MechObject(head, torso, arms, legs);
 
@@ -172,8 +176,8 @@ public class GameManager : MonoBehaviour
         {
             MechComponentDataObject head = new MechComponentDataObject(newMech.MechHead);
             MechComponentDataObject torso = new MechComponentDataObject(newMech.MechTorso);
-            MechComponentDataObject legs = new MechComponentDataObject(newMech.MechLegs);
             MechComponentDataObject arms = new MechComponentDataObject(newMech.MechArms);
+            MechComponentDataObject legs = new MechComponentDataObject(newMech.MechLegs);
 
             MechObject newMechDataObject = new MechObject(head, torso, arms, legs);
 
@@ -291,6 +295,12 @@ public class GameManager : MonoBehaviour
         public void AddPlayerCurrency(int currencyToGain)
         {
             instance.playerData.CurrencyToSpend += currencyToGain;
+            OnUpdatePlayerCurrencies?.Invoke();
+        }
+
+        public void AddPlayerTime(int timeToGain)
+        {
+            instance.playerData.CurrencyToSpend += timeToGain;
             OnUpdatePlayerCurrencies?.Invoke();
         }
 

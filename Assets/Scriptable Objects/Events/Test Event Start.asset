@@ -1,0 +1,35 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d35a092918830df4cb228e5d127c0dc1, type: 3}
+  m_Name: Test Event Start
+  m_EditorClassIdentifier: 
+  eventDialogue:
+  - Hey bro, this is a sweet test event. If you have 50 money, you can accept this
+    dope event. If you accept it, you have to make it back with less than 10% HP.
+  - There's a second paragraph to this quest, too!
+  eventCanBeAccepted: 1
+  eventRequirements:
+  - {fileID: 11400000, guid: 84c9e3ad1341f8f4e890dd2d7663ad4e, type: 2}
+  eventObjectives:
+  - {fileID: 11400000, guid: c05e2e9df7d260e4da5a2a67855ebd20, type: 2}
+  successfulAcceptanceOutcomes:
+  - {fileID: 11400000, guid: f968af569f68423408a642280fb3a7d6, type: 2}
+  successfulAcceptanceDialogue: {fileID: 11400000, guid: 2684526fe77f0d54ab123f1fb3136dd0, type: 2}
+  unsuccessfulAcceptanceDialogue: {fileID: 11400000, guid: d70af9895f794b84689f28732e4430d1, type: 2}
+  refusalOutcomes: []
+  refusalDialogue: {fileID: 11400000, guid: 7f44d27847513674cb4d2e8ccc0f8729, type: 2}
+  objectiveCompletionOutcomes:
+  - {fileID: 11400000, guid: 79be6fee6cd383440b1ac96d8e531fe7, type: 2}
+  objectiveCompletionDialogue: {fileID: 11400000, guid: d4629001937506d4497e56956b51f76a, type: 2}
+  objectiveFailureOutcomes:
+  - {fileID: 11400000, guid: f968af569f68423408a642280fb3a7d6, type: 2}
+  objectiveFailureDialogue: {fileID: 11400000, guid: 4648f77e232956546948bb7038484f54, type: 2}

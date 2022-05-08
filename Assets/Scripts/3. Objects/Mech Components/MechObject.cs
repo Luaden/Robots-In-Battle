@@ -53,7 +53,7 @@ public class MechObject
     public MechComponentDataObject ReplaceComponent(MechComponentDataObject newComponent)
     {
         MechComponentDataObject oldComponent;
-
+        Debug.Log("Replacing component.");
         switch (newComponent.ComponentType)
         {
             case MechComponent.Head:
@@ -158,8 +158,14 @@ public class MechObject
                 break;
         }
 
-        DamageMechHP(damageToDeal - bonusDamage);
-        DamageMechHP(Mathf.RoundToInt(bonusDamage * CombatManager.instance.BrokenCDM));
+        DamageWholeMechHP(damageToDeal - bonusDamage);
+        DamageWholeMechHP(Mathf.RoundToInt(bonusDamage * CombatManager.instance.BrokenCDM));
+    }
+
+
+    public void DamageWholeMechHP(int damageToDeal)
+    {
+        mechCurrentHP -= damageToDeal;
     }
 
     public void ResetHealth()
@@ -188,10 +194,5 @@ public class MechObject
     {
         mechMaxHP += componentAdded.ComponentMaxHP;
         mechCurrentHP += componentAdded.ComponentCurrentHP;
-    }
-
-    private void DamageMechHP(int damageToDeal)
-    {
-        mechCurrentHP -= damageToDeal;
     }
 }
