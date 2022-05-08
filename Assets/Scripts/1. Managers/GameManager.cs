@@ -5,6 +5,14 @@ using System.Linq;
 
 public class GameManager : MonoBehaviour
 {
+    [Header("Game Settings")]
+    [SerializeField] protected float timeBetweenFights;
+    [SerializeField] protected int playerCurrencyGainOnWin;
+    [Space]
+    [Header("Character Settings")]
+    [SerializeField] private SOCompleteCharacter starterPilot;
+    [SerializeField] private List<SOCompleteCharacter> potentialAIBuilds;
+
     private DowntimeMechBuilderController playerMechController;
     private DowntimeInventoryController playerInventoryController;
     private DowntimeDeckController playerDeckController;
@@ -14,97 +22,31 @@ public class GameManager : MonoBehaviour
 
     public static GameManager instance;
 
-    public int PlayerWins { get => playerData.CurrentWinCount; }
     public DowntimeInventoryController PlayerInventoryController { get => playerInventoryController; }
     public DowntimeMechBuilderController PlayerMechController { get => playerMechController; }
     public DowntimeDeckController PlayerDeckController { get => playerDeckController; }
     public DowntimeBankController PlayerBankController { get => playerBankController; }
     public SceneController SceneController { get => sceneController; }
 
+    public int PlayerWins { get => playerData.CurrentWinCount; }
+
     public delegate void onUpdatePlayerCurrencies();
     public static event onUpdatePlayerCurrencies OnUpdatePlayerCurrencies;
-
-    #region Playtesting
-    [Header("Player Demo Mech")]
-    [SerializeField] private SOItemDataObject starterMechHead;
-    [SerializeField] private SOItemDataObject starterMechTorso;
-    [SerializeField] private SOItemDataObject starterMechArms;
-    [SerializeField] private SOItemDataObject starterMechLegs;
-    [Header("Opponent Demo Mech")]
-    [SerializeField] private SOItemDataObject opponentMechHead;
-    [SerializeField] private SOItemDataObject opponentMechTorso;
-    [SerializeField] private SOItemDataObject opponentMechArms;
-    [SerializeField] private SOItemDataObject opponentMechLegs;
-
-    [Header("Player Demo Deck")]
-    [SerializeField] private List<SOItemDataObject> starterDeck;
-
-    [Header("Opponent Demo Deck")]
-    [SerializeField] private List<SOItemDataObject> starterOpponentDeck;
-
-    [Header("Starting Economy")]
-    [SerializeField] protected int starterPlayerCurrency;
-    [SerializeField] protected float timeBetweenFights;
-    [SerializeField] protected int playerCurrencyGainOnWin;
 
     public int PlayerCurrencyGainOnWin { get => playerCurrencyGainOnWin; }
 
 
     [ContextMenu("Start Game")]
-    public void BuildMech()
+    public void StartGame()
     {
         LoadPlayer();
-        MechObject opponentMech;
-        List<SOItemDataObject> opponentDeck;
-        
-        if(CheckOpponentComponentsAvailable())
-        {
-            opponentMech =
-                instance.PlayerMechController.BuildNewMech(opponentMechHead, opponentMechTorso, opponentMechArms, opponentMechLegs);
-        }
-        else
-        {
-            opponentMech =
-                instance.PlayerMechController.BuildNewMech(starterMechHead, starterMechTorso, starterMechArms, starterMechLegs);
-        }
+        FighterDataObject opponentFighter = new FighterDataObject(potentialAIBuilds[0]);
 
-        if (CheckOpponentDeckAvailable())
-            opponentDeck = starterOpponentDeck;
-        else
-            opponentDeck = starterDeck;
-            
-        PilotDataObject opponentPilot = new PilotDataObject();
-        FighterDataObject opponentFighter = new FighterDataObject(opponentMech, opponentPilot, opponentDeck);
-
-        CombatManager.instance.PlayerFighter = new FighterDataObject(playerData.PlayerMech, new PilotDataObject(), playerData.PlayerDeck);
+        CombatManager.instance.PlayerFighter = new FighterDataObject(playerData);
         CombatManager.instance.OpponentFighter = opponentFighter;
 
         CombatManager.instance.StartGame();
     }
-
-    private bool CheckOpponentComponentsAvailable()
-    {
-        if (opponentMechArms == null)
-            return false;
-        if (opponentMechHead == null)
-            return false;
-        if (opponentMechLegs == null)
-            return false;
-        if (opponentMechTorso == null)
-            return false;
-        return true;
-    }
-
-    private bool CheckOpponentDeckAvailable()
-    {
-        if (starterOpponentDeck != null && starterOpponentDeck.Count > 0)
-        {
-            Debug.Log("Found opponent deck.");
-            return true;
-        }
-        return false;
-    }
-    #endregion
 
     public void ReloadGame()
     {
@@ -135,6 +77,8 @@ public class GameManager : MonoBehaviour
             DontDestroyOnLoad(this);
         }
 
+        Application.targetFrameRate = Screen.currentResolution.refreshRate;
+
         playerInventoryController = new DowntimeInventoryController();
         playerMechController = new DowntimeMechBuilderController();
         playerDeckController = new DowntimeDeckController();
@@ -158,18 +102,17 @@ public class GameManager : MonoBehaviour
             playerData = playerDataObject;
             return;
         }
+        else
+        {
+            if (starterPilot != null)
+            {
+                Debug.Log("Creating new pilot.");
+                instance.playerData = new PlayerDataObject(starterPilot);
+                return;
+            }
 
-        Debug.Log("Creating a new pilot.");
-
-        playerData = new PlayerDataObject(starterPlayerCurrency, timeBetweenFights);
-        MechObject newMech = instance.PlayerMechController.BuildNewMech(starterMechHead, starterMechTorso, starterMechArms, starterMechLegs);
-
-        playerData.PlayerDeck = starterDeck;
-        playerData.PlayerMech = newMech;
-
-        PilotDataObject playerPilot = new PilotDataObject();
-        FighterDataObject playerFighter = new FighterDataObject(playerData.PlayerMech, playerPilot, playerData.PlayerDeck);
-
+            Debug.Log("No starter pilot was found.");
+        }
     }
 
 
@@ -225,15 +168,16 @@ public class GameManager : MonoBehaviour
             return newMech;
         }
 
-        public void BuildNewPlayerMech(SOItemDataObject mechHead, SOItemDataObject mechTorso, SOItemDataObject mechArms, SOItemDataObject mechLegs)
+        public MechObject BuildNewMech(SOMechObject newMech)
         {
-            MechComponentDataObject head = new MechComponentDataObject(mechHead);
-            MechComponentDataObject torso = new MechComponentDataObject(mechTorso);
-            MechComponentDataObject legs = new MechComponentDataObject(mechLegs);
-            MechComponentDataObject arms = new MechComponentDataObject(mechArms);
-            MechObject newMech = new MechObject(head, torso, arms, legs);
+            MechComponentDataObject head = new MechComponentDataObject(newMech.MechHead);
+            MechComponentDataObject torso = new MechComponentDataObject(newMech.MechTorso);
+            MechComponentDataObject legs = new MechComponentDataObject(newMech.MechLegs);
+            MechComponentDataObject arms = new MechComponentDataObject(newMech.MechArms);
 
-            instance.playerData.PlayerMech = newMech;
+            MechObject newMechDataObject = new MechObject(head, torso, arms, legs);
+
+            return newMechDataObject;
         }
 
         public void SetNewPlayerMech(MechObject newMech)

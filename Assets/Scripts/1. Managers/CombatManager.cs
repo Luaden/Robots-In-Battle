@@ -48,11 +48,15 @@ public class CombatManager : MonoBehaviour
     private CombatAnimationManager combatAnimationManager;
     private EffectManager effectManager;
     private CombatSequenceManager combatSequenceManager;
+    private AIManager aIManager;
 
     private FighterDataObject playerFighter;
     private FighterDataObject opponentFighter;
 
     private bool canPlayCards = true;
+    private bool hasStartedGame = false;
+    private bool hasWon = false;
+    private bool hasLost = false;
 
     public FighterDataObject PlayerFighter { get => playerFighter; set => InitPlayerFighter(value); }
     public FighterDataObject OpponentFighter { get => opponentFighter; set => InitOpponentFighter(value); }
@@ -68,6 +72,7 @@ public class CombatManager : MonoBehaviour
     public CombatAnimationManager CombatAnimationManager { get => combatAnimationManager; }
     public EffectManager EffectManager { get => effectManager; }
     public CombatSequenceManager CombatSequenceManager { get => combatSequenceManager; }
+    public AIManager AIManager { get => aIManager; }
 
     public int MechEnergyGain { get => mechEnergyGain; }
     public float BrokenCDM { get => brokenComponentDamageMultiplier; }
@@ -278,24 +283,30 @@ public class CombatManager : MonoBehaviour
         combatAnimationManager = FindObjectOfType<CombatAnimationManager>(true);
         effectManager = FindObjectOfType<EffectManager>(true);
         combatSequenceManager = FindObjectOfType<CombatSequenceManager>(true);
+        aIManager = FindObjectOfType<AIManager>(true);
     }
 
     private void Start()
     {
         CombatSequenceManager.OnCombatStart += DisableCanPlayCards;
         CombatSequenceManager.OnRoundComplete += CheckForWinLoss;
-        CombatSequenceManager.OnCombatComplete += StartNewTurn;
-        CombatSequenceManager.OnCombatComplete += EnableCanPlayCards;
+        CombatSequenceManager.OnCombatComplete += CheckForWinLoss;
+
+        AIDialogueController.OnDialogueComplete += StartNewTurn;
+        AIDialogueController.OnDialogueComplete += EnableCanPlayCards;
 
     }
+
     private void OnDestroy()
     {
         OnDestroyScene?.Invoke();
         instance = null;
         CombatSequenceManager.OnCombatStart -= DisableCanPlayCards;
         CombatSequenceManager.OnRoundComplete -= CheckForWinLoss;
-        CombatSequenceManager.OnCombatComplete -= StartNewTurn;
-        CombatSequenceManager.OnCombatComplete -= EnableCanPlayCards;
+        CombatSequenceManager.OnCombatComplete += CheckForWinLoss;
+
+        AIDialogueController.OnDialogueComplete -= StartNewTurn;
+        AIDialogueController.OnDialogueComplete -= EnableCanPlayCards;
     }
 
     private void DisableCanPlayCards()
@@ -312,27 +323,62 @@ public class CombatManager : MonoBehaviour
     {
         playerFighter = newPlayerFighter;
         playerFighter.FighterMech.ResetEnergy();
+
         deckManager.SetPlayerDeck(newPlayerFighter.FighterDeck);
+
         mechHUDManager.SetPlayerMaxStats(playerFighter.FighterMech.MechMaxHP, playerFighter.FighterMech.MechMaxEnergy);
+        mechHUDManager.UpdatePlayerPilotImage(playerFighter.FighterSprite);
     }
 
     private void InitOpponentFighter(FighterDataObject newOpponentFighter)
     {
         opponentFighter = newOpponentFighter;
+        opponentFighter.FighterMech.ResetEnergy();
+
         deckManager.SetOpponentDeck(newOpponentFighter.FighterDeck);
+
         mechHUDManager.SetOpponentMaxStats(opponentFighter.FighterMech.MechMaxHP, opponentFighter.FighterMech.MechMaxEnergy);
+        mechHUDManager.UpdateOpponentPilotImage(opponentFighter.FighterSprite);
+
+        aIManager.LoadAIBehaviorModule(opponentFighter.AIBehaviorModule);
+        aIManager.LoadAIDialogueModule(opponentFighter.AIDialogueModule);
+
+        if (newOpponentFighter.FighterType == PilotType.Unique)
+            mechHUDManager.UpdatePlayerPilotImage(opponentFighter.FighterSprite);
+        else
+            Debug.Log("Attempted to build enemy sprite but we haven't set up the randomizable enemies yet!");
     }
 
     private void StartNewTurn()
     {
-        CheckForWinLoss();
-        deckManager.DrawPlayerCard(5 - HandManager.PlayerHand.CharacterHand.Count);
-        deckManager.DrawOpponentCard(5 - HandManager.OpponentHand.CharacterHand.Count);
+        if (hasStartedGame && !hasWon && !hasLost)
+        {
+            deckManager.DrawPlayerCard(5 - HandManager.PlayerHand.CharacterHand.Count);
+            deckManager.DrawOpponentCard(5 - HandManager.OpponentHand.CharacterHand.Count);
 
-        AddEnergyToMech(CharacterSelect.Opponent, mechEnergyGain + OpponentFighter.FighterMech.MechEnergyGain);
-        AddEnergyToMech(CharacterSelect.Player, mechEnergyGain + PlayerFighter.FighterMech.MechEnergyGain);
+            AddEnergyToMech(CharacterSelect.Opponent, mechEnergyGain + OpponentFighter.FighterMech.MechEnergyGain);
+            AddEnergyToMech(CharacterSelect.Player, mechEnergyGain + PlayerFighter.FighterMech.MechEnergyGain);
 
-        OnStartNewTurn?.Invoke();
+            OnStartNewTurn?.Invoke();
+        }
+        
+        if(!hasStartedGame && !hasLost && !hasWon)
+        {
+            AIManager.PlayAIIntroDialogue();
+            hasStartedGame = true;
+        }
+
+        if(hasWon)
+        {
+            winLossPanel.SetActive(true);
+            loadShoppingButton.SetActive(true);
+        }
+
+        if(hasLost)
+        {
+            winLossPanel.SetActive(true);
+            reloadGameButton.SetActive(true);
+        }
     }
 
     private void CheckForWinLoss()
@@ -343,9 +389,9 @@ public class CombatManager : MonoBehaviour
 
             AnimationQueueObject newAnimationQueueObject = new AnimationQueueObject(CharacterSelect.Player, AnimationType.Lose, CharacterSelect.Opponent, AnimationType.Win);
             CombatAnimationManager.AddAnimationToQueue(newAnimationQueueObject);
-
-            winLossPanel.SetActive(true);
-            reloadGameButton.SetActive(true);
+            
+            hasLost = true;
+            AIManager.PlayAIWinDialogue();
 
             return;
         }
@@ -361,8 +407,10 @@ public class CombatManager : MonoBehaviour
             GameManager.instance.PlayerMechController.SetNewPlayerMech(playerMech);
             GameManager.instance.UpdatePlayerAfterFight(playerMech);
 
-            winLossPanel.SetActive(true);
-            loadShoppingButton.SetActive(true);
+            hasWon = true;
+            AIManager.PlayAILoseDialogue();
+
+
             return;
         }
     }

@@ -2,8 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "New AI Mech", menuName = "AI/Mech Module")]
-public class SOAIMechObject : ScriptableObject
+[CreateAssetMenu(fileName = "New Mech", menuName = "Mech/Mech Module")]
+public class SOMechObject : ScriptableObject
 {
     [SerializeField] private SOItemDataObject mechHead;
     [SerializeField] private SOItemDataObject mechTorso;

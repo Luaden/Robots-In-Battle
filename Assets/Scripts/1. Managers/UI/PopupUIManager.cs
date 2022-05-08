@@ -17,8 +17,6 @@ public class PopupUIManager : MonoBehaviour
     private AIDialoguePopupController aIDialoguePopupController;
 
     public float TextPace { get => textPace; }
-    public delegate void onSkipText();
-    public static event onSkipText OnSkipText;
 
     private void Awake()
     {
@@ -71,8 +69,7 @@ public class PopupUIManager : MonoBehaviour
             mechUIPopupController.UpdateUI(Channels.None);
         if (shopUIPopupController != null)
             shopUIPopupController.UpdateUI(null);
-        if (aIDialoguePopupController != null)
-            aIDialoguePopupController.UpdateUI(null, null);
+
         //if (hudPopUpController != null)
             //hudPopUpController.UpdateUI(null);
     }

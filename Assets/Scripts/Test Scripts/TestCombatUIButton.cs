@@ -6,7 +6,7 @@ public class TestCombatUIButton : MonoBehaviour
 {
     public void StartGame()
     {
-        GameManager.instance.BuildMech();
+        GameManager.instance.StartGame();
     }
 
     public void LoadTitle()

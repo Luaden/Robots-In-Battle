@@ -137,6 +137,12 @@ public enum CharacterSelect
     Opponent
 }
 
+public enum PilotType
+{
+    Unique,
+    Generic
+}
+
 public enum EventType
 {
     

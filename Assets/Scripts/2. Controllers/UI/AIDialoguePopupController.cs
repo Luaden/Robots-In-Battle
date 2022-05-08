@@ -8,6 +8,10 @@ public class AIDialoguePopupController : BaseUIElement<string, string>
     [SerializeField] protected GameObject popupObject;
     [SerializeField] private TMP_Text nameText;
     [SerializeField] private TMP_Text dialogueText;
+    [SerializeField] private GameObject dialogueButton;
+
+    public delegate void onAIDialogueComplete();
+    public static event onAIDialogueComplete OnAIDialogueComplete;
 
     private string currentDialogue;
     private Queue<char> completeDialogue;
@@ -24,27 +28,53 @@ public class AIDialoguePopupController : BaseUIElement<string, string>
         foreach(char letter in secondaryData)
             completeDialogue.Enqueue(letter);
 
+        dialogueButton.SetActive(true);
         popupObject.SetActive(true);
     }
 
     public void UpdateUI()
     {
-        int letterCount = completeDialogue.Count;
-        for(int i = 0; i < letterCount; i++)
-            currentDialogue += completeDialogue.Dequeue();
+        if (completeDialogue.Count > 0)
+        {
+            int letterCount = completeDialogue.Count;
+            for (int i = 0; i < letterCount; i++)
+                currentDialogue += completeDialogue.Dequeue();
+
+            dialogueText.text = currentDialogue;
+            return;
+        }
+        else
+        {
+            OnAIDialogueComplete?.Invoke();
+            UpdateUI(null, null);
+        }
     }
 
     protected override bool ClearedIfEmpty(string newData, string secondNewData)
     {
-        nameText.text = string.Empty;
-        dialogueText.text = string.Empty;
-        currentDialogue = string.Empty;
-        completeDialogue = new Queue<char>();
-
-        popupObject.SetActive(false);
-
         if (newData == null || secondNewData == null)
         {
+            nameText.text = string.Empty;
+            dialogueText.text = string.Empty;
+            currentDialogue = string.Empty;
+            completeDialogue = new Queue<char>();
+
+            dialogueButton.SetActive(false);
+            popupObject.SetActive(false);
+
+            return true;
+        }
+
+        if (newData.Length == 0 || secondNewData.Length == 0)
+        {
+            nameText.text = string.Empty;
+            dialogueText.text = string.Empty;
+            currentDialogue = string.Empty;
+            completeDialogue = new Queue<char>();
+
+            dialogueButton.SetActive(false);
+            popupObject.SetActive(false);
+
             return true;
         }
 
@@ -53,13 +83,7 @@ public class AIDialoguePopupController : BaseUIElement<string, string>
 
     private void Start()
     {
-        PopupUIManager.OnSkipText += UpdateUI;
         completeDialogue = new Queue<char>();
-    }
-
-    private void OnDestroy()
-    {
-        PopupUIManager.OnSkipText -= UpdateUI;
     }
 
     private void Update()
