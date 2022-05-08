@@ -77,6 +77,8 @@ public class GameManager : MonoBehaviour
             DontDestroyOnLoad(this);
         }
 
+        Application.targetFrameRate = Screen.currentResolution.refreshRate;
+
         playerInventoryController = new DowntimeInventoryController();
         playerMechController = new DowntimeMechBuilderController();
         playerDeckController = new DowntimeDeckController();

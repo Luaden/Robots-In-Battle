@@ -106,8 +106,6 @@ public class ChannelsUISlotManager : BaseSlotManager<CardUIController>
 
         void FillASlot(CardUIController item, BaseSlotController<CardUIController> slot, bool newSelectedChannel = true)
         {
-            Debug.Log("Adding: " + item.CardData.CardName + " to A Slot.");
-
             item.CardSlotController.SlotManager.RemoveItemFromCollection(item);
 
             playerAttackSlotA.CurrentSlottedItem = item;
