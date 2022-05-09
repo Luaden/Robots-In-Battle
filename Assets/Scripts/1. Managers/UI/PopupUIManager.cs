@@ -7,6 +7,7 @@ public class PopupUIManager : MonoBehaviour
     [SerializeField] private float textRate;
 
     private CardUIPopupController cardUIPopupController;
+    private ComponentUIPopupController componentUIPopupController;
     private ShopUIPopupController shopUIPopupController;
     private MechUIPopupController mechUIPopupController;
     private HUDPopupController hudPopUpController;
@@ -18,6 +19,7 @@ public class PopupUIManager : MonoBehaviour
     private void Awake()
     {
         cardUIPopupController = GetComponentInChildren<CardUIPopupController>();
+        componentUIPopupController = GetComponentInChildren<ComponentUIPopupController>();
         mechUIPopupController = GetComponentInChildren<MechUIPopupController>();
         hudPopUpController = GetComponentInChildren<HUDPopupController>();
         shopUIPopupController = GetComponentInChildren<ShopUIPopupController>();
@@ -39,10 +41,15 @@ public class PopupUIManager : MonoBehaviour
         cardUIPopupController.UpdateUI(cardDataObject);
     }
 
-    public void HandlePopup(SOItemDataObject shopItem)
+    public void HandlePopup(SOItemDataObject sOItemDataObject)
+    {
+        componentUIPopupController.UpdateUI(sOItemDataObject);
+    }
+
+/*    public void HandlePopup(SOItemDataObject shopItem)
     {
         shopUIPopupController.UpdateUI(shopItem);
-    }
+    }*/
 
     public void HandlePopup(string name, string dialogue)
     {
@@ -58,6 +65,8 @@ public class PopupUIManager : MonoBehaviour
     {
         if(cardUIPopupController != null)
             cardUIPopupController.UpdateUI(null);
+        if (componentUIPopupController != null)
+            componentUIPopupController.UpdateUI(null);
         if(mechUIPopupController != null)
             mechUIPopupController.UpdateUI(Channels.None);
         if (shopUIPopupController != null)
