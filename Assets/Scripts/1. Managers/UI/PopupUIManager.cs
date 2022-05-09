@@ -43,14 +43,11 @@ public class PopupUIManager : MonoBehaviour
 
     public void HandlePopup(SOItemDataObject sOItemDataObject)
     {
-        componentUIPopupController.UpdateUI(sOItemDataObject);
+        if (sOItemDataObject.ItemType == ItemType.Component)
+            componentUIPopupController.UpdateUI(sOItemDataObject);
+        else
+            cardUIPopupController.UpdateUI(new CardDataObject(sOItemDataObject));
     }
-
-/*    public void HandlePopup(SOItemDataObject shopItem)
-    {
-        shopUIPopupController.UpdateUI(shopItem);
-    }*/
-
     public void HandlePopup(string name, string dialogue)
     {
         aIDialoguePopupController.UpdateUI(name, dialogue);
