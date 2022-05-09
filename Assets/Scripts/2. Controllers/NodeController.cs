@@ -8,7 +8,8 @@ public class NodeController : MonoBehaviour
     [SerializeField] protected List<NodeDataObject> allNodes;
     [SerializeField] protected List<NodeDataObject> activeNodes;
 
-    protected List<FighterPairObject> fighterPairs;
+    [Header("Debug")]
+    [SerializeField] protected List<FighterPairObject> fighterPairs;
 
     public List<NodeDataObject> GetAllNodes() { return allNodes; }
     public List<NodeDataObject> GetAllActiveNodes() { return activeNodes; }
@@ -25,13 +26,13 @@ public class NodeController : MonoBehaviour
     {
         List<NodeDataObject> tempList = new List<NodeDataObject>();
         tempList.AddRange(activeNodes);
-        // test, assign the winners
+        //test, assign the winners
         for (int i = 0; i < activeNodes.Count;)
         {
             activeNodes[i].HasWonBattle = true;
-            //TournamentOverviewManager.instance.AssignFighterToNodeSlot(activeNodes[i], activeNodes[i].PairNode);
             i += 2;
         }
+
 
 
         foreach (NodeDataObject currentNode in tempList)

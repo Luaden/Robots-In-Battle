@@ -33,11 +33,11 @@ public class NodeSlotController : BaseSlotController<NodeUIController>
             // add current slotted item to the slot of the dragged obj
             draggedObjItem.NodeSlotController.SlotManager.AddItemToCollection(tempCurrentSlotItem, tempDraggedObj.NodeSlotController);
             // add the dragged obj to this slot
-            slotManager.AddItemToCollection(tempDraggedObj, this);
+            slotManager.AddItemToCollection(tempDraggedObj, tempCurrentSlotItem.NodeSlotController);
 
             // ping that we have assigned fighters
-            onAssignFighter(tempCurrentSlotItem, tempCurrentSlotItem.NodeSlotController);
-            onAssignFighter(tempDraggedObj, this);
+            onAssignFighter(draggedObjItem, draggedObjItem.NodeSlotController);
+            onAssignFighter(currentSlottedItem, this);
 
             // if the object has a pair node..
             if (GetComponent<NodeDataObject>().PairNode != null)

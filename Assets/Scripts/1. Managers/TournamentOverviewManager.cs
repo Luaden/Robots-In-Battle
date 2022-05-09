@@ -15,9 +15,14 @@ public class TournamentOverviewManager : MonoBehaviour
     private PopupUIManager popupUIManager;
 
     [SerializeField] protected GameObject pilotPrefab;
-    [SerializeField] protected TMP_Text playerMoney;
-    [SerializeField] protected TMP_Text playerHealth;
-    [SerializeField] protected TMP_Text playerTime;
+
+    [Header("Tournament Overview Stats")]
+    [SerializeField] protected Image playerMoneyImage;
+    [SerializeField] protected TMP_Text playerMoneyText;
+    [SerializeField] protected Image playerHealthImage;
+    [SerializeField] protected TMP_Text playerHealthText;
+    [SerializeField] protected Image playerTimeImage;
+    [SerializeField] protected TMP_Text playerTimeText;
 
 
     public NodeSlotManager NodeSlotManager { get => nodeSlotManager; }
@@ -71,6 +76,7 @@ public class TournamentOverviewManager : MonoBehaviour
                 else 
                     nodeDataObject.nodeType = NodeDataObject.NodeType.Opponent;
 
+                // add item to the fighter starter slots
                 nodeSlotManager.AddItemToCollection(nodeUIObject, n.GetComponent<NodeSlotController>());
                 nodeDataObject.Init();
                 nodeUIObject.InitUI(nodeDataObject);
@@ -96,7 +102,7 @@ public class TournamentOverviewManager : MonoBehaviour
         return nodeController.GetAllActiveNodes();
     }
 
-    public void AssignFighterToNodeSlot(NodeDataObject nodeA, NodeDataObject nodeB)
+    public void AssignFighterPairs(NodeDataObject nodeA, NodeDataObject nodeB)
     {
         FighterPairObject fighterPairObject = new FighterPairObject(nodeA.FighterDataObject, nodeB.FighterDataObject);
         nodeController.FighterPairs.Add(fighterPairObject);
@@ -111,6 +117,12 @@ public class TournamentOverviewManager : MonoBehaviour
         {
             Debug.Log("pairs are not completed");
             return;
+        }
+        NodeDataObject[] node = GetActiveList().ToArray();
+        for (int i = 0; i < node.Length;)
+        {
+            AssignFighterPairs(node[i], node[i + 1]);
+            i += 2;
         }
 
         nodeController.ProgressFighters();
@@ -154,9 +166,9 @@ public class TournamentOverviewManager : MonoBehaviour
         GameManager.instance.LoadPlayer();
         Debug.Log(GameManager.instance.PlayerBankController);
 
-        playerMoney.text = ("Money: ") + GameManager.instance.PlayerBankController.GetPlayerCurrency().ToString();
-        playerHealth.text = ("Health: ") +GameManager.instance.PlayerMechController.PlayerMech.MechCurrentHP.ToString();
-        playerTime.text = ("Time: ") + GameManager.instance.PlayerBankController.GetPlayerTime().ToString();
+        playerMoneyText.text = GameManager.instance.PlayerBankController.GetPlayerCurrency().ToString();
+        playerHealthText.text = GameManager.instance.PlayerMechController.PlayerMech.MechCurrentHP.ToString();
+        playerTimeText.text = GameManager.instance.PlayerBankController.GetPlayerTime().ToString() + (" days ");
     }
 
 }
