@@ -5194,11 +5194,11 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5406275210133248459}
-  - component: {fileID: 5406275210133248458}
+  - component: {fileID: 6688273871277085603}
   - component: {fileID: 1291498567420876884}
   - component: {fileID: 2944180545538498501}
   m_Layer: 5
-  m_Name: Text Box Popup
+  m_Name: Event Dialogue Popup Controller
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5211,21 +5211,21 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5406275210133248460}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 5406275208399014026}
-  m_Father: {fileID: 8042525287382028757}
-  m_RootOrder: 0
+  m_Father: {fileID: 3627468247504565047}
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &5406275210133248458
+--- !u!114 &6688273871277085603
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -5234,14 +5234,16 @@ MonoBehaviour:
   m_GameObject: {fileID: 5406275210133248460}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2cffc60621361e84ea2be134d12f3690, type: 3}
+  m_Script: {fileID: 11500000, guid: 58790071082fef142967ab92c5021ed0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   popupObject: {fileID: 5406275208399014027}
   nameText: {fileID: 1342843987166592194}
-  descriptionText: {fileID: 7406282463218478543}
-  energyCostText: {fileID: 0}
-  damageDealtText: {fileID: 0}
+  dialogueText: {fileID: 7406282463218478543}
+  skipDialogueButton: {fileID: 8042525288130201029}
+  acceptDialogueButton: {fileID: 8042525287301287771}
+  refuseDialogueButton: {fileID: 8042525287938704035}
+  endDialogue: {fileID: 8042525286744046431}
 --- !u!114 &1291498567420876884
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5352,7 +5354,7 @@ RectTransform:
   m_Children:
   - {fileID: 2617912639658833449}
   - {fileID: 806876661212420843}
-  - {fileID: 8042525287382028757}
+  - {fileID: 5406275210133248459}
   m_Father: {fileID: 176557233215361129}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -11472,63 +11474,6 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
---- !u!1 &8042525287382028756
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 8042525287382028757}
-  - component: {fileID: 8042525287382028758}
-  m_Layer: 5
-  m_Name: Event Dialogue Popup Controller
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 0
---- !u!224 &8042525287382028757
-RectTransform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8042525287382028756}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 5406275210133248459}
-  m_Father: {fileID: 3627468247504565047}
-  m_RootOrder: 2
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 100, y: 100}
-  m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &8042525287382028758
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8042525287382028756}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 58790071082fef142967ab92c5021ed0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  popupObject: {fileID: 0}
-  nameText: {fileID: 0}
-  dialogueText: {fileID: 0}
-  skipDialogueButton: {fileID: 8042525288130201029}
-  acceptDialogueButton: {fileID: 8042525287301287771}
-  refuseDialogueButton: {fileID: 8042525287938704035}
-  endDialogue: {fileID: 8042525286744046431}
 --- !u!1 &8042525287590534524
 GameObject:
   m_ObjectHideFlags: 0
@@ -11919,7 +11864,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 8042525287382028758}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: EventDialoguePopupController, Assembly-CSharp
         m_MethodName: UpdateUI
         m_Mode: 1
