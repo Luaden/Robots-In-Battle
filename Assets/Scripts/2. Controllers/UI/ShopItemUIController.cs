@@ -204,7 +204,6 @@ public class ShopItemUIController : MonoBehaviour, IPointerDownHandler, IPointer
 
     public void OnPointerEnter(PointerEventData eventData)
     {
-        Debug.Log("entered");
         DowntimeManager.instance.PopupUIManager.HandlePopup(baseSOItemDataObject);
     }
 
