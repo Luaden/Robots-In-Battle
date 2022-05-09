@@ -22,7 +22,6 @@ public class ShopUIPopupController : BaseUIElement<SOItemDataObject>
     [SerializeField] private TMP_Text elementText;
 
 
-
     public override void UpdateUI(SOItemDataObject primaryData)
     {
         if (ClearedIfEmpty(primaryData))

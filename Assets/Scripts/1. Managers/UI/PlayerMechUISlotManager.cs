@@ -216,7 +216,6 @@ public class PlayerMechUISlotManager : BaseSlotManager<ShopItemUIController>
 
         foreach (MechComponentDataObject item in currentParts)
         {
-            Debug.Log(item.SOItemDataObject.ItemName);
             DowntimeManager.instance.ShopItemUIBuildController.BuildAndDisplayItemUI(item.SOItemDataObject, this, item);
         }
     }

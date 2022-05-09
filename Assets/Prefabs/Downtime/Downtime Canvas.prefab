@@ -7637,7 +7637,7 @@ MonoBehaviour:
   workShopMenu: {fileID: 7280617049963012129}
   possibleEvents:
   - {fileID: 11400000, guid: fec11c2f2d7bc864598c6346bc9e1082, type: 2}
-  chanceToSpawnEvent: 0
+  chanceToSpawnEvent: 100
 --- !u!1 &6461802760094063325
 GameObject:
   m_ObjectHideFlags: 0
@@ -11321,8 +11321,20 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1740005359351201721, guid: 2b2032fc692b93a4ab21791b760b753c, type: 3}
-        m_TargetAssemblyTypeName: SceneController, Assembly-CSharp
+      - m_Target: {fileID: 1977040070}
+        m_TargetAssemblyTypeName: EventManager, Assembly-CSharp
+        m_MethodName: StashEventLog
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 7921704189124634571}
+        m_TargetAssemblyTypeName: DowntimeManager, Assembly-CSharp
         m_MethodName: LoadCombatScene
         m_Mode: 1
         m_Arguments:

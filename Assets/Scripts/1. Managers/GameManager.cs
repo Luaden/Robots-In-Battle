@@ -15,6 +15,7 @@ public class GameManager : MonoBehaviour
 
     private int currencyGainModifier = 0;
     private int enemyHealthModifier = 0;
+    private List<SOEventObject> activeEvents;
 
     private DowntimeMechBuilderController playerMechController;
     private DowntimeInventoryController playerInventoryController;
@@ -34,11 +35,19 @@ public class GameManager : MonoBehaviour
     public int EnemyHealthModifier { get => enemyHealthModifier; set => enemyHealthModifier = value; }
     public int PlayerWins { get => playerData.CurrentWinCount; }
     public int PlayerCurrencyGainOnWin { get => playerCurrencyGainOnWin + currencyGainModifier; set => currencyGainModifier = value; }
+    public List<SOEventObject> ActiveEvents { get => activeEvents; }
     public SOCompleteCharacter StarterPilot { get => starterPilot; }
 
     public delegate void onUpdatePlayerCurrencies();
     public static event onUpdatePlayerCurrencies OnUpdatePlayerCurrencies;
 
+    public void StashCurrentEvents(List<SOEventObject> newEvents)
+    {
+        activeEvents = new List<SOEventObject>();
+
+        foreach (SOEventObject newEvent in newEvents)
+            activeEvents.Add(newEvent);
+    }
 
     [ContextMenu("Start Game")]
     public void StartGame()
@@ -87,6 +96,7 @@ public class GameManager : MonoBehaviour
         playerMechController = new DowntimeMechBuilderController();
         playerDeckController = new DowntimeDeckController();
         playerBankController = new DowntimeBankController();
+        activeEvents = new List<SOEventObject>();
     }
 
     private void Start()

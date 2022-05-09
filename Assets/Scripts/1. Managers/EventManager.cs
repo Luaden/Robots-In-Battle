@@ -13,11 +13,7 @@ public class EventManager : MonoBehaviour
     private SOEventObject currentEvent;
     private bool hasRolledNewEvent = false;
 
-    public void LoadEventLog(List<SOEventObject> eventLog)
-    {
-        uncheckedAcceptedEvents = eventLog;
-        CheckEventLog();
-    }
+
 
     public void RemoveEventDeadEnd()
     {
@@ -62,8 +58,26 @@ public class EventManager : MonoBehaviour
     {
         uncheckedAcceptedEvents = new List<SOEventObject>();
         newAcceptedEvents = new List<SOEventObject>();
+        DowntimeManager.OnLoadCombatScene += StashEventLog;
 
+        LoadEventLog();
+    }
+
+    private void OnDestroy()
+    {
+        DowntimeManager.OnLoadCombatScene -= StashEventLog;
+    }
+
+    private void LoadEventLog()
+    {
+        uncheckedAcceptedEvents = GameManager.instance.ActiveEvents;
+        Debug.Log("Found " + uncheckedAcceptedEvents.Count + " unchecked events.");
         CheckEventLog();
+    }
+
+    private void StashEventLog()
+    {
+        GameManager.instance.StashCurrentEvents(newAcceptedEvents);
     }
 
     private void CheckEventLog()
@@ -113,6 +127,7 @@ public class EventManager : MonoBehaviour
         if (uncheckedAcceptedEvents.Count == 0)
             return;
 
+        Debug.Log("Checking accepted events.");
         currentEvent = uncheckedAcceptedEvents[0];
         
         if(CheckCurrentEventObjectiveCompletion())
@@ -171,7 +186,7 @@ public class EventManager : MonoBehaviour
             switch (objective.EventObjective)
             {
                 case EventObjective.EndFightBelowHPPercent:
-                    if ((playerMech.MechCurrentHP / playerMech.MechMaxHP) > objective.EventObjectiveMagnitude)
+                    if ((playerMech.MechCurrentHP / playerMech.MechMaxHP) * 100 < objective.EventObjectiveMagnitude)
                         return false;
                     break;
 
@@ -194,6 +209,7 @@ public class EventManager : MonoBehaviour
         {
             case EventOutcome.DamageNextEnemy:
                 GameManager.instance.EnemyHealthModifier = eventOutcome.OutcometMagnitude;
+                Debug.Log(GameManager.instance.EnemyHealthModifier);
                 break;
 
             case EventOutcome.DamagePlayer:
@@ -204,7 +220,7 @@ public class EventManager : MonoBehaviour
                 if (eventOutcome.OutcometMagnitude > 0)
                     GameManager.instance.PlayerBankController.AddPlayerCurrency(eventOutcome.OutcometMagnitude);
                 else
-                    GameManager.instance.PlayerBankController.SpendPlayerCurrency(eventOutcome.OutcometMagnitude);
+                    GameManager.instance.PlayerBankController.SpendPlayerCurrency(Mathf.Abs(eventOutcome.OutcometMagnitude));
                 break;
 
             case EventOutcome.TempWinningsModifier:
