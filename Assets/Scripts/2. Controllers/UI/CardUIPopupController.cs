@@ -18,8 +18,8 @@ public class CardUIPopupController : BaseUIElement<CardDataObject>
 
         nameText.text = primaryData.CardName;
         descriptionText.text = primaryData.CardDescription;
-        energyCostText.text = primaryData.EnergyCost.ToString();
-        damageDealtText.text = primaryData.BaseDamage.ToString();
+        energyCostText.text = ("Energy: ") + primaryData.EnergyCost.ToString();
+        damageDealtText.text = ("Damage: ") + primaryData.BaseDamage.ToString();
 
         popupObject.SetActive(true);
     }

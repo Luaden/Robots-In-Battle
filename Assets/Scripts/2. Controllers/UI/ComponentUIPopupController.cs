@@ -18,10 +18,10 @@ public class ComponentUIPopupController : BaseUIElement<SOItemDataObject>
             return;
 
         nameText.text = primaryData.ItemName;
-        healthText.text = primaryData.ComponentHP.ToString();
-        energyText.text = primaryData.ComponentEnergy.ToString();
-        cDMText.text = primaryData.CDMFromComponent.ToString();
-        elementText.text = System.Enum.GetName(typeof(ElementType), primaryData.ComponentElement);
+        healthText.text = ("Health: ") + primaryData.ComponentHP.ToString();
+        energyText.text = ("Energy: ") + primaryData.ComponentEnergy.ToString();
+        cDMText.text = ("Component Damage Multiplier: ") + primaryData.CDMFromComponent.ToString();
+        elementText.text = ("Element: ") + System.Enum.GetName(typeof(ElementType), primaryData.ComponentElement);
 
         popupObject.SetActive(true);
     }
