@@ -8,11 +8,12 @@ public class NodeDataObject : MonoBehaviour
     [SerializeField] protected NodeDataObject nextNode;
     [SerializeField] protected NodeDataObject pairNode;
     protected NodeDataObject parentNode;
-    private bool hasBeenAssigned;
+    [SerializeField] private bool hasBeenAssignedToSlot;
+    [SerializeField] private bool hasBeenAssignedFighterPair;
     private bool hasWonBattle;
     [SerializeField] protected bool isFinalNode;
 
-    private FighterDataObject currentFighter;
+    [SerializeField] protected FighterDataObject currentFighter;
     [SerializeField] NodeUIController nodeUIController;
 
     public FighterDataObject FighterDataObject { get => currentFighter; }
@@ -21,11 +22,14 @@ public class NodeDataObject : MonoBehaviour
     public NodeDataObject NextNode { get => nextNode; set => nextNode = value; }
     public NodeDataObject PairNode { get => pairNode; set => pairNode = value; }
     public NodeDataObject ParentNode { get => parentNode; set => parentNode = value; }
-    public bool HasBeenAssigned { get => hasBeenAssigned; set => hasBeenAssigned = value; }
+    public bool HasBeenAssigned { get => hasBeenAssignedToSlot; set => hasBeenAssignedToSlot = value; }
     public bool HasWonBattle { get => hasWonBattle; set => hasWonBattle = value; }
     public bool IsFinalNode { get => isFinalNode; set => isFinalNode = value; }
 
     // test
+    [SerializeField] private FighterDataObject pairNodeFighterData;
+    public FighterDataObject PairNodeFighterData { get => pairNodeFighterData; set => pairNodeFighterData = value; }
+
     private string fighterName;
     public string FighterName { get => fighterName; }
 
@@ -46,7 +50,9 @@ public class NodeDataObject : MonoBehaviour
 
     public void Init()
     {
+        // the fighter node object can get parent node
         parentNode = transform.parent.GetComponent<NodeDataObject>();
+
         switch (nodeType)
         {
             case NodeType.Opponent:
@@ -82,7 +88,7 @@ public class NodeDataObject : MonoBehaviour
         transform.SetParent(parentNode.transform);
         nextNode = parentNode.nextNode;
         previousNode = parentNode.previousNode;
-        hasBeenAssigned = parentNode.HasBeenAssigned;
+        hasBeenAssignedToSlot = parentNode.HasBeenAssigned;
         hasWonBattle = parentNode.HasWonBattle;
         nodeUIController.NodeSlotController = parentNode.GetComponent<NodeSlotController>();
 
