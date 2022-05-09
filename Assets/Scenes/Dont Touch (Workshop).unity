@@ -400,25 +400,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eb66e823a46b1124cae72558de231bda, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  imageObject: {fileID: 1134836615}
-  renderImage: {fileID: 1134836617}
+  imageObject: {fileID: 0}
+  renderImage: {fileID: 0}
   mainCanvas: {fileID: 1893060769}
---- !u!1 &1134836615 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 1134836615, guid: db5bb4ef7893ce0489345eb27216c770, type: 3}
-  m_PrefabInstance: {fileID: 1893060765}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &1134836617 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 1134836617, guid: db5bb4ef7893ce0489345eb27216c770, type: 3}
-  m_PrefabInstance: {fileID: 1893060765}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1134836615}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1001 &1585279528
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -473,22 +457,6 @@ PrefabInstance:
     - target: {fileID: 7179853960726524382, guid: 2b2032fc692b93a4ab21791b760b753c, type: 3}
       propertyPath: m_Name
       value: Game Manager
-      objectReference: {fileID: 0}
-    - target: {fileID: 7179853960726524383, guid: 2b2032fc692b93a4ab21791b760b753c, type: 3}
-      propertyPath: timeBetweenFights
-      value: 100
-      objectReference: {fileID: 0}
-    - target: {fileID: 7179853960726524383, guid: 2b2032fc692b93a4ab21791b760b753c, type: 3}
-      propertyPath: starterPlayerCurrency
-      value: 100
-      objectReference: {fileID: 0}
-    - target: {fileID: 7179853960726524383, guid: 2b2032fc692b93a4ab21791b760b753c, type: 3}
-      propertyPath: starterTimeLeftToSpend
-      value: 10
-      objectReference: {fileID: 0}
-    - target: {fileID: 7179853960726524383, guid: 2b2032fc692b93a4ab21791b760b753c, type: 3}
-      propertyPath: playerCurrencyGainOnWin
-      value: 100
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 2b2032fc692b93a4ab21791b760b753c, type: 3}

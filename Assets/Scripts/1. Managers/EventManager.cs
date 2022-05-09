@@ -99,8 +99,8 @@ public class EventManager : MonoBehaviour
 
         if (possibleEvents.Count > 0 && !hasRolledNewEvent)
         {
-            RollForNewEvent();
             hasRolledNewEvent = true;
+            RollForNewEvent();
         }
 
         if (hasRolledNewEvent && uncheckedAcceptedEvents.Count == 0 && currentEvent == null)
