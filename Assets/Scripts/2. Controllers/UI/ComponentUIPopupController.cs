@@ -14,6 +14,9 @@ public class ComponentUIPopupController : BaseUIElement<SOItemDataObject>
 
     public override void UpdateUI(SOItemDataObject primaryData)
     {
+        if (ClearedIfEmpty(primaryData))
+            return;
+
         nameText.text = primaryData.ItemName;
         healthText.text = primaryData.ComponentHP.ToString();
         energyText.text = primaryData.ComponentEnergy.ToString();
