@@ -106,13 +106,20 @@ public enum ElementType
 }
 
 [Flags]
-public enum PilotEffects
+public enum PassiveEffects
 {
     None = 0,
     BonusMoney = 1 << 0,
     EnergyGain = 1 << 1,
     SelfRepair = 1 << 2,
     ShopRarity = 1 << 3
+}
+
+[Flags]
+public enum ActiveEffects
+{
+    None = 0,
+    Jazzersize = 1 << 0,
 }
 
 public enum EffectTarget

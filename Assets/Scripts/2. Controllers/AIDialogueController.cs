@@ -48,13 +48,13 @@ public class AIDialogueController : MonoBehaviour
 
     private void Start()
     {
-        CombatSequenceManager.OnCombatComplete += CheckPlayDialogue;
+        PilotEffectManager.OnRoundEnded += CheckPlayDialogue;
         AIDialoguePopupController.OnAIDialogueComplete += OnAIDialoguePopupComplete;
     }
 
     private void OnDestroy()
     {
-        CombatSequenceManager.OnCombatComplete -= CheckPlayDialogue;
+        PilotEffectManager.OnRoundEnded -= CheckPlayDialogue;
         AIDialoguePopupController.OnAIDialogueComplete -= OnAIDialoguePopupComplete;
     }
 

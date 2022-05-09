@@ -46,7 +46,8 @@ public class CombatManager : MonoBehaviour
     private PopupUIManager popupUIManager;
     private BuffUIManager buffUIManager;
     private CombatAnimationManager combatAnimationManager;
-    private EffectManager effectManager;
+    private CombatEffectManager combatEffectManager;
+    private PilotEffectManager pilotEffectManager;
     private CombatSequenceManager combatSequenceManager;
     private AIManager aIManager;
 
@@ -70,7 +71,8 @@ public class CombatManager : MonoBehaviour
     public PopupUIManager PopupUIManager { get => popupUIManager; }
     public BuffUIManager BuffUIManager { get => buffUIManager; }
     public CombatAnimationManager CombatAnimationManager { get => combatAnimationManager; }
-    public EffectManager EffectManager { get => effectManager; }
+    public CombatEffectManager CombatEffectManager { get => combatEffectManager; }
+    public PilotEffectManager PilotEffectManager { get => pilotEffectManager; }
     public CombatSequenceManager CombatSequenceManager { get => combatSequenceManager; }
     public AIManager AIManager { get => aIManager; }
 
@@ -91,6 +93,7 @@ public class CombatManager : MonoBehaviour
     #region Debug
     public void StartGame()
     {
+        pilotEffectManager.InitPilotEffectManager();
         StartNewTurn();
     }
     #endregion
@@ -111,19 +114,19 @@ public class CombatManager : MonoBehaviour
                 {
                     case Channels.High:
                         playerFighter.FighterMech.DamageComponentHP(
-                            effectManager.GetComponentDamageWithModifiers(
+                            combatEffectManager.GetComponentDamageWithModifiers(
                                 damageMechPair.GetDamageToDeal(), channel, CharacterSelect.Player), MechComponent.Arms);
                         break;
 
                     case Channels.Mid:
                         playerFighter.FighterMech.DamageComponentHP(
-                            effectManager.GetComponentDamageWithModifiers(
+                            combatEffectManager.GetComponentDamageWithModifiers(
                                 damageMechPair.GetDamageToDeal(), channel, CharacterSelect.Player), MechComponent.Torso);
                         break;
 
                     case Channels.Low:
                         playerFighter.FighterMech.DamageComponentHP(
-                            effectManager.GetComponentDamageWithModifiers(
+                            combatEffectManager.GetComponentDamageWithModifiers(
                                 damageMechPair.GetDamageToDeal(), channel, CharacterSelect.Player), MechComponent.Legs);
                         break;                
                 }
@@ -138,19 +141,19 @@ public class CombatManager : MonoBehaviour
                 {
                     case Channels.High:
                         opponentFighter.FighterMech.DamageComponentHP(
-                            effectManager.GetComponentDamageWithModifiers(
+                            combatEffectManager.GetComponentDamageWithModifiers(
                                 damageMechPair.GetDamageToDeal(), channel, CharacterSelect.Opponent), MechComponent.Arms);
                         break;
 
                     case Channels.Mid:
                         opponentFighter.FighterMech.DamageComponentHP(
-                            effectManager.GetComponentDamageWithModifiers(
+                            combatEffectManager.GetComponentDamageWithModifiers(
                                 damageMechPair.GetDamageToDeal(), channel, CharacterSelect.Opponent), MechComponent.Torso);
                         break;
 
                     case Channels.Low:
                         opponentFighter.FighterMech.DamageComponentHP(
-                            effectManager.GetComponentDamageWithModifiers(
+                            combatEffectManager.GetComponentDamageWithModifiers(
                                 damageMechPair.GetDamageToDeal(), channel, CharacterSelect.Opponent), MechComponent.Legs);
                         break;
                 }
@@ -281,7 +284,8 @@ public class CombatManager : MonoBehaviour
         popupUIManager = FindObjectOfType<PopupUIManager>(true);
         buffUIManager = FindObjectOfType<BuffUIManager>(true);
         combatAnimationManager = FindObjectOfType<CombatAnimationManager>(true);
-        effectManager = FindObjectOfType<EffectManager>(true);
+        combatEffectManager = FindObjectOfType<CombatEffectManager>(true);
+        pilotEffectManager = FindObjectOfType<PilotEffectManager>(true);
         combatSequenceManager = FindObjectOfType<CombatSequenceManager>(true);
         aIManager = FindObjectOfType<AIManager>(true);
     }

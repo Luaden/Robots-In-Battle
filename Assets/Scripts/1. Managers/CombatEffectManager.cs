@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
 
-public class EffectManager : MonoBehaviour
+public class CombatEffectManager : MonoBehaviour
 {
     private FighterEffectObject playerFighterEffectObject;
     private FighterEffectObject opponentFighterEffectObject;

@@ -6,7 +6,8 @@ using UnityEngine;
 public class PlayerDataObject 
 {
     private Sprite pilotSprite;
-    private PilotEffects pilotEffects;
+    private PassiveEffects pilotPassiveEffects;
+    private ActiveEffects pilotActiveEffects;
     private List<SOItemDataObject> playerDeck;
     private MechObject playerMech;
     private List<MechComponentDataObject> playerInventory;
@@ -20,7 +21,9 @@ public class PlayerDataObject
 
     public SOCompleteCharacter CompletePilot { get => completeCharacterBase; }
     public Sprite PilotSprite { get => pilotSprite; }
-    public PilotEffects PilotEffects { get => pilotEffects; }
+    public PassiveEffects PilotPassiveEffects { get => pilotPassiveEffects; }
+    public ActiveEffects PilotActiveEffects { get => pilotActiveEffects; }
+
     public MechObject PlayerMech { get => playerMech; set => playerMech = value; }
     public List<SOItemDataObject> PlayerDeck { get => playerDeck; set => playerDeck = value; }
     public List<MechComponentDataObject> PlayerInventory { get => playerInventory; set => playerInventory = value; }
@@ -40,7 +43,8 @@ public class PlayerDataObject
     public PlayerDataObject(SOCompleteCharacter newPlayableCharacter)
     {
         pilotSprite = newPlayableCharacter.PilotSprite;
-        pilotEffects = newPlayableCharacter.PilotEffects;
+        pilotPassiveEffects = newPlayableCharacter.PilotPassiveEffects;
+        pilotActiveEffects = newPlayableCharacter.PilotActiveEffcts;
         currencyToSpend = newPlayableCharacter.StartingMoney;
 
         playerInventory = new List<MechComponentDataObject>();

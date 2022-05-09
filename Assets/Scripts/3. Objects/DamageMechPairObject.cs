@@ -26,7 +26,7 @@ public class DamageMechPairObject
     public int GetDamageToDeal()
     {
         int damageToReturn = 
-            CombatManager.instance.EffectManager.GetMechDamageWithAndConsumeModifiers(cardCharacterPairA.cardChannelPair, cardCharacterPairA.character, counterDamage, guardDamage);
+            CombatManager.instance.CombatEffectManager.GetMechDamageWithAndConsumeModifiers(cardCharacterPairA.cardChannelPair, cardCharacterPairA.character, counterDamage, guardDamage);
 
         if (CombatManager.instance.NarrateCombat)
             Debug.Log(combatLog);

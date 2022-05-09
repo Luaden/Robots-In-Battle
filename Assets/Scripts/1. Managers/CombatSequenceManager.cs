@@ -105,10 +105,10 @@ public class CombatSequenceManager : MonoBehaviour
             if(currentCombatSequence.damageQueue.Peek() != null)
             {
                 if (currentCombatSequence.damageQueue.Peek().CardCharacterPairA.cardChannelPair.CardData.ApplyEffectsFirst && !currentCombatSequence.damageQueue.Peek().DenyOffensiveEffects)
-                    CombatManager.instance.EffectManager.EnableEffects(currentCombatSequence.damageQueue.Peek().CardCharacterPairA);
+                    CombatManager.instance.CombatEffectManager.EnableEffects(currentCombatSequence.damageQueue.Peek().CardCharacterPairA);
                 if (currentCombatSequence.damageQueue.Peek().CardCharacterPairB != null &&
                     currentCombatSequence.damageQueue.Peek().CardCharacterPairB.cardChannelPair.CardData.ApplyEffectsFirst)
-                    CombatManager.instance.EffectManager.EnableEffects(currentCombatSequence.damageQueue.Peek().CardCharacterPairB);
+                    CombatManager.instance.CombatEffectManager.EnableEffects(currentCombatSequence.damageQueue.Peek().CardCharacterPairB);
             }
 
             CombatManager.instance.CombatAnimationManager.AddAnimationToQueue(currentCombatSequence.animationQueue.Dequeue());
@@ -131,10 +131,10 @@ public class CombatSequenceManager : MonoBehaviour
 
             CombatManager.instance.RemoveHealthFromMech(currentDamage);
             if (!currentDamage.CardCharacterPairA.cardChannelPair.CardData.ApplyEffectsFirst && !currentDamage.DenyOffensiveEffects)
-                CombatManager.instance.EffectManager.EnableEffects(currentDamage.CardCharacterPairA);
+                CombatManager.instance.CombatEffectManager.EnableEffects(currentDamage.CardCharacterPairA);
             if (currentDamage.CardCharacterPairB != null &&
                 !currentDamage.CardCharacterPairB.cardChannelPair.CardData.ApplyEffectsFirst)
-                CombatManager.instance.EffectManager.EnableEffects(currentDamage.CardCharacterPairB);
+                CombatManager.instance.CombatEffectManager.EnableEffects(currentDamage.CardCharacterPairB);
         }        
     }
 }
