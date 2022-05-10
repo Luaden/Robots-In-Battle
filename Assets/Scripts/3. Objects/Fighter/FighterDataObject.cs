@@ -29,6 +29,7 @@ public class FighterDataObject
     public List<SOItemDataObject> FighterDeck { get => fighterDeck; set => fighterDeck = value; }
     public SOAIDialogueObject AIDialogueModule { get => completeCharacterBase.DialogueModule; }
     public SOAIBehaviorObject AIBehaviorModule { get => completeCharacterBase.BehaviorModule; }
+    public int FighterNodeIndex { get => nodeIndex; set => nodeIndex = value; }
 
     public FighterDataObject(PlayerDataObject player)
     {
@@ -49,6 +50,7 @@ public class FighterDataObject
             fighterSprite = opponent.PilotSprite;
         //else
         //{
+        //    //Populate fighter sprites
         //    GameManager.instance.AICharacterBuilder.DoSomething();
         //}
 

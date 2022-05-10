@@ -13,6 +13,8 @@ public class FighterEffectObject
     private Dictionary<ElementType, int> firePlasmaStacks;
     private Dictionary<CardKeyWord, List<CardEffectObject>> keywordDuration;
     private Dictionary<CardCategory, List<CardEffectObject>> cardCategoryDamageBonus;
+    private Dictionary<ActiveEffects, int> pilotEffectDuration;
+
 
     public Dictionary<Channels, List<ElementStackObject>> IceAcidStacks { get => iceAcidStacks; }
     public Dictionary<ElementType, int> FirePlasmaStacks { get => firePlasmaStacks; }
@@ -22,6 +24,7 @@ public class FighterEffectObject
     public Dictionary<Channels, int> ChannelShields { get => channelShields; }
     public Dictionary<Channels, List<ChannelShieldFalloffObject>> ChannelShieldsFalloff { get => channelShieldFalloff; }
     public Dictionary<CardKeyWord, List<CardEffectObject>> KeyWordDuration { get => keywordDuration; }
+    public Dictionary<ActiveEffects, int> PilotEffectDuration { get => pilotEffectDuration; }
 
     public FighterEffectObject(CharacterSelect character)
     {
@@ -34,6 +37,7 @@ public class FighterEffectObject
         channelShields = new Dictionary<Channels, int>();
         keywordDuration = new Dictionary<CardKeyWord, List<CardEffectObject>>();
         cardCategoryDamageBonus = new Dictionary<CardCategory, List<CardEffectObject>>();
+        pilotEffectDuration = new Dictionary<ActiveEffects, int>();
     }
 
     public void IncrementFighterEffects()

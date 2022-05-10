@@ -4,14 +4,22 @@ using UnityEngine;
 
 public class PilotEffectManager : MonoBehaviour
 {
+    [SerializeField] private float effectDelayTimer;
+    private float currentTimer;
+
     private FighterDataObject playerFighter;
     private FighterDataObject opponentFighter;
+
+    private bool activatingPlayerEffects = false;
+    private bool activatingOpponentEffects = false;
+    private bool effectsComplete = false;
+    private bool checkingEffects = false;
 
     private ActiveEffects playerEffects;
     private ActiveEffects opponentEffects;
 
-    public delegate void onRoundEnded();
-    public static event onRoundEnded OnRoundEnded;
+    public delegate void onTurnComplete();
+    public static event onTurnComplete OnTurnComplete;
 
     public void InitPilotEffectManager()
     {
@@ -27,6 +35,11 @@ public class PilotEffectManager : MonoBehaviour
         CombatSequenceManager.OnCombatComplete += OnCombatComplete;
     }
 
+    private void Update()
+    {
+        EnablePilotEffects();
+    }
+
     private void OnDestroy()
     {
         CombatSequenceManager.OnCombatComplete -= OnCombatComplete;
@@ -35,20 +48,75 @@ public class PilotEffectManager : MonoBehaviour
     [ContextMenu("Check Effects")]
     private void OnCombatComplete()
     {
-        EnablePilotCombatEffects(CharacterSelect.Player, playerEffects);
-        EnablePilotCombatEffects(CharacterSelect.Opponent, opponentEffects);
-        
-        //If animations/sequence complete, OnRoundEnded?.Invoke();
+        effectsComplete = false;
+        checkingEffects = true;
+        activatingPlayerEffects = true;
+        activatingOpponentEffects = true;
+        currentTimer = 0f;
     }
 
-    private void OnFightComplete()
+    private void EnablePilotEffects()
     {
+        if (effectsComplete || !CombatManager.instance.CombatAnimationManager.AnimationsComplete)
+            return;
 
+        if(EffectTimer())
+            return;
+
+        if(activatingPlayerEffects)
+        {
+            Debug.Log("Checking player effects");
+            if (playerEffects.HasFlag(ActiveEffects.Jazzersize))
+            {
+                Debug.Log("One and two and three and four.");
+                CombatManager.instance.CombatAnimationManager.AddAnimationToQueue(new AnimationQueueObject(CharacterSelect.Player, AnimationType.Punch,
+                                                                                                           CharacterSelect.Opponent, AnimationType.Idle));
+                CombatManager.instance.CombatEffectManager.EnablePilotEffects(CharacterSelect.Player, ActiveEffects.Jazzersize);
+
+                activatingPlayerEffects = false;
+                return;
+            }
+            
+            activatingPlayerEffects = false;
+        }
+
+        if (activatingOpponentEffects)
+        {
+            Debug.Log("Checking opponent effects.");
+            if (opponentEffects.HasFlag(ActiveEffects.Jazzersize))
+            {
+                Debug.Log("One and two and three and four.");
+
+                CombatManager.instance.CombatAnimationManager.AddAnimationToQueue(new AnimationQueueObject(CharacterSelect.Opponent, AnimationType.Punch,
+                                                                                                           CharacterSelect.Player, AnimationType.Idle));
+                CombatManager.instance.CombatEffectManager.EnablePilotEffects(CharacterSelect.Opponent, ActiveEffects.Jazzersize);
+
+                activatingOpponentEffects = false;
+                return;
+            }
+
+            activatingOpponentEffects = false;
+        }
+
+        if(!activatingPlayerEffects && !activatingOpponentEffects && checkingEffects)
+        {
+            Debug.Log("Turn is complete.");
+            effectsComplete = true;
+            checkingEffects = false;
+            OnTurnComplete?.Invoke();
+        }
     }
 
-    private void EnablePilotCombatEffects(CharacterSelect character, ActiveEffects effects)
+    private bool EffectTimer()
     {
-        if (effects.HasFlag(ActiveEffects.Jazzersize))
-            Debug.Log("One and two and three and four.");
+        currentTimer += Time.deltaTime;
+
+        if (currentTimer >= effectDelayTimer)
+        {
+            currentTimer = 0f;
+            return false;
+        }
+        else
+            return true;
     }
 }
