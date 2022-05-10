@@ -65,7 +65,6 @@ public class PilotEffectManager : MonoBehaviour
 
         if(activatingPlayerEffects)
         {
-            Debug.Log("Checking player effects");
             if (playerEffects.HasFlag(ActiveEffects.Jazzersize))
             {
                 Debug.Log("One and two and three and four.");
@@ -82,7 +81,6 @@ public class PilotEffectManager : MonoBehaviour
 
         if (activatingOpponentEffects)
         {
-            Debug.Log("Checking opponent effects.");
             if (opponentEffects.HasFlag(ActiveEffects.Jazzersize))
             {
                 Debug.Log("One and two and three and four.");
@@ -100,7 +98,6 @@ public class PilotEffectManager : MonoBehaviour
 
         if(!activatingPlayerEffects && !activatingOpponentEffects && checkingEffects)
         {
-            Debug.Log("Turn is complete.");
             effectsComplete = true;
             checkingEffects = false;
             OnTurnComplete?.Invoke();
