@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
 
-public class EffectManager : MonoBehaviour
+public class CombatEffectManager : MonoBehaviour
 {
     private FighterEffectObject playerFighterEffectObject;
     private FighterEffectObject opponentFighterEffectObject;
@@ -12,7 +12,7 @@ public class EffectManager : MonoBehaviour
     public FighterEffectObject OpponentEffects { get => opponentFighterEffectObject; }
 
 
-    public void EnableEffects(CardCharacterPairObject currentEffect)
+    public void EnableCombatEffects(CardCharacterPairObject currentEffect)
     {
         if (currentEffect == null)
             return;
@@ -129,7 +129,19 @@ public class EffectManager : MonoBehaviour
         UpdateFighterBuffs();
     }
 
-    public int GetMechDamageWithAndConsumeModifiers(CardChannelPairObject attack, CharacterSelect defensiveCharacter, bool counter, bool guard)
+    public void EnablePilotEffects(CharacterSelect character, ActiveEffects effect)
+    {
+        switch (effect)
+        {
+            case ActiveEffects.None:
+                break;
+            case ActiveEffects.Jazzersize:
+                GainPilotEffect(effect, character);
+                break;
+        }
+    }
+
+    public int GetDamageWithAndConsumeModifiers(CardChannelPairObject attack, CharacterSelect defensiveCharacter, bool counter, bool guard)
     {
         int mechDamageToReturn = attack.CardData.BaseDamage;
 
@@ -141,6 +153,7 @@ public class EffectManager : MonoBehaviour
         //Get Damage Boosts and Modifiers
         mechDamageToReturn = GetCardCategoryDamageBonus(attack, mechDamageToReturn, defensiveCharacter);
         mechDamageToReturn = GetCardChannelDamageBonus(attack, mechDamageToReturn, defensiveCharacter);
+        mechDamageToReturn = GetJazzersizeBonusDamage(mechDamageToReturn, defensiveCharacter);
         //damageToReturn = GetAndConsumeKeyWordDamageBonus(attack, ref damageToReturn, defensiveCharacter);
 
         //Get Damage Reductions and Modifiers
@@ -162,6 +175,7 @@ public class EffectManager : MonoBehaviour
         //Get Damage Boosts and Modifiers
         damageToReturn = GetCardCategoryDamageBonus(attack, damageToReturn, defensiveCharacter);
         damageToReturn = GetCardChannelDamageBonus(attack, damageToReturn, defensiveCharacter);
+        damageToReturn = GetJazzersizeBonusDamage(damageToReturn, defensiveCharacter);
         //damageToReturn = GetAndConsumeKeyWordDamageBonus(attack, ref damageToReturn, defensiveCharacter);
 
         //Get Damage Reductions and Modifiers
@@ -337,6 +351,25 @@ public class EffectManager : MonoBehaviour
         }
     }
 
+    public int GetJazzersizeBonusDamage(int damageToReturn, CharacterSelect defensiveCharacter)
+    {
+        int currentActiveEffectMagnitude = 0;
+
+        if (defensiveCharacter == CharacterSelect.Player)
+        {
+            if (opponentFighterEffectObject.PilotEffectDuration.TryGetValue(ActiveEffects.Jazzersize, out currentActiveEffectMagnitude))
+                return damageToReturn + currentActiveEffectMagnitude;;
+        }
+
+        if (defensiveCharacter == CharacterSelect.Opponent)
+        {
+            if (playerFighterEffectObject.PilotEffectDuration.TryGetValue(ActiveEffects.Jazzersize, out currentActiveEffectMagnitude))
+                return damageToReturn + currentActiveEffectMagnitude;
+        }
+
+        return damageToReturn;
+    }
+
     private void Awake()
     {
         playerFighterEffectObject = new FighterEffectObject(CharacterSelect.Player);
@@ -352,7 +385,6 @@ public class EffectManager : MonoBehaviour
         CombatSequenceManager.OnCombatComplete -= IncrementEffectsAtTurnEnd;
     }
 
-
     private void UpdateFighterBuffs()
     {
         //This currently doesn't account for decreases in channel damage.
@@ -363,6 +395,7 @@ public class EffectManager : MonoBehaviour
         CombatManager.instance.BuffUIManager.UpdateGlobalElementStacks(CharacterSelect.Player, playerFighterEffectObject.FirePlasmaStacks);
         CombatManager.instance.BuffUIManager.UpdateGlobalCategoryDamageBuffs(CharacterSelect.Player, playerFighterEffectObject.CardCategoryDamageBonus);
         CombatManager.instance.BuffUIManager.UpdateGlobalKeyWordDamageBuffs(CharacterSelect.Player, playerFighterEffectObject.KeyWordDuration);
+        CombatManager.instance.BuffUIManager.UpdatePilotEffectBuffs(CharacterSelect.Player, playerFighterEffectObject.PilotEffectDuration);
 
         CombatManager.instance.BuffUIManager.UpdateChannelDamageBuffs(CharacterSelect.Opponent, opponentFighterEffectObject.ChannelDamageBonus);
         CombatManager.instance.BuffUIManager.UpdateChannelElementStacks(CharacterSelect.Opponent, opponentFighterEffectObject.IceAcidStacks);
@@ -371,6 +404,7 @@ public class EffectManager : MonoBehaviour
         CombatManager.instance.BuffUIManager.UpdateGlobalElementStacks(CharacterSelect.Opponent, opponentFighterEffectObject.FirePlasmaStacks);
         CombatManager.instance.BuffUIManager.UpdateGlobalCategoryDamageBuffs(CharacterSelect.Opponent, opponentFighterEffectObject.CardCategoryDamageBonus);
         CombatManager.instance.BuffUIManager.UpdateGlobalKeyWordDamageBuffs(CharacterSelect.Opponent, opponentFighterEffectObject.KeyWordDuration);
+        CombatManager.instance.BuffUIManager.UpdatePilotEffectBuffs(CharacterSelect.Opponent, opponentFighterEffectObject.PilotEffectDuration);
     }
 
     private void IncrementEffectsAtTurnEnd()
@@ -635,7 +669,7 @@ public class EffectManager : MonoBehaviour
             if(CombatManager.instance.NarrateEffects)
             {
                 if (damageToReturn > initialDamage)
-                    Debug.Log("Player damage was boosted due to channel damage bonus. Initial damage: " + initialDamage + ". Boosted damage: " + damageToReturn);
+                    Debug.Log("Player damage was modified due to channel damage bonus. Initial damage: " + initialDamage + ". Boosted damage: " + damageToReturn);
             }
 
             return damageToReturn;
@@ -651,7 +685,7 @@ public class EffectManager : MonoBehaviour
                 if (CombatManager.instance.NarrateEffects)
                 {
                     if (damageToReturn > initialDamage)
-                        Debug.Log("Opponent damage was boosted due to channel damage bonus. Initial damage: " + initialDamage + ". Boosted damage: " + damageToReturn);
+                        Debug.Log("Opponent damage was modified due to channel damage bonus. Initial damage: " + initialDamage + ". Boosted damage: " + damageToReturn);
                 }
             }
 
@@ -1172,6 +1206,39 @@ public class EffectManager : MonoBehaviour
                 opponentFighterEffectObject.KeyWordDuration.Add(effect.CardKeyWord, newKeyWordList);
             }
         }
+    }
+
+    private void GainPilotEffect(ActiveEffects effect, CharacterSelect characterPriming)
+    {
+        int currentActiveEffectMagnitude;
+
+        if (characterPriming == CharacterSelect.Player)
+        {
+            if (playerFighterEffectObject.PilotEffectDuration.TryGetValue(effect, out currentActiveEffectMagnitude))
+            {
+                currentActiveEffectMagnitude++;
+                playerFighterEffectObject.PilotEffectDuration[effect] = currentActiveEffectMagnitude;
+            }
+            else
+            {
+                playerFighterEffectObject.PilotEffectDuration.Add(effect, 1);
+            }
+        }
+
+        if (characterPriming == CharacterSelect.Opponent)
+        {
+            if (opponentFighterEffectObject.PilotEffectDuration.TryGetValue(effect, out currentActiveEffectMagnitude))
+            {
+                currentActiveEffectMagnitude++;
+                opponentFighterEffectObject.PilotEffectDuration[effect] = currentActiveEffectMagnitude;
+            }
+            else
+            {
+                opponentFighterEffectObject.PilotEffectDuration.Add(effect, 1);
+            }
+        }
+
+        UpdateFighterBuffs();
     }
 
     private void AddComponentElementStacks(CardChannelPairObject cardChannelPair, MechComponent component, CharacterSelect destinationMech)

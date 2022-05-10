@@ -81,4 +81,12 @@ public class BuffUIManager : MonoBehaviour
         if (character == CharacterSelect.Opponent)
             opponentGlobalKeyWordBuffController.UpdateUI(keywordDurationDict);
     }
+
+    public void UpdatePilotEffectBuffs(CharacterSelect character, Dictionary<ActiveEffects, int> pilotEffectDict)
+    {
+        if (character == CharacterSelect.Player)
+            playerGlobalCategoryBuffController.UpdateUI(pilotEffectDict);
+        if (character == CharacterSelect.Opponent)
+            opponentGlobalCategoryBuffController.UpdateUI(pilotEffectDict);
+    }
 }

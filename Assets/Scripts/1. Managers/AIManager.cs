@@ -226,7 +226,7 @@ public class AIManager : MonoBehaviour
         {
             foreach(Channels channel in CombatManager.instance.GetChannelListFromFlags(card.PossibleChannels))
             {
-                if (CombatManager.instance.EffectManager.GetIceElementInChannel(channel, CharacterSelect.Player))
+                if (CombatManager.instance.CombatEffectManager.GetIceElementInChannel(channel, CharacterSelect.Player))
                 {
                     if (card.EnergyCost * CombatManager.instance.IceChannelEnergyReductionModifier > CombatManager.instance.OpponentFighter.FighterMech.MechCurrentEnergy)
                         continue;
@@ -331,7 +331,7 @@ public class AIManager : MonoBehaviour
 
     private void WeightPriorityWithComponentDamage(List<CardPlayPriorityObject> cardPlayPriorityObjects)
     {
-        FighterEffectObject playerEffectObject = CombatManager.instance.EffectManager.PlayerEffects;
+        FighterEffectObject playerEffectObject = CombatManager.instance.CombatEffectManager.PlayerEffects;
         List<ElementStackObject> channelElementStacks = new List<ElementStackObject>();
         int maximumComponentDamage = 0;
 

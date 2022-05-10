@@ -212,9 +212,9 @@ public class CardInteractionController
                     repeatOffense = effect.EffectMagnitude;
 
                 if (effect.EffectType == CardEffectTypes.KeyWord && effect.CardKeyWord == CardKeyWord.Flurry)
-                    repeatOffense += CombatManager.instance.EffectManager.GetAndConsumeFlurryBonus(offensiveMech);
+                    repeatOffense += CombatManager.instance.CombatEffectManager.GetAndConsumeFlurryBonus(offensiveMech);
 
-                CombatManager.instance.EffectManager.AddFlurryBonus(effect, offensiveMech);
+                CombatManager.instance.CombatEffectManager.AddFlurryBonus(effect, offensiveMech);
             }
         }
         
@@ -226,9 +226,9 @@ public class CardInteractionController
                     repeatDefense = effect.EffectMagnitude;
 
                 if (effect.EffectType == CardEffectTypes.KeyWord && effect.CardKeyWord == CardKeyWord.Flurry)
-                    repeatDefense += CombatManager.instance.EffectManager.GetAndConsumeFlurryBonus(defensiveMech);
+                    repeatDefense += CombatManager.instance.CombatEffectManager.GetAndConsumeFlurryBonus(defensiveMech);
 
-                CombatManager.instance.EffectManager.AddFlurryBonus(effect, defensiveMech);
+                CombatManager.instance.CombatEffectManager.AddFlurryBonus(effect, defensiveMech);
             }
         }
 
@@ -240,7 +240,7 @@ public class CardInteractionController
                 {
                     combatLog += (offensiveMech + " is playing " + offensiveAttack.CardData.CardName + " but is Countered by " + defensiveMech + ". ");
                     combatLog += ("\n" + offensiveMech + " would have dealt " + offensiveAttack.CardData.BaseDamage + " damage but will instead be dealt " +
-                        CombatManager.instance.EffectManager.GetDamageWithModifiers(offensiveAttack, defensiveMech, true, false) + " with modifiers.");
+                        CombatManager.instance.CombatEffectManager.GetDamageWithModifiers(offensiveAttack, defensiveMech, true, false) + " with modifiers.");
                     combatLog += ("\n" + offensiveMech + "'s attack is " + (i + 1) + " of " + repeatOffense + " total attacks. ");
                 }
 
@@ -255,7 +255,7 @@ public class CardInteractionController
                 {
                     combatLog += (offensiveMech + " is playing " + offensiveAttack.CardData.CardName + " but is guarded by " + defensiveMech + ". ");
                     combatLog += ("\n" + offensiveMech + " would have dealt " + offensiveAttack.CardData.BaseDamage + " damage but this was reduced to " +
-                        (CombatManager.instance.EffectManager.GetDamageWithModifiers(offensiveAttack, defensiveMech, false, true)) + " with modifiers. ");
+                        (CombatManager.instance.CombatEffectManager.GetDamageWithModifiers(offensiveAttack, defensiveMech, false, true)) + " with modifiers. ");
                     combatLog += ("\n" + offensiveMech + "'s attack is " + (i + 1) + " of " + repeatOffense + " total attacks. ");
                 }
 
@@ -270,7 +270,7 @@ public class CardInteractionController
                 if (CombatManager.instance.NarrateCombat)
                 {
                     combatLog += (offensiveMech + " is playing " + offensiveAttack.CardData.CardName + " for " + offensiveAttack.CardData.BaseDamage + " damage." +
-                    " \n This is changed to " + CombatManager.instance.EffectManager.GetDamageWithModifiers(offensiveAttack, defensiveMech, false, false) + " damage with modifiers. ");
+                    " \n This is changed to " + CombatManager.instance.CombatEffectManager.GetDamageWithModifiers(offensiveAttack, defensiveMech, false, false) + " damage with modifiers. ");
                     combatLog += ("\n" + offensiveMech + "'s attack is " + (i + 1) + " of " + repeatOffense + " total attacks. ");
                 }
 
@@ -306,7 +306,7 @@ public class CardInteractionController
         if (offensiveAttack.CardData.AffectedChannels == AffectedChannels.AllPossibleChannels)
             foreach (Channels channel in CombatManager.instance.GetChannelListFromFlags(offensiveAttack.CardData.PossibleChannels))
             {
-                if (CombatManager.instance.EffectManager.GetIceElementInChannel(channel, offensiveMech))
+                if (CombatManager.instance.CombatEffectManager.GetIceElementInChannel(channel, offensiveMech))
                 {
                     newEnergyToRemove.firstMechEnergyRemoval = Mathf.RoundToInt(offensiveAttack.CardData.EnergyCost * CombatManager.instance.IceChannelEnergyReductionModifier);
                     break;
@@ -316,7 +316,7 @@ public class CardInteractionController
             }
         else
         {
-            if (CombatManager.instance.EffectManager.GetIceElementInChannel(offensiveAttack.CardChannel, offensiveMech))
+            if (CombatManager.instance.CombatEffectManager.GetIceElementInChannel(offensiveAttack.CardChannel, offensiveMech))
             {
                 newEnergyToRemove.firstMechEnergyRemoval = Mathf.RoundToInt(offensiveAttack.CardData.EnergyCost * CombatManager.instance.IceChannelEnergyReductionModifier);
             }
@@ -330,7 +330,7 @@ public class CardInteractionController
             if (defensiveCard.CardData.AffectedChannels == AffectedChannels.AllPossibleChannels)
                 foreach (Channels channel in CombatManager.instance.GetChannelListFromFlags(defensiveCard.CardData.PossibleChannels))
                 {
-                    if (CombatManager.instance.EffectManager.GetIceElementInChannel(channel, defensiveMech))
+                    if (CombatManager.instance.CombatEffectManager.GetIceElementInChannel(channel, defensiveMech))
                     {
                         newEnergyToRemove.secondMechEnergyRemoval = Mathf.RoundToInt(defensiveCard.CardData.EnergyCost * CombatManager.instance.IceChannelEnergyReductionModifier);
                         break;
@@ -340,7 +340,7 @@ public class CardInteractionController
                 }
             else
             {
-                if (CombatManager.instance.EffectManager.GetIceElementInChannel(defensiveCard.CardChannel, defensiveMech))
+                if (CombatManager.instance.CombatEffectManager.GetIceElementInChannel(defensiveCard.CardChannel, defensiveMech))
                     newEnergyToRemove.secondMechEnergyRemoval = Mathf.RoundToInt(defensiveCard.CardData.EnergyCost * CombatManager.instance.IceChannelEnergyReductionModifier);
                 else
                     newEnergyToRemove.secondMechEnergyRemoval = defensiveCard.CardData.EnergyCost;

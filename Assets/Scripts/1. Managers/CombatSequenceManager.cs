@@ -20,7 +20,7 @@ public class CombatSequenceManager : MonoBehaviour
 
     public void AddCombatSequenceToQueue(CombatQueueObject newCombatSequence)
     {
-        if(currentCombatSequence == null)
+        if (currentCombatSequence == null)
             OnCombatStart?.Invoke();
 
         combatSequenceCollection.Enqueue(newCombatSequence);
@@ -80,18 +80,17 @@ public class CombatSequenceManager : MonoBehaviour
             CombatManager.instance.CombatAnimationManager.BurnCurrentCards();
             OnCombatComplete?.Invoke();
         }
-        else if (!combatComplete) 
+        else if (!combatComplete)
         {
             if (startedCombatSequences)
             {
                 CombatManager.instance.CombatAnimationManager.BurnCurrentCards();
-                CombatManager.instance.RemoveEnergyFromMechs(currentCombatSequence.energyRemovalObject);
                 OnRoundComplete?.Invoke();
             }
-            
+
             startedCombatSequences = true;
 
-            if(combatSequenceCollection.Count > 0)
+            if (combatSequenceCollection.Count > 0)
             {
                 currentCombatSequence = combatSequenceCollection.Dequeue();
             }
@@ -100,23 +99,23 @@ public class CombatSequenceManager : MonoBehaviour
 
     private void RunCurrentCombatSequence()
     {
-        if(startedCombatSequences && animationsComplete)
+        if (startedCombatSequences && animationsComplete)
         {
-            if(currentCombatSequence.damageQueue.Peek() != null)
+            if (currentCombatSequence.damageQueue.Peek() != null)
             {
                 if (currentCombatSequence.damageQueue.Peek().CardCharacterPairA.cardChannelPair.CardData.ApplyEffectsFirst && !currentCombatSequence.damageQueue.Peek().DenyOffensiveEffects)
-                    CombatManager.instance.EffectManager.EnableEffects(currentCombatSequence.damageQueue.Peek().CardCharacterPairA);
+                    CombatManager.instance.CombatEffectManager.EnableCombatEffects(currentCombatSequence.damageQueue.Peek().CardCharacterPairA);
                 if (currentCombatSequence.damageQueue.Peek().CardCharacterPairB != null &&
                     currentCombatSequence.damageQueue.Peek().CardCharacterPairB.cardChannelPair.CardData.ApplyEffectsFirst)
-                    CombatManager.instance.EffectManager.EnableEffects(currentCombatSequence.damageQueue.Peek().CardCharacterPairB);
+                    CombatManager.instance.CombatEffectManager.EnableCombatEffects(currentCombatSequence.damageQueue.Peek().CardCharacterPairB);
             }
 
             CombatManager.instance.CombatAnimationManager.AddAnimationToQueue(currentCombatSequence.animationQueue.Dequeue());
             CombatManager.instance.CombatAnimationManager.PrepCardsToBurn(currentCombatSequence.cardBurnObject);
             animationsComplete = false;
         }
-        
-        if(!animationsComplete && CombatManager.instance.CombatAnimationManager.AnimationsComplete)
+
+        if (!animationsComplete && CombatManager.instance.CombatAnimationManager.AnimationsComplete)
         {
             DealCombatEffects();
             animationsComplete = true;
@@ -125,16 +124,18 @@ public class CombatSequenceManager : MonoBehaviour
 
     private void DealCombatEffects()
     {
-        if(currentCombatSequence.damageQueue.Count > 0)
+        if (currentCombatSequence.damageQueue.Count > 0)
         {
             DamageMechPairObject currentDamage = currentCombatSequence.damageQueue.Dequeue();
 
             CombatManager.instance.RemoveHealthFromMech(currentDamage);
             if (!currentDamage.CardCharacterPairA.cardChannelPair.CardData.ApplyEffectsFirst && !currentDamage.DenyOffensiveEffects)
-                CombatManager.instance.EffectManager.EnableEffects(currentDamage.CardCharacterPairA);
+                CombatManager.instance.CombatEffectManager.EnableCombatEffects(currentDamage.CardCharacterPairA);
             if (currentDamage.CardCharacterPairB != null &&
                 !currentDamage.CardCharacterPairB.cardChannelPair.CardData.ApplyEffectsFirst)
-                CombatManager.instance.EffectManager.EnableEffects(currentDamage.CardCharacterPairB);
-        }        
+                CombatManager.instance.CombatEffectManager.EnableCombatEffects(currentDamage.CardCharacterPairB);
+
+            CombatManager.instance.RemoveEnergyFromMechs(currentCombatSequence.energyRemovalObject);
+        }
     }
 }
