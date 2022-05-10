@@ -7,7 +7,6 @@ public class CombatAnimationManager : MonoBehaviour
     [SerializeField] private MechAnimationController playerMechAnimationController;
     [SerializeField] private MechAnimationController opponentMechAnimationController;
     [SerializeField] private BurnPileController burnPileController;
-    //[SerializeField] private BuffAnimationController buffAnimationController;
 
     private bool animationsComplete = true;
 

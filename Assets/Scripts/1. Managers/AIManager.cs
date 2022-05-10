@@ -199,13 +199,11 @@ public class AIManager : MonoBehaviour
     {
         if (attackA == null)
         {
-            Debug.Log("AI failed to build Attack A in time.");
             BuildCardChannelPairA();
         }
 
         if (attackB == null)
         {
-            Debug.Log("AI failed to build Attack B in time.");
             BuildCardChannelPairB();
         }
 

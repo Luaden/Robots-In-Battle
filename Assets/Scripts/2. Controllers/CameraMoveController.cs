@@ -69,8 +69,8 @@ public class CameraMoveController : MonoBehaviour
     private void OnDestroy()
     {
         CombatSequenceManager.OnCombatComplete -= EnablePlayerHasControl;
-        MechAnimationController.OnAttackingPlayer += AttackingPlayer;
-        MechAnimationController.OnAttackingOpponent += AttackingOpponent;
+        MechAnimationController.OnAttackingPlayer -= AttackingPlayer;
+        MechAnimationController.OnAttackingOpponent -= AttackingOpponent;
     }
 
     public void AttackingOpponent()

@@ -209,7 +209,6 @@ public class EventManager : MonoBehaviour
         {
             case EventOutcome.DamageNextEnemy:
                 GameManager.instance.EnemyHealthModifier = eventOutcome.OutcometMagnitude;
-                Debug.Log(GameManager.instance.EnemyHealthModifier);
                 break;
 
             case EventOutcome.DamagePlayer:

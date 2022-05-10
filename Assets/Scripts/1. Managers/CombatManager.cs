@@ -305,9 +305,10 @@ public class CombatManager : MonoBehaviour
     {
         OnDestroyScene?.Invoke();
         instance = null;
+
         CombatSequenceManager.OnCombatStart -= DisableCanPlayCards;
         CombatSequenceManager.OnRoundComplete -= CheckForWinLoss;
-        CombatSequenceManager.OnCombatComplete += CheckForWinLoss;
+        CombatSequenceManager.OnCombatComplete -= CheckForWinLoss;
 
         AIDialogueController.OnDialogueComplete -= StartNewTurn;
         AIDialogueController.OnDialogueComplete -= EnableCanPlayCards;
