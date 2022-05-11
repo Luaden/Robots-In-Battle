@@ -1,7 +1,5 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Events;
 using System.Linq;
 using UnityEngine.UI;
 using TMPro;
@@ -52,9 +50,8 @@ public class TournamentOverviewManager : MonoBehaviour
     }
     private void Start()
     {
-        // test
         bool player = true;
-
+        int number = 0;
         foreach(NodeDataObject n in nodeController.GetAllNodes())
         {
             if (n.nodeType == NodeDataObject.NodeType.Starter)
@@ -73,9 +70,11 @@ public class TournamentOverviewManager : MonoBehaviour
                     nodeDataObject.nodeType = NodeDataObject.NodeType.Player;
                     player = false;
                 }
-                else 
+                else
                     nodeDataObject.nodeType = NodeDataObject.NodeType.Opponent;
 
+                nodeDataObject.NodeIndex = number++;
+                nodeDataObject.name = "pilot " + number;
                 // add item to the fighter starter slots
                 nodeSlotManager.AddItemToCollection(nodeUIObject, n.GetComponent<NodeSlotController>());
                 nodeDataObject.Init();
@@ -85,7 +84,6 @@ public class TournamentOverviewManager : MonoBehaviour
             }
         }
 
-        //AssignAllFightersToStarterNodes();
         DisplayStatsOverview();
 
     }
@@ -110,8 +108,8 @@ public class TournamentOverviewManager : MonoBehaviour
 
     public void GoToBattle()
     {
-        // press the button, change scene to battle
-        // who wins?
+        nodeController.FighterPairs.Clear();
+        // press the button, confirm all the changes
 
         if(nodeController.GetAllActiveNodes().Any(n => n.HasBeenAssigned == false))
         {
@@ -119,44 +117,14 @@ public class TournamentOverviewManager : MonoBehaviour
             return;
         }
         NodeDataObject[] node = GetActiveList().ToArray();
-        for (int i = 0; i < node.Length;)
+        for (int i = 0; i < node.Length - 1; i += 2)
         {
             AssignFighterPairs(node[i], node[i + 1]);
-            i += 2;
         }
 
         nodeController.ProgressFighters();
 
     }
-
-    // for testing, assigning fighters on startup
-    public void AssignAllFightersToStarterNodes()
-    {
-
-        foreach (NodeDataObject n in nodeController.GetAllNodes())
-        {
-            // the node where the fighter starts..
-            if (n.nodeType == NodeDataObject.NodeType.FighterStarter)
-            {
-                // get all nodes
-                for (int i = 0; i < nodeController.GetAllActiveNodes().Count; i++)
-                {
-                    // get the starter nodes.. where the fighters are supposed to fit in
-                    NodeDataObject starterNode = nodeController.GetAllActiveNodes()[i];
-                    if (starterNode.HasBeenAssigned || n.transform.childCount < 1)
-                        continue;
-
-                    NodeDataObject fighterObj = n.transform.GetChild(0).GetComponent<NodeDataObject>();
-                    fighterObj.ParentNode = starterNode;
-                    fighterObj.transform.SetParent(starterNode.transform);
-                    fighterObj.transform.position = starterNode.transform.position;
-                    fighterObj.GetComponent<NodeUIController>().NodeSlotController = starterNode.GetComponent<NodeSlotController>();
-                    starterNode.HasBeenAssigned = true;
-                }
-            }
-        }
-    }
-
     public void DisplayStatsOverview() 
     {
         if (GameManager.instance == null)

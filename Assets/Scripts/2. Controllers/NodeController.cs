@@ -1,7 +1,5 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using System.Linq;
 
 public class NodeController : MonoBehaviour
 {
@@ -20,6 +18,8 @@ public class NodeController : MonoBehaviour
     private void Awake()
     {
         fighterPairs = new List<FighterPairObject>();
+        for (int i = 0; i < allNodes.Count; i++)
+            allNodes[i].NodeIndex = i;
     }
 
     public void ProgressFighters()
@@ -32,8 +32,6 @@ public class NodeController : MonoBehaviour
             activeNodes[i].HasWonBattle = true;
             i += 2;
         }
-
-
 
         foreach (NodeDataObject currentNode in tempList)
         {

@@ -1,5 +1,4 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class NodeDataObject : MonoBehaviour
@@ -10,8 +9,9 @@ public class NodeDataObject : MonoBehaviour
     protected NodeDataObject parentNode;
     [SerializeField] private bool hasBeenAssignedToSlot;
     [SerializeField] private bool hasBeenAssignedFighterPair;
-    private bool hasWonBattle;
+    [SerializeField] private bool hasWonBattle;
     [SerializeField] protected bool isFinalNode;
+    [SerializeField] private int nodeIndex;
 
     [SerializeField] protected FighterDataObject currentFighter;
     [SerializeField] NodeUIController nodeUIController;
@@ -25,6 +25,7 @@ public class NodeDataObject : MonoBehaviour
     public bool HasBeenAssigned { get => hasBeenAssignedToSlot; set => hasBeenAssignedToSlot = value; }
     public bool HasWonBattle { get => hasWonBattle; set => hasWonBattle = value; }
     public bool IsFinalNode { get => isFinalNode; set => isFinalNode = value; }
+    public int NodeIndex { get => nodeIndex; set => nodeIndex = value; }
 
     // test
     [SerializeField] private FighterDataObject pairNodeFighterData;
@@ -52,14 +53,15 @@ public class NodeDataObject : MonoBehaviour
     {
         // the fighter node object can get parent node
         parentNode = transform.parent.GetComponent<NodeDataObject>();
-
+        
+        nodeIndex = parentNode.NodeIndex;
         switch (nodeType)
         {
-            case NodeType.Opponent:
-                fighterName = "Fighter AI";
-                break;
             case NodeType.Player:
                 fighterName = "Player";
+                break;
+            case NodeType.Opponent:
+                fighterName = "Fighter AI";
                 break;
         }
     }
@@ -68,18 +70,10 @@ public class NodeDataObject : MonoBehaviour
     {
         this.enabled = true;
     }
+
     public void SetInactive()
     {
         this.enabled = false;
-    }
-    public void MoveToNextNode()
-    {
-        if(nodeUIController != null && !nodeUIController.enabled)
-        {
-            Vector3 position = new Vector3(parentNode.transform.position.x, parentNode.transform.position.y);
-            StartCoroutine(MoveObject(transform.position, position, Time.deltaTime * 15));
-        }
-
     }
 
     public void UpdateToParentNode(NodeDataObject parentNode)
@@ -87,10 +81,21 @@ public class NodeDataObject : MonoBehaviour
         this.parentNode = parentNode;
         transform.SetParent(parentNode.transform);
         nextNode = parentNode.nextNode;
+        pairNode = parentNode.pairNode;
         previousNode = parentNode.previousNode;
         hasBeenAssignedToSlot = parentNode.HasBeenAssigned;
         hasWonBattle = parentNode.HasWonBattle;
         nodeUIController.NodeSlotController = parentNode.GetComponent<NodeSlotController>();
+
+    }
+
+    public void MoveToNextNode()
+    {
+        if(nodeUIController != null && !nodeUIController.enabled)
+        {
+            Vector3 position = new Vector3(parentNode.transform.position.x, parentNode.transform.position.y);
+            StartCoroutine(MoveObject(transform.position, position, Time.deltaTime * 15));
+        }
 
     }
 
