@@ -177,3 +177,43 @@ public enum EventObjective
     EndFightBelowHPPercent,
     EndFightWithEquippedItem,
 }
+
+public enum GeneralHUDElement
+{
+    None,
+
+    //General HUD
+    HighChannel,
+    MidChannel,
+    LowChannel,
+
+    Health,
+    Energy,
+
+    AttackSlot,
+    DefenseSlot,
+}
+
+public enum MechHUDElement
+{
+    //MechComponents
+    PlayerMech,
+    OpponentMech,
+
+    OpponentMechHighChannel,
+    OpponentMechMidChannel,
+    OpponentMechLowChannel,
+}
+
+public enum BuffHUDElement
+{
+    //Buffs
+    Shield,
+    DamageModifier,
+    Flurry,
+    Ice,
+    Acid,
+    Fire,
+    Plasma,
+    Jazzersize
+}

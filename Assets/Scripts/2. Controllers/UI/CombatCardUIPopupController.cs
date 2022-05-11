@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 
-public class CardUIPopupController : BaseUIElement<CardDataObject>
+public class CombatCardUIPopupController : BaseUIElement<CardDataObject>
 {
     [SerializeField] protected GameObject popupObject;
     [SerializeField] private TMP_Text nameText;

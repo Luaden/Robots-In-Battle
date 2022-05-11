@@ -2,7 +2,7 @@ using System;
 using UnityEngine;
 using TMPro;
 
-public class ShopUIPopupController : BaseUIElement<SOItemDataObject>
+public class ShopCardUIPopupController : BaseUIElement<SOItemDataObject>
 {
     [Header("General Popup Attributes")]
     [SerializeField] protected GameObject popupObject;
