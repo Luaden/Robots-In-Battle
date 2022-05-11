@@ -2704,7 +2704,7 @@ GameObject:
   - component: {fileID: 129746559877222969}
   - component: {fileID: 129746559877222974}
   - component: {fileID: 129746559877222975}
-  - component: {fileID: 129746559877222968}
+  - component: {fileID: 2241229222952900396}
   m_Layer: 5
   m_Name: Low Channel
   m_TagString: Untagged
@@ -2771,7 +2771,7 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!114 &129746559877222968
+--- !u!114 &2241229222952900396
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -2780,27 +2780,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 129746559877222970}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1aa08ab6e0800fa44ae55d278d1423e3, type: 3}
+  m_Script: {fileID: 11500000, guid: 7be73220cee32134bb7fc1ad6fe79f79, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Content: {fileID: 129746560092067421}
-  m_Horizontal: 1
-  m_Vertical: 0
-  m_MovementType: 1
-  m_Elasticity: 0.1
-  m_Inertia: 1
-  m_DecelerationRate: 0.135
-  m_ScrollSensitivity: 1
-  m_Viewport: {fileID: 0}
-  m_HorizontalScrollbar: {fileID: 0}
-  m_VerticalScrollbar: {fileID: 0}
-  m_HorizontalScrollbarVisibility: 2
-  m_VerticalScrollbarVisibility: 2
-  m_HorizontalScrollbarSpacing: -3
-  m_VerticalScrollbarSpacing: -3
-  m_OnValueChanged:
-    m_PersistentCalls:
-      m_Calls: []
+  elementType: 3
 --- !u!1 &129746559903923270
 GameObject:
   m_ObjectHideFlags: 0
@@ -11473,6 +11456,7 @@ GameObject:
   - component: {fileID: 129746561047293256}
   - component: {fileID: 129746561047293261}
   - component: {fileID: 129746561047293262}
+  - component: {fileID: 9173841206434185469}
   m_Layer: 5
   m_Name: High Channel
   m_TagString: Untagged
@@ -11539,6 +11523,19 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &9173841206434185469
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 129746561047293257}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7be73220cee32134bb7fc1ad6fe79f79, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  elementType: 1
 --- !u!1 &129746561049401200
 GameObject:
   m_ObjectHideFlags: 0
@@ -12092,6 +12089,7 @@ GameObject:
   - component: {fileID: 129746561100228190}
   - component: {fileID: 129746561100228195}
   - component: {fileID: 129746561100228188}
+  - component: {fileID: 8246824325794678308}
   m_Layer: 5
   m_Name: Mid Channel
   m_TagString: Untagged
@@ -12158,6 +12156,19 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &8246824325794678308
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 129746561100228191}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7be73220cee32134bb7fc1ad6fe79f79, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  elementType: 2
 --- !u!1 &129746561137877016
 GameObject:
   m_ObjectHideFlags: 0
@@ -12584,6 +12595,7 @@ GameObject:
   - component: {fileID: 129746561224329453}
   - component: {fileID: 129746561224329454}
   - component: {fileID: 129746561224329455}
+  - component: {fileID: 1320378129274398200}
   m_Layer: 0
   m_Name: Player Attack B
   m_TagString: Untagged
@@ -12666,6 +12678,19 @@ MonoBehaviour:
   channelImage: {fileID: 0}
   fullColor: {r: 0, g: 0, b: 0, a: 0}
   fadeColor: {r: 0, g: 0, b: 0, a: 0}
+--- !u!114 &1320378129274398200
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 129746561224329449}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7be73220cee32134bb7fc1ad6fe79f79, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  elementType: 7
 --- !u!1 &129746561236229917
 GameObject:
   m_ObjectHideFlags: 0
@@ -14892,6 +14917,7 @@ GameObject:
   - component: {fileID: 129746561551062950}
   - component: {fileID: 129746561551062951}
   - component: {fileID: 129746561551062944}
+  - component: {fileID: 7501043434238828419}
   m_Layer: 0
   m_Name: Player Attack A
   m_TagString: Untagged
@@ -14974,6 +15000,19 @@ MonoBehaviour:
   channelImage: {fileID: 0}
   fullColor: {r: 0, g: 0, b: 0, a: 0}
   fadeColor: {r: 0, g: 0, b: 0, a: 0}
+--- !u!114 &7501043434238828419
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 129746561551062946}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7be73220cee32134bb7fc1ad6fe79f79, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  elementType: 6
 --- !u!1 &129746561571394383
 GameObject:
   m_ObjectHideFlags: 0
@@ -17692,10 +17731,10 @@ RectTransform:
   m_Father: {fileID: 6539641811073442365}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 400, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 350, y: -184.115}
+  m_SizeDelta: {x: 400, y: 29.65}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &528095659360184406
 CanvasRenderer:
@@ -17888,16 +17927,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ab0983166c6e27b4f9daffbad19267ca, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  popupObject: {fileID: 0}
-  nameText: {fileID: 0}
-  descriptionText: {fileID: 0}
-  highChannelPopupObject: {fileID: 0}
-  midChannelPopupObject: {fileID: 0}
-  lowChannelPopupObject: {fileID: 0}
-  healthPopupObject: {fileID: 0}
-  energyPopupObject: {fileID: 0}
-  attackSlotPopupObject: {fileID: 0}
-  defenseSlotPopupObject: {fileID: 0}
+  popupObject: {fileID: 7989461869524006414}
+  nameText: {fileID: 3246671589124138679}
+  descriptionText: {fileID: 8902517706111602034}
+  highChannelPopupObject: {fileID: 11400000, guid: d6e63f1055b180641a364c897f49ba8f, type: 2}
+  midChannelPopupObject: {fileID: 11400000, guid: 2d03daf2e0334be40b87b1f0ae8b5620, type: 2}
+  lowChannelPopupObject: {fileID: 11400000, guid: 430bfa14e7a6f2f45a96f33613bbcf3b, type: 2}
+  healthPopupObject: {fileID: 11400000, guid: 2eeab137664a4844faa72e4204533d4f, type: 2}
+  energyPopupObject: {fileID: 11400000, guid: cb9fe7935c340314f95159382a157c4b, type: 2}
+  attackSlotPopupObject: {fileID: 11400000, guid: b3b2cfe47dfd8924fb73de1a50ba0338, type: 2}
+  defenseSlotPopupObject: {fileID: 11400000, guid: 0514bba8c1858fc4fb1823eb7992a747, type: 2}
 --- !u!1 &3239652420795890492
 GameObject:
   m_ObjectHideFlags: 0
@@ -19249,6 +19288,7 @@ GameObject:
   - component: {fileID: 5025408727953302656}
   - component: {fileID: 5025408727953302658}
   - component: {fileID: 5025408727953302659}
+  - component: {fileID: 7600737228347351375}
   m_Layer: 5
   m_Name: Energy Bars
   m_TagString: Untagged
@@ -19316,6 +19356,19 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &7600737228347351375
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5025408727953302657}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7be73220cee32134bb7fc1ad6fe79f79, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  elementType: 5
 --- !u!1 &5025408728099016403
 GameObject:
   m_ObjectHideFlags: 0
@@ -19417,6 +19470,7 @@ GameObject:
   - component: {fileID: 5025408728433414441}
   - component: {fileID: 5025408728433414443}
   - component: {fileID: 5025408728433414440}
+  - component: {fileID: 1466782830058775289}
   m_Layer: 5
   m_Name: Health Bar
   m_TagString: Untagged
@@ -19483,6 +19537,19 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &1466782830058775289
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5025408728433414446}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7be73220cee32134bb7fc1ad6fe79f79, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  elementType: 4
 --- !u!1 &5025408728632791663
 GameObject:
   m_ObjectHideFlags: 0
@@ -19494,6 +19561,7 @@ GameObject:
   - component: {fileID: 5025408728632791662}
   - component: {fileID: 5025408728632791656}
   - component: {fileID: 5025408728632791657}
+  - component: {fileID: 5981575546603319602}
   m_Layer: 5
   m_Name: 'Energy Bars '
   m_TagString: Untagged
@@ -19561,6 +19629,19 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &5981575546603319602
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5025408728632791663}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7be73220cee32134bb7fc1ad6fe79f79, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  elementType: 5
 --- !u!1 &5025408728733572703
 GameObject:
   m_ObjectHideFlags: 0
@@ -19628,6 +19709,7 @@ GameObject:
   - component: {fileID: 5025408728739961886}
   - component: {fileID: 5025408728739961880}
   - component: {fileID: 5025408728739961881}
+  - component: {fileID: 5932858167677981640}
   m_Layer: 5
   m_Name: Health Bar
   m_TagString: Untagged
@@ -19694,6 +19776,19 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &5932858167677981640
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5025408728739961887}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7be73220cee32134bb7fc1ad6fe79f79, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  elementType: 4
 --- !u!1 &5025408728789155355
 GameObject:
   m_ObjectHideFlags: 0
@@ -20633,10 +20728,10 @@ RectTransform:
   m_Father: {fileID: 6539641811073442365}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 400, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 350, y: -122.145004}
+  m_SizeDelta: {x: 400, y: 44.29}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &2043999432616726818
 CanvasRenderer:
@@ -20882,6 +20977,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   textRate: 0.25
+  generalHUDPopupDelay: 0.5
 --- !u!1 &7760771145309762594
 GameObject:
   m_ObjectHideFlags: 0
@@ -21246,7 +21342,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &6539641811073442365
 RectTransform:
   m_ObjectHideFlags: 0
@@ -21264,10 +21360,10 @@ RectTransform:
   m_Father: {fileID: 3099239179103553533}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 350, y: -174.47}
+  m_SizeDelta: {x: 700, y: 348.94}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &5725837399885196513
 CanvasRenderer:

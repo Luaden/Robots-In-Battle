@@ -78,10 +78,10 @@ public class GeneralHUDUIPopupController : BaseUIElement<GeneralHUDElement>
 
     private void Update()
     {
-        //if(popupQueued)
-        //{
-        //    CheckTimer();
-        //}
+        if (popupQueued)
+        {
+            CheckTimer();
+        }
     }
 
     protected override bool ClearedIfEmpty(GeneralHUDElement newData)
@@ -100,7 +100,7 @@ public class GeneralHUDUIPopupController : BaseUIElement<GeneralHUDElement>
     private void CheckTimer()
     {
         currentTimer += Time.deltaTime;
-        if (currentTimer >= CombatManager.instance.PopupUIManager.TextPace)
+        if (currentTimer >= CombatManager.instance.PopupUIManager.GeneralHUDPopupDelay)
         {
             popupQueued = false;
             popupObject.SetActive(true);
