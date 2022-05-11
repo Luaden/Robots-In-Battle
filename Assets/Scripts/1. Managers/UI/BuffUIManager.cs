@@ -6,8 +6,8 @@ public class BuffUIManager : MonoBehaviour
 {
     [SerializeField] private ChannelDamageBuffController playerChannelDamageBuffController;
     [SerializeField] private ChannelDamageBuffController opponentChannelDamageBuffController;
-    [SerializeField] private ChannelShieldsController playerChannelShieldsController;
-    [SerializeField] private ChannelShieldsController opponentChannelShieldsController;
+    [SerializeField] private ShieldsBuffController playerChannelShieldsController;
+    [SerializeField] private ShieldsBuffController opponentChannelShieldsController;
     [SerializeField] private ChannelShieldsFalloffController playerChannelShieldsFalloffController;
     [SerializeField] private ChannelShieldsFalloffController opponentChannelShieldsFalloffController;
     [SerializeField] private ChannelElementBuffController playerChannelElementBuffController;

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 
-public class ChannelShieldsController : BaseUIElement<Dictionary<Channels, int>>
+public class ShieldsBuffController : BaseUIElement<Dictionary<Channels, int>>
 {
     [SerializeField] private GameObject highChannelShield;
     [SerializeField] private TMP_Text highChannelShieldText;

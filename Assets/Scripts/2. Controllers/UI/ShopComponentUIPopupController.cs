@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 
-public class ComponentUIPopupController : BaseUIElement<SOItemDataObject>
+public class ShopComponentUIPopupController : BaseUIElement<SOItemDataObject>
 {
     [SerializeField] protected GameObject popupObject;
     [SerializeField] private TMP_Text nameText;
