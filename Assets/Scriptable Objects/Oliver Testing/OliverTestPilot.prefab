@@ -198,7 +198,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 0.4669811, b: 0.4669811, a: 1}
+  m_Color: {r: 1, g: 0.9511264, b: 0.4669811, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -228,6 +228,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   fighterName: {fileID: 7418578265068838542}
+  fighterDescription: {fileID: 0}
+  health: {fileID: 0}
+  energy: {fileID: 0}
+  previousParentObject: {fileID: 0}
   travelSpeed: 450
   nodeDataObject: {fileID: 0}
   nodeSlotController: {fileID: 0}
@@ -243,12 +247,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ea21c054e1c7aca468d9aa0cdbe3d494, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  previousNode: {fileID: 0}
   nextNode: {fileID: 0}
   pairNode: {fileID: 0}
-  hasBeenAssigned: 0
-  hasWonBattle: 0
+  hasBeenAssignedToSlot: 0
+  hasBeenAssignedFighterPair: 0
   isFinalNode: 0
+  nodeUIController: {fileID: 0}
   nodeType: 5
 --- !u!225 &1841193970448129480
 CanvasGroup:
