@@ -29,11 +29,9 @@ public class PopupUIManager : MonoBehaviour
         aIDialoguePopupController = GetComponentInChildren<AIDialoguePopupController>();
         eventDialoguePopupController = GetComponentInChildren<EventDialoguePopupController>();
         
-        Debug.Log("Preparing to assign events.");
 
         if (CombatManager.instance != null)
         {
-            Debug.Log("Assigning events.");
             CombatSequenceManager.OnCombatStart += ClearPopups;
             CombatSequenceManager.OnCombatStart += DisablePopups;
 
@@ -108,13 +106,11 @@ public class PopupUIManager : MonoBehaviour
 
     private void DisablePopups()
     {
-        Debug.Log("Disabling popups.");
         popupsEnabled = false;
     }
 
     private void EnablePopups()
     {
-        Debug.Log("Popups enabled.");
         popupsEnabled = true;
     }
 }
