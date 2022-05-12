@@ -1,9 +1,5 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using System;
 using UnityEngine.EventSystems;
-using System.Linq;
 
 public class NodeSlotManager : BaseSlotManager<NodeUIController>
 {
@@ -36,8 +32,6 @@ public class NodeSlotManager : BaseSlotManager<NodeUIController>
 
         newData.NodeSlotController.SlotManager.RemoveItemFromCollection(newData);
         AddItemToCollection(newData, slot);
-
-
     }
 
     public override void RemoveItemFromCollection(NodeUIController item)
@@ -46,10 +40,8 @@ public class NodeSlotManager : BaseSlotManager<NodeUIController>
             if (slot.CurrentSlottedItem == item)
             {
                 NodeDataObject slotNode = slot.GetComponent<NodeDataObject>();
-                // if the item has been removed, it has no longer an assigned pilot
-                if (TournamentOverviewManager.instance.GetActiveList().Contains(slotNode))
-                    TournamentOverviewManager.instance.RemoveInActiveList(slotNode);
-                slotNode.HasBeenAssigned = false;
+                
+                slotNode.HasBeenAssignedFighter = false;
                 slot.CurrentSlottedItem = null;
             }
     }
@@ -60,25 +52,11 @@ public class NodeSlotManager : BaseSlotManager<NodeUIController>
         if (slotNode == null || item == null)
             return;
 
+        slotNode.HasBeenAssignedFighter = true;
         NodeDataObject itemNode = item.GetComponent<NodeDataObject>();
-        itemNode.ParentNode = slotNode;
-
-        slotNode.HasBeenAssigned = true;
-        itemNode.HasBeenAssigned = true;
-
-        if (!TournamentOverviewManager.instance.GetActiveList().Contains(slotNode))
-            TournamentOverviewManager.instance.AddToActiveList(slotNode);
-
-/*
-        if(TournamentOverviewManager.instance.GetActiveList().Contains(slotNode))
-        {
-            if(slotNode.PairNode.HasBeenAssigned && slotNode.HasBeenAssigned)
-            {
-                TournamentOverviewManager.instance.AssignFighterToNodeSlot(slotNode, slotNode.PairNode);
-            }
-        }*/
+        itemNode.UpdateToParentNode(slotNode);
 
 
-        //TournamentOverviewManager.instance.AssignFighterToNodeSlot(item.GetComponent<NodeDataObject>());
     }
+
 }

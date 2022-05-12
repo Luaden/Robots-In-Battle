@@ -249,10 +249,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   nextNode: {fileID: 0}
   pairNode: {fileID: 0}
-  hasBeenAssignedToSlot: 0
-  hasBeenAssignedFighterPair: 0
+  parentNode: {fileID: 0}
+  hasBeenAssignedFighter: 0
+  hasWonBattle: 0
   isFinalNode: 0
+  nodeIndex: 0
   nodeUIController: {fileID: 0}
+  sOCompleteCharacter:
+  - {fileID: 11400000, guid: 945cf619b16680c4eb0188b51f5cc0e8, type: 2}
   nodeType: 5
 --- !u!225 &1841193970448129480
 CanvasGroup:

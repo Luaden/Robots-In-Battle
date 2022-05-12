@@ -1,5 +1,4 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class NodeDataObject : MonoBehaviour
@@ -7,24 +6,27 @@ public class NodeDataObject : MonoBehaviour
     protected NodeDataObject previousNode;
     [SerializeField] protected NodeDataObject nextNode;
     [SerializeField] protected NodeDataObject pairNode;
-    protected NodeDataObject parentNode;
-    [SerializeField] private bool hasBeenAssignedToSlot;
-    [SerializeField] private bool hasBeenAssignedFighterPair;
-    private bool hasWonBattle;
+    [SerializeField] protected NodeDataObject parentNode;
+    [SerializeField] private bool hasBeenAssignedFighter;
+    [SerializeField] private bool hasWonBattle;
     [SerializeField] protected bool isFinalNode;
+    [SerializeField] private int nodeIndex;
 
-    [SerializeField] protected FighterDataObject currentFighter;
+    [SerializeField] protected FighterDataObject fighterData;
     [SerializeField] NodeUIController nodeUIController;
 
-    public FighterDataObject FighterDataObject { get => currentFighter; }
+    //testing
+    [SerializeField] protected SOCompleteCharacter[] sOCompleteCharacter;
+    public FighterDataObject FighterDataObject { get => fighterData; }
     public NodeUIController NodeUIController { get => nodeUIController; set => nodeUIController = value; }
     public NodeDataObject PreviousNode { get => previousNode; set => previousNode = value; }
     public NodeDataObject NextNode { get => nextNode; set => nextNode = value; }
     public NodeDataObject PairNode { get => pairNode; set => pairNode = value; }
     public NodeDataObject ParentNode { get => parentNode; set => parentNode = value; }
-    public bool HasBeenAssigned { get => hasBeenAssignedToSlot; set => hasBeenAssignedToSlot = value; }
+    public bool HasBeenAssignedFighter { get => hasBeenAssignedFighter; set => hasBeenAssignedFighter = value; }
     public bool HasWonBattle { get => hasWonBattle; set => hasWonBattle = value; }
     public bool IsFinalNode { get => isFinalNode; set => isFinalNode = value; }
+    public int NodeIndex { get => nodeIndex; set => nodeIndex = value; }
 
     // test
     [SerializeField] private FighterDataObject pairNodeFighterData;
@@ -40,46 +42,44 @@ public class NodeDataObject : MonoBehaviour
         Second,
         Third,
         Last,
-        // where the fighter starts
         FighterStarter,
-        // not supposed to be here
-        Player,
-        Opponent
     }
     public NodeType nodeType;
 
+    public void Init(FighterDataObject fighter)
+    {
+        parentNode = transform.parent.GetComponent<NodeDataObject>();
+        fighterData = fighter;
+
+/*        #region testing
+        int randomNum = Random.Range(0, 3);
+        fighterData = new FighterDataObject(sOCompleteCharacter[randomNum]);
+        #endregion
+*/
+        nodeIndex = parentNode.NodeIndex;
+        fighterData.FighterNodeIndex = nodeIndex;
+    }
     public void Init()
     {
-        // the fighter node object can get parent node
         parentNode = transform.parent.GetComponent<NodeDataObject>();
 
-        switch (nodeType)
-        {
-            case NodeType.Opponent:
-                fighterName = "Fighter AI";
-                break;
-            case NodeType.Player:
-                fighterName = "Player";
-                break;
-        }
+        #region testing
+        int randomNum = Random.Range(0, sOCompleteCharacter.Length);
+        fighterData = new FighterDataObject(sOCompleteCharacter[randomNum]);
+        #endregion
+
+        nodeIndex = parentNode.NodeIndex;
+        fighterData.FighterNodeIndex = nodeIndex;
     }
 
     public void SetActive()
     {
         this.enabled = true;
     }
+
     public void SetInactive()
     {
         this.enabled = false;
-    }
-    public void MoveToNextNode()
-    {
-        if(nodeUIController != null && !nodeUIController.enabled)
-        {
-            Vector3 position = new Vector3(parentNode.transform.position.x, parentNode.transform.position.y);
-            StartCoroutine(MoveObject(transform.position, position, Time.deltaTime * 15));
-        }
-
     }
 
     public void UpdateToParentNode(NodeDataObject parentNode)
@@ -87,10 +87,22 @@ public class NodeDataObject : MonoBehaviour
         this.parentNode = parentNode;
         transform.SetParent(parentNode.transform);
         nextNode = parentNode.nextNode;
+        pairNode = parentNode.pairNode;
         previousNode = parentNode.previousNode;
-        hasBeenAssignedToSlot = parentNode.HasBeenAssigned;
+        nodeIndex = parentNode.nodeIndex;
+        hasBeenAssignedFighter = parentNode.HasBeenAssignedFighter;
         hasWonBattle = parentNode.HasWonBattle;
         nodeUIController.NodeSlotController = parentNode.GetComponent<NodeSlotController>();
+
+    }
+
+    public void MoveToNextNode()
+    {
+        if(nodeUIController != null && !nodeUIController.enabled)
+        {
+            Vector3 position = new Vector3(parentNode.transform.position.x, parentNode.transform.position.y);
+            StartCoroutine(MoveObject(transform.position, position, Time.deltaTime * 15));
+        }
 
     }
 
