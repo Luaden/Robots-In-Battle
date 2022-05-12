@@ -22,7 +22,6 @@ public class TournamentOverviewManager : MonoBehaviour
     [SerializeField] protected Image playerTimeImage;
     [SerializeField] protected TMP_Text playerTimeText;
 
-
     public NodeSlotManager NodeSlotManager { get => nodeSlotManager; }
     public PopupUIManager PopupUIManager { get => popupUIManager; }
 
@@ -45,36 +44,29 @@ public class TournamentOverviewManager : MonoBehaviour
         nodeController = FindObjectOfType<NodeController>();
         popupUIManager = FindObjectOfType<PopupUIManager>();
 
-        
-
     }
+
     private void Start()
     {
-        bool player = true;
-        int number = 0;
-        foreach(NodeDataObject n in nodeController.GetAllNodes())
+        InitTournamentScreen();
+    }
+
+    public void InitTournamentScreen()
+    {
+        foreach (NodeDataObject n in nodeController.GetAllNodes())
         {
             if (n.nodeType == NodeDataObject.NodeType.Starter)
                 nodeController.GetAllActiveNodes().Add(n);
 
-            if(n.nodeType == NodeDataObject.NodeType.FighterStarter)
+            if (n.nodeType == NodeDataObject.NodeType.FighterStarter)
             {
                 GameObject nodeUIGameObject;
                 nodeUIGameObject = Instantiate(pilotPrefab, n.transform.position, Quaternion.identity, n.transform);
                 // set the UI object of the pilot data to be the gameobject
-                
+
                 NodeUIController nodeUIObject = nodeUIGameObject.GetComponent<NodeUIController>();
                 NodeDataObject nodeDataObject = nodeUIGameObject.GetComponent<NodeDataObject>();
-                if (player)
-                {
-                    nodeDataObject.nodeType = NodeDataObject.NodeType.Player;
-                    player = false;
-                }
-                else
-                    nodeDataObject.nodeType = NodeDataObject.NodeType.Opponent;
 
-                nodeDataObject.NodeIndex = number++;
-                nodeDataObject.name = "pilot " + number;
                 // add item to the fighter starter slots
                 nodeSlotManager.AddItemToCollection(nodeUIObject, n.GetComponent<NodeSlotController>());
                 nodeDataObject.Init();
@@ -85,7 +77,6 @@ public class TournamentOverviewManager : MonoBehaviour
         }
 
         DisplayStatsOverview();
-
     }
     public void AddToActiveList(NodeDataObject node)
     {
@@ -102,16 +93,24 @@ public class TournamentOverviewManager : MonoBehaviour
 
     public void AssignFighterPairs(NodeDataObject nodeA, NodeDataObject nodeB)
     {
-        FighterPairObject fighterPairObject = new FighterPairObject(nodeA.FighterDataObject, nodeB.FighterDataObject);
+        NodeDataObject childA = nodeA.transform.GetChild(0).GetComponent<NodeDataObject>();
+        NodeDataObject childB = nodeB.transform.GetChild(0).GetComponent<NodeDataObject>();
+
+
+        childA.FighterDataObject.FighterNodeIndex = nodeA.NodeIndex;
+        childB.FighterDataObject.FighterNodeIndex = nodeB.NodeIndex;
+
+        FighterPairObject fighterPairObject = new FighterPairObject(childA.FighterDataObject, childB.FighterDataObject);
+
         nodeController.FighterPairs.Add(fighterPairObject);
     }
 
-    public void GoToBattle()
+    public void ConfirmBattleChoices()
     {
         nodeController.FighterPairs.Clear();
-        // press the button, confirm all the changes
+        nodeController.FighterPairs = new List<FighterPairObject>();
 
-        if(nodeController.GetAllActiveNodes().Any(n => n.HasBeenAssigned == false))
+        if(nodeController.GetAllActiveNodes().Any(n => n.HasBeenAssignedFighter == false))
         {
             Debug.Log("pairs are not completed");
             return;
@@ -122,7 +121,8 @@ public class TournamentOverviewManager : MonoBehaviour
             AssignFighterPairs(node[i], node[i + 1]);
         }
 
-        nodeController.ProgressFighters();
+        // should be called when battles have been completed
+        //nodeController.ProgressFighters();
 
     }
     public void DisplayStatsOverview() 
@@ -137,6 +137,11 @@ public class TournamentOverviewManager : MonoBehaviour
         playerMoneyText.text = GameManager.instance.PlayerBankController.GetPlayerCurrency().ToString();
         playerHealthText.text = GameManager.instance.PlayerMechController.PlayerMech.MechCurrentHP.ToString();
         playerTimeText.text = GameManager.instance.PlayerBankController.GetPlayerTime().ToString() + (" days ");
+    }
+
+    public List<FighterPairObject> GetFighterPairs()
+    {
+        return nodeController.FighterPairs;
     }
 
 }

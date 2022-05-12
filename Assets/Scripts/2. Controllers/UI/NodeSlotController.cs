@@ -52,6 +52,7 @@ public class NodeSlotController : BaseSlotController<NodeUIController>
 
     private void OnDestroy()
     {
+        // null ref?
         onAssignFighter -= TournamentOverviewManager.instance.NodeSlotManager.OnFighterAssigned;
     }
 

@@ -13,7 +13,7 @@ public class NodeController : MonoBehaviour
     public List<NodeDataObject> GetAllActiveNodes() { return activeNodes; }
 
     //test
-    public List<FighterPairObject> FighterPairs { get => fighterPairs; }
+    public List<FighterPairObject> FighterPairs { get => fighterPairs; set => fighterPairs = value; }
 
     private void Awake()
     {
@@ -27,11 +27,10 @@ public class NodeController : MonoBehaviour
         List<NodeDataObject> tempList = new List<NodeDataObject>();
         tempList.AddRange(activeNodes);
         //test, assign the winners
-        for (int i = 0; i < activeNodes.Count;)
+/*        for (int i = 0; i < activeNodes.Count; i += 2)
         {
             activeNodes[i].HasWonBattle = true;
-            i += 2;
-        }
+        }*/
 
         foreach (NodeDataObject currentNode in tempList)
         {
@@ -48,7 +47,7 @@ public class NodeController : MonoBehaviour
                     fighterNode.MoveToNextNode();
                     activeNodes.Remove(newCurrentNode.PreviousNode);
                     activeNodes.Add(newCurrentNode);
-                    newCurrentNode.HasBeenAssigned = true;
+                    newCurrentNode.HasBeenAssignedFighter = true;
                 }
 
                 if(activeNodes.Contains(currentNode.PairNode) && !currentNode.PairNode.HasWonBattle)

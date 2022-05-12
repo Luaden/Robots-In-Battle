@@ -41,7 +41,7 @@ public class NodeSlotManager : BaseSlotManager<NodeUIController>
             {
                 NodeDataObject slotNode = slot.GetComponent<NodeDataObject>();
                 
-                slotNode.HasBeenAssigned = false;
+                slotNode.HasBeenAssignedFighter = false;
                 slot.CurrentSlottedItem = null;
             }
     }
@@ -52,7 +52,7 @@ public class NodeSlotManager : BaseSlotManager<NodeUIController>
         if (slotNode == null || item == null)
             return;
 
-        slotNode.HasBeenAssigned = true;
+        slotNode.HasBeenAssignedFighter = true;
         NodeDataObject itemNode = item.GetComponent<NodeDataObject>();
         itemNode.UpdateToParentNode(slotNode);
 

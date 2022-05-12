@@ -7,8 +7,7 @@ public class NodeDataObject : MonoBehaviour
     [SerializeField] protected NodeDataObject nextNode;
     [SerializeField] protected NodeDataObject pairNode;
     protected NodeDataObject parentNode;
-    [SerializeField] private bool hasBeenAssignedToSlot;
-    [SerializeField] private bool hasBeenAssignedFighterPair;
+    [SerializeField] private bool hasBeenAssignedFighter;
     [SerializeField] private bool hasWonBattle;
     [SerializeField] protected bool isFinalNode;
     [SerializeField] private int nodeIndex;
@@ -16,13 +15,15 @@ public class NodeDataObject : MonoBehaviour
     [SerializeField] protected FighterDataObject currentFighter;
     [SerializeField] NodeUIController nodeUIController;
 
+    //testing
+    [SerializeField] protected SOCompleteCharacter[] sOCompleteCharacter;
     public FighterDataObject FighterDataObject { get => currentFighter; }
     public NodeUIController NodeUIController { get => nodeUIController; set => nodeUIController = value; }
     public NodeDataObject PreviousNode { get => previousNode; set => previousNode = value; }
     public NodeDataObject NextNode { get => nextNode; set => nextNode = value; }
     public NodeDataObject PairNode { get => pairNode; set => pairNode = value; }
     public NodeDataObject ParentNode { get => parentNode; set => parentNode = value; }
-    public bool HasBeenAssigned { get => hasBeenAssignedToSlot; set => hasBeenAssignedToSlot = value; }
+    public bool HasBeenAssignedFighter { get => hasBeenAssignedFighter; set => hasBeenAssignedFighter = value; }
     public bool HasWonBattle { get => hasWonBattle; set => hasWonBattle = value; }
     public bool IsFinalNode { get => isFinalNode; set => isFinalNode = value; }
     public int NodeIndex { get => nodeIndex; set => nodeIndex = value; }
@@ -41,29 +42,20 @@ public class NodeDataObject : MonoBehaviour
         Second,
         Third,
         Last,
-        // where the fighter starts
         FighterStarter,
-        // not supposed to be here
-        Player,
-        Opponent
     }
     public NodeType nodeType;
 
     public void Init()
     {
-        // the fighter node object can get parent node
         parentNode = transform.parent.GetComponent<NodeDataObject>();
-        
+
+        int randomNum = Random.Range(0, 3);
+        currentFighter = new FighterDataObject(sOCompleteCharacter[randomNum]);
+        Debug.Log(sOCompleteCharacter[randomNum].PilotName);
+
         nodeIndex = parentNode.NodeIndex;
-        switch (nodeType)
-        {
-            case NodeType.Player:
-                fighterName = "Player";
-                break;
-            case NodeType.Opponent:
-                fighterName = "Fighter AI";
-                break;
-        }
+        currentFighter.FighterNodeIndex = nodeIndex;
     }
 
     public void SetActive()
@@ -83,7 +75,8 @@ public class NodeDataObject : MonoBehaviour
         nextNode = parentNode.nextNode;
         pairNode = parentNode.pairNode;
         previousNode = parentNode.previousNode;
-        hasBeenAssignedToSlot = parentNode.HasBeenAssigned;
+        nodeIndex = parentNode.nodeIndex;
+        hasBeenAssignedFighter = parentNode.HasBeenAssignedFighter;
         hasWonBattle = parentNode.HasWonBattle;
         nodeUIController.NodeSlotController = parentNode.GetComponent<NodeSlotController>();
 

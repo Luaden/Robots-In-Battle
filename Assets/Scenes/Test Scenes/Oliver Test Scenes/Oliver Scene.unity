@@ -594,10 +594,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   nextNode: {fileID: 1048879452}
   pairNode: {fileID: 2138255540}
-  hasBeenAssignedToSlot: 0
-  hasBeenAssignedFighterPair: 0
+  hasBeenAssignedFighter: 0
+  hasWonBattle: 0
   isFinalNode: 0
+  nodeIndex: 0
+  currentFighter:
+    fighterName: 
   nodeUIController: {fileID: 0}
+  sOCompleteCharacter: []
+  pairNodeFighterData:
+    fighterName: 
   nodeType: 0
 --- !u!1 &464100643
 GameObject:
@@ -1059,10 +1065,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   nextNode: {fileID: 633100573}
   pairNode: {fileID: 500496119}
-  hasBeenAssignedToSlot: 0
-  hasBeenAssignedFighterPair: 0
+  hasBeenAssignedFighter: 0
+  hasWonBattle: 0
   isFinalNode: 0
+  nodeIndex: 0
+  currentFighter:
+    fighterName: 
   nodeUIController: {fileID: 0}
+  sOCompleteCharacter: []
+  pairNodeFighterData:
+    fighterName: 
   nodeType: 1
 --- !u!1 &507540973
 GameObject:
@@ -1117,10 +1129,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   nextNode: {fileID: 0}
   pairNode: {fileID: 0}
-  hasBeenAssignedToSlot: 0
-  hasBeenAssignedFighterPair: 0
+  hasBeenAssignedFighter: 0
+  hasWonBattle: 0
   isFinalNode: 0
+  nodeIndex: 0
+  currentFighter:
+    fighterName: 
   nodeUIController: {fileID: 0}
+  sOCompleteCharacter: []
+  pairNodeFighterData:
+    fighterName: 
   nodeType: 4
 --- !u!114 &507540976
 MonoBehaviour:
@@ -1248,10 +1266,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   nextNode: {fileID: 628738493}
   pairNode: {fileID: 628738493}
-  hasBeenAssignedToSlot: 0
-  hasBeenAssignedFighterPair: 0
+  hasBeenAssignedFighter: 0
+  hasWonBattle: 0
   isFinalNode: 1
+  nodeIndex: 0
+  currentFighter:
+    fighterName: 
   nodeUIController: {fileID: 0}
+  sOCompleteCharacter: []
+  pairNodeFighterData:
+    fighterName: 
   nodeType: 3
 --- !u!1 &633100568
 GameObject:
@@ -1358,10 +1382,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   nextNode: {fileID: 628738493}
   pairNode: {fileID: 908287458}
-  hasBeenAssignedToSlot: 0
-  hasBeenAssignedFighterPair: 0
+  hasBeenAssignedFighter: 0
+  hasWonBattle: 0
   isFinalNode: 0
+  nodeIndex: 0
+  currentFighter:
+    fighterName: 
   nodeUIController: {fileID: 0}
+  sOCompleteCharacter: []
+  pairNodeFighterData:
+    fighterName: 
   nodeType: 2
 --- !u!1 &665535998
 GameObject:
@@ -1585,10 +1615,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   nextNode: {fileID: 0}
   pairNode: {fileID: 0}
-  hasBeenAssignedToSlot: 0
-  hasBeenAssignedFighterPair: 0
+  hasBeenAssignedFighter: 0
+  hasWonBattle: 0
   isFinalNode: 0
+  nodeIndex: 0
+  currentFighter:
+    fighterName: 
   nodeUIController: {fileID: 0}
+  sOCompleteCharacter: []
+  pairNodeFighterData:
+    fighterName: 
   nodeType: 4
 --- !u!114 &675031142
 MonoBehaviour:
@@ -1811,7 +1847,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1792040185}
         m_TargetAssemblyTypeName: TournamentOverviewManager, Assembly-CSharp
-        m_MethodName: GoToBattle
+        m_MethodName: ConfirmBattleChoices
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -2330,10 +2366,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   nextNode: {fileID: 628738493}
   pairNode: {fileID: 633100573}
-  hasBeenAssignedToSlot: 0
-  hasBeenAssignedFighterPair: 0
+  hasBeenAssignedFighter: 0
+  hasWonBattle: 0
   isFinalNode: 0
+  nodeIndex: 0
+  currentFighter:
+    fighterName: 
   nodeUIController: {fileID: 0}
+  sOCompleteCharacter: []
+  pairNodeFighterData:
+    fighterName: 
   nodeType: 2
 --- !u!1 &1048879447
 GameObject:
@@ -2440,10 +2482,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   nextNode: {fileID: 633100573}
   pairNode: {fileID: 1048879452}
-  hasBeenAssignedToSlot: 0
-  hasBeenAssignedFighterPair: 0
+  hasBeenAssignedFighter: 0
+  hasWonBattle: 0
   isFinalNode: 0
+  nodeIndex: 0
+  currentFighter:
+    fighterName: 
   nodeUIController: {fileID: 0}
+  sOCompleteCharacter: []
+  pairNodeFighterData:
+    fighterName: 
   nodeType: 1
 --- !u!1 &1053754973
 GameObject:
@@ -2687,10 +2735,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   nextNode: {fileID: 0}
   pairNode: {fileID: 0}
-  hasBeenAssignedToSlot: 0
-  hasBeenAssignedFighterPair: 0
+  hasBeenAssignedFighter: 0
+  hasWonBattle: 0
   isFinalNode: 0
+  nodeIndex: 0
+  currentFighter:
+    fighterName: 
   nodeUIController: {fileID: 0}
+  sOCompleteCharacter: []
+  pairNodeFighterData:
+    fighterName: 
   nodeType: 4
 --- !u!114 &1089198747
 MonoBehaviour:
@@ -2818,10 +2872,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   nextNode: {fileID: 2145457246}
   pairNode: {fileID: 1541598478}
-  hasBeenAssignedToSlot: 0
-  hasBeenAssignedFighterPair: 0
+  hasBeenAssignedFighter: 0
+  hasWonBattle: 0
   isFinalNode: 0
+  nodeIndex: 0
+  currentFighter:
+    fighterName: 
   nodeUIController: {fileID: 0}
+  sOCompleteCharacter: []
+  pairNodeFighterData:
+    fighterName: 
   nodeType: 0
 --- !u!1001 &1136094206
 PrefabInstance:
@@ -3114,10 +3174,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   nextNode: {fileID: 0}
   pairNode: {fileID: 0}
-  hasBeenAssignedToSlot: 0
-  hasBeenAssignedFighterPair: 0
+  hasBeenAssignedFighter: 0
+  hasWonBattle: 0
   isFinalNode: 0
+  nodeIndex: 0
+  currentFighter:
+    fighterName: 
   nodeUIController: {fileID: 0}
+  sOCompleteCharacter: []
+  pairNodeFighterData:
+    fighterName: 
   nodeType: 4
 --- !u!114 &1181165364
 MonoBehaviour:
@@ -3230,10 +3296,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   nextNode: {fileID: 0}
   pairNode: {fileID: 0}
-  hasBeenAssignedToSlot: 0
-  hasBeenAssignedFighterPair: 0
+  hasBeenAssignedFighter: 0
+  hasWonBattle: 0
   isFinalNode: 0
+  nodeIndex: 0
+  currentFighter:
+    fighterName: 
   nodeUIController: {fileID: 0}
+  sOCompleteCharacter: []
+  pairNodeFighterData:
+    fighterName: 
   nodeType: 4
 --- !u!114 &1291613044
 MonoBehaviour:
@@ -3309,10 +3381,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   nextNode: {fileID: 0}
   pairNode: {fileID: 0}
-  hasBeenAssignedToSlot: 0
-  hasBeenAssignedFighterPair: 0
+  hasBeenAssignedFighter: 0
+  hasWonBattle: 0
   isFinalNode: 0
+  nodeIndex: 0
+  currentFighter:
+    fighterName: 
   nodeUIController: {fileID: 0}
+  sOCompleteCharacter: []
+  pairNodeFighterData:
+    fighterName: 
   nodeType: 4
 --- !u!114 &1306206117
 MonoBehaviour:
@@ -3657,10 +3735,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   nextNode: {fileID: 0}
   pairNode: {fileID: 0}
-  hasBeenAssignedToSlot: 0
-  hasBeenAssignedFighterPair: 0
+  hasBeenAssignedFighter: 0
+  hasWonBattle: 0
   isFinalNode: 0
+  nodeIndex: 0
+  currentFighter:
+    fighterName: 
   nodeUIController: {fileID: 0}
+  sOCompleteCharacter: []
+  pairNodeFighterData:
+    fighterName: 
   nodeType: 4
 --- !u!114 &1445301497
 MonoBehaviour:
@@ -3977,10 +4061,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   nextNode: {fileID: 2145457246}
   pairNode: {fileID: 1116599831}
-  hasBeenAssignedToSlot: 0
-  hasBeenAssignedFighterPair: 0
+  hasBeenAssignedFighter: 0
+  hasWonBattle: 0
   isFinalNode: 0
+  nodeIndex: 0
+  currentFighter:
+    fighterName: 
   nodeUIController: {fileID: 0}
+  sOCompleteCharacter: []
+  pairNodeFighterData:
+    fighterName: 
   nodeType: 0
 --- !u!1 &1548774097
 GameObject:
@@ -4111,10 +4201,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   nextNode: {fileID: 0}
   pairNode: {fileID: 0}
-  hasBeenAssignedToSlot: 0
-  hasBeenAssignedFighterPair: 0
+  hasBeenAssignedFighter: 0
+  hasWonBattle: 0
   isFinalNode: 0
+  nodeIndex: 0
+  currentFighter:
+    fighterName: 
   nodeUIController: {fileID: 0}
+  sOCompleteCharacter: []
+  pairNodeFighterData:
+    fighterName: 
   nodeType: 4
 --- !u!114 &1553655279
 MonoBehaviour:
@@ -4378,10 +4474,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   nextNode: {fileID: 500496119}
   pairNode: {fileID: 2126143002}
-  hasBeenAssignedToSlot: 0
-  hasBeenAssignedFighterPair: 0
+  hasBeenAssignedFighter: 0
+  hasWonBattle: 0
   isFinalNode: 0
+  nodeIndex: 0
+  currentFighter:
+    fighterName: 
   nodeUIController: {fileID: 0}
+  sOCompleteCharacter: []
+  pairNodeFighterData:
+    fighterName: 
   nodeType: 0
 --- !u!1 &1767429154
 GameObject:
@@ -4832,10 +4934,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   nextNode: {fileID: 2083423985}
   pairNode: {fileID: 2031536029}
-  hasBeenAssignedToSlot: 0
-  hasBeenAssignedFighterPair: 0
+  hasBeenAssignedFighter: 0
+  hasWonBattle: 0
   isFinalNode: 0
+  nodeIndex: 0
+  currentFighter:
+    fighterName: 
   nodeUIController: {fileID: 0}
+  sOCompleteCharacter: []
+  pairNodeFighterData:
+    fighterName: 
   nodeType: 0
 --- !u!1 &1999126183
 GameObject:
@@ -5018,10 +5126,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   nextNode: {fileID: 2083423985}
   pairNode: {fileID: 1951395509}
-  hasBeenAssignedToSlot: 0
-  hasBeenAssignedFighterPair: 0
+  hasBeenAssignedFighter: 0
+  hasWonBattle: 0
   isFinalNode: 0
+  nodeIndex: 0
+  currentFighter:
+    fighterName: 
   nodeUIController: {fileID: 0}
+  sOCompleteCharacter: []
+  pairNodeFighterData:
+    fighterName: 
   nodeType: 0
 --- !u!1 &2036851242
 GameObject:
@@ -5229,10 +5343,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   nextNode: {fileID: 908287458}
   pairNode: {fileID: 2145457246}
-  hasBeenAssignedToSlot: 0
-  hasBeenAssignedFighterPair: 0
+  hasBeenAssignedFighter: 0
+  hasWonBattle: 0
   isFinalNode: 0
+  nodeIndex: 0
+  currentFighter:
+    fighterName: 
   nodeUIController: {fileID: 0}
+  sOCompleteCharacter: []
+  pairNodeFighterData:
+    fighterName: 
   nodeType: 1
 --- !u!1 &2091781939
 GameObject:
@@ -5415,10 +5535,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   nextNode: {fileID: 500496119}
   pairNode: {fileID: 1738004299}
-  hasBeenAssignedToSlot: 0
-  hasBeenAssignedFighterPair: 0
+  hasBeenAssignedFighter: 0
+  hasWonBattle: 0
   isFinalNode: 0
+  nodeIndex: 0
+  currentFighter:
+    fighterName: 
   nodeUIController: {fileID: 0}
+  sOCompleteCharacter: []
+  pairNodeFighterData:
+    fighterName: 
   nodeType: 0
 --- !u!1 &2138255535
 GameObject:
@@ -5525,10 +5651,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   nextNode: {fileID: 1048879452}
   pairNode: {fileID: 431136446}
-  hasBeenAssignedToSlot: 0
-  hasBeenAssignedFighterPair: 0
+  hasBeenAssignedFighter: 0
+  hasWonBattle: 0
   isFinalNode: 0
+  nodeIndex: 0
+  currentFighter:
+    fighterName: 
   nodeUIController: {fileID: 0}
+  sOCompleteCharacter: []
+  pairNodeFighterData:
+    fighterName: 
   nodeType: 0
 --- !u!1 &2145457241
 GameObject:
@@ -5635,8 +5767,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   nextNode: {fileID: 908287458}
   pairNode: {fileID: 2083423985}
-  hasBeenAssignedToSlot: 0
-  hasBeenAssignedFighterPair: 0
+  hasBeenAssignedFighter: 0
+  hasWonBattle: 0
   isFinalNode: 0
+  nodeIndex: 0
+  currentFighter:
+    fighterName: 
   nodeUIController: {fileID: 0}
+  sOCompleteCharacter: []
+  pairNodeFighterData:
+    fighterName: 
   nodeType: 1
