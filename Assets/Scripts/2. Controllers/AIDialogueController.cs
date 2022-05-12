@@ -12,21 +12,27 @@ public class AIDialogueController : MonoBehaviour
     private string aILoseDialogue;
     private List<string> fightDialogue = new List<string>();
 
+    public delegate void onDialogueStarted();
+    public static event onDialogueStarted OnDialogueStarted;
+
     public delegate void onDialogueComplete();
     public static event onDialogueComplete OnDialogueComplete;
 
     public void PlayIntroDialogue()
     {
+        OnDialogueStarted?.Invoke();
         CombatManager.instance.PopupUIManager.HandlePopup(CombatManager.instance.OpponentFighter.FighterName, aIIntroDialogue);
     }
 
     public void PlayAIWinDialogue()
     {
+        OnDialogueStarted?.Invoke();
         CombatManager.instance.PopupUIManager.HandlePopup(CombatManager.instance.OpponentFighter.FighterName, aIWinDialogue);
     }
 
     public void PlayAILoseDialogue()
     {
+        OnDialogueStarted?.Invoke();
         CombatManager.instance.PopupUIManager.HandlePopup(CombatManager.instance.OpponentFighter.FighterName, aILoseDialogue);
     }
 
@@ -38,6 +44,7 @@ public class AIDialogueController : MonoBehaviour
         {
             roll = Random.Range(0, fightDialogue.Count);
 
+            OnDialogueStarted?.Invoke();
             CombatManager.instance.PopupUIManager.HandlePopup(CombatManager.instance.OpponentFighter.FighterName, fightDialogue[roll]);
         }
         else
@@ -70,6 +77,7 @@ public class AIDialogueController : MonoBehaviour
 
     private void OnAIDialoguePopupComplete()
     {
+        Debug.Log("Dialogue complete.");
         OnDialogueComplete?.Invoke();
     }
 }

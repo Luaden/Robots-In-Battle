@@ -91,6 +91,7 @@ public class GeneralHUDUIPopupController : BaseUIElement<GeneralHUDElement>
         if (newData == GeneralHUDElement.None)
         {
             popupObject.SetActive(false);
+            popupQueued = false;
             return true;
         }
 

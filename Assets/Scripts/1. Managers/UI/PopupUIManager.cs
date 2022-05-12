@@ -15,6 +15,7 @@ public class PopupUIManager : MonoBehaviour
     private AIDialoguePopupController aIDialoguePopupController;
     private EventDialoguePopupController eventDialoguePopupController;
 
+    private bool popupsEnabled = false;
     public float TextPace { get => textRate; }
     public float GeneralHUDPopupDelay { get => generalHUDPopupDelay; }
 
@@ -27,28 +28,53 @@ public class PopupUIManager : MonoBehaviour
         shopUIPopupController = GetComponentInChildren<ShopCardUIPopupController>();
         aIDialoguePopupController = GetComponentInChildren<AIDialoguePopupController>();
         eventDialoguePopupController = GetComponentInChildren<EventDialoguePopupController>();
+        
+        Debug.Log("Preparing to assign events.");
 
         if (CombatManager.instance != null)
-            CombatSequenceManager.OnCombatComplete += InactivatePopup;
+        {
+            Debug.Log("Assigning events.");
+            CombatSequenceManager.OnCombatStart += ClearPopups;
+            CombatSequenceManager.OnCombatStart += DisablePopups;
+
+            CombatSequenceManager.OnCombatComplete += ClearPopups;
+            CombatSequenceManager.OnCombatComplete += EnablePopups;
+
+            AIDialogueController.OnDialogueStarted += DisablePopups;
+            AIDialogueController.OnDialogueComplete += EnablePopups;
+        }
     }
 
     private void OnDestroy()
     {
         if (CombatManager.instance != null)
-            CombatSequenceManager.OnCombatComplete -= InactivatePopup;
+        {
+            CombatSequenceManager.OnCombatStart -= ClearPopups;
+            CombatSequenceManager.OnCombatStart -= DisablePopups;
+
+            CombatSequenceManager.OnCombatComplete -= ClearPopups;
+            CombatSequenceManager.OnCombatComplete -= EnablePopups;
+
+            AIDialogueController.OnDialogueStarted -= DisablePopups;
+            AIDialogueController.OnDialogueComplete -= EnablePopups;
+        }
     }
 
     public void HandlePopup(CardDataObject cardDataObject)
     {
-        cardUIPopupController.UpdateUI(cardDataObject);
+        if(popupsEnabled)
+            cardUIPopupController.UpdateUI(cardDataObject);
     }
 
     public void HandlePopup(SOItemDataObject sOItemDataObject)
     {
-        if (sOItemDataObject.ItemType == ItemType.Component)
-            componentUIPopupController.UpdateUI(sOItemDataObject);
-        else
-            cardUIPopupController.UpdateUI(new CardDataObject(sOItemDataObject));
+        if(popupsEnabled)
+        {
+            if (sOItemDataObject.ItemType == ItemType.Component)
+                componentUIPopupController.UpdateUI(sOItemDataObject);
+            else
+                cardUIPopupController.UpdateUI(new CardDataObject(sOItemDataObject));
+        }
     }
     public void HandlePopup(string name, string dialogue)
     {
@@ -62,10 +88,13 @@ public class PopupUIManager : MonoBehaviour
 
     public void HandlePopup(GeneralHUDElement elementType)
     {
-        generalHUDUIPopupController.UpdateUI(elementType);
+        if(popupsEnabled)
+        {
+            generalHUDUIPopupController.UpdateUI(elementType);
+        }
     }
 
-    public void InactivatePopup()
+    public void ClearPopups()
     {
         if(cardUIPopupController != null)
             cardUIPopupController.UpdateUI(null);
@@ -75,5 +104,17 @@ public class PopupUIManager : MonoBehaviour
             generalHUDUIPopupController.UpdateUI(GeneralHUDElement.None);
         if (shopUIPopupController != null)
             shopUIPopupController.UpdateUI(null);
+    }
+
+    private void DisablePopups()
+    {
+        Debug.Log("Disabling popups.");
+        popupsEnabled = false;
+    }
+
+    private void EnablePopups()
+    {
+        Debug.Log("Popups enabled.");
+        popupsEnabled = true;
     }
 }
