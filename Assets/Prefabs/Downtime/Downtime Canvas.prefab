@@ -182,14 +182,20 @@ MonoBehaviour:
   m_GameObject: {fileID: 317448313538508614}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2cffc60621361e84ea2be134d12f3690, type: 3}
+  m_Script: {fileID: 11500000, guid: ef1e0231c5ce26049b6c2414e18d556c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   popupObject: {fileID: 317448314165634561}
   nameText: {fileID: 6756387189064012360}
+  cardTextBlock: {fileID: 0}
+  componentTextBlock: {fileID: 0}
   descriptionText: {fileID: 3002029097949578053}
   energyCostText: {fileID: 4903612739960070592}
   damageDealtText: {fileID: 7865320799743239093}
+  healthText: {fileID: 0}
+  energyText: {fileID: 0}
+  cDMText: {fileID: 0}
+  elementText: {fileID: 0}
 --- !u!114 &6813220822173382366
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6814,6 +6820,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   textRate: 0.02
+  generalHUDPopupDelay: 0
 --- !u!1 &4705024972959743931
 GameObject:
   m_ObjectHideFlags: 0
