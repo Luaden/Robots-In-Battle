@@ -53,6 +53,8 @@ public class TournamentOverviewManager : MonoBehaviour
 
     public void InitTournamentScreen()
     {
+        //int index = 0;
+
         foreach (NodeDataObject n in nodeController.GetAllNodes())
         {
             if (n.nodeType == NodeDataObject.NodeType.Starter)
@@ -69,8 +71,13 @@ public class TournamentOverviewManager : MonoBehaviour
 
                 // add item to the fighter starter slots
                 nodeSlotManager.AddItemToCollection(nodeUIObject, n.GetComponent<NodeSlotController>());
+
+                //FighterDataObject fighter = GameManager.instance.FighterDatas[index];
+                //nodeDataObject.Init(fighter);
                 nodeDataObject.Init();
                 nodeUIObject.InitUI(nodeDataObject);
+
+
 
                 nodeUIGameObject.SetActive(true);
             }

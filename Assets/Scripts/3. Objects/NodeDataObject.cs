@@ -6,18 +6,18 @@ public class NodeDataObject : MonoBehaviour
     protected NodeDataObject previousNode;
     [SerializeField] protected NodeDataObject nextNode;
     [SerializeField] protected NodeDataObject pairNode;
-    protected NodeDataObject parentNode;
+    [SerializeField] protected NodeDataObject parentNode;
     [SerializeField] private bool hasBeenAssignedFighter;
     [SerializeField] private bool hasWonBattle;
     [SerializeField] protected bool isFinalNode;
     [SerializeField] private int nodeIndex;
 
-    [SerializeField] protected FighterDataObject currentFighter;
+    [SerializeField] protected FighterDataObject fighterData;
     [SerializeField] NodeUIController nodeUIController;
 
     //testing
     [SerializeField] protected SOCompleteCharacter[] sOCompleteCharacter;
-    public FighterDataObject FighterDataObject { get => currentFighter; }
+    public FighterDataObject FighterDataObject { get => fighterData; }
     public NodeUIController NodeUIController { get => nodeUIController; set => nodeUIController = value; }
     public NodeDataObject PreviousNode { get => previousNode; set => previousNode = value; }
     public NodeDataObject NextNode { get => nextNode; set => nextNode = value; }
@@ -46,16 +46,30 @@ public class NodeDataObject : MonoBehaviour
     }
     public NodeType nodeType;
 
+    public void Init(FighterDataObject fighter)
+    {
+        parentNode = transform.parent.GetComponent<NodeDataObject>();
+        fighterData = fighter;
+
+/*        #region testing
+        int randomNum = Random.Range(0, 3);
+        fighterData = new FighterDataObject(sOCompleteCharacter[randomNum]);
+        #endregion
+*/
+        nodeIndex = parentNode.NodeIndex;
+        fighterData.FighterNodeIndex = nodeIndex;
+    }
     public void Init()
     {
         parentNode = transform.parent.GetComponent<NodeDataObject>();
 
-        int randomNum = Random.Range(0, 3);
-        currentFighter = new FighterDataObject(sOCompleteCharacter[randomNum]);
-        Debug.Log(sOCompleteCharacter[randomNum].PilotName);
+        #region testing
+        int randomNum = Random.Range(0, sOCompleteCharacter.Length);
+        fighterData = new FighterDataObject(sOCompleteCharacter[randomNum]);
+        #endregion
 
         nodeIndex = parentNode.NodeIndex;
-        currentFighter.FighterNodeIndex = nodeIndex;
+        fighterData.FighterNodeIndex = nodeIndex;
     }
 
     public void SetActive()
