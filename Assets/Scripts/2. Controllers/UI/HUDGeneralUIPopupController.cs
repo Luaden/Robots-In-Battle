@@ -3,72 +3,72 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 
-public class GeneralHUDUIPopupController : BaseUIElement<GeneralHUDElement>
+public class HUDGeneralUIPopupController : BaseUIElement<HUDGeneralElement>
 {
     [SerializeField] private GameObject popupObject;
     [SerializeField] private TMP_Text nameText;
     [SerializeField] private TMP_Text descriptionText;
 
-    [SerializeField] private SOHUDElementPopupObject highChannelPopupObject;
-    [SerializeField] private SOHUDElementPopupObject midChannelPopupObject;
-    [SerializeField] private SOHUDElementPopupObject lowChannelPopupObject;
+    [SerializeField] private SOGeneralHUDElementDescription highChannelPopupObject;
+    [SerializeField] private SOGeneralHUDElementDescription midChannelPopupObject;
+    [SerializeField] private SOGeneralHUDElementDescription lowChannelPopupObject;
 
-    [SerializeField] private SOHUDElementPopupObject healthPopupObject;
-    [SerializeField] private SOHUDElementPopupObject energyPopupObject;
+    [SerializeField] private SOGeneralHUDElementDescription healthPopupObject;
+    [SerializeField] private SOGeneralHUDElementDescription energyPopupObject;
 
-    [SerializeField] private SOHUDElementPopupObject attackSlotPopupObject;
-    [SerializeField] private SOHUDElementPopupObject defenseSlotPopupObject;
+    [SerializeField] private SOGeneralHUDElementDescription attackSlotPopupObject;
+    [SerializeField] private SOGeneralHUDElementDescription defenseSlotPopupObject;
 
     private float currentTimer;
     private bool popupQueued;
 
 
-    public override void UpdateUI(GeneralHUDElement primaryData)
+    public override void UpdateUI(HUDGeneralElement primaryData)
     {
         if (ClearedIfEmpty(primaryData))
             return;
 
         switch (primaryData)
         {
-            case GeneralHUDElement.None:
+            case HUDGeneralElement.None:
                 break;
-            case GeneralHUDElement.HighChannel:
+            case HUDGeneralElement.HighChannel:
                 nameText.text = highChannelPopupObject.NameText;
                 descriptionText.text = highChannelPopupObject.DescriptionText;
                 popupQueued = true;
                 break;
 
-            case GeneralHUDElement.MidChannel:
+            case HUDGeneralElement.MidChannel:
                 nameText.text = midChannelPopupObject.NameText;
                 descriptionText.text = midChannelPopupObject.DescriptionText;
                 popupQueued = true;
                 break;
             
-            case GeneralHUDElement.LowChannel:
+            case HUDGeneralElement.LowChannel:
                 nameText.text = lowChannelPopupObject.NameText;
                 descriptionText.text = lowChannelPopupObject.DescriptionText;
                 popupQueued = true;
                 break;
 
-            case GeneralHUDElement.Health:
+            case HUDGeneralElement.Health:
                 nameText.text = healthPopupObject.NameText;
                 descriptionText.text = healthPopupObject.DescriptionText;
                 popupQueued = true;
                 break;
 
-            case GeneralHUDElement.Energy:
+            case HUDGeneralElement.Energy:
                 nameText.text = energyPopupObject.NameText;
                 descriptionText.text = energyPopupObject.DescriptionText;
                 popupQueued = true;
                 break;
 
-            case GeneralHUDElement.AttackSlot:
+            case HUDGeneralElement.AttackSlot:
                 nameText.text = attackSlotPopupObject.NameText;
                 descriptionText.text = attackSlotPopupObject.DescriptionText;
                 popupQueued = true;
                 break;
 
-            case GeneralHUDElement.DefenseSlot:
+            case HUDGeneralElement.DefenseSlot:
                 nameText.text = defenseSlotPopupObject.NameText;
                 descriptionText.text = defenseSlotPopupObject.DescriptionText;
                 popupQueued = true;
@@ -84,11 +84,11 @@ public class GeneralHUDUIPopupController : BaseUIElement<GeneralHUDElement>
         }
     }
 
-    protected override bool ClearedIfEmpty(GeneralHUDElement newData)
+    protected override bool ClearedIfEmpty(HUDGeneralElement newData)
     {
         currentTimer = 0f;
 
-        if (newData == GeneralHUDElement.None)
+        if (newData == HUDGeneralElement.None)
         {
             popupObject.SetActive(false);
             popupQueued = false;

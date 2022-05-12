@@ -178,7 +178,7 @@ public enum EventObjective
     EndFightWithEquippedItem,
 }
 
-public enum GeneralHUDElement
+public enum HUDGeneralElement
 {
     None,
 
@@ -205,8 +205,10 @@ public enum MechHUDElement
     OpponentMechLowChannel,
 }
 
-public enum BuffHUDElement
+public enum HUDBuffElement
 {
+    None,
+
     //Buffs
     Shield,
     DamageModifier,

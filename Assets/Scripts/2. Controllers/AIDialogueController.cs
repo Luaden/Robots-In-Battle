@@ -77,7 +77,6 @@ public class AIDialogueController : MonoBehaviour
 
     private void OnAIDialoguePopupComplete()
     {
-        Debug.Log("Dialogue complete.");
         OnDialogueComplete?.Invoke();
     }
 }

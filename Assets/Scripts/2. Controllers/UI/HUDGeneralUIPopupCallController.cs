@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class GeneralHUDPopupCallController : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
+public class HUDGeneralUIPopupCallController : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
-    [SerializeField] private GeneralHUDElement elementType;
+    [SerializeField] private HUDGeneralElement elementType;
 
     public void OnPointerEnter(PointerEventData eventData)
     {
@@ -14,6 +14,6 @@ public class GeneralHUDPopupCallController : MonoBehaviour, IPointerEnterHandler
 
     public void OnPointerExit(PointerEventData eventData)
     {
-        CombatManager.instance.PopupUIManager.HandlePopup(GeneralHUDElement.None);
+        CombatManager.instance.PopupUIManager.HandlePopup(HUDGeneralElement.None);
     }
 }

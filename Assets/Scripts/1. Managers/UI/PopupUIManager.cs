@@ -10,8 +10,8 @@ public class PopupUIManager : MonoBehaviour
     private CombatCardUIPopupController cardUIPopupController;
     private ShopComponentUIPopupController componentUIPopupController;
     private ShopCardUIPopupController shopUIPopupController;
-    private GeneralHUDUIPopupController generalHUDUIPopupController;
-    private HUDPopupController hudPopUpController;
+    private HUDGeneralUIPopupController hudGeneralUIPopupController;
+    private HUDBuffUIPopupController hudBuffUIPopupController;
     private AIDialoguePopupController aIDialoguePopupController;
     private EventDialoguePopupController eventDialoguePopupController;
 
@@ -23,11 +23,11 @@ public class PopupUIManager : MonoBehaviour
     {
         cardUIPopupController = GetComponentInChildren<CombatCardUIPopupController>();
         componentUIPopupController = GetComponentInChildren<ShopComponentUIPopupController>();
-        generalHUDUIPopupController = GetComponentInChildren<GeneralHUDUIPopupController>();
-        hudPopUpController = GetComponentInChildren<HUDPopupController>();
+        hudGeneralUIPopupController = GetComponentInChildren<HUDGeneralUIPopupController>();
         shopUIPopupController = GetComponentInChildren<ShopCardUIPopupController>();
         aIDialoguePopupController = GetComponentInChildren<AIDialoguePopupController>();
         eventDialoguePopupController = GetComponentInChildren<EventDialoguePopupController>();
+        hudBuffUIPopupController = GetComponentInChildren<HUDBuffUIPopupController>();
         
 
         if (CombatManager.instance != null)
@@ -84,11 +84,19 @@ public class PopupUIManager : MonoBehaviour
         eventDialoguePopupController.UpdateUI(eventDialogue);
     }
 
-    public void HandlePopup(GeneralHUDElement elementType)
+    public void HandlePopup(HUDGeneralElement elementType)
     {
         if(popupsEnabled)
         {
-            generalHUDUIPopupController.UpdateUI(elementType);
+            hudGeneralUIPopupController.UpdateUI(elementType);
+        }
+    }
+
+    public void HandlePopup(HUDBuffElement elementType)
+    {
+        if(popupsEnabled)
+        {
+            hudBuffUIPopupController.UpdateUI(elementType);
         }
     }
 
@@ -98,8 +106,10 @@ public class PopupUIManager : MonoBehaviour
             cardUIPopupController.UpdateUI(null);
         if (componentUIPopupController != null)
             componentUIPopupController.UpdateUI(null);
-        if(generalHUDUIPopupController != null)
-            generalHUDUIPopupController.UpdateUI(GeneralHUDElement.None);
+        if(hudGeneralUIPopupController != null)
+            hudGeneralUIPopupController.UpdateUI(HUDGeneralElement.None);
+        if (hudBuffUIPopupController != null)
+            hudBuffUIPopupController.UpdateUI(HUDBuffElement.None);
         if (shopUIPopupController != null)
             shopUIPopupController.UpdateUI(null);
     }
