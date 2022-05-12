@@ -17,11 +17,14 @@ public class DowntimeManager : MonoBehaviour
     private ShoppingCartUISlotManager shoppingCartUISlotManager;
     private InventoryUISlotManager inventoryUISlotManager;
     private PopupUIManager popupUIManager;
+    private ShopCameraBoomMoveController cameraBoomMoveController;
 
     public static DowntimeManager instance;
 
+    private bool shopInitialized = false;
     public int RepairCost { get => repairCost; }
     public int MinimumShopItemCount { get => minimumShopItemCount; }
+    public bool ShopInitialized { get => shopInitialized; set => shopInitialized = value; }
 
     public ShopManager ShopManager { get => shopManager; }
     public ShopUISlotManager ShopUISlotManager { get => shopUISlotManager; }
@@ -30,9 +33,16 @@ public class DowntimeManager : MonoBehaviour
     public ShoppingCartUISlotManager ShoppingCartUISlotManager { get => shoppingCartUISlotManager; }
     public InventoryUISlotManager InventoryUISlotManager { get => inventoryUISlotManager; }
     public PopupUIManager PopupUIManager { get => popupUIManager; }
+    public ShopCameraBoomMoveController CameraBoomMoveController { get => cameraBoomMoveController; }
 
     public delegate void onLoadCombatScene();
     public static event onLoadCombatScene OnLoadCombatScene;
+
+    public delegate void onMoveToInventory();
+    public static event onMoveToInventory OnMoveToInventory;
+
+    public delegate void onMoveToShop();
+    public static event onMoveToShop OnMoveToShop;
 
     private void Awake()
     {
@@ -50,11 +60,22 @@ public class DowntimeManager : MonoBehaviour
         shoppingCartUISlotManager = FindObjectOfType<ShoppingCartUISlotManager>(true);
         shopItemUIBuildController = FindObjectOfType<ShopItemUIBuildController>(true);
         inventoryUISlotManager = FindObjectOfType<InventoryUISlotManager>(true);
+        cameraBoomMoveController = FindObjectOfType<ShopCameraBoomMoveController>(true);
     }
 
     public void InitializeShop()
     {
         instance.ShopManager.InitializeShop();
+    }
+
+    public void MoveToInventory()
+    {
+        OnMoveToInventory?.Invoke();
+    }
+
+    public void MoveToShop()
+    {
+        OnMoveToShop?.Invoke();
     }
 
     public void LoadCombatScene()

@@ -7,13 +7,15 @@ public class EventManager : MonoBehaviour
     [SerializeField] private GameObject workShopMenu;
     [SerializeField] private List<SOEventObject> possibleEvents;
     [SerializeField] [Range(0, 100)] private int chanceToSpawnEvent;
+    
     private List<SOEventObject> uncheckedAcceptedEvents;
     private List<SOEventObject> newAcceptedEvents;
 
     private SOEventObject currentEvent;
     private bool hasRolledNewEvent = false;
 
-
+    public delegate void onEventsComplete();
+    public static event onEventsComplete OnEventsCompleted;
 
     public void RemoveEventDeadEnd()
     {
@@ -71,7 +73,6 @@ public class EventManager : MonoBehaviour
     private void LoadEventLog()
     {
         uncheckedAcceptedEvents = GameManager.instance.ActiveEvents;
-        Debug.Log("Found " + uncheckedAcceptedEvents.Count + " unchecked events.");
         CheckEventLog();
     }
 
@@ -97,15 +98,19 @@ public class EventManager : MonoBehaviour
             return;
         }
 
-        if (possibleEvents.Count > 0 && !hasRolledNewEvent)
+        if (!hasRolledNewEvent)
         {
+            if(possibleEvents.Count > 0)
+            {
+                RollForNewEvent();
+            }
+            
             hasRolledNewEvent = true;
-            RollForNewEvent();
         }
 
         if (hasRolledNewEvent && uncheckedAcceptedEvents.Count == 0 && currentEvent == null)
         {
-            workShopMenu.SetActive(true);
+            OnEventsCompleted?.Invoke();
         }
     }
 

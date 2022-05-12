@@ -11,6 +11,7 @@ public class PlayerDataObject
     private List<SOItemDataObject> playerDeck;
     private MechObject playerMech;
     private List<MechComponentDataObject> playerInventory;
+    private FighterDataObject playerFighterData;
     private List<FighterDataObject> otherFighters;
 
     private SOCompleteCharacter completeCharacterBase;
@@ -31,7 +32,7 @@ public class PlayerDataObject
     public int CurrentWinCount { get => currentWinCount; set => currentWinCount = value; }
     public float TimeLeftToSpend { get => timeLeftToSpend; set => timeLeftToSpend = value; }
     public int CurrencyToSpend { get => currencyToSpend; set => currencyToSpend = value; }
-
+    public FighterDataObject PlayerFighterData { get => playerFighterData; }
     public List<FighterDataObject> OtherFighters { get => otherFighters; set => otherFighters = value; }
 
     public PlayerDataObject()

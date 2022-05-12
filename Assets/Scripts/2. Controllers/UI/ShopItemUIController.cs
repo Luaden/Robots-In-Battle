@@ -209,7 +209,7 @@ public class ShopItemUIController : MonoBehaviour, IPointerDownHandler, IPointer
 
     public void OnPointerExit(PointerEventData eventData)
     {
-        DowntimeManager.instance.PopupUIManager.ClearPopups();
+        DowntimeManager.instance.PopupUIManager.ClearAllPopups();
     }
 
     public virtual void OnBeginDrag(PointerEventData eventData)

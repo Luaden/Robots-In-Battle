@@ -80,6 +80,29 @@ public class GameManager : MonoBehaviour
         playerData.CurrentWinCount += 1;
     }
 
+    public void LoadPlayer(PlayerDataObject playerDataObject = null)
+    {
+        if (playerData != null)
+            return;
+
+        if (playerDataObject != null)
+        {
+            playerData = playerDataObject;
+            return;
+        }
+        else
+        {
+            if (starterPilot != null)
+            {
+                Debug.Log("Creating new pilot.");
+                instance.playerData = new PlayerDataObject(starterPilot);
+                return;
+            }
+
+            Debug.Log("No starter pilot was found.");
+        }
+    }
+
     private void Awake()
     {
         if (instance != null && instance != this)
@@ -104,29 +127,6 @@ public class GameManager : MonoBehaviour
         sceneController = GetComponent<SceneController>();
 
         instance.LoadPlayer();
-    }
-
-    public void LoadPlayer(PlayerDataObject playerDataObject = null)
-    {
-        if (playerData != null)
-            return;
-
-        if (playerDataObject != null)
-        {
-            playerData = playerDataObject;
-            return;
-        }
-        else
-        {
-            if (starterPilot != null)
-            {
-                Debug.Log("Creating new pilot.");
-                instance.playerData = new PlayerDataObject(starterPilot);
-                return;
-            }
-
-            Debug.Log("No starter pilot was found.");
-        }
     }
 
 
@@ -319,6 +319,12 @@ public class GameManager : MonoBehaviour
             instance.playerData.TimeLeftToSpend = instance.timeBetweenFights;
             OnUpdatePlayerCurrencies?.Invoke();
         }
+    }
+
+    private void CreateFighters()
+    {
+        //Create all fighters
+        //Store all fighters in playerdata
     }
 }
 

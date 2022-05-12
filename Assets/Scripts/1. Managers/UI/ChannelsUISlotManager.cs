@@ -12,7 +12,7 @@ public class ChannelsUISlotManager : BaseSlotManager<CardUIController>
     [SerializeField] private BaseSlotController<CardUIController> playerAttackSlotA;
     [SerializeField] private BaseSlotController<CardUIController> playerAttackSlotB;
 
-    [Range(.01f, 1f)] [SerializeField] private float channelFadeTimeModifier;
+    [Range(.01f, 2f)] [SerializeField] private float channelFadeTimeModifier;
 
 
     private CardChannelPairObject cardChannelPairObjectA;

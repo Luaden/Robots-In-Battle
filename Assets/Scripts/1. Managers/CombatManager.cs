@@ -332,6 +332,7 @@ public class CombatManager : MonoBehaviour
         deckManager.SetPlayerDeck(newPlayerFighter.FighterDeck);
 
         mechHUDManager.SetPlayerMaxStats(playerFighter.FighterMech.MechMaxHP, playerFighter.FighterMech.MechMaxEnergy);
+        mechHUDManager.UpdatePlayerHP(playerFighter.FighterMech.MechCurrentHP);
         mechHUDManager.UpdatePlayerPilotImage(playerFighter.FighterSprite);
     }
 

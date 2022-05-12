@@ -12,6 +12,7 @@ public class PopupUIManager : MonoBehaviour
     private ShopCardUIPopupController shopUIPopupController;
     private HUDGeneralUIPopupController hudGeneralUIPopupController;
     private HUDBuffUIPopupController hudBuffUIPopupController;
+    private HUDMechComponentPopupController hudMechComponentPopupController;
     private AIDialoguePopupController aIDialoguePopupController;
     private EventDialoguePopupController eventDialoguePopupController;
 
@@ -28,14 +29,14 @@ public class PopupUIManager : MonoBehaviour
         aIDialoguePopupController = GetComponentInChildren<AIDialoguePopupController>();
         eventDialoguePopupController = GetComponentInChildren<EventDialoguePopupController>();
         hudBuffUIPopupController = GetComponentInChildren<HUDBuffUIPopupController>();
-        
+        hudMechComponentPopupController = GetComponentInChildren<HUDMechComponentPopupController>();
 
         if (CombatManager.instance != null)
         {
-            CombatSequenceManager.OnCombatStart += ClearPopups;
+            CombatSequenceManager.OnCombatStart += ClearAllPopups;
             CombatSequenceManager.OnCombatStart += DisablePopups;
 
-            CombatSequenceManager.OnCombatComplete += ClearPopups;
+            CombatSequenceManager.OnCombatComplete += ClearAllPopups;
             CombatSequenceManager.OnCombatComplete += EnablePopups;
 
             AIDialogueController.OnDialogueStarted += DisablePopups;
@@ -47,10 +48,10 @@ public class PopupUIManager : MonoBehaviour
     {
         if (CombatManager.instance != null)
         {
-            CombatSequenceManager.OnCombatStart -= ClearPopups;
+            CombatSequenceManager.OnCombatStart -= ClearAllPopups;
             CombatSequenceManager.OnCombatStart -= DisablePopups;
 
-            CombatSequenceManager.OnCombatComplete -= ClearPopups;
+            CombatSequenceManager.OnCombatComplete -= ClearAllPopups;
             CombatSequenceManager.OnCombatComplete -= EnablePopups;
 
             AIDialogueController.OnDialogueStarted -= DisablePopups;
@@ -62,6 +63,11 @@ public class PopupUIManager : MonoBehaviour
     {
         if(popupsEnabled)
             cardUIPopupController.UpdateUI(cardDataObject);
+    }
+
+    public void ClearCardUIPopup()
+    {
+        cardUIPopupController.UpdateUI(null);
     }
 
     public void HandlePopup(SOItemDataObject sOItemDataObject)
@@ -76,6 +82,7 @@ public class PopupUIManager : MonoBehaviour
     }
     public void HandlePopup(string name, string dialogue)
     {
+        ClearAllPopups();
         aIDialoguePopupController.UpdateUI(name, dialogue);
     }
 
@@ -100,7 +107,16 @@ public class PopupUIManager : MonoBehaviour
         }
     }
 
-    public void ClearPopups()
+    public void HandlePopup(MechSelect character)
+    {
+        if(popupsEnabled)
+        {
+            Debug.Log("Displaying Mech Readout");
+            hudMechComponentPopupController.UpdateUI(character);
+        }
+    }
+
+    public void ClearAllPopups()
     {
         if(cardUIPopupController != null)
             cardUIPopupController.UpdateUI(null);
@@ -110,6 +126,8 @@ public class PopupUIManager : MonoBehaviour
             hudGeneralUIPopupController.UpdateUI(HUDGeneralElement.None);
         if (hudBuffUIPopupController != null)
             hudBuffUIPopupController.UpdateUI(HUDBuffElement.None);
+        if (hudMechComponentPopupController != null)
+            hudMechComponentPopupController.UpdateUI(MechSelect.None);
         if (shopUIPopupController != null)
             shopUIPopupController.UpdateUI(null);
     }

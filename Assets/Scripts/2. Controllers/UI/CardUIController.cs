@@ -118,7 +118,7 @@ public class CardUIController : MonoBehaviour, IPointerDownHandler, IPointerUpHa
 
     public virtual void OnPointerExit(PointerEventData eventData)
     {
-        CombatManager.instance.PopupUIManager.ClearPopups();
+        CombatManager.instance.PopupUIManager.ClearCardUIPopup();
     }
 
     public virtual void OnPointerDown(PointerEventData eventData)
@@ -127,7 +127,7 @@ public class CardUIController : MonoBehaviour, IPointerDownHandler, IPointerUpHa
         {
             isPickedUp = true;
             transform.SetParent(cardSlotController.SlotManager.MainCanvas.transform);
-            OnPickUp.Invoke(cardData.PossibleChannels);
+            OnPickUp?.Invoke(cardData.PossibleChannels);
         }
     }
 
@@ -137,7 +137,7 @@ public class CardUIController : MonoBehaviour, IPointerDownHandler, IPointerUpHa
         {
             isPickedUp = false;
             transform.SetParent(previousParentObject);
-            OnPickUp.Invoke(Channels.None);
+            OnPickUp?.Invoke(Channels.None);
         }
     }
 

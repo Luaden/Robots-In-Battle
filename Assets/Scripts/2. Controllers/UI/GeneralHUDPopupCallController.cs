@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class HUDGeneralUIPopupCallController : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
+public class GeneralHUDPopupCallController : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
     [SerializeField] private HUDGeneralElement elementType;
 
