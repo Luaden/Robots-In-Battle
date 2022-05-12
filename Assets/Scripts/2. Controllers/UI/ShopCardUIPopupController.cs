@@ -7,8 +7,6 @@ public class ShopCardUIPopupController : BaseUIElement<SOItemDataObject>
     [Header("General Popup Attributes")]
     [SerializeField] protected GameObject popupObject;
     [SerializeField] private TMP_Text nameText;
-
-    [Header("Card Popup Text")]
     [SerializeField] private TMP_Text descriptionText;
     [SerializeField] private TMP_Text energyCostText;
     [SerializeField] private TMP_Text damageDealtText;
@@ -19,10 +17,13 @@ public class ShopCardUIPopupController : BaseUIElement<SOItemDataObject>
         if (ClearedIfEmpty(primaryData))
             return;
 
-        nameText.text = primaryData.ItemName;
-        descriptionText.text = primaryData.ItemDescription;
-        energyCostText.text = primaryData.EnergyCost.ToString();
-        damageDealtText.text = primaryData.BaseDamage.ToString();
+        if (primaryData.ItemType == ItemType.Card)
+        {
+            nameText.text = primaryData.ItemName;
+            descriptionText.text = primaryData.ItemDescription;
+            energyCostText.text = primaryData.EnergyCost.ToString();
+            damageDealtText.text = primaryData.BaseDamage.ToString();
+        }
 
         popupObject.SetActive(true);
     }
@@ -38,6 +39,7 @@ public class ShopCardUIPopupController : BaseUIElement<SOItemDataObject>
             damageDealtText.text = string.Empty;
 
             popupObject.SetActive(false);
+
             return true;
         }
 

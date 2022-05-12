@@ -144,6 +144,13 @@ public enum CharacterSelect
     Opponent
 }
 
+public enum MechSelect
+{
+    None,
+    Player,
+    Opponent
+}
+
 public enum PilotType
 {
     Unique,

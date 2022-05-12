@@ -13,8 +13,6 @@ public class CameraMoveController : MonoBehaviour
 
     [SerializeField] private float xRotationMax = 10;
     [SerializeField] private float yRotationMax = 10;
-
-    public bool up = true;
     [SerializeField] private Animator cameraAnim;
 
     private Vector3 startPos;
@@ -23,8 +21,8 @@ public class CameraMoveController : MonoBehaviour
     private float xMax;
     private float yMax;
     private float yMin;
-    private bool playerHasControl = true;
-    private bool cameraMovementDisabled = false;
+    [SerializeField] private bool playerHasControl = true;
+    [SerializeField] private bool cameraMovementDisabled = false;
 
     private Gyroscope gyroscope;
     private bool gyroEnabled = false;
@@ -46,7 +44,7 @@ public class CameraMoveController : MonoBehaviour
         xMax = transform.position.x + xDriftMaximum;
         yMax = transform.position.y + yDriftMaximum;
         yMin = transform.position.y - yDriftMinimum;
-        startPos = transform.position;
+        startPos = transform.localPosition;
         startRot = transform.rotation;
 
 
@@ -75,7 +73,7 @@ public class CameraMoveController : MonoBehaviour
 
     public void AttackingOpponent()
     {
-        if(!cameraMovementDisabled)
+        if (!cameraMovementDisabled)
         {
             if (gyroEnabled)
                 transform.rotation = startRot;
@@ -89,7 +87,7 @@ public class CameraMoveController : MonoBehaviour
 
     public void AttackingPlayer()
     {
-        if(!cameraMovementDisabled)
+        if (!cameraMovementDisabled)
         {
             if (gyroEnabled)
                 transform.rotation = startRot;
@@ -98,7 +96,7 @@ public class CameraMoveController : MonoBehaviour
 
             playerHasControl = false;
             cameraAnim.SetTrigger("isAttackingPlayer");
-        }        
+        }
     }
 
     private void DriftCameraWithMouse()
@@ -109,7 +107,7 @@ public class CameraMoveController : MonoBehaviour
                                   Mathf.Clamp(Input.mousePosition.y - (Screen.height / 2), yMin, yMax),
                                   startPos.z);
 
-            transform.position = Vector3.Slerp(Camera.main.transform.position, mousePosMax, mouseDriftSpeed * Time.deltaTime);
+            transform.localPosition = Vector3.Slerp(Camera.main.transform.position, mousePosMax, mouseDriftSpeed * Time.deltaTime);
         }
 
         if (cameraMovementDisabled)
@@ -123,7 +121,7 @@ public class CameraMoveController : MonoBehaviour
 
     private void DriftCameraWithGyro()
     {
-        if (playerHasControl && !cameraMovementDisabled)
+        if (playerHasControl&& !cameraMovementDisabled)
         {
             float rotationXInput = gyroscope.rotationRateUnbiased.x;
             Quaternion xQuaternion = Quaternion.AngleAxis(rotationXInput, -Vector3.right);
@@ -152,6 +150,7 @@ public class CameraMoveController : MonoBehaviour
 
     private void EnablePlayerHasControl()
     {
+        Debug.Log("Player has control again.");
         playerHasControl = true;
     }
 }
