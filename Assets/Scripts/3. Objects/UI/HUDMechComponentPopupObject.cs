@@ -33,7 +33,7 @@ public class HUDMechComponentPopupObject : MonoBehaviour
         {
             MechComponentDataObject armsComponent = CombatManager.instance.OpponentFighter.FighterMech.MechArms;
             componentHealth = armsComponent.ComponentCurrentHP;
-            componentHealthText.text = componentHealth.ToString();
+            componentHealthText.text = Mathf.Clamp(componentHealth, 0, int.MaxValue).ToString();
 
             switch (armsComponent.ComponentElement)
             {
@@ -62,7 +62,7 @@ public class HUDMechComponentPopupObject : MonoBehaviour
         {
             MechComponentDataObject torsoComponent = CombatManager.instance.OpponentFighter.FighterMech.MechTorso;
             componentHealth = torsoComponent.ComponentCurrentHP;
-            componentHealthText.text = componentHealth.ToString();
+            componentHealthText.text = Mathf.Clamp(componentHealth, 0, int.MaxValue).ToString();
 
             switch (torsoComponent.ComponentElement)
             {
@@ -91,7 +91,7 @@ public class HUDMechComponentPopupObject : MonoBehaviour
         {
             MechComponentDataObject legsComponent = CombatManager.instance.OpponentFighter.FighterMech.MechLegs;
             componentHealth = legsComponent.ComponentCurrentHP;
-            componentHealthText.text = componentHealth.ToString();
+            componentHealthText.text = Mathf.Clamp(componentHealth, 0, int.MaxValue).ToString();
 
             switch (legsComponent.ComponentElement)
             {

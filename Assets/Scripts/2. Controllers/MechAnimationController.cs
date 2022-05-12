@@ -23,9 +23,9 @@ public class MechAnimationController : MonoBehaviour
             animator.ResetTrigger("isKicking");
             animator.ResetTrigger("isGuarding");
             animator.ResetTrigger("isCountering");
-            animator.ResetTrigger("isDamaged");
-            animator.ResetTrigger("isWinning");
-            animator.ResetTrigger("isLosing");
+            //animator.ResetTrigger("isDamaged");
+            //animator.ResetTrigger("isWinning");
+            //animator.ResetTrigger("isLosing");
             animator.SetTrigger("isIdling");
             isAnimating = false;
 
@@ -58,15 +58,21 @@ public class MechAnimationController : MonoBehaviour
                 break;
 
             case AnimationType.Damaged:
-                animator.SetTrigger("isDamaged");
+                //animator.SetTrigger("isDamaged");
+                animator.SetTrigger("isIdling");
+                isAnimating = false;
                 break;
 
             case AnimationType.Win:
-                animator.SetTrigger("isWinning");
+                //animator.SetTrigger("isWinning");
+                animator.SetTrigger("isIdling");
+                isAnimating = false;
                 break;
 
             case AnimationType.Lose:
-                animator.SetTrigger("isLosing");
+                //animator.SetTrigger("isLosing");
+                animator.SetTrigger("isIdling"); 
+                isAnimating = false;
                 break;
         }
     }

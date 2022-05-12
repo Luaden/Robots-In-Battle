@@ -5,10 +5,21 @@ using UnityEngine.EventSystems;
 
 public class GeneralHUDPopupCallController : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
+    [SerializeField] private bool canBeBlockedBySlotFill;
+
     [SerializeField] private HUDGeneralElement elementType;
 
     public void OnPointerEnter(PointerEventData eventData)
     {
+        if(canBeBlockedBySlotFill)
+        {
+            if (GetComponent<BaseSlotController<CardUIController>>().CurrentSlottedItem != null)
+                return;
+ 
+            CombatManager.instance.PopupUIManager.HandlePopup(elementType);
+            return;
+        }
+
         CombatManager.instance.PopupUIManager.HandlePopup(elementType);
     }
 
