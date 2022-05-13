@@ -9,7 +9,7 @@ public class ShopFadeController : MonoBehaviour
     [SerializeField] private float fadeSpeed;
     [SerializeField] private bool fadeIn = false;
 
-    [SerializeField] private bool eventsComplete = false;
+    private bool eventsComplete = false;
 
     public delegate void onReadyToMoveFromShop();
     public static event onReadyToMoveFromShop OnReadyToMoveFromShop;
