@@ -15,12 +15,11 @@ public class ShoppingCartManager : MonoBehaviour
     public void UpdateShoppingCartInventory(List<ShopItemUIController> purchasedItems)
     {
         currentItems = new List<ShopItemUIController>(purchasedItems);
+        currencyCost = 0;
+        timeCost = 0;
 
-        foreach(ShopItemUIController item in purchasedItems)
+        foreach (ShopItemUIController item in purchasedItems)
         {
-            currencyCost = 0;
-            timeCost = 0;
-
             currencyCost += item.BaseSOItemDataObject.CurrencyCost;
             timeCost += item.BaseSOItemDataObject.TimeCost;
         }

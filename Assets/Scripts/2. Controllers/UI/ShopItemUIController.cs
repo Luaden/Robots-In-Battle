@@ -234,12 +234,9 @@ public class ShopItemUIController : MonoBehaviour, IPointerDownHandler, IPointer
 
     public virtual void OnEndDrag(PointerEventData eventData)
     {
-        if(notInMech)
-        {
-            isPickedUp = false;
-            draggableCanvasGroup.blocksRaycasts = true;
-            draggableCanvasGroup.alpha = 1f;
-        }
+        isPickedUp = false;
+        draggableCanvasGroup.blocksRaycasts = true;
+        draggableCanvasGroup.alpha = 1f;
     }
 
     public void OnDrop(PointerEventData eventData)

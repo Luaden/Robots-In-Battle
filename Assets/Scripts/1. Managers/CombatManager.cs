@@ -339,6 +339,7 @@ public class CombatManager : MonoBehaviour
 
         mechHUDManager.SetPlayerMaxStats(playerFighter.FighterMech.MechMaxHP, playerFighter.FighterMech.MechMaxEnergy);
         mechHUDManager.UpdatePlayerHP(playerFighter.FighterMech.MechCurrentHP);
+
         mechHUDManager.UpdatePlayerPilotImage(playerFighter.FighterSprite);
     }
 
