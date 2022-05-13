@@ -5,13 +5,7 @@ using UnityEngine;
 public class FighterDataObject
 {
     private string fighterName;
-    private PilotType fighterType;
-    private Sprite fighterSprite;
-    private Sprite fighterHair;
-    private Sprite fighterHead;
-    private Sprite fighterEyes;
-    private Sprite fighterMouth;
-    private Sprite fighterBody;
+    private GameObject fighterSpriteObject;
     private MechObject fighterMech;
     private List<SOItemDataObject> fighterDeck;
     private PassiveEffects fighterPassiveEffects;
@@ -21,8 +15,7 @@ public class FighterDataObject
     private SOCompleteCharacter completeCharacterBase;
 
     public string FighterName { get => fighterName; }
-    public PilotType FighterType { get => fighterType; }
-    public Sprite FighterSprite { get => fighterSprite; }
+    public GameObject FighterSpriteObject { get => fighterSpriteObject; set => fighterSpriteObject = value; }
     public PassiveEffects FighterPassiveEffects { get => fighterPassiveEffects; }
     public ActiveEffects FighterActiveEffects { get => fighterActiveEffects; }
     public MechObject FighterMech { get => fighterMech; }
@@ -34,26 +27,18 @@ public class FighterDataObject
     public FighterDataObject(PlayerDataObject player)
     {
         fighterName = player.CompletePilot.PilotName;
-        fighterSprite = player.PilotSprite;
+        fighterSpriteObject = player.PilotSpriteObject;
         fighterMech = player.PlayerMech;
         fighterDeck = player.PlayerDeck;
         fighterPassiveEffects = player.PilotPassiveEffects;
         fighterActiveEffects = player.PilotActiveEffects;
-        fighterType = PilotType.Unique;
 
         completeCharacterBase = player.CompletePilot; 
     }
 
     public FighterDataObject(SOCompleteCharacter opponent)
     {
-        if (opponent.PilotType == PilotType.Unique)
-            fighterSprite = opponent.PilotSprite;
-        //else
-        //{
-        //    //Populate fighter sprites
-        //    GameManager.instance.AICharacterBuilder.DoSomething();
-        //}
-
+        fighterSpriteObject = opponent.PilotSpriteObject;
         fighterName = opponent.PilotName;
         fighterMech = GameManager.instance.PlayerMechController.BuildNewMech(opponent.MechObject);
         fighterDeck = opponent.DeckList;

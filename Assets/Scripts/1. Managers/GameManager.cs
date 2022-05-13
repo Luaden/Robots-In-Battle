@@ -11,12 +11,12 @@ public class GameManager : MonoBehaviour
     [Space]
     [Header("Character Settings")]
     [SerializeField] private SOCompleteCharacter starterPilot;
-    [SerializeField] private List<SOCompleteCharacter> potentialAIBuilds;
 
     private int currencyGainModifier = 0;
     private int enemyHealthModifier = 0;
     private List<SOEventObject> activeEvents;
 
+    private FighterBuildController fighterBuildController;
     private DowntimeMechBuilderController playerMechController;
     private DowntimeInventoryController playerInventoryController;
     private DowntimeDeckController playerDeckController;
@@ -26,6 +26,7 @@ public class GameManager : MonoBehaviour
 
     public static GameManager instance;
 
+    public FighterBuildController FighterBuildController { get => fighterBuildController; }
     public DowntimeInventoryController PlayerInventoryController { get => playerInventoryController; }
     public DowntimeMechBuilderController PlayerMechController { get => playerMechController; }
     public DowntimeDeckController PlayerDeckController { get => playerDeckController; }
@@ -49,14 +50,19 @@ public class GameManager : MonoBehaviour
             activeEvents.Add(newEvent);
     }
 
-    [ContextMenu("Start Game")]
-    public void StartGame()
+    public void CreatePlayerAndFighters()
     {
         LoadPlayer();
-        FighterDataObject opponentFighter = new FighterDataObject(potentialAIBuilds[0]);
-
         CombatManager.instance.PlayerFighter = new FighterDataObject(playerData);
-        CombatManager.instance.OpponentFighter = opponentFighter;
+        List<FighterDataObject> newFighters = new List<FighterDataObject>();
+
+        for(int i = 0; i < 7; i++)
+        {
+            FighterDataObject opponentFighter = fighterBuildController.GetRandomFighter();
+            newFighters.Add(opponentFighter);
+        }
+
+        playerData.OtherFighters = newFighters;
 
         CombatManager.instance.StartGame();
     }
@@ -115,6 +121,7 @@ public class GameManager : MonoBehaviour
 
         Application.targetFrameRate = Screen.currentResolution.refreshRate;
 
+        fighterBuildController = GetComponent<FighterBuildController>();
         playerInventoryController = new DowntimeInventoryController();
         playerMechController = new DowntimeMechBuilderController();
         playerDeckController = new DowntimeDeckController();

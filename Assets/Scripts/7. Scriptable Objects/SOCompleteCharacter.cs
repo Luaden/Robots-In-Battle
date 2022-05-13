@@ -9,7 +9,7 @@ public class SOCompleteCharacter : ScriptableObject
     [SerializeField] private PilotType pilotType;
     [SerializeField] private PassiveEffects pilotPassiveEffects;
     [SerializeField] private ActiveEffects pilotActiveEffects;
-    [SerializeField] private Sprite pilotSprite;
+    [SerializeField] private GameObject pilotSpriteObject;
     [SerializeField] private SOAIDialogueObject dialogueModule;
     [SerializeField] private SOAIBehaviorObject behaviorModule;
     [SerializeField] private List<SOItemDataObject> deckList;
@@ -18,7 +18,7 @@ public class SOCompleteCharacter : ScriptableObject
 
     public string PilotName { get => pilotName; }
     public PilotType PilotType { get => pilotType; }
-    public Sprite PilotSprite { get => pilotSprite; }
+    public GameObject PilotSpriteObject { get => pilotSpriteObject; }
     public PassiveEffects PilotPassiveEffects { get => pilotPassiveEffects; }
     public ActiveEffects PilotActiveEffcts { get => pilotActiveEffects; }
     public SOAIDialogueObject DialogueModule { get => dialogueModule; }

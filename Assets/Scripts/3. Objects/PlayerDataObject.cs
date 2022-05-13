@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class PlayerDataObject 
 {
-    private Sprite pilotSprite;
+    private GameObject pilotSpriteObject;
     private PassiveEffects pilotPassiveEffects;
     private ActiveEffects pilotActiveEffects;
     private List<SOItemDataObject> playerDeck;
@@ -21,7 +21,7 @@ public class PlayerDataObject
     private int currencyToSpend;
 
     public SOCompleteCharacter CompletePilot { get => completeCharacterBase; }
-    public Sprite PilotSprite { get => pilotSprite; }
+    public GameObject PilotSpriteObject { get => pilotSpriteObject; }
     public PassiveEffects PilotPassiveEffects { get => pilotPassiveEffects; }
     public ActiveEffects PilotActiveEffects { get => pilotActiveEffects; }
 
@@ -43,7 +43,7 @@ public class PlayerDataObject
 
     public PlayerDataObject(SOCompleteCharacter newPlayableCharacter)
     {
-        pilotSprite = newPlayableCharacter.PilotSprite;
+        pilotSpriteObject = newPlayableCharacter.PilotSpriteObject;
         pilotPassiveEffects = newPlayableCharacter.PilotPassiveEffects;
         pilotActiveEffects = newPlayableCharacter.PilotActiveEffcts;
         currencyToSpend = newPlayableCharacter.StartingMoney;
