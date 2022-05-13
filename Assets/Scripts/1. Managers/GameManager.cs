@@ -11,12 +11,12 @@ public class GameManager : MonoBehaviour
     [Space]
     [Header("Character Settings")]
     [SerializeField] private SOCompleteCharacter starterPilot;
-    [SerializeField] private List<SOCompleteCharacter> potentialAIBuilds;
 
     private int currencyGainModifier = 0;
     private int enemyHealthModifier = 0;
     private List<SOEventObject> activeEvents;
 
+    private FighterBuildController fighterBuildController;
     private DowntimeMechBuilderController playerMechController;
     private DowntimeInventoryController playerInventoryController;
     private DowntimeDeckController playerDeckController;
@@ -26,6 +26,7 @@ public class GameManager : MonoBehaviour
 
     public static GameManager instance;
 
+    public FighterBuildController FighterBuildController { get => fighterBuildController; }
     public DowntimeInventoryController PlayerInventoryController { get => playerInventoryController; }
     public DowntimeMechBuilderController PlayerMechController { get => playerMechController; }
     public DowntimeDeckController PlayerDeckController { get => playerDeckController; }
@@ -36,7 +37,7 @@ public class GameManager : MonoBehaviour
     public int PlayerWins { get => playerData.CurrentWinCount; }
     public int PlayerCurrencyGainOnWin { get => playerCurrencyGainOnWin + currencyGainModifier; set => currencyGainModifier = value; }
     public List<SOEventObject> ActiveEvents { get => activeEvents; }
-    public SOCompleteCharacter StarterPilot { get => starterPilot; }
+    public PlayerDataObject Player { get => playerData; }
 
     public delegate void onUpdatePlayerCurrencies();
     public static event onUpdatePlayerCurrencies OnUpdatePlayerCurrencies;
@@ -49,22 +50,24 @@ public class GameManager : MonoBehaviour
             activeEvents.Add(newEvent);
     }
 
-    [ContextMenu("Start Game")]
-    public void StartGame()
+    public void CreatePlayerAndFighters()
     {
         LoadPlayer();
-        FighterDataObject opponentFighter = new FighterDataObject(potentialAIBuilds[0]);
 
-        CombatManager.instance.PlayerFighter = new FighterDataObject(playerData);
-        CombatManager.instance.OpponentFighter = opponentFighter;
+        List<FighterDataObject> newFighters = new List<FighterDataObject>();
 
-        CombatManager.instance.StartGame();
+        for(int i = 0; i < 7; i++)
+        {
+            FighterDataObject opponentFighter = fighterBuildController.GetRandomFighter();
+            newFighters.Add(opponentFighter);
+        }
+
+        playerData.OtherFighters = newFighters;
     }
 
-    public void ReloadGame()
+    public void LoadTitle()
     {
         sceneController.LoadTitleScene();
-        Destroy(this);
     }
 
     public void LoadShoppingScene()
@@ -95,7 +98,7 @@ public class GameManager : MonoBehaviour
             if (starterPilot != null)
             {
                 Debug.Log("Creating new pilot.");
-                instance.playerData = new PlayerDataObject(starterPilot);
+                playerData = new PlayerDataObject(starterPilot);
                 return;
             }
 
@@ -115,6 +118,7 @@ public class GameManager : MonoBehaviour
 
         Application.targetFrameRate = Screen.currentResolution.refreshRate;
 
+        fighterBuildController = GetComponent<FighterBuildController>();
         playerInventoryController = new DowntimeInventoryController();
         playerMechController = new DowntimeMechBuilderController();
         playerDeckController = new DowntimeDeckController();
@@ -126,13 +130,13 @@ public class GameManager : MonoBehaviour
     {
         sceneController = GetComponent<SceneController>();
 
-        instance.LoadPlayer();
+        CreatePlayerAndFighters();
     }
 
 
     public class DowntimeDeckController
     {
-        public List<SOItemDataObject> PlayerDeck { get => instance.playerData.PlayerDeck; }
+        public List<SOItemDataObject> PlayerDeck { get => instance.playerData.PlayerFighterData.FighterDeck; }
 
         public void AddCardToPlayerDeck(SOItemDataObject newCard)
         {
@@ -147,7 +151,7 @@ public class GameManager : MonoBehaviour
 
             currentDeck.Add(newCard);
 
-            instance.playerData.PlayerDeck = currentDeck;
+            instance.playerData.PlayerFighterData.FighterDeck = currentDeck;
         }
 
         public void RemoveCardFromPlayerDeck(SOItemDataObject newCard)
@@ -162,13 +166,13 @@ public class GameManager : MonoBehaviour
 
             currentDeck.Remove(newCard);
 
-            instance.playerData.PlayerDeck = currentDeck;
+            instance.playerData.PlayerFighterData.FighterDeck = currentDeck;
         }
     }
 
     public class DowntimeMechBuilderController
     {
-        public MechObject PlayerMech { get => instance.playerData.PlayerMech; }
+        public MechObject PlayerMech { get => instance.playerData.PlayerFighterData.FighterMech; }
 
         public MechObject BuildNewMech(SOItemDataObject mechHead, SOItemDataObject mechTorso, SOItemDataObject mechArms, SOItemDataObject mechLegs)
         {
@@ -196,7 +200,7 @@ public class GameManager : MonoBehaviour
 
         public void SetNewPlayerMech(MechObject newMech)
         {
-            instance.playerData.PlayerMech = newMech;
+            instance.playerData.PlayerFighterData.FighterMech = newMech;
         }
 
         public void SwapPlayerMechPart(SOItemDataObject SOMechComponentDataObject)
@@ -210,7 +214,7 @@ public class GameManager : MonoBehaviour
         {
             MechComponentDataObject oldComponent;
 
-            oldComponent = instance.playerData.PlayerMech.ReplaceComponent(newComponent);
+            oldComponent = instance.playerData.PlayerFighterData.FighterMech.ReplaceComponent(newComponent);
         }
     }
 

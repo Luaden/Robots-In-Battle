@@ -305,6 +305,14 @@ public class CombatManager : MonoBehaviour
         AIDialogueController.OnDialogueComplete += StartNewTurn;
         AIDialogueController.OnDialogueComplete += EnableCanPlayCards;
 
+        if (GameManager.instance.Player.PlayerFighterData == null)
+            Debug.Log("No player.");
+
+        if (GameManager.instance.Player.OtherFighters[0] == null)
+            Debug.Log("No Opponent.");
+
+        InitPlayerFighter(GameManager.instance.Player.PlayerFighterData);
+        InitOpponentFighter(GameManager.instance.Player.OtherFighters[0]);
     }
 
     private void OnDestroy()
@@ -340,7 +348,7 @@ public class CombatManager : MonoBehaviour
         mechHUDManager.SetPlayerMaxStats(playerFighter.FighterMech.MechMaxHP, playerFighter.FighterMech.MechMaxEnergy);
         mechHUDManager.UpdatePlayerHP(playerFighter.FighterMech.MechCurrentHP);
 
-        mechHUDManager.UpdatePlayerPilotImage(playerFighter.FighterSprite);
+        mechHUDManager.UpdatePlayerPilotImage(playerFighter.FighterSpriteObject);
     }
 
     private void InitOpponentFighter(FighterDataObject newOpponentFighter)
@@ -351,18 +359,13 @@ public class CombatManager : MonoBehaviour
         deckManager.SetOpponentDeck(newOpponentFighter.FighterDeck);
 
         mechHUDManager.SetOpponentMaxStats(opponentFighter.FighterMech.MechMaxHP, opponentFighter.FighterMech.MechMaxEnergy);
-        mechHUDManager.UpdateOpponentPilotImage(opponentFighter.FighterSprite);
+        mechHUDManager.UpdateOpponentPilotImage(opponentFighter.FighterSpriteObject);
 
         opponentFighter.FighterMech.DamageWholeMechHP(GameManager.instance.EnemyHealthModifier);
         mechHUDManager.UpdateOpponentHP(opponentFighter.FighterMech.MechCurrentHP);
 
         aIManager.LoadAIBehaviorModule(opponentFighter.AIBehaviorModule);
         aIManager.LoadAIDialogueModule(opponentFighter.AIDialogueModule);
-
-        if (newOpponentFighter.FighterType == PilotType.Unique)
-            mechHUDManager.UpdatePlayerPilotImage(opponentFighter.FighterSprite);
-        else
-            Debug.Log("Attempted to build enemy sprite but we haven't set up the randomizable enemies yet!");
     }
 
     private void StartNewTurn()
