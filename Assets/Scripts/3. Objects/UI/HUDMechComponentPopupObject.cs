@@ -15,23 +15,26 @@ public class HUDMechComponentPopupObject : MonoBehaviour
 
     private void Start()
     {
-        CardUIController.OnPickUp += CheckPickupUpdate;
-        CheckPickupUpdate(affectedChannel);
+        CombatSequenceManager.OnCombatComplete += CheckPickupUpdate;
     }
 
     private void OnDestroy()
     {
-        CardUIController.OnPickUp -= CheckPickupUpdate;
+        CombatSequenceManager.OnCombatComplete -= CheckPickupUpdate;
     }
 
-    private void CheckPickupUpdate(Channels checkChannel)
+    private void CheckPickupUpdate()
     {
-        if (!checkChannel.HasFlag(affectedChannel))
-            return;
-
         if (affectedChannel == Channels.High)
         {
-            MechComponentDataObject armsComponent = CombatManager.instance.OpponentFighter.FighterMech.MechArms;
+            MechComponentDataObject armsComponent;
+            if (mechType == MechSelect.Opponent)
+            {
+                armsComponent = CombatManager.instance.OpponentFighter.FighterMech.MechArms;
+            }
+            else
+                armsComponent = CombatManager.instance.PlayerFighter.FighterMech.MechArms;
+
             componentHealth = armsComponent.ComponentCurrentHP;
             componentHealthText.text = Mathf.Clamp(componentHealth, 0, int.MaxValue).ToString();
 
@@ -60,7 +63,14 @@ public class HUDMechComponentPopupObject : MonoBehaviour
 
         if (affectedChannel == Channels.Mid)
         {
-            MechComponentDataObject torsoComponent = CombatManager.instance.OpponentFighter.FighterMech.MechTorso;
+            MechComponentDataObject torsoComponent;
+            if (mechType == MechSelect.Opponent)
+            {
+                torsoComponent = CombatManager.instance.OpponentFighter.FighterMech.MechTorso;
+            }
+            else
+                torsoComponent = CombatManager.instance.PlayerFighter.FighterMech.MechTorso;
+
             componentHealth = torsoComponent.ComponentCurrentHP;
             componentHealthText.text = Mathf.Clamp(componentHealth, 0, int.MaxValue).ToString();
 
@@ -89,7 +99,14 @@ public class HUDMechComponentPopupObject : MonoBehaviour
 
         if (affectedChannel == Channels.Low)
         {
-            MechComponentDataObject legsComponent = CombatManager.instance.OpponentFighter.FighterMech.MechLegs;
+            MechComponentDataObject legsComponent;
+            if (mechType == MechSelect.Opponent)
+            {
+                legsComponent = CombatManager.instance.OpponentFighter.FighterMech.MechLegs;
+            }
+            else
+                legsComponent = CombatManager.instance.PlayerFighter.FighterMech.MechLegs;
+
             componentHealth = legsComponent.ComponentCurrentHP;
             componentHealthText.text = Mathf.Clamp(componentHealth, 0, int.MaxValue).ToString();
 
