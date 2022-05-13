@@ -38,6 +38,12 @@ public class AIDialogueController : MonoBehaviour
 
     public void CheckPlayDialogue()
     {
+        if(CombatManager.instance.GameOver)
+        {
+            OnDialogueComplete?.Invoke();
+            return;
+        }
+
         int roll = Random.Range(1, 101);
 
         if(roll >= chanceForRandomDialogue)

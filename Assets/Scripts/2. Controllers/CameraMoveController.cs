@@ -150,7 +150,6 @@ public class CameraMoveController : MonoBehaviour
 
     private void EnablePlayerHasControl()
     {
-        Debug.Log("Player has control again.");
         playerHasControl = true;
     }
 }

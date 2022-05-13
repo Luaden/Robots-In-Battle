@@ -111,7 +111,6 @@ public class PopupUIManager : MonoBehaviour
     {
         if(popupsEnabled)
         {
-            Debug.Log("Displaying Mech Readout");
             hudMechComponentPopupController.UpdateUI(character);
         }
     }

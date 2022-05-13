@@ -31,6 +31,7 @@ public class CombatDeckController
     }
 
     public void AddCardToBottom(CardDataObject card) => cardDeck.Add(card);
+
     public void AddCardToTop(CardDataObject card) => cardDeck.Insert(0, card);
 
     public void RemoveCard(CardDataObject card)

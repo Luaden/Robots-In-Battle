@@ -362,7 +362,10 @@ public class CombatEffectManager : MonoBehaviour
         {
             if (opponentFighterEffectObject.PilotEffectDuration.TryGetValue(ActiveEffects.Jazzersize, out currentActiveEffectMagnitude))
             {
-                Debug.Log("Dealing " + damageToReturn + " base damage and " + currentActiveEffectMagnitude + " bonus damage.");
+                if(CombatManager.instance.NarrateCombat)
+                {
+                    Debug.Log("Dealing " + damageToReturn + " base damage and " + currentActiveEffectMagnitude + " bonus damage.");
+                }
                 return damageToReturn + currentActiveEffectMagnitude;
             }
         }
@@ -371,7 +374,10 @@ public class CombatEffectManager : MonoBehaviour
         {
             if (playerFighterEffectObject.PilotEffectDuration.TryGetValue(ActiveEffects.Jazzersize, out currentActiveEffectMagnitude))
             {
-                Debug.Log("Dealing " + damageToReturn + " base damage and " + currentActiveEffectMagnitude + " bonus damage.");
+                if(CombatManager.instance.NarrateCombat)
+                {
+                    Debug.Log("Dealing " + damageToReturn + " base damage and " + currentActiveEffectMagnitude + " bonus damage.");
+                }
                 return damageToReturn + currentActiveEffectMagnitude;
             }
         }

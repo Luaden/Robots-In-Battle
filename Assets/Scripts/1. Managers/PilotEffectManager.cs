@@ -48,6 +48,12 @@ public class PilotEffectManager : MonoBehaviour
     [ContextMenu("Check Effects")]
     private void OnCombatComplete()
     {
+        if (CombatManager.instance.GameOver)
+        {
+            OnTurnComplete?.Invoke();
+            return;
+        }
+
         effectsComplete = false;
         checkingEffects = true;
         activatingPlayerEffects = true;
@@ -67,7 +73,6 @@ public class PilotEffectManager : MonoBehaviour
         {
             if (playerEffects.HasFlag(ActiveEffects.Jazzersize))
             {
-                Debug.Log("One and two and three and four.");
                 CombatManager.instance.CombatAnimationManager.AddAnimationToQueue(new AnimationQueueObject(CharacterSelect.Player, AnimationType.Punch,
                                                                                                            CharacterSelect.Opponent, AnimationType.Idle));
                 CombatManager.instance.CombatEffectManager.EnablePilotEffects(CharacterSelect.Player, ActiveEffects.Jazzersize);
@@ -83,8 +88,6 @@ public class PilotEffectManager : MonoBehaviour
         {
             if (opponentEffects.HasFlag(ActiveEffects.Jazzersize))
             {
-                Debug.Log("One and two and three and four.");
-
                 CombatManager.instance.CombatAnimationManager.AddAnimationToQueue(new AnimationQueueObject(CharacterSelect.Opponent, AnimationType.Punch,
                                                                                                            CharacterSelect.Player, AnimationType.Idle));
                 CombatManager.instance.CombatEffectManager.EnablePilotEffects(CharacterSelect.Opponent, ActiveEffects.Jazzersize);

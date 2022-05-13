@@ -43,6 +43,7 @@ public class ShoppingCartUISlotManager : BaseSlotManager<ShopItemUIController>
             {
                 slot.CurrentSlottedItem = null;
                 currentShoppingCartItems.Remove(item);
+                DowntimeManager.instance.ShoppingCartManager.UpdateShoppingCartInventory(currentShoppingCartItems);
             }
     }
 }

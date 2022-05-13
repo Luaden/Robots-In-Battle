@@ -291,13 +291,16 @@ public class CardInteractionController
 
             combatQueueObject.damageQueue = newDamageQueue;
             combatQueueObject.animationQueue = newAnimations;
-            combatQueueObject.energyRemovalObject = newEnergyToRemove;
 
+            if (i == 0)
+                combatQueueObject.energyRemovalObject = newEnergyToRemove;
+            else
+                combatQueueObject.energyRemovalObject = null;
             CombatManager.instance.CombatSequenceManager.AddCombatSequenceToQueue(combatQueueObject);
             combatLog = string.Empty;
         }
     }
-    
+
     private EnergyRemovalObject QueueEnergyRemoval(CardChannelPairObject offensiveAttack, CharacterSelect offensiveMech, CardChannelPairObject defensiveCard, CharacterSelect defensiveMech)
     {
         EnergyRemovalObject newEnergyToRemove = new EnergyRemovalObject();

@@ -7,6 +7,16 @@ public class CombatDeckManager : MonoBehaviour
     private CombatDeckController playerDeck;
     private CombatDeckController opponentDeck;
 
+    [ContextMenu("Count Flurry")]
+    private void CountFlurryCards()
+    {
+        foreach (CardDataObject oldCard in playerDeck.CardDeck)
+            if (oldCard.CardName == "Flurry of Blows" ||
+                oldCard.CardName == "Block Flurry" ||
+                oldCard.CardName == "Flurry of Kicks")
+                Debug.Log(oldCard.CardName);
+    }
+
     public CombatDeckManager()
     {
         playerDeck = new CombatDeckController();
@@ -65,9 +75,8 @@ public class CombatDeckManager : MonoBehaviour
             slotController.SlotManager.RemoveItemFromCollection(cardToReturn.CardUIController);
         }
 
-        cardToReturn.CardUIController.CardAnimator.enabled = true;
-
         playerDeck.AddCardToBottom(cardToReturn);
+        cardToReturn.CardUIController.CardAnimator.enabled = true;
     }
 
     public void ReturnCardToOpponentDeck(CardDataObject cardToReturn)
@@ -78,9 +87,8 @@ public class CombatDeckManager : MonoBehaviour
             slotController.SlotManager.RemoveItemFromCollection(cardToReturn.CardUIController);
         }
 
-        cardToReturn.CardUIController.CardAnimator.enabled = true;
-
         opponentDeck.AddCardToBottom(cardToReturn);
+        cardToReturn.CardUIController.CardAnimator.enabled = true;
     }
 
     private void RandomizeCardDeck(CombatDeckController destinationDeck)

@@ -56,6 +56,7 @@ public class CombatManager : MonoBehaviour
 
     private bool canPlayCards = true;
     private bool hasStartedGame = false;
+    private bool gameOver = false;
     private bool hasWon = false;
     private bool hasLost = false;
 
@@ -89,6 +90,8 @@ public class CombatManager : MonoBehaviour
 
     public delegate void onStartNewTurn();
     public static event onStartNewTurn OnStartNewTurn;
+
+    public bool GameOver { get => gameOver; }
 
     #region Debug
     public void StartGame()
@@ -200,6 +203,9 @@ public class CombatManager : MonoBehaviour
 
     public void RemoveEnergyFromMechs(EnergyRemovalObject newEnergyRemovalObject)
     {
+        if (newEnergyRemovalObject == null)
+            return;
+
         if (newEnergyRemovalObject.firstMech == CharacterSelect.Player)
         {
             playerFighter.FighterMech.MechCurrentEnergy -= newEnergyRemovalObject.firstMechEnergyRemoval;
@@ -400,6 +406,7 @@ public class CombatManager : MonoBehaviour
             CombatAnimationManager.AddAnimationToQueue(newAnimationQueueObject);
             
             hasLost = true;
+            gameOver = true;
             AIManager.PlayAIWinDialogue();
 
             return;
@@ -417,6 +424,7 @@ public class CombatManager : MonoBehaviour
             GameManager.instance.UpdatePlayerAfterFight(playerMech);
 
             hasWon = true;
+            gameOver = true;
             AIManager.PlayAILoseDialogue();
 
 
