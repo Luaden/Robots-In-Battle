@@ -10,6 +10,8 @@ public class ShopCardUIPopupController : BaseUIElement<SOItemDataObject>
     [SerializeField] private TMP_Text descriptionText;
     [SerializeField] private TMP_Text energyCostText;
     [SerializeField] private TMP_Text damageDealtText;
+    [SerializeField] private TMP_Text costText;
+    [SerializeField] private TMP_Text timeCostText;
 
 
     public override void UpdateUI(SOItemDataObject primaryData)
@@ -20,9 +22,11 @@ public class ShopCardUIPopupController : BaseUIElement<SOItemDataObject>
         if (primaryData.ItemType == ItemType.Card)
         {
             nameText.text = primaryData.ItemName;
-            descriptionText.text = primaryData.ItemDescription;
+            descriptionText.text = primaryData.ItemDescription + "\n \n";
             energyCostText.text = primaryData.EnergyCost.ToString();
             damageDealtText.text = primaryData.BaseDamage.ToString();
+            costText.text = primaryData.CurrencyCost.ToString();
+            timeCostText.text = primaryData.TimeCost.ToString();
         }
 
         popupObject.SetActive(true);

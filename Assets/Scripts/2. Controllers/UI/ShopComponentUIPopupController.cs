@@ -11,7 +11,8 @@ public class ShopComponentUIPopupController : BaseUIElement<SOItemDataObject>
     [SerializeField] private TMP_Text energyText;
     [SerializeField] private TMP_Text cDMText;
     [SerializeField] private TMP_Text elementText;
-
+    [SerializeField] private TMP_Text currencyCostText;
+    [SerializeField] private TMP_Text timeCostText;
     public override void UpdateUI(SOItemDataObject primaryData)
     {
         if (ClearedIfEmpty(primaryData))
@@ -22,6 +23,8 @@ public class ShopComponentUIPopupController : BaseUIElement<SOItemDataObject>
         energyText.text = ("Energy: ") + primaryData.ComponentEnergy.ToString();
         cDMText.text = ("Component Damage Multiplier: ") + primaryData.CDMFromComponent.ToString();
         elementText.text = ("Element: ") + System.Enum.GetName(typeof(ElementType), primaryData.ComponentElement);
+        currencyCostText.text = primaryData.CurrencyCost.ToString();
+        timeCostText.text = primaryData.TimeCost.ToString();
 
         popupObject.SetActive(true);
     }

@@ -14,11 +14,18 @@ public class ShopItemUIController : MonoBehaviour, IPointerDownHandler, IPointer
     [SerializeField] private GameObject componentUIObject;
     [Space]
     [Header("Card Attributes")]
-    [SerializeField] private Image cardBackground;
+    [SerializeField] private Image cardFrame;
     [SerializeField] private Image cardImage;
     [SerializeField] private TMP_Text cardName;
     [SerializeField] private TMP_Text cardTimeCostText;
     [SerializeField] private TMP_Text cardCurrencyCostText;
+
+    [Space]
+    [SerializeField] private Image componentFrame;
+    [SerializeField] private Image componentImage;
+    [SerializeField] private TMP_Text componentName;
+    [SerializeField] private TMP_Text componentTimeCostText;
+    [SerializeField] private TMP_Text componentCurrencyCostText;
 
     [Header("Channel Icons")]
     [SerializeField] private Image highChannelIcon;
@@ -47,10 +54,6 @@ public class ShopItemUIController : MonoBehaviour, IPointerDownHandler, IPointer
     [SerializeField] private Sprite guardIcon;
     [Space]
     [Header("Component Attributes")]
-    [SerializeField] private Image componentImage;
-    [SerializeField] private TMP_Text componentName;
-    [SerializeField] private TMP_Text componentTimeCostText;
-    [SerializeField] private TMP_Text componentCurrencyCostText;
     [SerializeField] private Image elementIcon;
     [SerializeField] private Sprite fireElement;
     [SerializeField] private Sprite iceElement;
@@ -140,13 +143,13 @@ public class ShopItemUIController : MonoBehaviour, IPointerDownHandler, IPointer
             switch (shopItemUIObject.CardType)
             {
                 case CardType.Attack:
-                    cardBackground.sprite = attackFrame;
+                    cardFrame.sprite = attackFrame;
                     break;
                 case CardType.Defense:
-                    cardBackground.sprite = defenseFrame;
+                    cardFrame.sprite = defenseFrame;
                     break;
                 case CardType.Neutral:
-                    cardBackground.sprite = neutralFrame;
+                    cardFrame.sprite = neutralFrame;
                     break;
             }
 
