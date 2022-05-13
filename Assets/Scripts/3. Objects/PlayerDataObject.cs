@@ -8,8 +8,6 @@ public class PlayerDataObject
     private GameObject pilotSpriteObject;
     private PassiveEffects pilotPassiveEffects;
     private ActiveEffects pilotActiveEffects;
-    private List<SOItemDataObject> playerDeck;
-    private MechObject playerMech;
     private List<MechComponentDataObject> playerInventory;
     private FighterDataObject playerFighterData;
     private List<FighterDataObject> otherFighters;
@@ -24,11 +22,7 @@ public class PlayerDataObject
     public GameObject PilotSpriteObject { get => pilotSpriteObject; }
     public PassiveEffects PilotPassiveEffects { get => pilotPassiveEffects; }
     public ActiveEffects PilotActiveEffects { get => pilotActiveEffects; }
-
-    public MechObject PlayerMech { get => playerMech; set => playerMech = value; }
-    public List<SOItemDataObject> PlayerDeck { get => playerDeck; set => playerDeck = value; }
     public List<MechComponentDataObject> PlayerInventory { get => playerInventory; set => playerInventory = value; }
-
     public int CurrentWinCount { get => currentWinCount; set => currentWinCount = value; }
     public float TimeLeftToSpend { get => timeLeftToSpend; set => timeLeftToSpend = value; }
     public int CurrencyToSpend { get => currencyToSpend; set => currencyToSpend = value; }
@@ -38,7 +32,6 @@ public class PlayerDataObject
     public PlayerDataObject()
     {
         playerInventory = new List<MechComponentDataObject>();
-        playerDeck = new List<SOItemDataObject>();
     }
 
     public PlayerDataObject(SOCompleteCharacter newPlayableCharacter)
@@ -49,13 +42,10 @@ public class PlayerDataObject
         currencyToSpend = newPlayableCharacter.StartingMoney;
 
         playerInventory = new List<MechComponentDataObject>();
-        playerDeck = new List<SOItemDataObject>();
-
-        foreach (SOItemDataObject item in newPlayableCharacter.DeckList)
-            playerDeck.Add(item);
-
-        playerMech = GameManager.instance.PlayerMechController.BuildNewMech(newPlayableCharacter.MechObject);
-
         completeCharacterBase = newPlayableCharacter;
+
+        playerFighterData = new FighterDataObject(newPlayableCharacter);
+        playerFighterData.FighterMech = GameManager.instance.PlayerMechController.BuildNewMech(newPlayableCharacter.MechObject);
+        playerFighterData.FighterDeck = newPlayableCharacter.DeckList;
     }
 }

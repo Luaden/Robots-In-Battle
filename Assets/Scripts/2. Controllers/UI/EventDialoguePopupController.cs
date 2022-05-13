@@ -31,7 +31,7 @@ public class EventDialoguePopupController : BaseUIElement<SOEventObject>
 
         currentEvent = primaryData;
 
-        nameText.text = GameManager.instance.StarterPilot.PilotName;
+        nameText.text = "No Name Input";
 
         foreach (string dialogue in primaryData.EventDialogue)
             dialogueQueue.Enqueue(dialogue);

@@ -18,7 +18,7 @@ public class FighterDataObject
     public GameObject FighterSpriteObject { get => fighterSpriteObject; set => fighterSpriteObject = value; }
     public PassiveEffects FighterPassiveEffects { get => fighterPassiveEffects; }
     public ActiveEffects FighterActiveEffects { get => fighterActiveEffects; }
-    public MechObject FighterMech { get => fighterMech; }
+    public MechObject FighterMech { get => fighterMech; set => fighterMech = value; }
     public List<SOItemDataObject> FighterDeck { get => fighterDeck; set => fighterDeck = value; }
     public SOAIDialogueObject AIDialogueModule { get => completeCharacterBase.DialogueModule; }
     public SOAIBehaviorObject AIBehaviorModule { get => completeCharacterBase.BehaviorModule; }
@@ -28,8 +28,6 @@ public class FighterDataObject
     {
         fighterName = player.CompletePilot.PilotName;
         fighterSpriteObject = player.PilotSpriteObject;
-        fighterMech = player.PlayerMech;
-        fighterDeck = player.PlayerDeck;
         fighterPassiveEffects = player.PilotPassiveEffects;
         fighterActiveEffects = player.PilotActiveEffects;
 
