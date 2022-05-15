@@ -193,6 +193,27 @@ public class CombatEffectManager : MonoBehaviour
         return attackDamage;
     }
 
+    public int GetShieldInChannel(Channels channel, CharacterSelect defensiveCharacter)
+    {
+        int shieldAmount = 0;
+        int oldShieldAmount = 0;
+
+        if (defensiveCharacter == CharacterSelect.Opponent)
+        {
+            foreach (Channels checkChannel in CombatManager.instance.GetChannelListFromFlags(channel))
+                if (opponentFighterEffectObject.ChannelShields.TryGetValue(channel, out oldShieldAmount))
+                    shieldAmount += oldShieldAmount;
+            return shieldAmount;
+        }
+        else
+        {
+            foreach (Channels checkChannel in CombatManager.instance.GetChannelListFromFlags(channel))
+                if (playerFighterEffectObject.ChannelShields.TryGetValue(channel, out oldShieldAmount))
+                    shieldAmount += oldShieldAmount;
+            return shieldAmount;
+        }
+    }
+
     public void AddFlurryBonus(SOCardEffectObject effect, CharacterSelect characterToAdd)
     {
         if (effect.CardKeyWord != CardKeyWord.Flurry)

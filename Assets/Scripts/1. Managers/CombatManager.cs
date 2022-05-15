@@ -348,7 +348,7 @@ public class CombatManager : MonoBehaviour
         mechHUDManager.SetPlayerMaxStats(playerFighter.FighterMech.MechMaxHP, playerFighter.FighterMech.MechMaxEnergy);
         mechHUDManager.UpdatePlayerHP(playerFighter.FighterMech.MechCurrentHP);
 
-        mechHUDManager.UpdatePlayerPilotImage(playerFighter.FighterSpriteObject);
+        mechHUDManager.UpdatePlayerPilotImage(playerFighter.FighterCharacter);
     }
 
     private void InitOpponentFighter(FighterDataObject newOpponentFighter)
@@ -359,7 +359,7 @@ public class CombatManager : MonoBehaviour
         deckManager.SetOpponentDeck(newOpponentFighter.FighterDeck);
 
         mechHUDManager.SetOpponentMaxStats(opponentFighter.FighterMech.MechMaxHP, opponentFighter.FighterMech.MechMaxEnergy);
-        mechHUDManager.UpdateOpponentPilotImage(opponentFighter.FighterSpriteObject);
+        mechHUDManager.UpdateOpponentPilotImage(opponentFighter.FighterCharacter);
 
         opponentFighter.FighterMech.DamageWholeMechHP(GameManager.instance.EnemyHealthModifier);
         mechHUDManager.UpdateOpponentHP(opponentFighter.FighterMech.MechCurrentHP);

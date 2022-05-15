@@ -5,7 +5,7 @@ using UnityEngine;
 public class FighterDataObject
 {
     private string fighterName;
-    private GameObject fighterSpriteObject;
+    private FighterCharacterObject fighterCharacter;
     private MechObject fighterMech;
     private List<SOItemDataObject> fighterDeck;
     private PassiveEffects fighterPassiveEffects;
@@ -15,7 +15,7 @@ public class FighterDataObject
     private SOCompleteCharacter completeCharacterBase;
 
     public string FighterName { get => fighterName; }
-    public GameObject FighterSpriteObject { get => fighterSpriteObject; set => fighterSpriteObject = value; }
+    public FighterCharacterObject FighterCharacter { get => fighterCharacter; set => fighterCharacter = value; }
     public PassiveEffects FighterPassiveEffects { get => fighterPassiveEffects; }
     public ActiveEffects FighterActiveEffects { get => fighterActiveEffects; }
     public MechObject FighterMech { get => fighterMech; set => fighterMech = value; }
@@ -27,7 +27,7 @@ public class FighterDataObject
     public FighterDataObject(PlayerDataObject player)
     {
         fighterName = player.CompletePilot.PilotName;
-        fighterSpriteObject = player.PilotSpriteObject;
+        fighterCharacter = player.PilotCharacter;
         fighterPassiveEffects = player.PilotPassiveEffects;
         fighterActiveEffects = player.PilotActiveEffects;
 
@@ -36,7 +36,7 @@ public class FighterDataObject
 
     public FighterDataObject(SOCompleteCharacter opponent)
     {
-        fighterSpriteObject = opponent.PilotSpriteObject;
+        fighterCharacter = opponent.PilotCharacter;
         fighterName = opponent.PilotName;
         fighterMech = GameManager.instance.PlayerMechController.BuildNewMech(opponent.MechObject);
         fighterDeck = opponent.DeckList;

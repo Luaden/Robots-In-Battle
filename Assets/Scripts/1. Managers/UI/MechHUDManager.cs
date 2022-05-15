@@ -7,22 +7,22 @@ public class MechHUDManager : MonoBehaviour
 {
     [SerializeField] private HUDBarController playerHudBarController;
     [SerializeField] private HUDBarController opponentHudBarController;
-    [SerializeField] private Transform playerPilotSpriteObjectPosition;
-    [SerializeField] private Transform opponentPilotSpriteObjectPosition;
+    [SerializeField] private HUDCharacterImageController playerCharacterImageController;
+    [SerializeField] private HUDCharacterImageController opponentCharacterImageController;
 
     public void UpdatePlayerHP(int playerHP)
     {
         playerHudBarController.UpdateHealthBar(playerHP);
     }
 
-    public void UpdatePlayerPilotImage(GameObject playerSpriteObject)
+    public void UpdatePlayerPilotImage(FighterCharacterObject playerCharacter)
     {
-        Instantiate(playerSpriteObject, playerPilotSpriteObjectPosition);
+        playerCharacterImageController.UpdateCharacterUI(playerCharacter);
     }
 
-    public void UpdateOpponentPilotImage(GameObject opponentSpriteObject)
+    public void UpdateOpponentPilotImage(FighterCharacterObject opponentCharacter)
     {
-        Instantiate(opponentSpriteObject, opponentPilotSpriteObjectPosition);
+        opponentCharacterImageController.UpdateCharacterUI(opponentCharacter);
     }
 
     public void UpdatePlayerEnergy(int currentPlayerEnergy, int playerQueuedEnergy, bool queuedEnergy = false)

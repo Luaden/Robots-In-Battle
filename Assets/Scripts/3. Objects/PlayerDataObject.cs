@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class PlayerDataObject 
 {
-    private GameObject pilotSpriteObject;
+    private FighterCharacterObject pilotCharacter;
     private PassiveEffects pilotPassiveEffects;
     private ActiveEffects pilotActiveEffects;
     private List<MechComponentDataObject> playerInventory;
@@ -19,7 +19,7 @@ public class PlayerDataObject
     private int currencyToSpend;
 
     public SOCompleteCharacter CompletePilot { get => completeCharacterBase; }
-    public GameObject PilotSpriteObject { get => pilotSpriteObject; }
+    public FighterCharacterObject PilotCharacter { get => pilotCharacter; }
     public PassiveEffects PilotPassiveEffects { get => pilotPassiveEffects; }
     public ActiveEffects PilotActiveEffects { get => pilotActiveEffects; }
     public List<MechComponentDataObject> PlayerInventory { get => playerInventory; set => playerInventory = value; }
@@ -36,7 +36,7 @@ public class PlayerDataObject
 
     public PlayerDataObject(SOCompleteCharacter newPlayableCharacter)
     {
-        pilotSpriteObject = newPlayableCharacter.PilotSpriteObject;
+        pilotCharacter = newPlayableCharacter.PilotCharacter;
         pilotPassiveEffects = newPlayableCharacter.PilotPassiveEffects;
         pilotActiveEffects = newPlayableCharacter.PilotActiveEffcts;
         currencyToSpend = newPlayableCharacter.StartingMoney;
