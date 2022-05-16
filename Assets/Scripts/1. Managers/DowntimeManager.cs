@@ -13,8 +13,6 @@ public class DowntimeManager : MonoBehaviour
     private ShopManager shopManager;
     private ShopUISlotManager shopUISlotManager;
     private ShopItemUIBuildController shopItemUIBuildController;
-    private ShoppingCartManager shoppingCartManager;
-    private ShoppingCartUISlotManager shoppingCartUISlotManager;
     private InventoryUISlotManager inventoryUISlotManager;
     private PopupUIManager popupUIManager;
     private ShopCameraBoomMoveController cameraBoomMoveController;
@@ -29,8 +27,6 @@ public class DowntimeManager : MonoBehaviour
     public ShopManager ShopManager { get => shopManager; }
     public ShopUISlotManager ShopUISlotManager { get => shopUISlotManager; }
     public ShopItemUIBuildController ShopItemUIBuildController { get => shopItemUIBuildController; }
-    public ShoppingCartManager ShoppingCartManager { get => shoppingCartManager; }
-    public ShoppingCartUISlotManager ShoppingCartUISlotManager { get => shoppingCartUISlotManager; }
     public InventoryUISlotManager InventoryUISlotManager { get => inventoryUISlotManager; }
     public PopupUIManager PopupUIManager { get => popupUIManager; }
     public ShopCameraBoomMoveController CameraBoomMoveController { get => cameraBoomMoveController; }
@@ -56,8 +52,6 @@ public class DowntimeManager : MonoBehaviour
         shopManager = FindObjectOfType<ShopManager>(true);
         popupUIManager = FindObjectOfType<PopupUIManager>(true);
         shopUISlotManager = FindObjectOfType<ShopUISlotManager>(true);
-        shoppingCartManager = FindObjectOfType<ShoppingCartManager>(true);
-        shoppingCartUISlotManager = FindObjectOfType<ShoppingCartUISlotManager>(true);
         shopItemUIBuildController = FindObjectOfType<ShopItemUIBuildController>(true);
         inventoryUISlotManager = FindObjectOfType<InventoryUISlotManager>(true);
         cameraBoomMoveController = FindObjectOfType<ShopCameraBoomMoveController>(true);
