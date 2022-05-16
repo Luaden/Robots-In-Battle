@@ -252,6 +252,22 @@ public class ShopItemUIController : MonoBehaviour, IPointerDownHandler, IPointer
             isPickedUp = true;
             transform.SetParent(itemShopUISlotController.SlotManager.MainCanvas.transform);
         }
+
+        if (DowntimeManager.instance.ShopManager.CurrentItemSelected == null)
+        {
+            transform.localScale = Vector3.one * 1.5f;
+            DowntimeManager.instance.ShopManager.CurrentItemSelected = this;
+            return;
+        }
+
+        if(DowntimeManager.instance.ShopManager.CurrentItemSelected != this)
+        {
+            DowntimeManager.instance.ShopManager.CurrentItemSelected.transform.localScale = Vector3.one;
+
+            transform.localScale = Vector3.one * 1.5f;
+            DowntimeManager.instance.ShopManager.CurrentItemSelected = this;
+        }
+
     }
 
     public void OnPointerUp(PointerEventData eventData)
