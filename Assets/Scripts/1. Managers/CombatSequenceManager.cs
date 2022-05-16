@@ -128,6 +128,8 @@ public class CombatSequenceManager : MonoBehaviour
         {
             DamageMechPairObject currentDamage = currentCombatSequence.damageQueue.Dequeue();
 
+            CombatManager.instance.PopupUIManager.HandlePopup(currentDamage);
+            
             CombatManager.instance.RemoveHealthFromMech(currentDamage);
             if (!currentDamage.CardCharacterPairA.cardChannelPair.CardData.ApplyEffectsFirst && !currentDamage.DenyOffensiveEffects)
                 CombatManager.instance.CombatEffectManager.EnableCombatEffects(currentDamage.CardCharacterPairA);

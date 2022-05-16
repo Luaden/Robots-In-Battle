@@ -185,6 +185,28 @@ public class CombatEffectManager : MonoBehaviour
         return damageToReturn;
     }
 
+    public Vector2Int GetDamageWithModifiersAndShield(CardChannelPairObject attack, CharacterSelect defensiveCharacter, bool counter, bool guard)
+    {
+        int damageToReturn = attack.CardData.BaseDamage;
+
+        if (guard)
+            damageToReturn = Mathf.RoundToInt(damageToReturn * CombatManager.instance.GuardDamageMultiplier);
+        if (counter)
+            damageToReturn = Mathf.RoundToInt(damageToReturn * CombatManager.instance.CounterDamageMultiplier);
+
+        //Get Damage Boosts and Modifiers
+        damageToReturn = GetCardCategoryDamageBonus(attack, damageToReturn, defensiveCharacter);
+        damageToReturn = GetCardChannelDamageBonus(attack, damageToReturn, defensiveCharacter);
+        damageToReturn = GetJazzersizeBonusDamage(damageToReturn, defensiveCharacter);
+
+        damageToReturn = GetCardChannelDamageReduction(attack, damageToReturn, defensiveCharacter);
+        int damageReducedByShield = GetDamageReducedByShield(attack, damageToReturn, defensiveCharacter);
+
+        Vector2Int damageShieldPair = new Vector2Int(damageReducedByShield, damageToReturn - damageReducedByShield);
+
+        return damageShieldPair;
+    }
+
     public int GetComponentDamageWithModifiers(int attackDamage, Channels channel, CharacterSelect defensiveCharacter)
     {
         attackDamage = GetComponentDamageBonus(attackDamage, channel, defensiveCharacter);

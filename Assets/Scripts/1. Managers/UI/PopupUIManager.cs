@@ -15,6 +15,7 @@ public class PopupUIManager : MonoBehaviour
     private HUDMechComponentPopupController hudMechComponentPopupController;
     private AIDialoguePopupController aIDialoguePopupController;
     private EventDialoguePopupController eventDialoguePopupController;
+    private HUDFloatingDamagePopupController floatingDamagePopupController;
 
     private bool popupsEnabled = true;
     public float TextPace { get => textRate; }
@@ -30,6 +31,7 @@ public class PopupUIManager : MonoBehaviour
         eventDialoguePopupController = GetComponentInChildren<EventDialoguePopupController>();
         hudBuffUIPopupController = GetComponentInChildren<HUDBuffUIPopupController>();
         hudMechComponentPopupController = GetComponentInChildren<HUDMechComponentPopupController>();
+        floatingDamagePopupController = GetComponentInChildren<HUDFloatingDamagePopupController>();
 
         if (CombatManager.instance != null)
         {
@@ -113,6 +115,11 @@ public class PopupUIManager : MonoBehaviour
         {
             hudMechComponentPopupController.UpdateUI(character);
         }
+    }
+
+    public void HandlePopup(DamageMechPairObject damageObject)
+    {
+        floatingDamagePopupController.UpdateUI(damageObject);
     }
 
     public void ClearAllPopups()
