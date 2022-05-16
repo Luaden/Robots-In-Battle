@@ -33,7 +33,7 @@ public class ShopManager : MonoBehaviour
             return;
         }
 
-        if(currentItemSelected.BaseSOItemDataObject.CurrencyCost <= GameManager.instance.PlayerBankController.GetPlayerCurrency() ||
+        if(currentItemSelected.BaseSOItemDataObject.CurrencyCost <= GameManager.instance.PlayerBankController.GetPlayerCurrency() &&
             currentItemSelected.BaseSOItemDataObject.TimeCost <= GameManager.instance.PlayerBankController.GetPlayerTime())
         {
             if (currentItemSelected.BaseSOItemDataObject.ItemType == ItemType.Component)
