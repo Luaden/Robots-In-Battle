@@ -42,7 +42,7 @@ public class ShopManager : MonoBehaviour
             {
                 GameManager.instance.PlayerDeckController.AddCardToPlayerDeck(currentItemSelected.BaseSOItemDataObject);
                 currentItemSelected.ItemSlotController.SlotManager.RemoveItemFromCollection(currentItemSelected);
-                Destroy(currentItemSelected.gameObject);
+                DowntimeManager.instance.InventoryCardDeckUISlotManager.AddItemToCollection(currentItemSelected, null);
             }
 
             GameManager.instance.PlayerBankController.SpendPlayerCurrency(currentItemSelected.BaseSOItemDataObject.CurrencyCost);
