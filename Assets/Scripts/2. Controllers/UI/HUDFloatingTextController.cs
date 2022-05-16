@@ -11,8 +11,9 @@ public class HUDFloatingTextController : MonoBehaviour
         textAnimator.SetTrigger("onEnableTextFade");
     }
 
-    private void OnDisable()
+    private void DisableObject()
     {
         textAnimator.ResetTrigger("onEnableTextFade");
+        gameObject.SetActive(false);
     }
 }

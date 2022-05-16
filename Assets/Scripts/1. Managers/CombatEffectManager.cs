@@ -185,33 +185,34 @@ public class CombatEffectManager : MonoBehaviour
         return damageToReturn;
     }
 
+    public Vector2Int GetDamageWithModifiersAndShield(CardChannelPairObject attack, CharacterSelect defensiveCharacter, bool counter, bool guard)
+    {
+        int damageToReturn = attack.CardData.BaseDamage;
+
+        if (guard)
+            damageToReturn = Mathf.RoundToInt(damageToReturn * CombatManager.instance.GuardDamageMultiplier);
+        if (counter)
+            damageToReturn = Mathf.RoundToInt(damageToReturn * CombatManager.instance.CounterDamageMultiplier);
+
+        //Get Damage Boosts and Modifiers
+        damageToReturn = GetCardCategoryDamageBonus(attack, damageToReturn, defensiveCharacter);
+        damageToReturn = GetCardChannelDamageBonus(attack, damageToReturn, defensiveCharacter);
+        damageToReturn = GetJazzersizeBonusDamage(damageToReturn, defensiveCharacter);
+
+        damageToReturn = GetCardChannelDamageReduction(attack, damageToReturn, defensiveCharacter);
+        int damageReducedByShield = GetDamageReducedByShield(attack, damageToReturn, defensiveCharacter);
+
+        Vector2Int damageShieldPair = new Vector2Int(damageReducedByShield, damageToReturn - damageReducedByShield);
+
+        return damageShieldPair;
+    }
+
     public int GetComponentDamageWithModifiers(int attackDamage, Channels channel, CharacterSelect defensiveCharacter)
     {
         attackDamage = GetComponentDamageBonus(attackDamage, channel, defensiveCharacter);
         attackDamage = GetAcidDamageBonus(attackDamage, channel, defensiveCharacter);
 
         return attackDamage;
-    }
-
-    public int GetShieldInChannel(Channels channel, CharacterSelect defensiveCharacter)
-    {
-        int shieldAmount = 0;
-        int oldShieldAmount = 0;
-
-        if (defensiveCharacter == CharacterSelect.Opponent)
-        {
-            foreach (Channels checkChannel in CombatManager.instance.GetChannelListFromFlags(channel))
-                if (opponentFighterEffectObject.ChannelShields.TryGetValue(channel, out oldShieldAmount))
-                    shieldAmount += oldShieldAmount;
-            return shieldAmount;
-        }
-        else
-        {
-            foreach (Channels checkChannel in CombatManager.instance.GetChannelListFromFlags(channel))
-                if (playerFighterEffectObject.ChannelShields.TryGetValue(channel, out oldShieldAmount))
-                    shieldAmount += oldShieldAmount;
-            return shieldAmount;
-        }
     }
 
     public void AddFlurryBonus(SOCardEffectObject effect, CharacterSelect characterToAdd)

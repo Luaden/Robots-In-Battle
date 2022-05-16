@@ -16,6 +16,7 @@ public class DamageMechPairObject
     public bool CounterDamage { get => counterDamage; }
     public bool GuardDamage { get => guardDamage; }
     public bool DenyOffensiveEffects { get => counterDamage; }
+    
     public DamageMechPairObject(CardCharacterPairObject attackA, CardCharacterPairObject attackB, bool counter, bool guard, string combatLog = null)
     {
         cardCharacterPairA = attackA;
@@ -25,31 +26,16 @@ public class DamageMechPairObject
         this.combatLog = combatLog;
     }
 
-    public int GetDamageToDeal()
+    public int GetDamageWithAndConsumeModifiers()
     {
-        int damageToReturn = 
-            CombatManager.instance.CombatEffectManager.GetDamageWithModifiers(cardCharacterPairA.cardChannelPair, cardCharacterPairA.character, counterDamage, guardDamage);
-
-        if (CombatManager.instance.NarrateCombat)
-            Debug.Log(combatLog);
-
-        return damageToReturn;
+        return CombatManager.instance.CombatEffectManager.GetDamageWithAndConsumeModifiers(cardCharacterPairA.cardChannelPair,
+            cardCharacterPairA.character, counterDamage, guardDamage);
     }
 
-    public int GetShieldAmount()
+    public Vector2Int GetDamageAndShieldWithModifiers()
     {
-        return CombatManager.instance.CombatEffectManager.GetShieldInChannel(cardCharacterPairA.cardChannelPair.CardChannel, CharacterTakingDamage);
-    }
-
-    public int GetDamageAndConsumeModifiers()
-    {
-        int damageToReturn =
-            CombatManager.instance.CombatEffectManager.GetDamageWithAndConsumeModifiers(cardCharacterPairA.cardChannelPair, cardCharacterPairA.character, counterDamage, guardDamage);
-
-        if (CombatManager.instance.NarrateCombat)
-            Debug.Log(combatLog);
-
-        return damageToReturn;
+        return CombatManager.instance.CombatEffectManager.GetDamageWithModifiersAndShield(cardCharacterPairA.cardChannelPair,
+            cardCharacterPairA.character, counterDamage, guardDamage);
     }
 
     public Channels GetDamageChannels()

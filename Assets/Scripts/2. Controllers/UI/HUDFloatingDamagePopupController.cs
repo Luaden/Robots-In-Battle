@@ -28,39 +28,44 @@ public class HUDFloatingDamagePopupController : BaseUIElement<DamageMechPairObje
 
         if(primaryData.CharacterTakingDamage == CharacterSelect.Player)
         {
+            Vector2Int damageShieldPair = primaryData.GetDamageAndShieldWithModifiers();
+
             if (primaryData.CounterDamage)
                 opponentCounteredTextObject.SetActive(true);
 
             if (primaryData.GuardDamage)
                 playerGuardedTextObject.SetActive(true);
 
-            if (primaryData.GetShieldAmount() > 0)
+            if (damageShieldPair.y > 0)
             {
-                playerShieldText.text = primaryData.GetShieldAmount().ToString();
+                playerShieldText.text = damageShieldPair.y.ToString();
                 playerShieldTextObject.SetActive(true);
             }
 
-            playerDamageText.text = primaryData.GetDamageToDeal().ToString();
+            playerDamageText.text = damageShieldPair.x.ToString();
             playerDamageTextObject.SetActive(true);
 
             playerFloatingTextObject.SetActive(true);
+            return;
         }
 
         if (primaryData.CharacterTakingDamage == CharacterSelect.Opponent)
         {
+            Vector2Int damageShieldPair = primaryData.GetDamageAndShieldWithModifiers();
+
             if (primaryData.CounterDamage)
                 playerCounteredTextObject.SetActive(true);
 
             if (primaryData.GuardDamage)
                 opponentGuardedTextObject.SetActive(true);
 
-            if (primaryData.GetShieldAmount() > 0)
+            if (damageShieldPair.y > 0)
             {
-                opponentShieldText.text = primaryData.GetShieldAmount().ToString();
+                opponentShieldText.text = damageShieldPair.y.ToString();
                 opponentShieldTextObject.SetActive(true);
             }
 
-            opponentDamageText.text = primaryData.GetDamageToDeal().ToString();
+            opponentDamageText.text = damageShieldPair.x.ToString();
             opponentDamageTextObject.SetActive(true);
 
             opponentFloatingTextObject.SetActive(true);
@@ -69,21 +74,29 @@ public class HUDFloatingDamagePopupController : BaseUIElement<DamageMechPairObje
 
     protected override bool ClearedIfEmpty(DamageMechPairObject newData)
     {
-        if (newData == null || newData.CardCharacterPairA.cardChannelPair.CardData.BaseDamage == 0)
+        if(newData.CharacterTakingDamage == CharacterSelect.Player)
         {
             playerDamageTextObject.SetActive(false);
+            playerShieldTextObject.SetActive(false);
             playerGuardedTextObject.SetActive(false);
             playerCounteredTextObject.SetActive(false);
             playerDamageText.text = string.Empty;
             playerShieldText.text = string.Empty;
-
+        }
+        
+        if(newData.CharacterTakingDamage == CharacterSelect.Opponent)
+        {
             opponentDamageTextObject.SetActive(false);
+            opponentShieldTextObject.SetActive(false);
             opponentGuardedTextObject.SetActive(false);
             opponentCounteredTextObject.SetActive(false);
             opponentDamageText.text = string.Empty;
             opponentShieldText.text = string.Empty;
-            return true;
         }
+        
+
+        if (newData == null || newData.CardCharacterPairA.cardChannelPair.CardData.BaseDamage == 0)
+            return true;
 
         return false;
     }

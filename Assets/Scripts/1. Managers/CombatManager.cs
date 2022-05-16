@@ -93,14 +93,6 @@ public class CombatManager : MonoBehaviour
 
     public bool GameOver { get => gameOver; }
 
-    #region Debug
-    public void StartGame()
-    {
-        pilotEffectManager.InitPilotEffectManager();
-        StartNewTurn();
-    }
-    #endregion
-
     public void RemoveHealthFromMech(DamageMechPairObject damageMechPair)
     {
         if (NarrateCombat)
@@ -118,19 +110,22 @@ public class CombatManager : MonoBehaviour
                     case Channels.High:
                         playerFighter.FighterMech.DamageComponentHP(
                             combatEffectManager.GetComponentDamageWithModifiers(
-                                damageMechPair.GetDamageToDeal(), channel, CharacterSelect.Player), MechComponent.Arms);
+                                damageMechPair.GetDamageWithAndConsumeModifiers(), channel, 
+                                damageMechPair.CharacterTakingDamage), MechComponent.Arms);
                         break;
 
                     case Channels.Mid:
                         playerFighter.FighterMech.DamageComponentHP(
                             combatEffectManager.GetComponentDamageWithModifiers(
-                                damageMechPair.GetDamageToDeal(), channel, CharacterSelect.Player), MechComponent.Torso);
+                                damageMechPair.GetDamageWithAndConsumeModifiers(), channel,
+                                damageMechPair.CharacterTakingDamage), MechComponent.Torso);
                         break;
 
                     case Channels.Low:
                         playerFighter.FighterMech.DamageComponentHP(
                             combatEffectManager.GetComponentDamageWithModifiers(
-                                damageMechPair.GetDamageToDeal(), channel, CharacterSelect.Player), MechComponent.Legs);
+                                damageMechPair.GetDamageWithAndConsumeModifiers(), channel,
+                                damageMechPair.CharacterTakingDamage), MechComponent.Legs);
                         break;                
                 }
             }
@@ -145,19 +140,22 @@ public class CombatManager : MonoBehaviour
                     case Channels.High:
                         opponentFighter.FighterMech.DamageComponentHP(
                             combatEffectManager.GetComponentDamageWithModifiers(
-                                damageMechPair.GetDamageToDeal(), channel, CharacterSelect.Opponent), MechComponent.Arms);
+                                damageMechPair.GetDamageWithAndConsumeModifiers(), channel,
+                                damageMechPair.CharacterTakingDamage), MechComponent.Arms);
                         break;
 
                     case Channels.Mid:
                         opponentFighter.FighterMech.DamageComponentHP(
                             combatEffectManager.GetComponentDamageWithModifiers(
-                                damageMechPair.GetDamageToDeal(), channel, CharacterSelect.Opponent), MechComponent.Torso);
+                                damageMechPair.GetDamageWithAndConsumeModifiers(), channel,
+                                damageMechPair.CharacterTakingDamage), MechComponent.Torso);
                         break;
 
                     case Channels.Low:
                         opponentFighter.FighterMech.DamageComponentHP(
                             combatEffectManager.GetComponentDamageWithModifiers(
-                                damageMechPair.GetDamageToDeal(), channel, CharacterSelect.Opponent), MechComponent.Legs);
+                                damageMechPair.GetDamageWithAndConsumeModifiers(), channel,
+                                damageMechPair.CharacterTakingDamage), MechComponent.Legs);
                         break;
                 }
             }
@@ -313,6 +311,9 @@ public class CombatManager : MonoBehaviour
 
         InitPlayerFighter(GameManager.instance.Player.PlayerFighterData);
         InitOpponentFighter(GameManager.instance.Player.OtherFighters[0]);
+
+        pilotEffectManager.InitPilotEffectManager();
+        StartNewTurn();
     }
 
     private void OnDestroy()
