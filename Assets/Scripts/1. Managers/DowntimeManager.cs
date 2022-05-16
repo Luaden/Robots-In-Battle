@@ -14,6 +14,7 @@ public class DowntimeManager : MonoBehaviour
     private ShopUISlotManager shopUISlotManager;
     private ShopItemUIBuildController shopItemUIBuildController;
     private InventoryUISlotManager inventoryUISlotManager;
+    private InventoryCardDeckUISlotManager inventoryCardDeckUISlotManager;
     private PopupUIManager popupUIManager;
     private ShopCameraBoomMoveController cameraBoomMoveController;
 
@@ -28,6 +29,7 @@ public class DowntimeManager : MonoBehaviour
     public ShopUISlotManager ShopUISlotManager { get => shopUISlotManager; }
     public ShopItemUIBuildController ShopItemUIBuildController { get => shopItemUIBuildController; }
     public InventoryUISlotManager InventoryUISlotManager { get => inventoryUISlotManager; }
+    public InventoryCardDeckUISlotManager InventoryCardDeckUISlotManager { get => inventoryCardDeckUISlotManager; }
     public PopupUIManager PopupUIManager { get => popupUIManager; }
     public ShopCameraBoomMoveController CameraBoomMoveController { get => cameraBoomMoveController; }
 
@@ -54,6 +56,7 @@ public class DowntimeManager : MonoBehaviour
         shopUISlotManager = FindObjectOfType<ShopUISlotManager>(true);
         shopItemUIBuildController = FindObjectOfType<ShopItemUIBuildController>(true);
         inventoryUISlotManager = FindObjectOfType<InventoryUISlotManager>(true);
+        inventoryCardDeckUISlotManager = FindObjectOfType<InventoryCardDeckUISlotManager>(true);
         cameraBoomMoveController = FindObjectOfType<ShopCameraBoomMoveController>(true);
     }
 

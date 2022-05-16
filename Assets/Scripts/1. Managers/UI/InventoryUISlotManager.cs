@@ -5,7 +5,7 @@ using UnityEngine.EventSystems;
 
 public class InventoryUISlotManager : BaseSlotManager<ShopItemUIController>
 {
-    [SerializeField] private GameObject slotContainer;
+    [SerializeField] private GameObject slotContainerInventory;
     [SerializeField] private GameObject slotPrefab;
 
     public override void AddItemToCollection(ShopItemUIController item, BaseSlotController<ShopItemUIController> slot)
@@ -38,7 +38,7 @@ public class InventoryUISlotManager : BaseSlotManager<ShopItemUIController>
                 else
                     continue;
 
-            GameObject newSlot = Instantiate(slotPrefab, slotContainer.transform);
+            GameObject newSlot = Instantiate(slotPrefab, slotContainerInventory.transform);
             ShopItemUISlotController slotController = newSlot.GetComponent<ShopItemUISlotController>();
             slotController.SetSlotManager(this);
 
