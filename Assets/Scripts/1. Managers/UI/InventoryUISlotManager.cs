@@ -5,8 +5,16 @@ using UnityEngine.EventSystems;
 
 public class InventoryUISlotManager : BaseSlotManager<ShopItemUIController>
 {
-    [SerializeField] private GameObject slotContainer;
+    [SerializeField] private GameObject slotContainerInventory;
     [SerializeField] private GameObject slotPrefab;
+
+    [SerializeField] private GameObject cardDeckButton;
+    [SerializeField] private GameObject inventoryButton;
+
+    [SerializeField] private GameObject cardDeckPanel;
+    [SerializeField] private GameObject inventoryPanel;
+    [SerializeField] private GameObject mechComponentsPanel;
+
 
     public override void AddItemToCollection(ShopItemUIController item, BaseSlotController<ShopItemUIController> slot)
     {
@@ -38,7 +46,7 @@ public class InventoryUISlotManager : BaseSlotManager<ShopItemUIController>
                 else
                     continue;
 
-            GameObject newSlot = Instantiate(slotPrefab, slotContainer.transform);
+            GameObject newSlot = Instantiate(slotPrefab, slotContainerInventory.transform);
             ShopItemUISlotController slotController = newSlot.GetComponent<ShopItemUISlotController>();
             slotController.SetSlotManager(this);
 
@@ -106,6 +114,23 @@ public class InventoryUISlotManager : BaseSlotManager<ShopItemUIController>
             else
                 GameManager.instance.PlayerInventoryController.AddItemToInventory(new MechComponentDataObject(item.BaseSOItemDataObject));
         }
-            
     }
+
+    public void SetInventoryActive()
+    {
+        inventoryButton.SetActive(false);
+        inventoryPanel.SetActive(true);
+        cardDeckButton.SetActive(true);
+        cardDeckPanel.SetActive(false);
+        mechComponentsPanel.SetActive(true);
+    }
+    public void SetCardDeckActive()
+    {
+        cardDeckButton.SetActive(false);
+        cardDeckPanel.SetActive(true);
+        inventoryButton.SetActive(true);
+        inventoryPanel.SetActive(false);
+        mechComponentsPanel.SetActive(false);
+    }
+
 }

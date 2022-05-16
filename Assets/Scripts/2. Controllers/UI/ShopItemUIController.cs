@@ -279,6 +279,16 @@ public class ShopItemUIController : MonoBehaviour, IPointerDownHandler, IPointer
         }
     }
 
+    private void OnEnable()
+    {
+        
+    }
+
+    private void OnDisable()
+    {
+        transform.localScale = Vector3.one;
+    }
+
     private void Awake()
     {
         draggableRectTransform = GetComponent<RectTransform>();
