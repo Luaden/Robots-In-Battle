@@ -5788,7 +5788,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: TestCombatUIButton, Assembly-CSharp
+        m_TargetAssemblyTypeName: GameManager, Assembly-CSharp
         m_MethodName: LoadShoppingScene
         m_Mode: 1
         m_Arguments:
@@ -16402,7 +16402,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: TestCombatUIButton, Assembly-CSharp
+        m_TargetAssemblyTypeName: GameManager, Assembly-CSharp
         m_MethodName: LoadTitle
         m_Mode: 1
         m_Arguments:
@@ -25091,10 +25091,10 @@ RectTransform:
   m_Father: {fileID: 5025408728433414441}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 1, y: 1}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_SizeDelta: {x: 306, y: 80}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &5025408728099016364
 CanvasRenderer:
@@ -25124,7 +25124,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 7482667652216324306, guid: c7b4a912f880ffb43a5d89dcecd2c3c1, type: 3}
+  m_Sprite: {fileID: 21300000, guid: a7cb7de33daf4bf4d880ed41c7b5fa28, type: 3}
   m_Type: 3
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -25174,17 +25174,17 @@ RectTransform:
   m_GameObject: {fileID: 5025408728433414446}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 1.5, y: 1.5, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 5025408728099016402}
   m_Father: {fileID: 5025408726891117218}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -453.5, y: 468}
-  m_SizeDelta: {x: 303, y: -50}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: -457, y: 476}
+  m_SizeDelta: {x: 306, y: 80}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &5025408728433414443
 CanvasRenderer:
@@ -25214,8 +25214,8 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 10907, guid: 0000000000000000f000000000000000, type: 0}
-  m_Type: 1
+  m_Sprite: {fileID: 21300000, guid: 92fb9acc249bf5b46a7bf8a883c3b54a, type: 3}
+  m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 4
