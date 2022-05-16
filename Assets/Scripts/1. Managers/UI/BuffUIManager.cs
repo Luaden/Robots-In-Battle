@@ -5,19 +5,21 @@ using UnityEngine;
 public class BuffUIManager : MonoBehaviour
 {
     [SerializeField] private ChannelDamageBuffController playerChannelDamageBuffController;
-    [SerializeField] private ChannelDamageBuffController opponentChannelDamageBuffController;
     [SerializeField] private ShieldsBuffController playerChannelShieldsController;
-    [SerializeField] private ShieldsBuffController opponentChannelShieldsController;
     [SerializeField] private ChannelShieldsFalloffController playerChannelShieldsFalloffController;
-    [SerializeField] private ChannelShieldsFalloffController opponentChannelShieldsFalloffController;
     [SerializeField] private ChannelElementBuffController playerChannelElementBuffController;
-    [SerializeField] private ChannelElementBuffController opponentChannelElementBuffController;
     [SerializeField] private GlobalElementBuffController playerGlobalElementBuffController;
-    [SerializeField] private GlobalElementBuffController opponentGlobalElementBuffController;
     [SerializeField] private GlobalCategoryBuffController playerGlobalCategoryBuffController;
-    [SerializeField] private GlobalCategoryBuffController opponentGlobalCategoryBuffController;
     [SerializeField] private GlobalKeyWordBuffController playerGlobalKeyWordBuffController;
+
+    [SerializeField] private ChannelDamageBuffController opponentChannelDamageBuffController;
+    [SerializeField] private ShieldsBuffController opponentChannelShieldsController;
+    [SerializeField] private ChannelShieldsFalloffController opponentChannelShieldsFalloffController;
+    [SerializeField] private ChannelElementBuffController opponentChannelElementBuffController;
+    [SerializeField] private GlobalElementBuffController opponentGlobalElementBuffController;
+    [SerializeField] private GlobalCategoryBuffController opponentGlobalCategoryBuffController;
     [SerializeField] private GlobalKeyWordBuffController opponentGlobalKeyWordBuffController;
+
 
     public void UpdateChannelDamageBuffs(CharacterSelect character, Dictionary<Channels, List<CardEffectObject>> channelEffectDict)
     {
