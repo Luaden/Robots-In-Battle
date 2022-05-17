@@ -26,11 +26,6 @@ public class NodeController : MonoBehaviour
     {
         List<NodeDataObject> tempList = new List<NodeDataObject>();
         tempList.AddRange(activeNodes);
-        //test, assign the winners
-/*        for (int i = 0; i < activeNodes.Count; i += 2)
-        {
-            activeNodes[i].HasWonBattle = true;
-        }*/
 
         foreach (NodeDataObject currentNode in tempList)
         {
@@ -63,6 +58,18 @@ public class NodeController : MonoBehaviour
             }
 
         }
+    }
+
+    public void AssignActiveNodes()
+    {
+        activeNodes.Clear();
+
+        foreach(NodeDataObject node in GetAllNodes())
+            foreach(FighterDataObject fighter in GameManager.instance.Player.OtherFighters)
+            {
+                if (fighter.FighterNodeIndex == node.NodeIndex)
+                    activeNodes.Add(node);
+            }
     }
 
 }

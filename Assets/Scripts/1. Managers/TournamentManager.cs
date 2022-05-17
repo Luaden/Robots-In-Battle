@@ -17,11 +17,6 @@ public class TournamentManager : MonoBehaviour
     public NodeSlotManager NodeSlotManager { get => nodeSlotManager; }
     public PopupUIManager PopupUIManager { get => popupUIManager; }
 
-    private void OnDestroy()
-    {
-        Destroy(NodeSlotManager);
-    }
-
     private void Awake()
     {
         nodeSlotManager = FindObjectOfType<NodeSlotManager>(true);
@@ -31,7 +26,10 @@ public class TournamentManager : MonoBehaviour
 
     private void Start()
     {
-        InitTournamentScreen();
+        if(GameManager.instance.Player.CurrentWinCount == 0)
+            InitTournamentScreen();
+        else
+            nodeController.ProgressFighters();
     }
 
     public void InitTournamentScreen()
@@ -98,6 +96,9 @@ public class TournamentManager : MonoBehaviour
 
         childA.FighterDataObject.FighterNodeIndex = nodeA.NodeIndex;
         childB.FighterDataObject.FighterNodeIndex = nodeB.NodeIndex;
+
+        Debug.Log(childA.FighterDataObject.FighterNodeIndex);
+        Debug.Log(childB.FighterDataObject.FighterNodeIndex);
 
         FighterPairObject fighterPairObject = new FighterPairObject(childA.FighterDataObject, childB.FighterDataObject);
 
