@@ -5,7 +5,6 @@ using UnityEngine;
 public class FighterDataObject
 {
     private string fighterName;
-    private FighterCharacterObject fighterCharacter;
     private MechObject fighterMech;
     private List<SOItemDataObject> fighterDeck;
     private PassiveEffects fighterPassiveEffects;
@@ -15,7 +14,10 @@ public class FighterDataObject
     private SOCompleteCharacter completeCharacterBase;
 
     public string FighterName { get => fighterName; }
-    public FighterCharacterObject FighterCharacter { get => fighterCharacter; set => fighterCharacter = value; }
+    public FighterPilotUIObject FighterUIObject { get => completeCharacterBase.PilotUIObject; 
+                                                   set => completeCharacterBase.PilotUIObject = value; }
+
+    public SOCompleteCharacter FighterCompleteCharacter { get => completeCharacterBase; }
     public PassiveEffects FighterPassiveEffects { get => fighterPassiveEffects; }
     public ActiveEffects FighterActiveEffects { get => fighterActiveEffects; }
     public MechObject FighterMech { get => fighterMech; set => fighterMech = value; }
@@ -27,7 +29,7 @@ public class FighterDataObject
     public FighterDataObject(PlayerDataObject player)
     {
         fighterName = player.CompletePilot.PilotName;
-        fighterCharacter = player.PilotCharacter;
+        FighterUIObject = player.PilotCharacter;
         fighterPassiveEffects = player.PilotPassiveEffects;
         fighterActiveEffects = player.PilotActiveEffects;
 
@@ -36,7 +38,6 @@ public class FighterDataObject
 
     public FighterDataObject(SOCompleteCharacter opponent)
     {
-        fighterCharacter = opponent.PilotCharacter;
         fighterName = opponent.PilotName;
         fighterMech = GameManager.instance.PlayerMechController.BuildNewMech(opponent.MechObject);
         fighterDeck = opponent.DeckList;
