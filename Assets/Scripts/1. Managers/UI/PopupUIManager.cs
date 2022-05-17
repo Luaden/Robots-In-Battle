@@ -14,6 +14,7 @@ public class PopupUIManager : MonoBehaviour
     private HUDBuffUIPopupController hudBuffUIPopupController;
     private HUDMechComponentPopupController hudMechComponentPopupController;
     private AIDialoguePopupController aIDialoguePopupController;
+    private AIConversationPopupController aIConversationPopupController;
     private EventDialoguePopupController eventDialoguePopupController;
     private HUDFloatingDamagePopupController floatingDamagePopupController;
 
@@ -28,6 +29,7 @@ public class PopupUIManager : MonoBehaviour
         hudGeneralUIPopupController = GetComponentInChildren<HUDGeneralUIPopupController>();
         shopCardUIPopupController = GetComponentInChildren<ShopCardUIPopupController>();
         aIDialoguePopupController = GetComponentInChildren<AIDialoguePopupController>();
+        aIConversationPopupController = GetComponentInChildren<AIConversationPopupController>();
         eventDialoguePopupController = GetComponentInChildren<EventDialoguePopupController>();
         hudBuffUIPopupController = GetComponentInChildren<HUDBuffUIPopupController>();
         hudMechComponentPopupController = GetComponentInChildren<HUDMechComponentPopupController>();
@@ -88,10 +90,10 @@ public class PopupUIManager : MonoBehaviour
         aIDialoguePopupController.UpdateUI(name, dialogue);
     }
 
-    public void HandlePopup(SOCompleteCharacter character, string dialogue)
+    public void HandlePopup(SOCompleteCharacter characterObject, string dialogue, MechSelect character)
     {
         ClearAllPopups();
-        aIDialoguePopupController.UpdateUI(character, dialogue);
+        aIConversationPopupController.UpdateUI(characterObject, dialogue, character);
     }
 
     public void HandlePopup(SOEventObject eventDialogue)
