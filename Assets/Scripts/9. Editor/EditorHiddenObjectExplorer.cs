@@ -3,6 +3,7 @@ using UnityEditor;
 using System.Collections;
 using System.Collections.Generic;
 
+#if UNITY_EDITOR
 public class EditorHiddenObjectExplorer : EditorWindow
 {
 	[MenuItem("Tools/HiddenObjectExplorer")]
@@ -85,3 +86,4 @@ public class EditorHiddenObjectExplorer : EditorWindow
 		GUILayout.EndScrollView();
 	}
 }
+#endif
