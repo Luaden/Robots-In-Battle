@@ -12,13 +12,29 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0dbea520ffbcde34f8733cda588e8b2d, type: 3}
   m_Name: Friendly Dialogue
   m_EditorClassIdentifier: 
-  introDialogue: Hey, how's it going? I just wanna wish you good luck before we,
-    like, cross mechas. This is going to be a wicked cool fight so may the best mecha,
-    like, win!
-  aIWinDialogue: Alright! That was absolutely radical! Thank you for the great fight
-    and I hope I see you out here again some time. Hang loose dude!
-  aILoseDialogue: "That was gnarly but you are most triumphant my dude. Thank you
-    for the opportunity to fight such a magnificent future champion.\r"
+  introDialogue:
+  - "Hey, how's it going? I just wanna wish you good luck before we, like, cross
+    mechas. Hang loose and we\u2019ll have a sick time.\r"
+  - "This is going to be a wicked cool fight so may the best mecha, like, win!\r"
+  - "I am so psyched to battle you! It\u2019s going to be a real blast and no matter
+    who wins, I know we\u2019ll give it our all!"
+  - "Dude, if I win I\u2019m going to donate my winnings to charity. What are you
+    going to do with yours?"
+  - "Dude, if I win I\u2019m going to donate my winnings to charity. What are you
+    going to do with yours?"
+  introResponseDialogue:
+  - "You\u2019re so nice that it\u2019s almost going to hurt me to destroy you. Almost."
+  - "Don\u2019t think I\u2019m fooled by your chill mannerisms, I\u2019m still going
+    to wreck you."
+  - All this talking, not enough battling. After all, time is money.
+  - "If all pilots were as nice as you, I\u2019d already be the champion."
+  aIWinDialogue:
+  - "Alright! That was absolutely radical! Thank you for the great fight and I hope
+    I see you out here again some time, if you can fiscally ever recover from this
+    I mean. Anyhow, hang loose dude!\r"
+  aILoseDialogue:
+  - That was gnarly but you are most triumphant my dude. Thank you for the opportunity
+    to battle such a magnificent future champion.
   randomFightDialogue:
   - "Tubular work my dude! If my defences weren\u2019t so bodacious, you would already
     have beaten me!"
