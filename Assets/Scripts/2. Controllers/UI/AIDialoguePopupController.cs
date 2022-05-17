@@ -56,6 +56,7 @@ public class AIDialoguePopupController : BaseUIElement<string, string>
 
     protected override bool ClearedIfEmpty(string newData, string secondNewData)
     {
+        Debug.Log("Shouldn't be here.");
         if (newData == null || secondNewData == null)
         {
             smallPopupNameText.text = string.Empty;
