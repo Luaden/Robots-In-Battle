@@ -17,6 +17,7 @@ public class DowntimeManager : MonoBehaviour
     private InventoryCardDeckUISlotManager inventoryCardDeckUISlotManager;
     private PopupUIManager popupUIManager;
     private ShopCameraBoomMoveController cameraBoomMoveController;
+    private TournamentManager tournamentManager;
 
     public static DowntimeManager instance;
 
@@ -32,6 +33,8 @@ public class DowntimeManager : MonoBehaviour
     public InventoryCardDeckUISlotManager InventoryCardDeckUISlotManager { get => inventoryCardDeckUISlotManager; }
     public PopupUIManager PopupUIManager { get => popupUIManager; }
     public ShopCameraBoomMoveController CameraBoomMoveController { get => cameraBoomMoveController; }
+
+    public TournamentManager TournamentManager { get => tournamentManager; }
 
     public delegate void onLoadCombatScene();
     public static event onLoadCombatScene OnLoadCombatScene;
@@ -52,12 +55,14 @@ public class DowntimeManager : MonoBehaviour
         instance = this;
 
         shopManager = FindObjectOfType<ShopManager>(true);
+        tournamentManager = FindObjectOfType<TournamentManager>(true);
         popupUIManager = FindObjectOfType<PopupUIManager>(true);
         shopUISlotManager = FindObjectOfType<ShopUISlotManager>(true);
         shopItemUIBuildController = FindObjectOfType<ShopItemUIBuildController>(true);
         inventoryUISlotManager = FindObjectOfType<InventoryUISlotManager>(true);
         inventoryCardDeckUISlotManager = FindObjectOfType<InventoryCardDeckUISlotManager>(true);
         cameraBoomMoveController = FindObjectOfType<ShopCameraBoomMoveController>(true);
+
     }
 
     public void InitializeShop()

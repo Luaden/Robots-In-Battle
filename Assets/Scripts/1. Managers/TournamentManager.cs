@@ -4,23 +4,15 @@ using System.Linq;
 using UnityEngine.UI;
 using TMPro;
 
-public class TournamentOverviewManager : MonoBehaviour
+public class TournamentManager : MonoBehaviour
 {
-    public static TournamentOverviewManager instance;
-
     private NodeSlotManager nodeSlotManager;
     private NodeController nodeController;
     private PopupUIManager popupUIManager;
 
+    [SerializeField] protected GameObject tournamentPanel;
+    [SerializeField] protected GameObject shopPanel;
     [SerializeField] protected GameObject pilotPrefab;
-
-    [Header("Tournament Overview Stats")]
-    [SerializeField] protected Image playerMoneyImage;
-    [SerializeField] protected TMP_Text playerMoneyText;
-    [SerializeField] protected Image playerHealthImage;
-    [SerializeField] protected TMP_Text playerHealthText;
-    [SerializeField] protected Image playerTimeImage;
-    [SerializeField] protected TMP_Text playerTimeText;
 
     public NodeSlotManager NodeSlotManager { get => nodeSlotManager; }
     public PopupUIManager PopupUIManager { get => popupUIManager; }
@@ -32,18 +24,9 @@ public class TournamentOverviewManager : MonoBehaviour
 
     private void Awake()
     {
-
-        if (instance != this && instance != null)
-        {
-            Destroy(gameObject);
-            return;
-        }
-        instance = this;
-
-        nodeSlotManager = FindObjectOfType<NodeSlotManager>();
-        nodeController = FindObjectOfType<NodeController>();
-        popupUIManager = FindObjectOfType<PopupUIManager>();
-
+        nodeSlotManager = FindObjectOfType<NodeSlotManager>(true);
+        nodeController = FindObjectOfType<NodeController>(true);
+        popupUIManager = FindObjectOfType<PopupUIManager>(true);
     }
 
     private void Start()
@@ -53,38 +36,47 @@ public class TournamentOverviewManager : MonoBehaviour
 
     public void InitTournamentScreen()
     {
-        //int index = 0;
+        bool player = true;
+        int fighterIndex = 0;
 
-        foreach (NodeDataObject n in nodeController.GetAllNodes())
+        for(int i = 0; i < nodeController.GetAllNodes().Count; i++)
         {
-            if (n.nodeType == NodeDataObject.NodeType.Starter)
-                nodeController.GetAllActiveNodes().Add(n);
+            NodeDataObject node = nodeController.GetAllNodes()[i];
+            if (node.nodeType == NodeDataObject.NodeType.Starter)
+                nodeController.GetAllActiveNodes().Add(node);
 
-            if (n.nodeType == NodeDataObject.NodeType.FighterStarter)
+            if (node.nodeType == NodeDataObject.NodeType.FighterStarter)
             {
                 GameObject nodeUIGameObject;
-                nodeUIGameObject = Instantiate(pilotPrefab, n.transform.position, Quaternion.identity, n.transform);
+                nodeUIGameObject = Instantiate(pilotPrefab, node.transform.position, Quaternion.identity, node.transform);
                 // set the UI object of the pilot data to be the gameobject
 
                 NodeUIController nodeUIObject = nodeUIGameObject.GetComponent<NodeUIController>();
                 NodeDataObject nodeDataObject = nodeUIGameObject.GetComponent<NodeDataObject>();
 
                 // add item to the fighter starter slots
-                nodeSlotManager.AddItemToCollection(nodeUIObject, n.GetComponent<NodeSlotController>());
+                nodeSlotManager.AddItemToCollection(nodeUIObject, node.GetComponent<NodeSlotController>());
 
-                //FighterDataObject fighter = GameManager.instance.FighterDatas[index];
-                //nodeDataObject.Init(fighter);
-                nodeDataObject.Init();
+                FighterDataObject fighter;
+                if (player)
+                {
+                    fighter = GameManager.instance.Player.PlayerFighterData;
+                    player = false;
+                }
+                else
+                {
+                    fighter = GameManager.instance.Player.OtherFighters[fighterIndex];
+                    fighterIndex++;
+                }
+
+                nodeDataObject.Init(fighter);
                 nodeUIObject.InitUI(nodeDataObject);
-
-
 
                 nodeUIGameObject.SetActive(true);
             }
         }
-
-        DisplayStatsOverview();
     }
+
     public void AddToActiveList(NodeDataObject node)
     {
         nodeController.GetAllActiveNodes().Add(node);
@@ -119,7 +111,7 @@ public class TournamentOverviewManager : MonoBehaviour
 
         if(nodeController.GetAllActiveNodes().Any(n => n.HasBeenAssignedFighter == false))
         {
-            Debug.Log("pairs are not completed");
+            Debug.Log("You have not assigned all fighters to a slot. Fighter Pairs are not completed");
             return;
         }
         NodeDataObject[] node = GetActiveList().ToArray();
@@ -128,27 +120,36 @@ public class TournamentOverviewManager : MonoBehaviour
             AssignFighterPairs(node[i], node[i + 1]);
         }
 
-        // should be called when battles have been completed
-        //nodeController.ProgressFighters();
-
-    }
-    public void DisplayStatsOverview() 
-    {
-        if (GameManager.instance == null)
-            return;
-
-        // test
-        GameManager.instance.LoadPlayer();
-        Debug.Log(GameManager.instance.PlayerBankController);
-
-        playerMoneyText.text = GameManager.instance.PlayerBankController.GetPlayerCurrency().ToString();
-        playerHealthText.text = GameManager.instance.PlayerMechController.PlayerMech.MechCurrentHP.ToString();
-        playerTimeText.text = GameManager.instance.PlayerBankController.GetPlayerTime().ToString() + (" days ");
+        OnAssignAllFighters();
     }
 
     public List<FighterPairObject> GetFighterPairs()
     {
         return nodeController.FighterPairs;
+    }
+
+    public void SetFighterPairs(List<FighterPairObject> fighterPairs)
+    {
+        nodeController.FighterPairs = fighterPairs;
+    }
+
+    public void OpenTournamentScreen()
+    {
+        if(!tournamentPanel.activeInHierarchy)
+        {
+            tournamentPanel.SetActive(true);
+            shopPanel.SetActive(false);
+        }
+        else
+        {
+            tournamentPanel.SetActive(false);
+            shopPanel.SetActive(true);
+        }
+    }
+
+    public void OnAssignAllFighters()
+    {
+        Debug.Log("All fighters have been assigned to a slot!");
     }
 
 }
