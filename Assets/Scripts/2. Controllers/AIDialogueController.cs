@@ -21,8 +21,17 @@ public class AIDialogueController : MonoBehaviour
     public void PlayIntroDialogue()
     {
         OnDialogueStarted?.Invoke();
-        CombatManager.instance.PopupUIManager.HandlePopup(CombatManager.instance.OpponentFighter.FighterName,
-            GetRandomDialogue(aIIntroDialogue));
+
+        ConversationObject newConversation = new ConversationObject();
+        newConversation.firstCharacter = CombatManager.instance.OpponentFighter.FighterCompleteCharacter;
+        newConversation.secondCharacter = CombatManager.instance.PlayerFighter.FighterCompleteCharacter;
+        newConversation.firstCharacterStartsDialogue = true;
+        newConversation.firstCharacterIsPlayer = false;
+        newConversation.firstCharacterDialogue.Add(GetRandomDialogue(aIIntroDialogue));
+        newConversation.secondCharacterDialogue.Add(
+            GetRandomDialogue(CombatManager.instance.PlayerFighter.FighterCompleteCharacter.DialogueModule.IntroResponseDialogue));
+
+        CombatManager.instance.PopupUIManager.HandlePopup(newConversation);
     }
 
     public void PlayAIWinDialogue()

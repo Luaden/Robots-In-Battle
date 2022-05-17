@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
-public class AIConversationPopupController : BaseUIElement<SOCompleteCharacter, string, MechSelect>
+public class AIConversationPopupController : BaseUIElement<ConversationObject>
 {
     [Header("Opponent Big Popup")]
     [SerializeField] private Image opponentHairImage;
@@ -13,8 +13,8 @@ public class AIConversationPopupController : BaseUIElement<SOCompleteCharacter, 
     [SerializeField] private Image opponentNoseImage;
     [SerializeField] private Image opponentMouthImage;
     [SerializeField] private Image opponentClothesImage;
-    [SerializeField] private TMP_Text bigPopupOpponentNameText;
-    [SerializeField] private TMP_Text bigPopupOpponentDialogueText;
+    [SerializeField] private TMP_Text opponentNameText;
+    [SerializeField] private TMP_Text opponentDialogueText;
     [SerializeField] private GameObject opponentDialoguePopupObject;
     [Space]
     [Header("Player Big Popup")]
@@ -24,112 +24,109 @@ public class AIConversationPopupController : BaseUIElement<SOCompleteCharacter, 
     [SerializeField] private Image playerNoseImage;
     [SerializeField] private Image playerMouthImage;
     [SerializeField] private Image playerClothesImage;
-    [SerializeField] private TMP_Text bigPopupPlayerNameText;
-    [SerializeField] private TMP_Text bigPopupPlayerDialogueText;
+    [SerializeField] private TMP_Text playerNameText;
+    [SerializeField] private TMP_Text playerDialogueText;
     [SerializeField] private GameObject playerDialoguePopupObject;
     [Space]
     [SerializeField] private GameObject dialogueButton;
     [SerializeField] private GameObject bigPopupObject;
 
-    private MechSelect characterSpeaking;
+    private CharacterSelect characterSpeaking;
 
     public delegate void onAIDialogueComplete();
     public static event onAIDialogueComplete OnAIDialogueComplete;
+
+    private ConversationObject conversationObject;
+    Queue<string> dialogueChain = new Queue<string>();
+
+    private GameObject currentDialoguePopupObject;
+    private TMP_Text currentDialogueText; 
 
     private string currentDialogue;
     private Queue<char> completeDialogue;
     private float currentTimer = 0f;
 
-    public override void UpdateUI(SOCompleteCharacter primaryData, string secondaryData, MechSelect character)
+    public override void UpdateUI(ConversationObject primaryData)
     {
-        if (ClearedIfEmpty(primaryData, secondaryData, character))
+        if (ClearedIfEmpty(primaryData))
             return;
 
-        if (character == MechSelect.Opponent)
+        if (primaryData.firstCharacterIsPlayer)
         {
-            characterSpeaking = character;
-            bigPopupOpponentNameText.text = primaryData.PilotName;
+            AssignPlayerSprites(primaryData.firstCharacter);
+            AssignOpponentSprites(primaryData.secondCharacter);
 
-            if (primaryData.PilotUIObject.FighterHair == null)
-                opponentHairImage.color = new Color(1, 1, 1, 0);
-            opponentHairImage.sprite = primaryData.PilotUIObject.FighterHair;
-            opponentHairImage.SetNativeSize();
+            playerNameText.text = primaryData.firstCharacter.PilotName;
+            opponentNameText.text = primaryData.secondCharacter.PilotName;
 
-            if (primaryData.PilotUIObject.FighterEyes == null)
-                opponentEyesImage.color = new Color(1, 1, 1, 0);
-            opponentEyesImage.sprite = primaryData.PilotUIObject.FighterEyes;
-            opponentEyesImage.SetNativeSize();
+            if(primaryData.firstCharacterStartsDialogue)
+            {
+                characterSpeaking = CharacterSelect.Player;
 
-            if (primaryData.PilotUIObject.FighterNose == null)
-                opponentNoseImage.color = new Color(1, 1, 1, 0);
-            opponentNoseImage.sprite = primaryData.PilotUIObject.FighterNose;
-            opponentNoseImage.SetNativeSize();
+                currentDialogueText = playerDialogueText;
+                currentDialoguePopupObject = playerDialoguePopupObject;
 
-            if (primaryData.PilotUIObject.FighterMouth == null)
-                opponentMouthImage.color = new Color(1, 1, 1, 0);
-            opponentMouthImage.sprite = primaryData.PilotUIObject.FighterMouth;
-            opponentMouthImage.SetNativeSize();
+                for(int i = 0; i < primaryData.firstCharacterDialogue.Count; i++)
+                {
+                    dialogueChain.Enqueue(primaryData.firstCharacterDialogue[i]);
+                    dialogueChain.Enqueue(primaryData.secondCharacterDialogue[i]);
+                }
+            }
+            else
+            {
+                characterSpeaking = CharacterSelect.Opponent;
 
-            if (primaryData.PilotUIObject.FighterClothes == null)
-                opponentClothesImage.color = new Color(1, 1, 1, 0);
-            opponentClothesImage.sprite = primaryData.PilotUIObject.FighterClothes;
-            opponentClothesImage.SetNativeSize();
+                currentDialogueText = opponentDialogueText;
+                currentDialoguePopupObject = opponentDialoguePopupObject;
 
-            if (primaryData.PilotUIObject.FighterBody == null)
-                opponentBodyImage.color = new Color(1, 1, 1, 0);
-            opponentBodyImage.sprite = primaryData.PilotUIObject.FighterBody;
-            opponentBodyImage.SetNativeSize();
+                for(int i = 0; i < primaryData.firstCharacterDialogue.Count; i++)
+                {
+                    dialogueChain.Enqueue(primaryData.secondCharacterDialogue[i]);
+                    dialogueChain.Enqueue(primaryData.firstCharacterDialogue[i]);
+                }
+            }
+        }
+        else
+        {
+            AssignPlayerSprites(primaryData.secondCharacter);
+            AssignOpponentSprites(primaryData.firstCharacter);
 
-            foreach (char letter in secondaryData)
-                completeDialogue.Enqueue(letter);
+            opponentNameText.text = primaryData.firstCharacter.PilotName;
+            playerNameText.text = primaryData.secondCharacter.PilotName;
 
-            dialogueButton.SetActive(true);
-            bigPopupObject.SetActive(true);
-            opponentDialoguePopupObject.SetActive(true);
+            if (primaryData.firstCharacterStartsDialogue)
+            {
+                characterSpeaking = CharacterSelect.Opponent;
+
+                currentDialogueText = opponentDialogueText;
+                currentDialoguePopupObject = opponentDialoguePopupObject;
+
+                for (int i = 0; i < primaryData.firstCharacterDialogue.Count; i++)
+                {
+                    dialogueChain.Enqueue(primaryData.firstCharacterDialogue[i]);
+                    dialogueChain.Enqueue(primaryData.secondCharacterDialogue[i]);
+                }
+            }
+            else
+            {
+                characterSpeaking = CharacterSelect.Player;
+
+                currentDialogueText = playerDialogueText;
+                currentDialoguePopupObject = playerDialoguePopupObject;
+
+                for (int i = 0; i < primaryData.firstCharacterDialogue.Count; i++)
+                {
+                    dialogueChain.Enqueue(primaryData.secondCharacterDialogue[i]);
+                    dialogueChain.Enqueue(primaryData.firstCharacterDialogue[i]);
+                }
+            }
         }
 
-        if (character == MechSelect.Player)
-        {
-            characterSpeaking = character;
-            bigPopupPlayerNameText.text = primaryData.PilotName;
+        foreach (char letter in dialogueChain.Dequeue())
+            completeDialogue.Enqueue(letter);
 
-            if (primaryData.PilotUIObject.FighterHair == null)
-                playerHairImage.color = new Color(1, 1, 1, 0);
-            playerHairImage.sprite = primaryData.PilotUIObject.FighterHair;
-            playerHairImage.SetNativeSize();
-
-            if (primaryData.PilotUIObject.FighterEyes == null)
-                playerEyesImage.color = new Color(1, 1, 1, 0);
-            playerEyesImage.sprite = primaryData.PilotUIObject.FighterEyes;
-            playerEyesImage.SetNativeSize();
-
-            if (primaryData.PilotUIObject.FighterNose == null)
-                playerNoseImage.color = new Color(1, 1, 1, 0);
-            playerNoseImage.sprite = primaryData.PilotUIObject.FighterNose;
-            playerNoseImage.SetNativeSize();
-
-            if (primaryData.PilotUIObject.FighterMouth == null)
-                playerMouthImage.color = new Color(1, 1, 1, 0);
-            playerMouthImage.sprite = primaryData.PilotUIObject.FighterMouth;
-            playerMouthImage.SetNativeSize();
-
-            if (primaryData.PilotUIObject.FighterClothes == null)
-                playerClothesImage.color = new Color(1, 1, 1, 0);
-            playerClothesImage.sprite = primaryData.PilotUIObject.FighterClothes;
-            playerClothesImage.SetNativeSize();
-
-            if (primaryData.PilotUIObject.FighterBody == null)
-                playerBodyImage.color = new Color(1, 1, 1, 0);
-            playerBodyImage.sprite = primaryData.PilotUIObject.FighterBody;
-            playerBodyImage.SetNativeSize();
-
-            foreach (char letter in secondaryData)
-                completeDialogue.Enqueue(letter);
-
-            dialogueButton.SetActive(true);
-            bigPopupObject.SetActive(true);
-            playerDialoguePopupObject.SetActive(true);
-        }
+        dialogueButton.SetActive(true);
+        bigPopupObject.SetActive(true);
     }
 
     public void SkipText()
@@ -140,47 +137,58 @@ public class AIConversationPopupController : BaseUIElement<SOCompleteCharacter, 
             for (int i = 0; i < letterCount; i++)
                 currentDialogue += completeDialogue.Dequeue();
 
-            if (characterSpeaking == MechSelect.Opponent)
+            currentDialogueText.text = currentDialogue;
+
+            return;
+        }
+
+        if (completeDialogue.Count == 0 && dialogueChain.Count > 0)
+        {
+            if(characterSpeaking == CharacterSelect.Player)
             {
-                bigPopupOpponentDialogueText.text = currentDialogue;
+                currentDialoguePopupObject.SetActive(false);
+                currentDialogueText.text = string.Empty;
+
+                currentDialoguePopupObject = opponentDialoguePopupObject;
+                currentDialogueText = opponentDialogueText;
+            }
+            else
+            {
+                currentDialoguePopupObject.SetActive(false);
+                currentDialogueText.text = string.Empty;
+
+                currentDialoguePopupObject = playerDialoguePopupObject;
+                currentDialogueText = playerDialogueText;
             }
 
-            if (characterSpeaking == MechSelect.Player)
-            {
-                bigPopupPlayerDialogueText.text = currentDialogue;
-            }
-            return;
+            string newDialogue = dialogueChain.Dequeue();
+
+            foreach (char letter in newDialogue)
+                completeDialogue.Enqueue(letter);
+
+            currentDialoguePopupObject.SetActive(true);
         }
         else
         {
             OnAIDialogueComplete?.Invoke();
-            UpdateUI(null, null, MechSelect.None);
+            UpdateUI(null);
         }
     }
 
-    protected override bool ClearedIfEmpty(SOCompleteCharacter newData, string secondNewData, MechSelect tertiaryData)
+    protected override bool ClearedIfEmpty(ConversationObject newData)
     {
-        if (newData == null || secondNewData == null || tertiaryData == MechSelect.None)
+        if (newData == null)
         {
-            bigPopupPlayerNameText.text = string.Empty;
-            bigPopupPlayerDialogueText.text = string.Empty;
-            bigPopupOpponentNameText.text = string.Empty;
-            bigPopupOpponentDialogueText.text = string.Empty;
+            playerNameText.text = string.Empty;
+            playerDialogueText.text = string.Empty;
+            opponentNameText.text = string.Empty;
+            opponentDialogueText.text = string.Empty;
+            currentDialoguePopupObject = null;
             currentDialogue = string.Empty;
             completeDialogue = new Queue<char>();
 
-            dialogueButton.SetActive(false);
-            bigPopupObject.SetActive(false);
-
-            return true;
-        }
-
-        if (secondNewData.Length == 0)
-        {
-            bigPopupOpponentNameText.text = string.Empty;
-            bigPopupOpponentDialogueText.text = string.Empty;
-            currentDialogue = string.Empty;
-            completeDialogue = new Queue<char>();
+            playerDialoguePopupObject.SetActive(false);
+            opponentDialoguePopupObject.SetActive(false);
 
             dialogueButton.SetActive(false);
             bigPopupObject.SetActive(false);
@@ -194,6 +202,7 @@ public class AIConversationPopupController : BaseUIElement<SOCompleteCharacter, 
     private void Start()
     {
         completeDialogue = new Queue<char>();
+        dialogueChain = new Queue<string>();
     }
 
     private void Update()
@@ -208,15 +217,7 @@ public class AIConversationPopupController : BaseUIElement<SOCompleteCharacter, 
             if (CheckTimer())
             {
                 currentDialogue += completeDialogue.Dequeue();
-
-                if(characterSpeaking == MechSelect.Opponent)
-                {
-                    bigPopupOpponentDialogueText.text = currentDialogue;
-                }
-                if(characterSpeaking == MechSelect.Player)
-                {
-                    bigPopupPlayerDialogueText.text = currentDialogue;
-                }
+                currentDialogueText.text = currentDialogue;
             }
         }
     }
@@ -231,5 +232,71 @@ public class AIConversationPopupController : BaseUIElement<SOCompleteCharacter, 
         }
 
         return false;
+    }
+
+    private void AssignPlayerSprites(SOCompleteCharacter character)
+    {
+        if (character.PilotUIObject.FighterHair == null)
+            playerHairImage.color = new Color(1, 1, 1, 0);
+        playerHairImage.sprite = GameManager.instance.Player.CompletePilot.PilotUIObject.FighterHair;
+        playerHairImage.SetNativeSize();
+
+        if (character.PilotUIObject.FighterEyes == null)
+            playerEyesImage.color = new Color(1, 1, 1, 0);
+        playerEyesImage.sprite = character.PilotUIObject.FighterEyes;
+        playerEyesImage.SetNativeSize();
+
+        if (character.PilotUIObject.FighterNose == null)
+            playerNoseImage.color = new Color(1, 1, 1, 0);
+        playerNoseImage.sprite = character.PilotUIObject.FighterNose;
+        playerNoseImage.SetNativeSize();
+
+        if (character.PilotUIObject.FighterMouth == null)
+            playerMouthImage.color = new Color(1, 1, 1, 0);
+        playerMouthImage.sprite = character.PilotUIObject.FighterMouth;
+        playerMouthImage.SetNativeSize();
+
+        if (character.PilotUIObject.FighterClothes == null)
+            playerClothesImage.color = new Color(1, 1, 1, 0);
+        playerClothesImage.sprite = character.PilotUIObject.FighterClothes;
+        playerClothesImage.SetNativeSize();
+
+        if (character.PilotUIObject.FighterBody == null)
+            playerBodyImage.color = new Color(1, 1, 1, 0);
+        playerBodyImage.sprite = character.PilotUIObject.FighterBody;
+        playerBodyImage.SetNativeSize();
+    }
+
+    private void AssignOpponentSprites(SOCompleteCharacter character)
+    {
+        if (character.PilotUIObject.FighterHair == null)
+            opponentHairImage.color = new Color(1, 1, 1, 0);
+        opponentHairImage.sprite = character.PilotUIObject.FighterHair;
+        opponentHairImage.SetNativeSize();
+
+        if (character.PilotUIObject.FighterEyes == null)
+            opponentEyesImage.color = new Color(1, 1, 1, 0);
+        opponentEyesImage.sprite = character.PilotUIObject.FighterEyes;
+        opponentEyesImage.SetNativeSize();
+
+        if (character.PilotUIObject.FighterNose == null)
+            opponentNoseImage.color = new Color(1, 1, 1, 0);
+        opponentNoseImage.sprite = character.PilotUIObject.FighterNose;
+        opponentNoseImage.SetNativeSize();
+
+        if (character.PilotUIObject.FighterMouth == null)
+            opponentMouthImage.color = new Color(1, 1, 1, 0);
+        opponentMouthImage.sprite = character.PilotUIObject.FighterMouth;
+        opponentMouthImage.SetNativeSize();
+
+        if (character.PilotUIObject.FighterClothes == null)
+            opponentClothesImage.color = new Color(1, 1, 1, 0);
+        opponentClothesImage.sprite = character.PilotUIObject.FighterClothes;
+        opponentClothesImage.SetNativeSize();
+
+        if (character.PilotUIObject.FighterBody == null)
+            opponentBodyImage.color = new Color(1, 1, 1, 0);
+        opponentBodyImage.sprite = character.PilotUIObject.FighterBody;
+        opponentBodyImage.SetNativeSize();
     }
 }

@@ -90,10 +90,10 @@ public class PopupUIManager : MonoBehaviour
         aIDialoguePopupController.UpdateUI(name, dialogue);
     }
 
-    public void HandlePopup(SOCompleteCharacter characterObject, string dialogue, MechSelect character)
+    public void HandlePopup(ConversationObject conversationObject)
     {
         ClearAllPopups();
-        aIConversationPopupController.UpdateUI(characterObject, dialogue, character);
+        aIConversationPopupController.UpdateUI(conversationObject);
     }
 
     public void HandlePopup(SOEventObject eventDialogue)
