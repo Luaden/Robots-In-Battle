@@ -6,22 +6,37 @@ using TMPro;
 
 public class AIDialoguePopupController : BaseUIElement<string, string>
 {
-    [SerializeField] private GameObject popupObject;
-    [SerializeField] private TMP_Text nameText;
-    [SerializeField] private TMP_Text dialogueText;
-
-    [SerializeField] private GameObject bigPopupObject;
-    [SerializeField] private Image hairImage;
-    [SerializeField] private Image bodyImage;
-    [SerializeField] private Image eyesImage;
-    [SerializeField] private Image noseImage;
-    [SerializeField] private Image mouthImage;
-    [SerializeField] private Image clothesImage;
-    [SerializeField] private TMP_Text bigNameText;
-    [SerializeField] private TMP_Text bigDialogueText;
+    [Header("Default Opponent Popup")]
+    [SerializeField] private TMP_Text smallPopupNameText;
+    [SerializeField] private TMP_Text smallPopupDialogueText;
     [Space]
+    [Header("Opponent Big Popup")]
+    [SerializeField] private Image opponentHairImage;
+    [SerializeField] private Image opponentBodyImage;
+    [SerializeField] private Image opponentEyesImage;
+    [SerializeField] private Image opponentNoseImage;
+    [SerializeField] private Image opponentMouthImage;
+    [SerializeField] private Image opponentClothesImage;
+    [SerializeField] private TMP_Text bigPopupOpponentNameText;
+    [SerializeField] private TMP_Text bigPopupOpponentDialogueText;
+    [Space]
+    [Header("Player Big Popup")]
+    [SerializeField] private Image playerHairImage;
+    [SerializeField] private Image playerBodyImage;
+    [SerializeField] private Image playerEyesImage;
+    [SerializeField] private Image playerNoseImage;
+    [SerializeField] private Image playerMouthImage;
+    [SerializeField] private Image playerClothesImage;
+    [SerializeField] private TMP_Text bigPopupPlayerNameText;
+    [SerializeField] private TMP_Text bigPopupPlayerDialogueText;
+    [Space]
+    [Header("Global Popup Objects")]
     [SerializeField] private GameObject dialogueButton;
+    [SerializeField] private GameObject bigPopupObject;
+    [SerializeField] private GameObject popupObject;
 
+
+    private CharacterSelect characterSpeaking;
 
     public delegate void onAIDialogueComplete();
     public static event onAIDialogueComplete OnAIDialogueComplete;
@@ -36,7 +51,7 @@ public class AIDialoguePopupController : BaseUIElement<string, string>
         if (ClearedIfEmpty(primaryData, secondaryData))
             return;
 
-        nameText.text = primaryData;
+        smallPopupNameText.text = primaryData;
 
         foreach(char letter in secondaryData)
             completeDialogue.Enqueue(letter);
@@ -45,67 +60,94 @@ public class AIDialoguePopupController : BaseUIElement<string, string>
         popupObject.SetActive(true);
     }
 
-    public void UpdateUI(SOCompleteCharacter primaryData, string secondaryData)
+    public void UpdateUI(SOCompleteCharacter primaryData, string secondaryData, CharacterSelect character)
     {
         if (ClearedIfEmpty(primaryData, secondaryData))
             return;
 
-        bigNameText.text = primaryData.PilotName;
-
-        if (primaryData.PilotUIObject.FighterHair == null)
+        if(character == CharacterSelect.Opponent)
         {
-            hairImage.color = new Color(1, 1, 1, 0);
-            Debug.Log("Hair isn't found.");
-        }
-        hairImage.sprite = primaryData.PilotUIObject.FighterHair;
-        hairImage.SetNativeSize();
+            characterSpeaking = character;
+            bigPopupOpponentNameText.text = primaryData.PilotName;
 
-        if (primaryData.PilotUIObject.FighterEyes == null)
+            if (primaryData.PilotUIObject.FighterHair == null)
+                opponentHairImage.color = new Color(1, 1, 1, 0);
+            opponentHairImage.sprite = primaryData.PilotUIObject.FighterHair;
+            opponentHairImage.SetNativeSize();
+
+            if (primaryData.PilotUIObject.FighterEyes == null)
+                opponentEyesImage.color = new Color(1, 1, 1, 0);
+            opponentEyesImage.sprite = primaryData.PilotUIObject.FighterEyes;
+            opponentEyesImage.SetNativeSize();
+
+            if (primaryData.PilotUIObject.FighterNose == null)
+                opponentNoseImage.color = new Color(1, 1, 1, 0);
+            opponentNoseImage.sprite = primaryData.PilotUIObject.FighterNose;
+            opponentNoseImage.SetNativeSize();
+
+            if (primaryData.PilotUIObject.FighterMouth == null)
+                opponentMouthImage.color = new Color(1, 1, 1, 0);
+            opponentMouthImage.sprite = primaryData.PilotUIObject.FighterMouth;
+            opponentMouthImage.SetNativeSize();
+
+            if (primaryData.PilotUIObject.FighterClothes == null)
+                opponentClothesImage.color = new Color(1, 1, 1, 0);
+            opponentClothesImage.sprite = primaryData.PilotUIObject.FighterClothes;
+            opponentClothesImage.SetNativeSize();
+
+            if (primaryData.PilotUIObject.FighterBody == null)
+                opponentBodyImage.color = new Color(1, 1, 1, 0);
+            opponentBodyImage.sprite = primaryData.PilotUIObject.FighterBody;
+            opponentBodyImage.SetNativeSize();
+
+            foreach (char letter in secondaryData)
+                completeDialogue.Enqueue(letter);
+
+            dialogueButton.SetActive(true);
+            bigPopupObject.SetActive(true);
+        }
+
+        if(character == CharacterSelect.Player)
         {
-            eyesImage.color = new Color(1, 1, 1, 0);
-            Debug.Log("Eyes aren't found.");
+            characterSpeaking = character;
+            bigPopupOpponentNameText.text = primaryData.PilotName;
+
+            if (primaryData.PilotUIObject.FighterHair == null)
+                opponentHairImage.color = new Color(1, 1, 1, 0);
+            opponentHairImage.sprite = primaryData.PilotUIObject.FighterHair;
+            opponentHairImage.SetNativeSize();
+
+            if (primaryData.PilotUIObject.FighterEyes == null)
+                opponentEyesImage.color = new Color(1, 1, 1, 0);
+            opponentEyesImage.sprite = primaryData.PilotUIObject.FighterEyes;
+            opponentEyesImage.SetNativeSize();
+
+            if (primaryData.PilotUIObject.FighterNose == null)
+                opponentNoseImage.color = new Color(1, 1, 1, 0);
+            opponentNoseImage.sprite = primaryData.PilotUIObject.FighterNose;
+            opponentNoseImage.SetNativeSize();
+
+            if (primaryData.PilotUIObject.FighterMouth == null)
+                opponentMouthImage.color = new Color(1, 1, 1, 0);
+            opponentMouthImage.sprite = primaryData.PilotUIObject.FighterMouth;
+            opponentMouthImage.SetNativeSize();
+
+            if (primaryData.PilotUIObject.FighterClothes == null)
+                opponentClothesImage.color = new Color(1, 1, 1, 0);
+            opponentClothesImage.sprite = primaryData.PilotUIObject.FighterClothes;
+            opponentClothesImage.SetNativeSize();
+
+            if (primaryData.PilotUIObject.FighterBody == null)
+                opponentBodyImage.color = new Color(1, 1, 1, 0);
+            opponentBodyImage.sprite = primaryData.PilotUIObject.FighterBody;
+            opponentBodyImage.SetNativeSize();
+
+            foreach (char letter in secondaryData)
+                completeDialogue.Enqueue(letter);
+
+            dialogueButton.SetActive(true);
+            bigPopupObject.SetActive(true);
         }
-        eyesImage.sprite = primaryData.PilotUIObject.FighterEyes;
-        eyesImage.SetNativeSize();
-
-        if (primaryData.PilotUIObject.FighterNose == null)
-        {
-            noseImage.color = new Color(1, 1, 1, 0);
-            Debug.Log("Nose isn't found.");
-
-        }
-        noseImage.sprite = primaryData.PilotUIObject.FighterNose;
-        noseImage.SetNativeSize();
-
-        if (primaryData.PilotUIObject.FighterMouth == null)
-        {
-            mouthImage.color = new Color(1, 1, 1, 0);
-            Debug.Log("Mouth isn't found.");
-        }
-        mouthImage.sprite = primaryData.PilotUIObject.FighterMouth;
-        mouthImage.SetNativeSize();
-
-        if (primaryData.PilotUIObject.FighterClothes == null)
-        {
-            clothesImage.color = new Color(1, 1, 1, 0);
-            Debug.Log("Clothes aren't found.");
-        }
-        clothesImage.sprite = primaryData.PilotUIObject.FighterClothes;
-        clothesImage.SetNativeSize();
-
-        if (primaryData.PilotUIObject.FighterBody == null)
-        {
-            bodyImage.color = new Color(1, 1, 1, 0);
-            Debug.Log("Body isn't found.");
-        }
-        bodyImage.sprite = primaryData.PilotUIObject.FighterBody;
-        bodyImage.SetNativeSize();
-
-        foreach (char letter in secondaryData)
-            completeDialogue.Enqueue(letter);
-
-        dialogueButton.SetActive(true);
-        bigPopupObject.SetActive(true);
     }
 
     public void SkipText()
@@ -116,8 +158,17 @@ public class AIDialoguePopupController : BaseUIElement<string, string>
             for (int i = 0; i < letterCount; i++)
                 currentDialogue += completeDialogue.Dequeue();
 
-            dialogueText.text = currentDialogue;
-            bigDialogueText.text = currentDialogue;
+            smallPopupDialogueText.text = currentDialogue;
+
+            if(characterSpeaking == CharacterSelect.Opponent)
+            {
+                bigPopupOpponentDialogueText.text = currentDialogue;
+            }
+
+            if(characterSpeaking == CharacterSelect.Player)
+            {
+                bigPopupPlayerDialogueText.text = currentDialogue;
+            }
             return;
         }
         else
@@ -131,8 +182,8 @@ public class AIDialoguePopupController : BaseUIElement<string, string>
     {
         if (newData == null || secondNewData == null)
         {
-            nameText.text = string.Empty;
-            dialogueText.text = string.Empty;
+            smallPopupNameText.text = string.Empty;
+            smallPopupDialogueText.text = string.Empty;
             currentDialogue = string.Empty;
             completeDialogue = new Queue<char>();
 
@@ -144,8 +195,8 @@ public class AIDialoguePopupController : BaseUIElement<string, string>
 
         if (newData.Length == 0 || secondNewData.Length == 0)
         {
-            nameText.text = string.Empty;
-            dialogueText.text = string.Empty;
+            smallPopupNameText.text = string.Empty;
+            smallPopupDialogueText.text = string.Empty;
             currentDialogue = string.Empty;
             completeDialogue = new Queue<char>();
 
@@ -162,8 +213,10 @@ public class AIDialoguePopupController : BaseUIElement<string, string>
     {
         if (newData == null || secondNewData == null)
         {
-            bigNameText.text = string.Empty;
-            bigDialogueText.text = string.Empty;
+            bigPopupPlayerNameText.text = string.Empty;
+            bigPopupPlayerDialogueText.text = string.Empty;
+            bigPopupOpponentNameText.text = string.Empty;
+            bigPopupOpponentDialogueText.text = string.Empty;
             currentDialogue = string.Empty;
             completeDialogue = new Queue<char>();
 
@@ -175,8 +228,8 @@ public class AIDialoguePopupController : BaseUIElement<string, string>
 
         if (secondNewData.Length == 0)
         {
-            bigNameText.text = string.Empty;
-            bigDialogueText.text = string.Empty;
+            bigPopupOpponentNameText.text = string.Empty;
+            bigPopupOpponentDialogueText.text = string.Empty;
             currentDialogue = string.Empty;
             completeDialogue = new Queue<char>();
 
@@ -206,8 +259,8 @@ public class AIDialoguePopupController : BaseUIElement<string, string>
             if(CheckTimer())
             {
                 currentDialogue += completeDialogue.Dequeue();
-                dialogueText.text = currentDialogue;
-                bigDialogueText.text = currentDialogue;
+                smallPopupDialogueText.text = currentDialogue;
+                bigPopupOpponentDialogueText.text = currentDialogue;
             }
         }
     }

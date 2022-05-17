@@ -7,9 +7,9 @@ public class AIDialogueController : MonoBehaviour
     [Tooltip("Chance for one of the random dialogues to happen between rounds.")]
     [Range(1, 100)] [SerializeField] private int chanceForRandomDialogue;
 
-    private string aIIntroDialogue;
-    private string aIWinDialogue;
-    private string aILoseDialogue;
+    private List<string> aIIntroDialogue = new List<string>();
+    private List<string> aIWinDialogue = new List<string>();
+    private List<string> aILoseDialogue = new List<string>();
     private List<string> fightDialogue = new List<string>();
 
     public delegate void onDialogueStarted();
@@ -21,19 +21,22 @@ public class AIDialogueController : MonoBehaviour
     public void PlayIntroDialogue()
     {
         OnDialogueStarted?.Invoke();
-        CombatManager.instance.PopupUIManager.HandlePopup(CombatManager.instance.OpponentFighter.FighterCompleteCharacter, aIIntroDialogue);
+        CombatManager.instance.PopupUIManager.HandlePopup(CombatManager.instance.OpponentFighter.FighterCompleteCharacter,
+            GetRandomDialogue(aIIntroDialogue));
     }
 
     public void PlayAIWinDialogue()
     {
         OnDialogueStarted?.Invoke();
-        CombatManager.instance.PopupUIManager.HandlePopup(CombatManager.instance.OpponentFighter.FighterName, aIWinDialogue);
+        CombatManager.instance.PopupUIManager.HandlePopup(CombatManager.instance.OpponentFighter.FighterName, 
+            GetRandomDialogue(aIWinDialogue));
     }
 
     public void PlayAILoseDialogue()
     {
         OnDialogueStarted?.Invoke();
-        CombatManager.instance.PopupUIManager.HandlePopup(CombatManager.instance.OpponentFighter.FighterName, aILoseDialogue);
+        CombatManager.instance.PopupUIManager.HandlePopup(CombatManager.instance.OpponentFighter.FighterName, 
+            GetRandomDialogue(aILoseDialogue));
     }
 
     public void CheckPlayDialogue()
@@ -84,5 +87,10 @@ public class AIDialogueController : MonoBehaviour
     private void OnAIDialoguePopupComplete()
     {
         OnDialogueComplete?.Invoke();
+    }
+
+    private string GetRandomDialogue(List<string> dialogueChoices)
+    {
+        return dialogueChoices[Random.Range(0, dialogueChoices.Count)];
     }
 }
