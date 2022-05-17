@@ -20,14 +20,13 @@ public class NodeUIController : MonoBehaviour, IPointerDownHandler, IPointerUpHa
     [SerializeField] private Image fighterBody;
 
     private bool isPickedUp = false;
-    public Transform previousParentObject;
+    private Transform previousParentObject;
     [SerializeField] protected float travelSpeed;
 
     private RectTransform draggableRectTransform;
     private CanvasGroup draggableCanvasGroup;
 
-
-    [SerializeField] private GameObject nodeDataObject;
+    private GameObject nodeDataObject;
     public GameObject NodeDataObject { get => nodeDataObject; }
 
     [SerializeField] private BaseSlotController<NodeUIController> nodeSlotController;
@@ -51,16 +50,10 @@ public class NodeUIController : MonoBehaviour, IPointerDownHandler, IPointerUpHa
         isPickedUp = false;
     }
 
-    private void Start()
-    {
-        
-    }
     public void InitUI(NodeDataObject node)
     {
         fighterName.text = node.FighterName;
 
-        Debug.Log(node.FighterDataObject.FighterUIObject);
-        Debug.Log(fighterHair);
         fighterHair.sprite = node.FighterDataObject.FighterUIObject.FighterHair;
         fighterEyes.sprite = node.FighterDataObject.FighterUIObject.FighterEyes;
         fighterNose.sprite = node.FighterDataObject.FighterUIObject.FighterNose;
@@ -79,7 +72,6 @@ public class NodeUIController : MonoBehaviour, IPointerDownHandler, IPointerUpHa
     public void OnDrag(PointerEventData eventData)
     {
         nodeSlotController.HandleDrag(eventData);
-
     }
 
     public virtual void OnBeginDrag(PointerEventData eventData)
@@ -95,13 +87,16 @@ public class NodeUIController : MonoBehaviour, IPointerDownHandler, IPointerUpHa
         draggableCanvasGroup.blocksRaycasts = true;
         draggableCanvasGroup.alpha = 1f;
 
+/*        // if what we are dragging is nodedata
         if(eventData.pointerDrag.GetComponent<NodeDataObject>() != null)
         {
-            
+            Debug.Log(eventData.pointerDrag.GetComponent<NodeDataObject>().PairNode);
+            Debug.Log(nodeSlotController.GetComponent<NodeDataObject>().PairNode);
+            // set its next & pair node to be our node slot variables
             eventData.pointerDrag.GetComponent<NodeDataObject>().NextNode = nodeSlotController.GetComponent<NodeDataObject>().NextNode;
             eventData.pointerDrag.GetComponent<NodeDataObject>().PairNode = nodeSlotController.GetComponent<NodeDataObject>().PairNode;
 
-        }
+        }*/
     }
 
     public void OnPointerDown(PointerEventData eventData)
