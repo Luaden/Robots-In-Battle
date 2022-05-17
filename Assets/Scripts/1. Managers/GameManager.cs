@@ -12,6 +12,7 @@ public class GameManager : MonoBehaviour
     [Header("Character Settings")]
     [SerializeField] private SOCompleteCharacter starterPilot;
 
+
     private int currencyGainModifier = 0;
     private int enemyHealthModifier = 0;
     private List<SOEventObject> activeEvents;
