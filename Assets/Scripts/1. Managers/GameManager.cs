@@ -66,6 +66,7 @@ public class GameManager : MonoBehaviour
         playerData.OtherFighters = newFighters;
     }
 
+
     public void LoadTitle()
     {
         sceneController.LoadTitleScene();
