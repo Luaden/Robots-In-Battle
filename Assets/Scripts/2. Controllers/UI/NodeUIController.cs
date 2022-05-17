@@ -55,19 +55,21 @@ public class NodeUIController : MonoBehaviour, IPointerDownHandler, IPointerUpHa
     {
         
     }
-    public void InitUI(NodeDataObject newNodeData)
+    public void InitUI(NodeDataObject node)
     {
-        fighterName.text = newNodeData.FighterName;
+        fighterName.text = node.FighterName;
 
-        fighterHair.sprite = newNodeData.FighterDataObject.FighterCompleteCharacter.PilotUIObject.FighterHair;
-        fighterEyes.sprite = newNodeData.FighterDataObject.FighterCompleteCharacter.PilotUIObject.FighterEyes;
-        fighterNose.sprite = newNodeData.FighterDataObject.FighterCompleteCharacter.PilotUIObject.FighterNose;
-        fighterMouth.sprite = newNodeData.FighterDataObject.FighterCompleteCharacter.PilotUIObject.FighterMouth;
-        fighterClothes.sprite = newNodeData.FighterDataObject.FighterCompleteCharacter.PilotUIObject.FighterClothes;
-        fighterBody.sprite = newNodeData.FighterDataObject.FighterCompleteCharacter.PilotUIObject.FighterBody;
+        Debug.Log(node.FighterDataObject.FighterUIObject);
+        Debug.Log(fighterHair);
+        fighterHair.sprite = node.FighterDataObject.FighterUIObject.FighterHair;
+        fighterEyes.sprite = node.FighterDataObject.FighterUIObject.FighterEyes;
+        fighterNose.sprite = node.FighterDataObject.FighterUIObject.FighterNose;
+        fighterMouth.sprite = node.FighterDataObject.FighterUIObject.FighterMouth;
+        fighterClothes.sprite = node.FighterDataObject.FighterUIObject.FighterClothes;
+        fighterBody.sprite = node.FighterDataObject.FighterUIObject.FighterBody;
 
-        nodeDataObject = newNodeData.gameObject;
-        newNodeData.NodeUIController = this.GetComponent<NodeUIController>();
+        nodeDataObject = node.gameObject;
+        node.NodeUIController = this.GetComponent<NodeUIController>();
         //nodeData
         // information about the mech
         // name, hp, description?
