@@ -12,6 +12,13 @@ public class NodeUIController : MonoBehaviour, IPointerDownHandler, IPointerUpHa
     [SerializeField] protected TMP_Text health;
     [SerializeField] protected TMP_Text energy;
 
+    [SerializeField] private Image fighterHair;
+    [SerializeField] private Image fighterEyes;
+    [SerializeField] private Image fighterNose;
+    [SerializeField] private Image fighterMouth;
+    [SerializeField] private Image fighterClothes;
+    [SerializeField] private Image fighterBody;
+
     private bool isPickedUp = false;
     public Transform previousParentObject;
     [SerializeField] protected float travelSpeed;
@@ -51,7 +58,13 @@ public class NodeUIController : MonoBehaviour, IPointerDownHandler, IPointerUpHa
     public void InitUI(NodeDataObject newNodeData)
     {
         fighterName.text = newNodeData.FighterName;
-        
+
+        fighterHair.sprite = newNodeData.FighterDataObject.FighterCompleteCharacter.PilotUIObject.FighterHair;
+        fighterEyes.sprite = newNodeData.FighterDataObject.FighterCompleteCharacter.PilotUIObject.FighterEyes;
+        fighterNose.sprite = newNodeData.FighterDataObject.FighterCompleteCharacter.PilotUIObject.FighterNose;
+        fighterMouth.sprite = newNodeData.FighterDataObject.FighterCompleteCharacter.PilotUIObject.FighterMouth;
+        fighterClothes.sprite = newNodeData.FighterDataObject.FighterCompleteCharacter.PilotUIObject.FighterClothes;
+        fighterBody.sprite = newNodeData.FighterDataObject.FighterCompleteCharacter.PilotUIObject.FighterBody;
 
         nodeDataObject = newNodeData.gameObject;
         newNodeData.NodeUIController = this.GetComponent<NodeUIController>();

@@ -12,11 +12,10 @@ public class NodeDataObject : MonoBehaviour
     [SerializeField] protected bool isFinalNode;
     [SerializeField] private int nodeIndex;
 
-    [SerializeField] protected FighterDataObject fighterData;
-    [SerializeField] NodeUIController nodeUIController;
+    [SerializeField] private FighterDataObject fighterData;
+    private NodeUIController nodeUIController;
+    [SerializeField] private FighterDataObject pairNodeFighterData;
 
-    //testing
-    [SerializeField] protected SOCompleteCharacter[] sOCompleteCharacter;
     public FighterDataObject FighterDataObject { get => fighterData; }
     public NodeUIController NodeUIController { get => nodeUIController; set => nodeUIController = value; }
     public NodeDataObject PreviousNode { get => previousNode; set => previousNode = value; }
@@ -27,9 +26,6 @@ public class NodeDataObject : MonoBehaviour
     public bool HasWonBattle { get => hasWonBattle; set => hasWonBattle = value; }
     public bool IsFinalNode { get => isFinalNode; set => isFinalNode = value; }
     public int NodeIndex { get => nodeIndex; set => nodeIndex = value; }
-
-    // test
-    [SerializeField] private FighterDataObject pairNodeFighterData;
     public FighterDataObject PairNodeFighterData { get => pairNodeFighterData; set => pairNodeFighterData = value; }
 
     private string fighterName;
@@ -51,11 +47,6 @@ public class NodeDataObject : MonoBehaviour
         parentNode = transform.parent.GetComponent<NodeDataObject>();
         fighterData = fighter;
 
-/*        #region testing
-        int randomNum = Random.Range(0, 3);
-        fighterData = new FighterDataObject(sOCompleteCharacter[randomNum]);
-        #endregion
-*/
         nodeIndex = parentNode.NodeIndex;
         fighterData.FighterNodeIndex = nodeIndex;
     }
@@ -63,13 +54,7 @@ public class NodeDataObject : MonoBehaviour
     {
         parentNode = transform.parent.GetComponent<NodeDataObject>();
 
-        #region testing
-        int randomNum = Random.Range(0, sOCompleteCharacter.Length);
-        fighterData = new FighterDataObject(sOCompleteCharacter[randomNum]);
-        #endregion
-
         nodeIndex = parentNode.NodeIndex;
-        fighterData.FighterNodeIndex = nodeIndex;
     }
 
     public void SetActive()
@@ -86,6 +71,9 @@ public class NodeDataObject : MonoBehaviour
     {
         this.parentNode = parentNode;
         transform.SetParent(parentNode.transform);
+
+        parentNode.fighterData = fighterData;
+
         nextNode = parentNode.nextNode;
         pairNode = parentNode.pairNode;
         previousNode = parentNode.previousNode;

@@ -7,7 +7,7 @@ public class NodeSlotController : BaseSlotController<NodeUIController>
     public event Action<NodeUIController, BaseSlotController<NodeUIController>> onAssignFighter;
     private void Start()
     {
-        onAssignFighter += TournamentOverviewManager.instance.NodeSlotManager.OnFighterAssigned;
+        onAssignFighter += DowntimeManager.instance.TournamentManager.NodeSlotManager.OnFighterAssigned;
     }
     public override void OnDrop(PointerEventData eventData)
     {
@@ -53,11 +53,15 @@ public class NodeSlotController : BaseSlotController<NodeUIController>
     private void OnDestroy()
     {
         // null ref?
-        onAssignFighter -= TournamentOverviewManager.instance.NodeSlotManager.OnFighterAssigned;
+        onAssignFighter -= DowntimeManager.instance.TournamentManager.NodeSlotManager.OnFighterAssigned;
     }
 
     private void OnDisable()
     {
-        onAssignFighter -= TournamentOverviewManager.instance.NodeSlotManager.OnFighterAssigned;
+        onAssignFighter -= DowntimeManager.instance.TournamentManager.NodeSlotManager.OnFighterAssigned;
+    }
+    private void OnEnable()
+    {
+        onAssignFighter += DowntimeManager.instance.TournamentManager.NodeSlotManager.OnFighterAssigned;
     }
 }
