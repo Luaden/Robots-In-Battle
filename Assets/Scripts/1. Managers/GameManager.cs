@@ -126,10 +126,7 @@ public class GameManager : MonoBehaviour
         playerDeckController = new DowntimeDeckController();
         playerBankController = new DowntimeBankController();
         activeEvents = new List<SOEventObject>();
-    }
 
-    private void Start()
-    {
         sceneController = GetComponent<SceneController>();
 
         CreatePlayerAndFighters();

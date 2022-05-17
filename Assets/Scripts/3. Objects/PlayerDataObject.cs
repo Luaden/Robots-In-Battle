@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class PlayerDataObject 
 {
-    private FighterPilotUIObject pilotCharacter;
+    private FighterPilotUIObject pilotUIObject;
     private PassiveEffects pilotPassiveEffects;
     private ActiveEffects pilotActiveEffects;
     private List<MechComponentDataObject> playerInventory;
@@ -19,7 +19,7 @@ public class PlayerDataObject
     private int currencyToSpend;
 
     public SOCompleteCharacter CompletePilot { get => completeCharacterBase; }
-    public FighterPilotUIObject PilotCharacter { get => pilotCharacter; }
+    public FighterPilotUIObject PilotCharacter { get => pilotUIObject; }
     public PassiveEffects PilotPassiveEffects { get => pilotPassiveEffects; }
     public ActiveEffects PilotActiveEffects { get => pilotActiveEffects; }
     public List<MechComponentDataObject> PlayerInventory { get => playerInventory; set => playerInventory = value; }
@@ -37,7 +37,7 @@ public class PlayerDataObject
 
     public PlayerDataObject(SOCompleteCharacter newPlayableCharacter)
     {
-        pilotCharacter = newPlayableCharacter.PilotUIObject;
+        pilotUIObject = newPlayableCharacter.PilotUIObject;
         pilotPassiveEffects = newPlayableCharacter.PilotPassiveEffects;
         pilotActiveEffects = newPlayableCharacter.PilotActiveEffcts;
         currencyToSpend = newPlayableCharacter.StartingMoney;
@@ -46,8 +46,15 @@ public class PlayerDataObject
         otherFighters = new List<FighterDataObject>();
 
         completeCharacterBase = newPlayableCharacter;
+        pilotUIObject  = new FighterPilotUIObject(completeCharacterBase.PilotUIObject.FighterHair,
+                                                        completeCharacterBase.PilotUIObject.FighterEyes,
+                                                        completeCharacterBase.PilotUIObject.FighterNose,
+                                                        completeCharacterBase.PilotUIObject.FighterMouth,
+                                                        completeCharacterBase.PilotUIObject.FighterClothes,
+                                                        completeCharacterBase.PilotUIObject.FighterBody);
 
         playerFighterData = new FighterDataObject(newPlayableCharacter);
+        playerFighterData.FighterUIObject = pilotUIObject;
         playerFighterData.FighterMech = GameManager.instance.PlayerMechController.BuildNewMech(newPlayableCharacter.MechObject);
         playerFighterData.FighterDeck = newPlayableCharacter.DeckList;
     }
