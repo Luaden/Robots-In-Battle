@@ -12,11 +12,10 @@ public class FighterDataObject
     private int nodeIndex;
 
     private SOCompleteCharacter completeCharacterBase;
+    private FighterPilotUIObject fighterPilotUIObject;
 
     public string FighterName { get => fighterName; }
-    public FighterPilotUIObject FighterUIObject { get => completeCharacterBase.PilotUIObject; 
-                                                   set => completeCharacterBase.PilotUIObject = value; }
-
+    public FighterPilotUIObject FighterUIObject { get => fighterPilotUIObject; set => fighterPilotUIObject = value; }
     public SOCompleteCharacter FighterCompleteCharacter { get => completeCharacterBase; }
     public PassiveEffects FighterPassiveEffects { get => fighterPassiveEffects; }
     public ActiveEffects FighterActiveEffects { get => fighterActiveEffects; }

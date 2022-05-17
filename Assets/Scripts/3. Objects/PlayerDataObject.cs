@@ -32,6 +32,7 @@ public class PlayerDataObject
     public PlayerDataObject()
     {
         playerInventory = new List<MechComponentDataObject>();
+        otherFighters = new List<FighterDataObject>();
     }
 
     public PlayerDataObject(SOCompleteCharacter newPlayableCharacter)
@@ -42,6 +43,8 @@ public class PlayerDataObject
         currencyToSpend = newPlayableCharacter.StartingMoney;
 
         playerInventory = new List<MechComponentDataObject>();
+        otherFighters = new List<FighterDataObject>();
+
         completeCharacterBase = newPlayableCharacter;
 
         playerFighterData = new FighterDataObject(newPlayableCharacter);
