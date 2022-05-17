@@ -28,7 +28,7 @@ public class AIConversationPopupController : BaseUIElement<ConversationObject>
     [SerializeField] private TMP_Text playerDialogueText;
     [SerializeField] private GameObject playerDialoguePopupObject;
     [Space]
-    [SerializeField] private GameObject dialogueButton;
+    [SerializeField] private GameObject conversationButton;
     [SerializeField] private GameObject bigPopupObject;
 
     private CharacterSelect characterSpeaking;
@@ -36,7 +36,6 @@ public class AIConversationPopupController : BaseUIElement<ConversationObject>
     public delegate void onAIDialogueComplete();
     public static event onAIDialogueComplete OnAIDialogueComplete;
 
-    private ConversationObject conversationObject;
     Queue<string> dialogueChain = new Queue<string>();
 
     private GameObject currentDialoguePopupObject;
@@ -48,6 +47,7 @@ public class AIConversationPopupController : BaseUIElement<ConversationObject>
 
     public override void UpdateUI(ConversationObject primaryData)
     {
+        Debug.Log("New conversation starting.");
         if (ClearedIfEmpty(primaryData))
             return;
 
@@ -125,8 +125,10 @@ public class AIConversationPopupController : BaseUIElement<ConversationObject>
         foreach (char letter in dialogueChain.Dequeue())
             completeDialogue.Enqueue(letter);
 
-        dialogueButton.SetActive(true);
+        conversationButton.SetActive(true);
         bigPopupObject.SetActive(true);
+        currentDialoguePopupObject.SetActive(true);
+        Debug.Log(dialogueChain.Count);
     }
 
     public void SkipText()
@@ -146,30 +148,49 @@ public class AIConversationPopupController : BaseUIElement<ConversationObject>
         {
             if(characterSpeaking == CharacterSelect.Player)
             {
+                Debug.Log("Player speaking.");
                 currentDialoguePopupObject.SetActive(false);
                 currentDialogueText.text = string.Empty;
 
                 currentDialoguePopupObject = opponentDialoguePopupObject;
                 currentDialogueText = opponentDialogueText;
+
+                string newDialogue = dialogueChain.Dequeue();
+                completeDialogue.Clear();
+                currentDialogue = string.Empty;
+
+                foreach (char letter in newDialogue)
+                    completeDialogue.Enqueue(letter);
+
+                currentDialoguePopupObject.SetActive(true);
+                characterSpeaking = CharacterSelect.Opponent;
+                return;
             }
             else
             {
+                Debug.Log("Opponent speaking.");
                 currentDialoguePopupObject.SetActive(false);
                 currentDialogueText.text = string.Empty;
 
                 currentDialoguePopupObject = playerDialoguePopupObject;
                 currentDialogueText = playerDialogueText;
+
+                string newDialogue = dialogueChain.Dequeue();
+                completeDialogue.Clear();
+                currentDialogue = string.Empty;
+
+                foreach (char letter in newDialogue)
+                    completeDialogue.Enqueue(letter);
+
+                currentDialoguePopupObject.SetActive(true);
+                characterSpeaking = CharacterSelect.Player;
+                return;
             }
-
-            string newDialogue = dialogueChain.Dequeue();
-
-            foreach (char letter in newDialogue)
-                completeDialogue.Enqueue(letter);
-
-            currentDialoguePopupObject.SetActive(true);
         }
-        else
+
+        if (completeDialogue.Count == 0 && dialogueChain.Count == 0)
         {
+            Debug.Log("Dialogue Complete.");
             OnAIDialogueComplete?.Invoke();
             UpdateUI(null);
         }
@@ -190,7 +211,7 @@ public class AIConversationPopupController : BaseUIElement<ConversationObject>
             playerDialoguePopupObject.SetActive(false);
             opponentDialoguePopupObject.SetActive(false);
 
-            dialogueButton.SetActive(false);
+            conversationButton.SetActive(false);
             bigPopupObject.SetActive(false);
 
             return true;
