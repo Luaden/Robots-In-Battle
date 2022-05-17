@@ -88,6 +88,12 @@ public class PopupUIManager : MonoBehaviour
         aIDialoguePopupController.UpdateUI(name, dialogue);
     }
 
+    public void HandlePopup(SOCompleteCharacter character, string dialogue)
+    {
+        ClearAllPopups();
+        aIDialoguePopupController.UpdateUI(character, dialogue);
+    }
+
     public void HandlePopup(SOEventObject eventDialogue)
     {
         eventDialoguePopupController.UpdateUI(eventDialogue);

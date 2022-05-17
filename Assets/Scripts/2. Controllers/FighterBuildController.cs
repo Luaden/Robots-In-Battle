@@ -17,7 +17,7 @@ public class FighterBuildController : MonoBehaviour
     public FighterDataObject GetRandomFighter()
     {
         FighterDataObject newFighter = new FighterDataObject(GetRandomAIBehavior());
-        newFighter.FighterCharacter = new FighterCharacterObject(GetRandomSpriteFromList(hairOptions), GetRandomSpriteFromList(eyesOptions), GetRandomSpriteFromList(noseOptions),
+        newFighter.FighterUIObject = new FighterPilotUIObject(GetRandomSpriteFromList(hairOptions), GetRandomSpriteFromList(eyesOptions), GetRandomSpriteFromList(noseOptions),
                                                                  GetRandomSpriteFromList(mouthOptions), GetRandomSpriteFromList(clothesOptions), GetRandomSpriteFromList(bodyOptions));
 
         return newFighter;

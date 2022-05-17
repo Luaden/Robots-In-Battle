@@ -15,12 +15,12 @@ public class MechHUDManager : MonoBehaviour
         playerHudBarController.UpdateHealthBar(playerHP);
     }
 
-    public void UpdatePlayerPilotImage(FighterCharacterObject playerCharacter)
+    public void UpdatePlayerPilotImage(FighterPilotUIObject playerCharacter)
     {
         playerCharacterImageController.UpdateCharacterUI(playerCharacter);
     }
 
-    public void UpdateOpponentPilotImage(FighterCharacterObject opponentCharacter)
+    public void UpdateOpponentPilotImage(FighterPilotUIObject opponentCharacter)
     {
         opponentCharacterImageController.UpdateCharacterUI(opponentCharacter);
     }

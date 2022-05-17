@@ -1,7 +1,7 @@
 using UnityEngine;
 
 [System.Serializable]
-public class FighterCharacterObject 
+public class FighterPilotUIObject 
 {
     [SerializeField] private Sprite fighterHair;
     [SerializeField] private Sprite fighterEyes;
@@ -17,7 +17,7 @@ public class FighterCharacterObject
     public Sprite FighterClothes { get => fighterClothes; }
     public Sprite FighterBody { get => fighterBody; }
 
-    public FighterCharacterObject(Sprite fighterHair, Sprite fighterEyes, Sprite fighterNose, Sprite fighterMouth, Sprite fighterClothes, Sprite fighterBody)
+    public FighterPilotUIObject(Sprite fighterHair, Sprite fighterEyes, Sprite fighterNose, Sprite fighterMouth, Sprite fighterClothes, Sprite fighterBody)
     {
         this.fighterHair = fighterHair;
         this.fighterEyes = fighterEyes;
