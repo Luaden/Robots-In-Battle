@@ -21,7 +21,7 @@ public class AIDialogueController : MonoBehaviour
     public void PlayIntroDialogue()
     {
         OnDialogueStarted?.Invoke();
-        CombatManager.instance.PopupUIManager.HandlePopup(CombatManager.instance.OpponentFighter.FighterCompleteCharacter,
+        CombatManager.instance.PopupUIManager.HandlePopup(CombatManager.instance.OpponentFighter.FighterName,
             GetRandomDialogue(aIIntroDialogue));
     }
 
