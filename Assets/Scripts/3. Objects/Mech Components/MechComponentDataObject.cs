@@ -9,11 +9,17 @@ public class MechComponentDataObject
     private string componentName;
     private MechComponent componentType;
     private ElementType componentElement;
-    private Sprite componentSprite;
+    private Sprite componentShopSprite;
     private int componentMaxHP;
     private int componentMaxEnergy;
     private int componentCurrentHP;
-   
+    private string primaryComponentSpriteID;
+    private string secondaryComponentSpriteID;
+    private string tertiaryComponentSpriteID;
+    private string altPrimaryComponentSpriteID;
+    private string altSecondaryComponentSpriteID;
+    private string altTertiaryComponentSpriteID;
+
     //Bonus effects
     private float cDMFromComponent;
     private float cDMToComponent;
@@ -23,7 +29,13 @@ public class MechComponentDataObject
 
     public string ComponentName { get => componentName; }
     public MechComponent ComponentType { get => componentType; }
-    public Sprite ComponentSprite { get => componentSprite; }
+    public Sprite ComponentSprite { get => componentShopSprite; }
+    public string PrimaryComponentSpriteID { get => primaryComponentSpriteID; }
+    public string SecondaryComponentSpriteID { get => secondaryComponentSpriteID; }
+    public string TertiaryComponentSpriteID { get => tertiaryComponentSpriteID; }
+    public string AltPrimaryComponentSpriteID { get => altPrimaryComponentSpriteID; }
+    public string AltSecondaryComponentSpriteID { get => altSecondaryComponentSpriteID; }
+    public string AltTertiaryComponentID { get => altTertiaryComponentSpriteID; }
     public int ComponentCurrentHP { get => componentCurrentHP; set => componentCurrentHP = value; }
     public int ComponentMaxHP { get => componentMaxHP; }
     public int ComponentMaxEnergy { get => componentMaxEnergy; }
@@ -41,7 +53,13 @@ public class MechComponentDataObject
         componentName = sOMechComponent.ComponentName;
         componentType = sOMechComponent.ComponentType;
         componentElement = sOMechComponent.ComponentElement;
-        componentSprite = sOMechComponent.ComponentSprite;
+        componentShopSprite = sOMechComponent.ItemShopSprite;
+        primaryComponentSpriteID = sOMechComponent.PrimaryComponentSpriteID;
+        secondaryComponentSpriteID = sOMechComponent.SecondaryComponentSpriteID;
+        tertiaryComponentSpriteID = sOMechComponent.TertiaryComponentID;
+        altPrimaryComponentSpriteID = sOMechComponent.AltPrimaryComponentSpriteID;
+        altSecondaryComponentSpriteID = sOMechComponent.AltSecondaryComponentSpriteID;
+        altTertiaryComponentSpriteID = sOMechComponent.AltTertiaryComponentSpriteID;
         componentMaxHP = sOMechComponent.ComponentHP;
         componentMaxEnergy = sOMechComponent.ComponentEnergy;
         componentCurrentHP = componentMaxHP;

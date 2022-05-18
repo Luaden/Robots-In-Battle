@@ -75,6 +75,9 @@ public class ShopItemUIController : MonoBehaviour, IPointerDownHandler, IPointer
     private MechComponent componentType;
     private int componentHP;
     private int componentEnergy;
+    private string componentSpriteID;
+    private string connectionComponentSpriteID;
+    private string tertiaryComponentID;
     private ElementType componentElement;
     private float cDMFromComponent;
     private float cDMToComponent;
@@ -108,7 +111,7 @@ public class ShopItemUIController : MonoBehaviour, IPointerDownHandler, IPointer
         itemType = shopItemUIObject.ItemType;
         itemName = shopItemUIObject.ItemName;
         itemDescription = shopItemUIObject.ItemDescription;
-        itemImage = shopItemUIObject.ItemImage;
+        itemImage = shopItemUIObject.ItemShopImage;
         timeCost = shopItemUIObject.TimeCost;
         currencyCost = shopItemUIObject.CurrencyCost;
         chanceToSpawn = shopItemUIObject.ChanceToSpawn;
@@ -174,6 +177,9 @@ public class ShopItemUIController : MonoBehaviour, IPointerDownHandler, IPointer
         {
             componentImage.sprite = itemImage;
             componentName.text = itemName;
+            componentSpriteID = shopItemUIObject.PrimaryComponentSpriteID;
+            connectionComponentSpriteID = shopItemUIObject.SecondaryComponentSpriteID;
+            tertiaryComponentID = shopItemUIObject.TertiaryComponentID;
             componentCurrencyCostText.text = currencyCost.ToString();
             componentTimeCostText.text = timeCost.ToString();
             componentUIObject.SetActive(true);
