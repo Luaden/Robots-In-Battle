@@ -110,7 +110,7 @@ public class CombatSequenceManager : MonoBehaviour
                     CombatManager.instance.CombatEffectManager.EnableCombatEffects(currentCombatSequence.damageQueue.Peek().CardCharacterPairB);
             }
 
-            CombatManager.instance.CombatAnimationManager.AddAnimationToQueue(currentCombatSequence.animationQueue.Dequeue());
+            CombatManager.instance.CombatAnimationManager.SetMechAnimation(currentCombatSequence.animationQueue.Dequeue());
             CombatManager.instance.CombatAnimationManager.PrepCardsToBurn(currentCombatSequence.cardBurnObject);
             animationsComplete = false;
         }

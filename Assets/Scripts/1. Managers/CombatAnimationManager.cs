@@ -12,7 +12,7 @@ public class CombatAnimationManager : MonoBehaviour
 
     public bool AnimationsComplete { get => animationsComplete; }
 
-    public void AddAnimationToQueue(AnimationQueueObject newAnimation)
+    public void SetMechAnimation(AnimationQueueObject newAnimation)
     {
         animationsComplete = false;
 
@@ -41,6 +41,12 @@ public class CombatAnimationManager : MonoBehaviour
     {
         if (burnPileController == null)
             GetComponent<BurnPileController>();
+    }
+
+    private void Start()
+    {
+        playerMechAnimationController.SetMechElements(CombatManager.instance.PlayerFighter.FighterMech);
+        opponentMechAnimationController.SetMechElements(CombatManager.instance.OpponentFighter.FighterMech);
     }
 
     private void Update()

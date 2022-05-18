@@ -18,7 +18,7 @@ public class PopupUIManager : MonoBehaviour
     private EventDialoguePopupController eventDialoguePopupController;
     private HUDFloatingDamagePopupController floatingDamagePopupController;
 
-    private bool popupsEnabled = true;
+    [SerializeField] private bool popupsEnabled = true;
     public float TextPace { get => textRate; }
     public float GeneralHUDPopupDelay { get => generalHUDPopupDelay; }
 

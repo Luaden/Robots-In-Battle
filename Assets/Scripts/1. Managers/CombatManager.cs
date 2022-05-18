@@ -301,6 +301,7 @@ public class CombatManager : MonoBehaviour
         CombatSequenceManager.OnCombatComplete += CheckForWinLoss;
 
         AIDialogueController.OnDialogueComplete += StartNewTurn;
+        AIConversationPopupController.OnAIDialogueComplete += StartNewTurn;
         AIDialogueController.OnDialogueComplete += EnableCanPlayCards;
 
         if (GameManager.instance.Player.PlayerFighterData == null)
@@ -326,6 +327,7 @@ public class CombatManager : MonoBehaviour
         CombatSequenceManager.OnCombatComplete -= CheckForWinLoss;
 
         AIDialogueController.OnDialogueComplete -= StartNewTurn;
+        AIConversationPopupController.OnAIDialogueComplete -= StartNewTurn;
         AIDialogueController.OnDialogueComplete -= EnableCanPlayCards;
     }
 
@@ -408,7 +410,7 @@ public class CombatManager : MonoBehaviour
             CombatSequenceManager.ClearCombatQueue();
 
             AnimationQueueObject newAnimationQueueObject = new AnimationQueueObject(CharacterSelect.Player, AnimationType.Lose, CharacterSelect.Opponent, AnimationType.Win);
-            CombatAnimationManager.AddAnimationToQueue(newAnimationQueueObject);
+            CombatAnimationManager.SetMechAnimation(newAnimationQueueObject);
             
             hasLost = true;
             gameOver = true;
@@ -421,7 +423,7 @@ public class CombatManager : MonoBehaviour
             CombatSequenceManager.ClearCombatQueue();
 
             AnimationQueueObject newAnimationQueueObject = new AnimationQueueObject(CharacterSelect.Player, AnimationType.Win, CharacterSelect.Opponent, AnimationType.Lose);
-            CombatAnimationManager.AddAnimationToQueue(newAnimationQueueObject);
+            CombatAnimationManager.SetMechAnimation(newAnimationQueueObject);
 
             MechObject playerMech = playerFighter.FighterMech;
 

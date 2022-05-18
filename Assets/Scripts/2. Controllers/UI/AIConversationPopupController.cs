@@ -47,7 +47,6 @@ public class AIConversationPopupController : BaseUIElement<ConversationObject>
 
     public override void UpdateUI(ConversationObject primaryData)
     {
-        Debug.Log("New conversation starting.");
         if (ClearedIfEmpty(primaryData))
             return;
 
@@ -128,7 +127,6 @@ public class AIConversationPopupController : BaseUIElement<ConversationObject>
         conversationButton.SetActive(true);
         bigPopupObject.SetActive(true);
         currentDialoguePopupObject.SetActive(true);
-        Debug.Log(dialogueChain.Count);
     }
 
     public void SkipText()
@@ -148,7 +146,6 @@ public class AIConversationPopupController : BaseUIElement<ConversationObject>
         {
             if(characterSpeaking == CharacterSelect.Player)
             {
-                Debug.Log("Player speaking.");
                 currentDialoguePopupObject.SetActive(false);
                 currentDialogueText.text = string.Empty;
 
@@ -168,7 +165,6 @@ public class AIConversationPopupController : BaseUIElement<ConversationObject>
             }
             else
             {
-                Debug.Log("Opponent speaking.");
                 currentDialoguePopupObject.SetActive(false);
                 currentDialogueText.text = string.Empty;
 
@@ -190,7 +186,6 @@ public class AIConversationPopupController : BaseUIElement<ConversationObject>
 
         if (completeDialogue.Count == 0 && dialogueChain.Count == 0)
         {
-            Debug.Log("Dialogue Complete.");
             OnAIDialogueComplete?.Invoke();
             UpdateUI(null);
         }

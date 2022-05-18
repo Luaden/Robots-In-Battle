@@ -44,6 +44,7 @@ public enum AnimationType
     Guard,
     Counter,
     Damaged,
+    Jazzersize,
     Win,
     Lose,
 }
