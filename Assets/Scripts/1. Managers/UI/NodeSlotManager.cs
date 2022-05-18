@@ -46,17 +46,5 @@ public class NodeSlotManager : BaseSlotManager<NodeUIController>
             }
     }
 
-    public void OnFighterAssigned(NodeUIController item, BaseSlotController<NodeUIController> slot)
-    {
-        NodeDataObject slotNode = slot.GetComponent<NodeDataObject>();
-        if (slotNode == null || item == null)
-            return;
-
-        slotNode.HasBeenAssignedFighter = true;
-        NodeDataObject itemNode = item.GetComponent<NodeDataObject>();
-        itemNode.UpdateToParentNode(slotNode);
-
-
-    }
 
 }

@@ -36,9 +36,11 @@ public enum CardCategory
 public enum AnimationType
 {
     Idle,
-    Punch,
-    Kick,
-    Special,
+    PunchHigh,
+    PunchMid,
+    KickMid,
+    KickLow,
+    SpecialMid,
     Guard,
     Counter,
     Damaged,

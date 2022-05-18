@@ -4,11 +4,6 @@ using System;
 
 public class NodeSlotController : BaseSlotController<NodeUIController>
 {
-    public event Action<NodeUIController, BaseSlotController<NodeUIController>> onAssignFighter;
-    private void Start()
-    {
-        onAssignFighter += DowntimeManager.instance.TournamentManager.NodeSlotManager.OnFighterAssigned;
-    }
     public override void OnDrop(PointerEventData eventData)
     {
         if (this.GetComponent<NodeDataObject>().nodeType != NodeDataObject.NodeType.Starter &&
@@ -38,30 +33,30 @@ public class NodeSlotController : BaseSlotController<NodeUIController>
             slotManager.AddItemToCollection(draggedObjItem, this);
 
             // alert that we have assigned fighters to each slot
-            onAssignFighter(tempCurrentSlotItem, tempCurrentSlotItem.NodeSlotController);
-            onAssignFighter(currentSlottedItem, this);
+            OnFighterAssigned(tempCurrentSlotItem, tempCurrentSlotItem.NodeSlotController);
+            OnFighterAssigned(currentSlottedItem, this);
 
             return;
 
         }
 
-        onAssignFighter(eventData.pointerDrag.GetComponent<NodeUIController>(), this);
+        OnFighterAssigned(eventData.pointerDrag.GetComponent<NodeUIController>(), this);
         slotManager.HandleDrop(eventData, eventData.pointerDrag.GetComponent<NodeUIController>(), this);
 
     }
 
-    private void OnDestroy()
+    public void OnFighterAssigned(NodeUIController item, BaseSlotController<NodeUIController> slot)
     {
-        // null ref?
-        onAssignFighter -= DowntimeManager.instance.TournamentManager.NodeSlotManager.OnFighterAssigned;
+        NodeDataObject slotNode = slot.GetComponent<NodeDataObject>();
+        if (slotNode == null || item == null)
+            return;
+
+        slotNode.HasBeenAssignedFighter = true;
+        NodeDataObject itemNode = item.GetComponent<NodeDataObject>();
+        itemNode.UpdateToParentNode(slotNode);
+
+
     }
 
-    private void OnDisable()
-    {
-        onAssignFighter -= DowntimeManager.instance.TournamentManager.NodeSlotManager.OnFighterAssigned;
-    }
-    private void OnEnable()
-    {
-        onAssignFighter += DowntimeManager.instance.TournamentManager.NodeSlotManager.OnFighterAssigned;
-    }
+
 }

@@ -45,7 +45,6 @@ public class NodeDataObject : MonoBehaviour
     public void Init(FighterDataObject fighter)
     {
         parentNode = transform.parent.GetComponent<NodeDataObject>();
-        Debug.Log(fighter.FighterUIObject);
         fighterData = fighter;
 
         nodeIndex = parentNode.NodeIndex;
