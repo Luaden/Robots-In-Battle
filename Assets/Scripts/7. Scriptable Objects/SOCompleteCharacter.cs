@@ -10,7 +10,6 @@ public class SOCompleteCharacter : ScriptableObject
     [SerializeField] private FighterPilotUIObject fighterPilotUIObject;
     [SerializeField] private PassiveEffects pilotPassiveEffects;
     [SerializeField] private ActiveEffects pilotActiveEffects;
-    [SerializeField] private FighterPilotUIObject pilotUIObject;
     [SerializeField] private SOAIDialogueObject dialogueModule;
     [SerializeField] private SOAIBehaviorObject behaviorModule;
     [SerializeField] private List<SOItemDataObject> deckList;

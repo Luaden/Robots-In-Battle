@@ -13,7 +13,7 @@ public class EditorCompleteCharacterGUI : Editor
         switch (PilotTypeProperty.enumValueIndex)
         {
             case (int)PilotType.Unique:
-                EditorGUILayout.PropertyField(serializedObject.FindProperty("pilotUIObject"));
+                EditorGUILayout.PropertyField(serializedObject.FindProperty("fighterPilotUIObject"));
                 DisplayBasePilotAttributes();
                 break;
 

@@ -45,12 +45,13 @@ public class PlayerDataObject
         otherFighters = new List<FighterDataObject>();
 
         completeCharacterBase = newPlayableCharacter;
-        pilotUIObject  = new FighterPilotUIObject(completeCharacterBase.FighterPilotUIObject.FighterHair,
+        pilotUIObject = new FighterPilotUIObject(completeCharacterBase.FighterPilotUIObject.FighterHair,
                                                         completeCharacterBase.FighterPilotUIObject.FighterEyes,
                                                         completeCharacterBase.FighterPilotUIObject.FighterNose,
                                                         completeCharacterBase.FighterPilotUIObject.FighterMouth,
                                                         completeCharacterBase.FighterPilotUIObject.FighterClothes,
                                                         completeCharacterBase.FighterPilotUIObject.FighterBody);
+
 
         playerFighterData = new FighterDataObject(newPlayableCharacter);
         playerFighterData.FighterUIObject = pilotUIObject;

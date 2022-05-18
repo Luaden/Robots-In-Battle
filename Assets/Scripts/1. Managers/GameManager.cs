@@ -100,6 +100,13 @@ public class GameManager : MonoBehaviour
             if (starterPilot != null)
             {
                 Debug.Log("Creating new pilot.");
+
+                if (starterPilot.FighterPilotUIObject.FighterEyes == null)
+                    Debug.Log("Oops, no eyes.");
+
+                if (starterPilot.FighterPilotUIObject.FighterBody == null)
+                    Debug.Log("Oops, no body.");
+
                 playerData = new PlayerDataObject(starterPilot);
                 return;
             }

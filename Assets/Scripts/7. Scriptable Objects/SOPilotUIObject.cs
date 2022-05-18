@@ -1,7 +1,6 @@
 using UnityEngine;
 
-[System.Serializable]
-public class FighterPilotUIObject 
+public class SOPilotUIObject : ScriptableObject
 {
     [SerializeField] private Sprite fighterHair;
     [SerializeField] private Sprite fighterEyes;
@@ -16,16 +15,4 @@ public class FighterPilotUIObject
     public Sprite FighterMouth { get => fighterMouth; }
     public Sprite FighterClothes { get => fighterClothes; }
     public Sprite FighterBody { get => fighterBody; }
-
-    public FighterPilotUIObject(Sprite fighterHair, Sprite fighterEyes, Sprite fighterNose, Sprite fighterMouth, Sprite fighterClothes, Sprite fighterBody)
-    {
-        this.fighterHair = fighterHair;
-        this.fighterEyes = fighterEyes;
-        this.fighterNose = fighterNose;
-        this.fighterMouth = fighterMouth;
-        this.fighterClothes = fighterClothes;
-        this.fighterBody = fighterBody;
-
-        Debug.Log(this.fighterEyes);
-    }
 }
