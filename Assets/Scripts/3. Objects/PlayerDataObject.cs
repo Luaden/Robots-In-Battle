@@ -37,21 +37,20 @@ public class PlayerDataObject
 
     public PlayerDataObject(SOCompleteCharacter newPlayableCharacter)
     {
-        pilotUIObject = newPlayableCharacter.PilotUIObject;
         pilotPassiveEffects = newPlayableCharacter.PilotPassiveEffects;
         pilotActiveEffects = newPlayableCharacter.PilotActiveEffcts;
-        currencyToSpend = newPlayableCharacter.StartingMoney;
+        currencyToSpend = newPlayableCharacter.StartingCurrency;
 
         playerInventory = new List<MechComponentDataObject>();
         otherFighters = new List<FighterDataObject>();
 
         completeCharacterBase = newPlayableCharacter;
-        pilotUIObject  = new FighterPilotUIObject(completeCharacterBase.PilotUIObject.FighterHair,
-                                                        completeCharacterBase.PilotUIObject.FighterEyes,
-                                                        completeCharacterBase.PilotUIObject.FighterNose,
-                                                        completeCharacterBase.PilotUIObject.FighterMouth,
-                                                        completeCharacterBase.PilotUIObject.FighterClothes,
-                                                        completeCharacterBase.PilotUIObject.FighterBody);
+        pilotUIObject  = new FighterPilotUIObject(completeCharacterBase.FighterPilotUIObject.FighterHair,
+                                                        completeCharacterBase.FighterPilotUIObject.FighterEyes,
+                                                        completeCharacterBase.FighterPilotUIObject.FighterNose,
+                                                        completeCharacterBase.FighterPilotUIObject.FighterMouth,
+                                                        completeCharacterBase.FighterPilotUIObject.FighterClothes,
+                                                        completeCharacterBase.FighterPilotUIObject.FighterBody);
 
         playerFighterData = new FighterDataObject(newPlayableCharacter);
         playerFighterData.FighterUIObject = pilotUIObject;

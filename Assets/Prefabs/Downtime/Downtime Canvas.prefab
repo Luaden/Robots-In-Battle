@@ -2371,10 +2371,10 @@ RectTransform:
   m_Father: {fileID: 7921704189449896762}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 183.6687, y: 42.99994}
-  m_SizeDelta: {x: -1615.947, y: -194.77917}
+  m_AnchorMin: {x: 0, y: 0.5}
+  m_AnchorMax: {x: 0, y: 0.5}
+  m_AnchoredPosition: {x: 218, y: 42.99994}
+  m_SizeDelta: {x: 304.05298, y: 885.2208}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &586138267152269159
 CanvasRenderer:
@@ -11431,6 +11431,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   textRate: 0.02
   generalHUDPopupDelay: 0
+  popupsEnabled: 1
 --- !u!1 &4705024972959743931
 GameObject:
   m_ObjectHideFlags: 0
@@ -14939,8 +14940,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   shopCollectionObjects:
-  - {fileID: 11400000, guid: c4b76d7dbdd569d46bd286b736065025, type: 2}
-  - {fileID: 11400000, guid: c37efeef9c1be434cb63fef4e04e768b, type: 2}
+  - {fileID: 11400000, guid: 7b99fe10d56b1c34a998631f1c0ff783, type: 2}
 --- !u!114 &7921704189087186481
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -15028,7 +15028,7 @@ MonoBehaviour:
   inventory: {fileID: 586138267461057387}
   shopCartWindow: {fileID: 7921704189087186485}
   repairCost: 100
-  minimumShopItemCount: 5
+  minimumShopItemCount: 15
 --- !u!1 &7921704189168784904
 GameObject:
   m_ObjectHideFlags: 0
@@ -16244,10 +16244,10 @@ RectTransform:
   m_Father: {fileID: 7921704189449896762}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -443.36206, y: 134.96533}
-  m_SizeDelta: {x: -1031.6632, y: -558.4288}
+  m_AnchorMin: {x: 1, y: 0.5}
+  m_AnchorMax: {x: 1, y: 0.5}
+  m_AnchoredPosition: {x: -552, y: -64}
+  m_SizeDelta: {x: 888.3368, y: 521.5712}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &7921704190105245882
 CanvasRenderer:

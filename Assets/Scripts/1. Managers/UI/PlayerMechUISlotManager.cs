@@ -236,5 +236,6 @@ public class PlayerMechUISlotManager : BaseSlotManager<ShopItemUIController>
                                             legsSlot.CurrentSlottedItem.MechComponentDataObject);
 
         GameManager.instance.PlayerMechController.SetNewPlayerMech(newMech);
+        DowntimeManager.instance.MechSpriteSwapManager.UpdateMechSprites(GameManager.instance.PlayerMechController.PlayerMech, CharacterSelect.Player);
     }
 }

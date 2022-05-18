@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class ConversationObject 
 {
-    public SOCompleteCharacter firstCharacter;
-    public SOCompleteCharacter secondCharacter;
+    public FighterDataObject firstCharacter;
+    public FighterDataObject secondCharacter;
 
     public List<string> firstCharacterDialogue;
     public List<string> secondCharacterDialogue;

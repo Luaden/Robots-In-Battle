@@ -23,8 +23,8 @@ public class AIDialogueController : MonoBehaviour
         OnDialogueStarted?.Invoke();
 
         ConversationObject newConversation = new ConversationObject();
-        newConversation.firstCharacter = CombatManager.instance.OpponentFighter.FighterCompleteCharacter;
-        newConversation.secondCharacter = CombatManager.instance.PlayerFighter.FighterCompleteCharacter;
+        newConversation.firstCharacter = CombatManager.instance.OpponentFighter;
+        newConversation.secondCharacter = CombatManager.instance.PlayerFighter;
         newConversation.firstCharacterStartsDialogue = true;
         newConversation.firstCharacterIsPlayer = false;
         newConversation.firstCharacterDialogue.Add(GetRandomDialogue(aIIntroDialogue));

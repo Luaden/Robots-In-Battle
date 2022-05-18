@@ -55,8 +55,8 @@ public class AIConversationPopupController : BaseUIElement<ConversationObject>
             AssignPlayerSprites(primaryData.firstCharacter);
             AssignOpponentSprites(primaryData.secondCharacter);
 
-            playerNameText.text = primaryData.firstCharacter.PilotName;
-            opponentNameText.text = primaryData.secondCharacter.PilotName;
+            playerNameText.text = primaryData.firstCharacter.FighterName;
+            opponentNameText.text = primaryData.secondCharacter.FighterName;
 
             if(primaryData.firstCharacterStartsDialogue)
             {
@@ -90,8 +90,8 @@ public class AIConversationPopupController : BaseUIElement<ConversationObject>
             AssignPlayerSprites(primaryData.secondCharacter);
             AssignOpponentSprites(primaryData.firstCharacter);
 
-            opponentNameText.text = primaryData.firstCharacter.PilotName;
-            playerNameText.text = primaryData.secondCharacter.PilotName;
+            opponentNameText.text = primaryData.firstCharacter.FighterName;
+            playerNameText.text = primaryData.secondCharacter.FighterName;
 
             if (primaryData.firstCharacterStartsDialogue)
             {
@@ -250,69 +250,69 @@ public class AIConversationPopupController : BaseUIElement<ConversationObject>
         return false;
     }
 
-    private void AssignPlayerSprites(SOCompleteCharacter character)
+    private void AssignPlayerSprites(FighterDataObject fighter)
     {
-        if (character.PilotUIObject.FighterHair == null)
+        if (fighter.FighterUIObject.FighterHair == null)
             playerHairImage.color = new Color(1, 1, 1, 0);
-        playerHairImage.sprite = GameManager.instance.Player.CompletePilot.PilotUIObject.FighterHair;
+        playerHairImage.sprite = fighter.FighterUIObject.FighterHair;
         playerHairImage.SetNativeSize();
 
-        if (character.PilotUIObject.FighterEyes == null)
+        if (fighter.FighterUIObject.FighterEyes == null)
             playerEyesImage.color = new Color(1, 1, 1, 0);
-        playerEyesImage.sprite = character.PilotUIObject.FighterEyes;
+        playerEyesImage.sprite = fighter.FighterUIObject.FighterEyes;
         playerEyesImage.SetNativeSize();
 
-        if (character.PilotUIObject.FighterNose == null)
+        if (fighter.FighterUIObject.FighterNose == null)
             playerNoseImage.color = new Color(1, 1, 1, 0);
-        playerNoseImage.sprite = character.PilotUIObject.FighterNose;
+        playerNoseImage.sprite = fighter.FighterUIObject.FighterNose;
         playerNoseImage.SetNativeSize();
 
-        if (character.PilotUIObject.FighterMouth == null)
+        if (fighter.FighterUIObject.FighterMouth == null)
             playerMouthImage.color = new Color(1, 1, 1, 0);
-        playerMouthImage.sprite = character.PilotUIObject.FighterMouth;
+        playerMouthImage.sprite = fighter.FighterUIObject.FighterMouth;
         playerMouthImage.SetNativeSize();
 
-        if (character.PilotUIObject.FighterClothes == null)
+        if (fighter.FighterUIObject.FighterClothes == null)
             playerClothesImage.color = new Color(1, 1, 1, 0);
-        playerClothesImage.sprite = character.PilotUIObject.FighterClothes;
+        playerClothesImage.sprite = fighter.FighterUIObject.FighterClothes;
         playerClothesImage.SetNativeSize();
 
-        if (character.PilotUIObject.FighterBody == null)
+        if (fighter.FighterUIObject.FighterBody == null)
             playerBodyImage.color = new Color(1, 1, 1, 0);
-        playerBodyImage.sprite = character.PilotUIObject.FighterBody;
+        playerBodyImage.sprite = fighter.FighterUIObject.FighterBody;
         playerBodyImage.SetNativeSize();
     }
 
-    private void AssignOpponentSprites(SOCompleteCharacter character)
+    private void AssignOpponentSprites(FighterDataObject fighter)
     {
-        if (character.PilotUIObject.FighterHair == null)
+        if (fighter.FighterUIObject.FighterHair == null)
             opponentHairImage.color = new Color(1, 1, 1, 0);
-        opponentHairImage.sprite = character.PilotUIObject.FighterHair;
+        opponentHairImage.sprite = fighter.FighterUIObject.FighterHair;
         opponentHairImage.SetNativeSize();
 
-        if (character.PilotUIObject.FighterEyes == null)
+        if (fighter.FighterUIObject.FighterEyes == null)
             opponentEyesImage.color = new Color(1, 1, 1, 0);
-        opponentEyesImage.sprite = character.PilotUIObject.FighterEyes;
+        opponentEyesImage.sprite = fighter.FighterUIObject.FighterEyes;
         opponentEyesImage.SetNativeSize();
 
-        if (character.PilotUIObject.FighterNose == null)
+        if (fighter.FighterUIObject.FighterNose == null)
             opponentNoseImage.color = new Color(1, 1, 1, 0);
-        opponentNoseImage.sprite = character.PilotUIObject.FighterNose;
+        opponentNoseImage.sprite = fighter.FighterUIObject.FighterNose;
         opponentNoseImage.SetNativeSize();
 
-        if (character.PilotUIObject.FighterMouth == null)
+        if (fighter.FighterUIObject.FighterMouth == null)
             opponentMouthImage.color = new Color(1, 1, 1, 0);
-        opponentMouthImage.sprite = character.PilotUIObject.FighterMouth;
+        opponentMouthImage.sprite = fighter.FighterUIObject.FighterMouth;
         opponentMouthImage.SetNativeSize();
 
-        if (character.PilotUIObject.FighterClothes == null)
+        if (fighter.FighterUIObject.FighterClothes == null)
             opponentClothesImage.color = new Color(1, 1, 1, 0);
-        opponentClothesImage.sprite = character.PilotUIObject.FighterClothes;
+        opponentClothesImage.sprite = fighter.FighterUIObject.FighterClothes;
         opponentClothesImage.SetNativeSize();
 
-        if (character.PilotUIObject.FighterBody == null)
+        if (fighter.FighterUIObject.FighterBody == null)
             opponentBodyImage.color = new Color(1, 1, 1, 0);
-        opponentBodyImage.sprite = character.PilotUIObject.FighterBody;
+        opponentBodyImage.sprite = fighter.FighterUIObject.FighterBody;
         opponentBodyImage.SetNativeSize();
     }
 }
