@@ -54,6 +54,19 @@ public class NodeUIController : MonoBehaviour, IPointerDownHandler, IPointerUpHa
     {
         fighterName.text = node.FighterName;
 
+        if (node.FighterDataObject.FighterUIObject.FighterHair == null)
+            fighterHair.color = Color.clear;
+        if (node.FighterDataObject.FighterUIObject.FighterEyes == null)
+            fighterEyes.color = Color.clear;
+        if (node.FighterDataObject.FighterUIObject.FighterNose == null)
+            fighterNose.color = Color.clear;
+        if (node.FighterDataObject.FighterUIObject.FighterMouth == null)
+            fighterMouth.color = Color.clear;
+        if (node.FighterDataObject.FighterUIObject.FighterClothes == null)
+            fighterClothes.color = Color.clear;
+        if (node.FighterDataObject.FighterUIObject.FighterBody == null)
+            fighterBody.color = Color.clear;
+
         fighterHair.sprite = node.FighterDataObject.FighterUIObject.FighterHair;
         fighterEyes.sprite = node.FighterDataObject.FighterUIObject.FighterEyes;
         fighterNose.sprite = node.FighterDataObject.FighterUIObject.FighterNose;
@@ -63,10 +76,6 @@ public class NodeUIController : MonoBehaviour, IPointerDownHandler, IPointerUpHa
 
         nodeDataObject = node.gameObject;
         node.NodeUIController = this.GetComponent<NodeUIController>();
-        //nodeData
-        // information about the mech
-        // name, hp, description?
-
     }
 
     public void OnDrag(PointerEventData eventData)

@@ -97,9 +97,6 @@ public class TournamentManager : MonoBehaviour
         childA.FighterDataObject.FighterNodeIndex = nodeA.NodeIndex;
         childB.FighterDataObject.FighterNodeIndex = nodeB.NodeIndex;
 
-        Debug.Log(childA.FighterDataObject.FighterNodeIndex);
-        Debug.Log(childB.FighterDataObject.FighterNodeIndex);
-
         FighterPairObject fighterPairObject = new FighterPairObject(childA.FighterDataObject, childB.FighterDataObject);
 
         nodeController.FighterPairs.Add(fighterPairObject);
