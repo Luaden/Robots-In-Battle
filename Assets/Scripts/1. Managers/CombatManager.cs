@@ -50,6 +50,7 @@ public class CombatManager : MonoBehaviour
     private PilotEffectManager pilotEffectManager;
     private CombatSequenceManager combatSequenceManager;
     private AIManager aIManager;
+    private MechSpriteSwapManager mechSpriteSwapManager;
 
     private FighterDataObject playerFighter;
     private FighterDataObject opponentFighter;
@@ -76,6 +77,7 @@ public class CombatManager : MonoBehaviour
     public PilotEffectManager PilotEffectManager { get => pilotEffectManager; }
     public CombatSequenceManager CombatSequenceManager { get => combatSequenceManager; }
     public AIManager AIManager { get => aIManager; }
+    public MechSpriteSwapManager MechSpriteSwapManager { get => mechSpriteSwapManager; }
 
     public int MechEnergyGain { get => mechEnergyGain; }
     public float BrokenCDM { get => brokenComponentDamageMultiplier; }
@@ -292,6 +294,7 @@ public class CombatManager : MonoBehaviour
         pilotEffectManager = FindObjectOfType<PilotEffectManager>(true);
         combatSequenceManager = FindObjectOfType<CombatSequenceManager>(true);
         aIManager = FindObjectOfType<AIManager>(true);
+        mechSpriteSwapManager = FindObjectOfType<MechSpriteSwapManager>(true);
     }
 
     private void Start()
@@ -352,6 +355,7 @@ public class CombatManager : MonoBehaviour
         mechHUDManager.UpdatePlayerHP(playerFighter.FighterMech.MechCurrentHP);
 
         mechHUDManager.UpdatePlayerPilotImage(playerFighter.FighterUIObject);
+        mechSpriteSwapManager.UpdateMechSprites(newPlayerFighter.FighterMech, CharacterSelect.Player);
     }
 
     private void InitOpponentFighter(FighterDataObject newOpponentFighter)
@@ -369,6 +373,7 @@ public class CombatManager : MonoBehaviour
 
         aIManager.LoadAIBehaviorModule(opponentFighter.AIBehaviorModule);
         aIManager.LoadAIDialogueModule(opponentFighter.AIDialogueModule);
+        mechSpriteSwapManager.UpdateMechSprites(newOpponentFighter.FighterMech, CharacterSelect.Opponent);
     }
 
     private void StartNewTurn()

@@ -18,6 +18,7 @@ public class DowntimeManager : MonoBehaviour
     private PopupUIManager popupUIManager;
     private ShopCameraBoomMoveController cameraBoomMoveController;
     private TournamentManager tournamentManager;
+    private MechSpriteSwapManager mechSpriteSwapManager;
 
     public static DowntimeManager instance;
 
@@ -33,6 +34,7 @@ public class DowntimeManager : MonoBehaviour
     public InventoryCardDeckUISlotManager InventoryCardDeckUISlotManager { get => inventoryCardDeckUISlotManager; }
     public PopupUIManager PopupUIManager { get => popupUIManager; }
     public ShopCameraBoomMoveController CameraBoomMoveController { get => cameraBoomMoveController; }
+    public MechSpriteSwapManager MechSpriteSwapManager { get => mechSpriteSwapManager; }
 
     public TournamentManager TournamentManager { get => tournamentManager; }
 
@@ -62,7 +64,8 @@ public class DowntimeManager : MonoBehaviour
         inventoryUISlotManager = FindObjectOfType<InventoryUISlotManager>(true);
         inventoryCardDeckUISlotManager = FindObjectOfType<InventoryCardDeckUISlotManager>(true);
         cameraBoomMoveController = FindObjectOfType<ShopCameraBoomMoveController>(true);
-
+        mechSpriteSwapManager = FindObjectOfType<MechSpriteSwapManager>(true);
+        mechSpriteSwapManager.UpdateMechSprites(GameManager.instance.Player.PlayerFighterData.FighterMech, CharacterSelect.Player);
     }
 
     public void InitializeShop()

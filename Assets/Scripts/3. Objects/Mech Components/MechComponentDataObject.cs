@@ -35,7 +35,7 @@ public class MechComponentDataObject
     public string TertiaryComponentSpriteID { get => tertiaryComponentSpriteID; }
     public string AltPrimaryComponentSpriteID { get => altPrimaryComponentSpriteID; }
     public string AltSecondaryComponentSpriteID { get => altSecondaryComponentSpriteID; }
-    public string AltTertiaryComponentID { get => altTertiaryComponentSpriteID; }
+    public string AltTertiaryComponentSpriteID { get => altTertiaryComponentSpriteID; }
     public int ComponentCurrentHP { get => componentCurrentHP; set => componentCurrentHP = value; }
     public int ComponentMaxHP { get => componentMaxHP; }
     public int ComponentMaxEnergy { get => componentMaxEnergy; }

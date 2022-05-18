@@ -21,22 +21,22 @@ public class SOItemDataObject : ScriptableObject
     [Header("Base Component Attributes")]
     [SerializeField] private MechComponent componentType;
     [Tooltip("Exact name of the part as it is on the mech. This is the primary component or the closest component to the mech. " +
-        "It is the Mech's left, if applicable.")]
+        "It is the Mech's right, if applicable.")]
     [SerializeField] private string primaryComponentSpriteID;
     [Tooltip("Exact name of the part as it is on the mech. This is the component links to the Component Sprite ID. " +
-        "It is the Mech's left, if applicable.")]
+        "It is the Mech's right, if applicable.")]
     [SerializeField] private string secondaryComponentSpriteID;
     [Tooltip("Exact name of the part as it is on the mech. This is the component links to the Connection Component Sprite ID. " +
-        "It is the Mech's left, if applicable.")]
+        "It is the Mech's right, if applicable.")]
     [SerializeField] private string tertiaryComponentSpriteID;
     [Tooltip("Exact name of the part as it is on the mech. This is the primary component or the closest component to the mech. " +
-        "It is the Mech's right, if applicable.")]
+        "It is the Mech's left, if applicable.")]
     [SerializeField] private string altPrimaryComponentSpriteID;
     [Tooltip("Exact name of the part as it is on the mech. This is the component links to the Component Sprite ID. " +
-        "It is the Mech's right, if applicable.")]
+        "It is the Mech's left, if applicable.")]
     [SerializeField] private string altSecondaryComponentSpriteID;
     [Tooltip("Exact name of the part as it is on the mech. This is the component links to the Connection Component Sprite ID. " +
-        "It is the Mech's right, if applicable.")]
+        "It is the Mech's left, if applicable.")]
     [SerializeField] private string altTertiaryComponentSpriteID;
     [SerializeField] private int componentHP;
     [SerializeField] private int componentEnergy;

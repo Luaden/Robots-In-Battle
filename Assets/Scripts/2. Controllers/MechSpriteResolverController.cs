@@ -30,8 +30,8 @@ public class MechSpriteResolverController : MonoBehaviour
 
     public void UpdateArmSprites(MechComponentDataObject newArm)
     {
-        leftArmPrimarySpriteResolver.SetCategoryAndLabel(leftArmPrimarySpriteResolver.GetCategory(), newArm.PrimaryComponentSpriteID);
-        leftArmSecondarySpriteResolver.SetCategoryAndLabel(leftArmSecondarySpriteResolver.GetCategory(), newArm.SecondaryComponentSpriteID);
+        leftArmPrimarySpriteResolver.SetCategoryAndLabel(leftArmPrimarySpriteResolver.GetCategory(), newArm.AltPrimaryComponentSpriteID);
+        leftArmSecondarySpriteResolver.SetCategoryAndLabel(leftArmSecondarySpriteResolver.GetCategory(), newArm.AltSecondaryComponentSpriteID);
 
         rightArmPrimarySpriteResolver.SetCategoryAndLabel(rightArmPrimarySpriteResolver.GetCategory(), newArm.PrimaryComponentSpriteID);
         rightArmSecondarySpriteResolver.SetCategoryAndLabel(rightArmSecondarySpriteResolver.GetCategory(), newArm.SecondaryComponentSpriteID);
@@ -39,9 +39,9 @@ public class MechSpriteResolverController : MonoBehaviour
 
     public void UpdateLegSprites(MechComponentDataObject newLegs)
     {
-        leftLegPrimarySpriteResolver.SetCategoryAndLabel(leftLegPrimarySpriteResolver.GetCategory(), newLegs.PrimaryComponentSpriteID);
-        leftLegSecondarySpriteResolver.SetCategoryAndLabel(leftLegSecondarySpriteResolver.GetCategory(), newLegs.SecondaryComponentSpriteID);
-        leftLegTertiarySpriteResolver.SetCategoryAndLabel(leftLegTertiarySpriteResolver.GetCategory(), newLegs.TertiaryComponentSpriteID);
+        leftLegPrimarySpriteResolver.SetCategoryAndLabel(leftLegPrimarySpriteResolver.GetCategory(), newLegs.AltPrimaryComponentSpriteID);
+        leftLegSecondarySpriteResolver.SetCategoryAndLabel(leftLegSecondarySpriteResolver.GetCategory(), newLegs.AltSecondaryComponentSpriteID);
+        leftLegTertiarySpriteResolver.SetCategoryAndLabel(leftLegTertiarySpriteResolver.GetCategory(), newLegs.AltTertiaryComponentSpriteID);
 
         rightLegPrimarySpriteResolver.SetCategoryAndLabel(rightLegPrimarySpriteResolver.GetCategory(), newLegs.PrimaryComponentSpriteID);
         rightLegSecondarySpriteResolver.SetCategoryAndLabel(rightLegSecondarySpriteResolver.GetCategory(), newLegs.SecondaryComponentSpriteID);

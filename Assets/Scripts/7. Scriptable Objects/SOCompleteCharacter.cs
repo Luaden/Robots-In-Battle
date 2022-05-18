@@ -7,6 +7,7 @@ public class SOCompleteCharacter : ScriptableObject
 {
     [SerializeField] private string pilotName;
     [SerializeField] private PilotType pilotType;
+    [SerializeField] private FighterPilotUIObject fighterPilotUIObject;
     [SerializeField] private PassiveEffects pilotPassiveEffects;
     [SerializeField] private ActiveEffects pilotActiveEffects;
     [SerializeField] private FighterPilotUIObject pilotUIObject;
@@ -14,16 +15,16 @@ public class SOCompleteCharacter : ScriptableObject
     [SerializeField] private SOAIBehaviorObject behaviorModule;
     [SerializeField] private List<SOItemDataObject> deckList;
     [SerializeField] private SOMechObject mechModule;
-    [SerializeField] private int startingMoney;
+    [SerializeField] private int startingCurrency;
 
     public string PilotName { get => pilotName; }
     public PilotType PilotType { get => pilotType; }
+    public FighterPilotUIObject FighterPilotUIObject { get => fighterPilotUIObject; }
     public PassiveEffects PilotPassiveEffects { get => pilotPassiveEffects; }
     public ActiveEffects PilotActiveEffcts { get => pilotActiveEffects; }
-    public FighterPilotUIObject PilotUIObject { get => pilotUIObject; set => pilotUIObject = value; }
     public SOAIDialogueObject DialogueModule { get => dialogueModule; }
     public SOAIBehaviorObject BehaviorModule { get => behaviorModule; }
     public List<SOItemDataObject> DeckList { get => deckList; }
     public SOMechObject MechObject { get => mechModule; }
-    public int StartingMoney { get => startingMoney; }
+    public int StartingCurrency { get => startingCurrency; }
 }
