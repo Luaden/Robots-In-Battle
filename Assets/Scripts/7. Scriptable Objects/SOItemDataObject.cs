@@ -10,7 +10,7 @@ public class SOItemDataObject : ScriptableObject
     [SerializeField] private ItemType itemType;
     [SerializeField] private string itemName;
     [SerializeField] private string itemDescription;
-    [SerializeField] private Sprite componentImage;
+    [SerializeField] private Sprite itemShopImage;
     [Tooltip("Time cost to implement the item into the player mech or deck.")]
     [SerializeField] private float timeCost;
     [Tooltip("Cost of the item in the shop.")]
@@ -20,6 +20,24 @@ public class SOItemDataObject : ScriptableObject
     
     [Header("Base Component Attributes")]
     [SerializeField] private MechComponent componentType;
+    [Tooltip("Exact name of the part as it is on the mech. This is the primary component or the closest component to the mech. " +
+        "It is the Mech's left, if applicable.")]
+    [SerializeField] private string primaryComponentSpriteID;
+    [Tooltip("Exact name of the part as it is on the mech. This is the component links to the Component Sprite ID. " +
+        "It is the Mech's left, if applicable.")]
+    [SerializeField] private string secondaryComponentSpriteID;
+    [Tooltip("Exact name of the part as it is on the mech. This is the component links to the Connection Component Sprite ID. " +
+        "It is the Mech's left, if applicable.")]
+    [SerializeField] private string tertiaryComponentSpriteID;
+    [Tooltip("Exact name of the part as it is on the mech. This is the primary component or the closest component to the mech. " +
+        "It is the Mech's right, if applicable.")]
+    [SerializeField] private string altPrimaryComponentSpriteID;
+    [Tooltip("Exact name of the part as it is on the mech. This is the component links to the Component Sprite ID. " +
+        "It is the Mech's right, if applicable.")]
+    [SerializeField] private string altSecondaryComponentSpriteID;
+    [Tooltip("Exact name of the part as it is on the mech. This is the component links to the Connection Component Sprite ID. " +
+        "It is the Mech's right, if applicable.")]
+    [SerializeField] private string altTertiaryComponentSpriteID;
     [SerializeField] private int componentHP;
     [SerializeField] private int componentEnergy;
     [Tooltip("Component applies one stack of this element when an attack is used that utilizes this component.")]
@@ -32,7 +50,6 @@ public class SOItemDataObject : ScriptableObject
     [SerializeField] private int extraElementStacks;
     [Tooltip("Increases overall energy gained at the start of the turn.")]
     [SerializeField] private int energyGainModifier;
-
 
     [Header("Card Attributes")]
     [SerializeField] private CardType cardType;
@@ -50,11 +67,8 @@ public class SOItemDataObject : ScriptableObject
     [Tooltip("Applies the effect before damage or interaction with the opponent. E.g. Shields will be applied before combat vs after.")]
     [SerializeField] private bool applyEffectsFirst = false;
 
-
-
     [Header("Effect Attributes")]
     [SerializeField] private List<SOCardEffectObject> cardEffects;
-
 
     #region Card Attribute Properties
     public string CardName { get => itemName; }
@@ -71,7 +85,13 @@ public class SOItemDataObject : ScriptableObject
     #region Component Attribute Properties
     public string ComponentName { get => itemName; }
     public MechComponent ComponentType { get => componentType; }
-    public Sprite ComponentSprite { get => componentImage; }
+    public Sprite ItemShopSprite { get => itemShopImage; }
+    public string PrimaryComponentSpriteID { get => primaryComponentSpriteID; }
+    public string SecondaryComponentSpriteID { get => secondaryComponentSpriteID; }
+    public string TertiaryComponentID { get => tertiaryComponentSpriteID; }
+    public string AltPrimaryComponentSpriteID { get => altPrimaryComponentSpriteID; }
+    public string AltSecondaryComponentSpriteID { get => altSecondaryComponentSpriteID; }
+    public string AltTertiaryComponentSpriteID { get => altTertiaryComponentSpriteID; }
     public int ComponentHP { get => componentHP; }
     public int ComponentEnergy { get => componentEnergy; }
     public ElementType ComponentElement { get => componentElement; }
@@ -85,7 +105,7 @@ public class SOItemDataObject : ScriptableObject
     public ItemType ItemType { get => itemType; }
     public string ItemName { get => itemName; }
     public string ItemDescription { get => itemDescription; }
-    public Sprite ItemImage { get => componentImage; }
+    public Sprite ItemShopImage { get => itemShopImage; }
     public float TimeCost { get => timeCost; }
     public int CurrencyCost { get => currencyCost; }
     public int ChanceToSpawn { get => chanceToSpawn; }
