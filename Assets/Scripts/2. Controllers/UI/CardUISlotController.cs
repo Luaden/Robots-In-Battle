@@ -22,7 +22,7 @@ public class CardUISlotController : BaseSlotController<CardUIController>
             return;
         }
 
-        if (CombatManager.instance.CanPlayCards)
+        if (CombatManager.instance.CanPlayCards && eventData.pointerDrag.GetComponent<CardUIController>().IsPlayerCard)
         {
             slotManager.HandleDrop(eventData, eventData.pointerDrag.GetComponent<CardUIController>(), this);
         }

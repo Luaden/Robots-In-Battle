@@ -26,7 +26,7 @@ public class CardUIController : MonoBehaviour, IPointerDownHandler, IPointerUpHa
     [SerializeField] private Color fullColor;
     [SerializeField] private Color fadeColor;
     private Transform previousParentObject;
-    private bool isPlayer;
+    [SerializeField] private bool isPlayerCard;
 
     [Header("Card Frames")]
     [SerializeField] private Sprite attackFrame;
@@ -50,6 +50,7 @@ public class CardUIController : MonoBehaviour, IPointerDownHandler, IPointerUpHa
     public static event onPickUp OnPickUp;
 
     public CardDataObject CardData { get => cardData; }
+    public bool IsPlayerCard { get => isPlayerCard; }
     public Transform PreviousParentObject { get => previousParentObject; set => previousParentObject = value; }
     public Animator CardAnimator { get => cardAnimator; }
     public BaseSlotController<CardUIController> CardSlotController { get => cardSlotController; set => UpdateCardSlot(value); }
@@ -106,9 +107,9 @@ public class CardUIController : MonoBehaviour, IPointerDownHandler, IPointerUpHa
             lowChannelIcon.color = fullColor;
 
         if (character == CharacterSelect.Player)
-            isPlayer = true;
+            isPlayerCard = true;
         if (character == CharacterSelect.Opponent)
-            isPlayer = false;
+            isPlayerCard = false;
     }
 
     public virtual void OnPointerEnter(PointerEventData eventData)
@@ -123,7 +124,7 @@ public class CardUIController : MonoBehaviour, IPointerDownHandler, IPointerUpHa
 
     public virtual void OnPointerDown(PointerEventData eventData)
     {
-        if (isPlayer && CombatManager.instance.CanPlayCards)
+        if (isPlayerCard && CombatManager.instance.CanPlayCards)
         {
             isPickedUp = true;
             transform.SetParent(cardSlotController.SlotManager.MainCanvas.transform);
@@ -133,7 +134,7 @@ public class CardUIController : MonoBehaviour, IPointerDownHandler, IPointerUpHa
 
     public void OnPointerUp(PointerEventData eventData)
     {
-        if(isPlayer && CombatManager.instance.CanPlayCards)
+        if(isPlayerCard && CombatManager.instance.CanPlayCards)
         {
             isPickedUp = false;
             transform.SetParent(previousParentObject);
@@ -143,7 +144,7 @@ public class CardUIController : MonoBehaviour, IPointerDownHandler, IPointerUpHa
 
     public virtual void OnBeginDrag(PointerEventData eventData)
     {
-        if(isPlayer && CombatManager.instance.CanPlayCards)
+        if(isPlayerCard && CombatManager.instance.CanPlayCards)
         {
             isPickedUp = true;
             draggableCanvasGroup.blocksRaycasts = false;
@@ -153,7 +154,7 @@ public class CardUIController : MonoBehaviour, IPointerDownHandler, IPointerUpHa
 
     public virtual void OnEndDrag(PointerEventData eventData)
     {
-        if (isPlayer && CombatManager.instance.CanPlayCards)
+        if (isPlayerCard && CombatManager.instance.CanPlayCards)
         {
             isPickedUp = false;
             draggableCanvasGroup.blocksRaycasts = true;
@@ -163,13 +164,13 @@ public class CardUIController : MonoBehaviour, IPointerDownHandler, IPointerUpHa
 
     public void OnDrag(PointerEventData eventData)
     {
-        if(isPlayer && CombatManager.instance.CanPlayCards)
+        if(isPlayerCard && CombatManager.instance.CanPlayCards)
             cardSlotController.HandleDrag(eventData);
     }
 
     public void UpdateSelectedChannel(Channels channel)
     {
-        if(isPlayer || CombatManager.instance.DisplayAIDecisionIndicator)
+        if(isPlayerCard || CombatManager.instance.DisplayAIDecisionIndicator)
         {
             if (channel.HasFlag(Channels.High))
                 highChannelIcon.color = fullColor;
