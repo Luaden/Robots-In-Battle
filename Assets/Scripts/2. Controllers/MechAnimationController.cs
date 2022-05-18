@@ -23,9 +23,9 @@ public class MechAnimationController : MonoBehaviour
             animator.ResetTrigger("isKicking");
             animator.ResetTrigger("isGuarding");
             animator.ResetTrigger("isCountering");
-            //animator.ResetTrigger("isDamaged");
-            //animator.ResetTrigger("isWinning");
-            //animator.ResetTrigger("isLosing");
+            animator.ResetTrigger("isDamaged");
+            animator.ResetTrigger("isWinning");
+            animator.ResetTrigger("isLosing");
             animator.SetTrigger("isIdling");
             isAnimating = false;
 
@@ -36,17 +36,24 @@ public class MechAnimationController : MonoBehaviour
 
         switch (animationType)
         {
-            case AnimationType.Punch:
-                animator.SetTrigger("isPunching");
+            case AnimationType.PunchHigh:
+                animator.SetTrigger("isPunchingHigh");
                 break;
 
-            case AnimationType.Kick:
-                animator.SetTrigger("isKicking");
+            case AnimationType.PunchMid:
+                animator.SetTrigger("isPunchingMid");
                 break;
 
-            case AnimationType.Special:
-                animator.SetTrigger("isKicking");
-                Debug.Log("We're kicking here, but only until we get a proper animation.");
+            case AnimationType.KickMid:
+                animator.SetTrigger("isKickingMid");
+                break;
+
+            case AnimationType.KickLow:
+                animator.SetTrigger("isKickingLow");
+                break;
+
+            case AnimationType.SpecialMid:
+                animator.SetTrigger("isSpecialingMid");
                 break;
 
             case AnimationType.Guard:
@@ -58,20 +65,17 @@ public class MechAnimationController : MonoBehaviour
                 break;
 
             case AnimationType.Damaged:
-                //animator.SetTrigger("isDamaged");
-                animator.SetTrigger("isIdling");
+                animator.SetTrigger("isDamaged");
                 isAnimating = false;
                 break;
 
             case AnimationType.Win:
-                //animator.SetTrigger("isWinning");
-                animator.SetTrigger("isIdling");
+                animator.SetTrigger("isWinning");
                 isAnimating = false;
                 break;
 
             case AnimationType.Lose:
-                //animator.SetTrigger("isLosing");
-                animator.SetTrigger("isIdling"); 
+                animator.SetTrigger("isLosing");
                 isAnimating = false;
                 break;
         }
