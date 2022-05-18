@@ -19,11 +19,14 @@ public class MechAnimationController : MonoBehaviour
     {
         if(animationType == AnimationType.Idle)
         {
-            animator.ResetTrigger("isPunching");
-            animator.ResetTrigger("isKicking");
+            animator.ResetTrigger("isPunchingHigh");
+            animator.ResetTrigger("isPunchingMid");
+            animator.ResetTrigger("isKickingMid");
+            animator.ResetTrigger("isKickingLow");
             animator.ResetTrigger("isGuarding");
             animator.ResetTrigger("isCountering");
             animator.ResetTrigger("isDamaged");
+            animator.ResetTrigger("isJazzersizing");
             animator.ResetTrigger("isWinning");
             animator.ResetTrigger("isLosing");
             animator.SetTrigger("isIdling");
@@ -66,17 +69,64 @@ public class MechAnimationController : MonoBehaviour
 
             case AnimationType.Damaged:
                 animator.SetTrigger("isDamaged");
-                isAnimating = false;
+                break;
+
+            case AnimationType.Jazzersize:
+                Debug.Log("We need a jazzersize animation.");
+                animator.SetTrigger("isDamaged");
                 break;
 
             case AnimationType.Win:
                 animator.SetTrigger("isWinning");
-                isAnimating = false;
                 break;
 
             case AnimationType.Lose:
                 animator.SetTrigger("isLosing");
-                isAnimating = false;
+                break;
+            case AnimationType.Idle:
+                break;
+        }
+    }
+
+    public void SetMechElements(MechObject mechObject)
+    {
+        switch (mechObject.MechArms.ComponentElement)
+        {
+            case ElementType.None:
+                break;
+            case ElementType.Fire:
+                animator.SetBool("punchHasFire", true);
+                break;
+            case ElementType.Ice:
+                animator.SetBool("punchHasIce", true);
+                break;
+            case ElementType.Plasma:
+                animator.SetBool("punchHasPlasma", true);
+                break;
+            case ElementType.Acid:
+                animator.SetBool("punchHasAcid", true);
+                break;
+            case ElementType.Void:
+                break;
+        }
+
+        switch (mechObject.MechLegs.ComponentElement)
+        {
+            case ElementType.None:
+                break;
+            case ElementType.Fire:
+                animator.SetBool("kickHasFire", true);
+                break;
+            case ElementType.Ice:
+                animator.SetBool("kickHasIce", true);
+                break;
+            case ElementType.Plasma:
+                animator.SetBool("kickHasPlasma", true);
+                break;
+            case ElementType.Acid:
+                animator.SetBool("kickHasAcid", true);
+                break;
+            case ElementType.Void:
                 break;
         }
     }
@@ -85,7 +135,7 @@ public class MechAnimationController : MonoBehaviour
     {
         if(mechController == CharacterSelect.Player)
             OnAttackingOpponent?.Invoke();
-        if (mechController == CharacterSelect.Opponent)
+        else
             OnAttackingPlayer?.Invoke();
     }
 }

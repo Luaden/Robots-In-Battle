@@ -12,7 +12,7 @@ public class AnimationTestTool : MonoBehaviour
     public void TestAnimations()
     {
         AnimationQueueObject newAnimation = new AnimationQueueObject(CharacterSelect.Player, playerMechAnimation, CharacterSelect.Opponent, opponentMechAnimation);
-        mechAnimationManager.AddAnimationToQueue(newAnimation);
+        mechAnimationManager.SetMechAnimation(newAnimation);
     }
 
     private void Start()

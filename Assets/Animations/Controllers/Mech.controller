@@ -83,7 +83,22 @@ AnimatorStateTransition:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: 
-  m_Conditions: []
+  m_Conditions:
+  - m_ConditionMode: 1
+    m_ConditionEvent: isKickingLow
+    m_EventTreshold: 0
+  - m_ConditionMode: 2
+    m_ConditionEvent: punchHasFire
+    m_EventTreshold: 0
+  - m_ConditionMode: 1
+    m_ConditionEvent: punchHasIce
+    m_EventTreshold: 0
+  - m_ConditionMode: 2
+    m_ConditionEvent: punchHasAcid
+    m_EventTreshold: 0
+  - m_ConditionMode: 2
+    m_ConditionEvent: punchHasPlasma
+    m_EventTreshold: 0
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: -3648943236833590559}
   m_Solo: 0
@@ -93,7 +108,7 @@ AnimatorStateTransition:
   m_TransitionDuration: 0.25
   m_TransitionOffset: 0
   m_ExitTime: 0.9375
-  m_HasExitTime: 1
+  m_HasExitTime: 0
   m_HasFixedDuration: 1
   m_InterruptionSource: 0
   m_OrderedInterruption: 1
@@ -132,7 +147,22 @@ AnimatorStateTransition:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: 
-  m_Conditions: []
+  m_Conditions:
+  - m_ConditionMode: 1
+    m_ConditionEvent: isPunchingMid
+    m_EventTreshold: 0
+  - m_ConditionMode: 2
+    m_ConditionEvent: punchHasFire
+    m_EventTreshold: 0
+  - m_ConditionMode: 2
+    m_ConditionEvent: punchHasIce
+    m_EventTreshold: 0
+  - m_ConditionMode: 2
+    m_ConditionEvent: punchHasAcid
+    m_EventTreshold: 0
+  - m_ConditionMode: 1
+    m_ConditionEvent: punchHasPlasma
+    m_EventTreshold: 0
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: -8750626110932990657}
   m_Solo: 0
@@ -142,7 +172,7 @@ AnimatorStateTransition:
   m_TransitionDuration: 0.25
   m_TransitionOffset: 0
   m_ExitTime: 0.9375
-  m_HasExitTime: 1
+  m_HasExitTime: 0
   m_HasFixedDuration: 1
   m_InterruptionSource: 0
   m_OrderedInterruption: 1
@@ -206,7 +236,10 @@ AnimatorStateTransition:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: 
-  m_Conditions: []
+  m_Conditions:
+  - m_ConditionMode: 1
+    m_ConditionEvent: isDamaged
+    m_EventTreshold: 0
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: -7431295043760130717}
   m_Solo: 0
@@ -216,7 +249,7 @@ AnimatorStateTransition:
   m_TransitionDuration: 0.25
   m_TransitionOffset: 0
   m_ExitTime: 0.9375
-  m_HasExitTime: 1
+  m_HasExitTime: 0
   m_HasFixedDuration: 1
   m_InterruptionSource: 0
   m_OrderedInterruption: 1
@@ -228,7 +261,22 @@ AnimatorStateTransition:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: 
-  m_Conditions: []
+  m_Conditions:
+  - m_ConditionMode: 1
+    m_ConditionEvent: isPunchingMid
+    m_EventTreshold: 0
+  - m_ConditionMode: 2
+    m_ConditionEvent: punchHasFire
+    m_EventTreshold: 0
+  - m_ConditionMode: 1
+    m_ConditionEvent: punchHasIce
+    m_EventTreshold: 0
+  - m_ConditionMode: 2
+    m_ConditionEvent: punchHasAcid
+    m_EventTreshold: 0
+  - m_ConditionMode: 2
+    m_ConditionEvent: punchHasPlasma
+    m_EventTreshold: 0
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: 8910083009169282698}
   m_Solo: 0
@@ -238,7 +286,7 @@ AnimatorStateTransition:
   m_TransitionDuration: 0.25
   m_TransitionOffset: 0
   m_ExitTime: 0.9375
-  m_HasExitTime: 1
+  m_HasExitTime: 0
   m_HasFixedDuration: 1
   m_InterruptionSource: 0
   m_OrderedInterruption: 1
@@ -299,7 +347,22 @@ AnimatorStateTransition:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: 
-  m_Conditions: []
+  m_Conditions:
+  - m_ConditionMode: 1
+    m_ConditionEvent: isKickingMid
+    m_EventTreshold: 0
+  - m_ConditionMode: 1
+    m_ConditionEvent: punchHasFire
+    m_EventTreshold: 0
+  - m_ConditionMode: 2
+    m_ConditionEvent: punchHasIce
+    m_EventTreshold: 0
+  - m_ConditionMode: 2
+    m_ConditionEvent: punchHasAcid
+    m_EventTreshold: 0
+  - m_ConditionMode: 2
+    m_ConditionEvent: punchHasPlasma
+    m_EventTreshold: 0
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: -5065042137572107131}
   m_Solo: 0
@@ -309,7 +372,7 @@ AnimatorStateTransition:
   m_TransitionDuration: 0.25
   m_TransitionOffset: 0
   m_ExitTime: 0.9375
-  m_HasExitTime: 1
+  m_HasExitTime: 0
   m_HasFixedDuration: 1
   m_InterruptionSource: 0
   m_OrderedInterruption: 1
@@ -370,7 +433,10 @@ AnimatorStateTransition:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: 
-  m_Conditions: []
+  m_Conditions:
+  - m_ConditionMode: 1
+    m_ConditionEvent: isLosing
+    m_EventTreshold: 0
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: 2075407022992587939}
   m_Solo: 0
@@ -446,7 +512,22 @@ AnimatorStateTransition:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: 
-  m_Conditions: []
+  m_Conditions:
+  - m_ConditionMode: 1
+    m_ConditionEvent: isPunchingHigh
+    m_EventTreshold: 0
+  - m_ConditionMode: 2
+    m_ConditionEvent: punchHasFire
+    m_EventTreshold: 0
+  - m_ConditionMode: 1
+    m_ConditionEvent: punchHasIce
+    m_EventTreshold: 0
+  - m_ConditionMode: 2
+    m_ConditionEvent: punchHasAcid
+    m_EventTreshold: 0
+  - m_ConditionMode: 2
+    m_ConditionEvent: punchHasPlasma
+    m_EventTreshold: 0
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: 4922293788428163075}
   m_Solo: 0
@@ -456,7 +537,7 @@ AnimatorStateTransition:
   m_TransitionDuration: 0.25
   m_TransitionOffset: 0
   m_ExitTime: 0.9375
-  m_HasExitTime: 1
+  m_HasExitTime: 0
   m_HasFixedDuration: 1
   m_InterruptionSource: 0
   m_OrderedInterruption: 1
@@ -468,7 +549,22 @@ AnimatorStateTransition:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: 
-  m_Conditions: []
+  m_Conditions:
+  - m_ConditionMode: 1
+    m_ConditionEvent: isKickingMid
+    m_EventTreshold: 0
+  - m_ConditionMode: 2
+    m_ConditionEvent: punchHasFire
+    m_EventTreshold: 0
+  - m_ConditionMode: 1
+    m_ConditionEvent: punchHasIce
+    m_EventTreshold: 0
+  - m_ConditionMode: 2
+    m_ConditionEvent: punchHasAcid
+    m_EventTreshold: 0
+  - m_ConditionMode: 2
+    m_ConditionEvent: punchHasPlasma
+    m_EventTreshold: 0
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: 3371996451636275417}
   m_Solo: 0
@@ -478,7 +574,7 @@ AnimatorStateTransition:
   m_TransitionDuration: 0.25
   m_TransitionOffset: 0
   m_ExitTime: 0.9375
-  m_HasExitTime: 1
+  m_HasExitTime: 0
   m_HasFixedDuration: 1
   m_InterruptionSource: 0
   m_OrderedInterruption: 1
@@ -490,7 +586,22 @@ AnimatorStateTransition:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: 
-  m_Conditions: []
+  m_Conditions:
+  - m_ConditionMode: 1
+    m_ConditionEvent: isKickingLow
+    m_EventTreshold: 0
+  - m_ConditionMode: 2
+    m_ConditionEvent: punchHasFire
+    m_EventTreshold: 0
+  - m_ConditionMode: 2
+    m_ConditionEvent: punchHasIce
+    m_EventTreshold: 0
+  - m_ConditionMode: 1
+    m_ConditionEvent: punchHasAcid
+    m_EventTreshold: 0
+  - m_ConditionMode: 2
+    m_ConditionEvent: punchHasPlasma
+    m_EventTreshold: 0
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: 2076932203079330238}
   m_Solo: 0
@@ -500,7 +611,7 @@ AnimatorStateTransition:
   m_TransitionDuration: 0.25
   m_TransitionOffset: 0
   m_ExitTime: 0.9375
-  m_HasExitTime: 1
+  m_HasExitTime: 0
   m_HasFixedDuration: 1
   m_InterruptionSource: 0
   m_OrderedInterruption: 1
@@ -637,7 +748,22 @@ AnimatorStateTransition:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: 
-  m_Conditions: []
+  m_Conditions:
+  - m_ConditionMode: 1
+    m_ConditionEvent: isKickingLow
+    m_EventTreshold: 0
+  - m_ConditionMode: 2
+    m_ConditionEvent: kickHasFire
+    m_EventTreshold: 0
+  - m_ConditionMode: 2
+    m_ConditionEvent: kickHasIce
+    m_EventTreshold: 0
+  - m_ConditionMode: 2
+    m_ConditionEvent: kickHasAcid
+    m_EventTreshold: 0
+  - m_ConditionMode: 2
+    m_ConditionEvent: kickHasPlasma
+    m_EventTreshold: 0
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: -6188819611065080101}
   m_Solo: 0
@@ -647,7 +773,7 @@ AnimatorStateTransition:
   m_TransitionDuration: 0.25
   m_TransitionOffset: 0
   m_ExitTime: 0.875
-  m_HasExitTime: 1
+  m_HasExitTime: 0
   m_HasFixedDuration: 1
   m_InterruptionSource: 0
   m_OrderedInterruption: 1
@@ -691,85 +817,85 @@ AnimatorStateMachine:
     m_Position: {x: 380, y: 120, z: 0}
   - serializedVersion: 1
     m_State: {fileID: -8259457227859927163}
-    m_Position: {x: 770, y: 180, z: 0}
+    m_Position: {x: 1370, y: 230, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 3741512965692439864}
-    m_Position: {x: 770, y: 240, z: 0}
+    m_Position: {x: 1370, y: 350, z: 0}
   - serializedVersion: 1
     m_State: {fileID: -3492729678636877129}
-    m_Position: {x: 60, y: -70, z: 0}
+    m_Position: {x: -160, y: -50, z: 0}
   - serializedVersion: 1
     m_State: {fileID: -4973828788140074527}
-    m_Position: {x: 60, y: -10, z: 0}
+    m_Position: {x: -190, y: 40, z: 0}
   - serializedVersion: 1
     m_State: {fileID: -6188819611065080101}
-    m_Position: {x: 60, y: -130, z: 0}
+    m_Position: {x: -120, y: -150, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 6916567524911556079}
-    m_Position: {x: 60, y: -250, z: 0}
+    m_Position: {x: 110, y: -330, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 3544716912770582738}
-    m_Position: {x: 770, y: 300, z: 0}
+    m_Position: {x: 1340, y: 480, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 2075407022992587939}
-    m_Position: {x: 770, y: 360, z: 0}
+    m_Position: {x: 1180, y: 580, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 1038254338726037930}
-    m_Position: {x: 60, y: -190, z: 0}
+    m_Position: {x: -50, y: -250, z: 0}
   - serializedVersion: 1
     m_State: {fileID: -7431295043760130717}
-    m_Position: {x: 770, y: 120, z: 0}
+    m_Position: {x: 1400, y: 100, z: 0}
   - serializedVersion: 1
     m_State: {fileID: -8700537358621956297}
-    m_Position: {x: 70, y: 280, z: 0}
+    m_Position: {x: -270, y: 300, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 2076932203079330238}
-    m_Position: {x: 70, y: 340, z: 0}
+    m_Position: {x: -200, y: 400, z: 0}
   - serializedVersion: 1
     m_State: {fileID: -3648943236833590559}
-    m_Position: {x: 70, y: 400, z: 0}
+    m_Position: {x: -100, y: 500, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 8845691230253894825}
-    m_Position: {x: 70, y: 460, z: 0}
+    m_Position: {x: 0, y: 600, z: 0}
   - serializedVersion: 1
     m_State: {fileID: -5065042137572107131}
-    m_Position: {x: 370, y: 420, z: 0}
+    m_Position: {x: 940, y: 660, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 6593959771467203047}
-    m_Position: {x: 370, y: 480, z: 0}
+    m_Position: {x: 710, y: 660, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 3371996451636275417}
-    m_Position: {x: 370, y: 540, z: 0}
+    m_Position: {x: 480, y: 660, z: 0}
   - serializedVersion: 1
     m_State: {fileID: -3398757628904175117}
-    m_Position: {x: 370, y: 600, z: 0}
+    m_Position: {x: 260, y: 660, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 3314527083537411235}
-    m_Position: {x: 380, y: -230, z: 0}
+    m_Position: {x: 360, y: -760, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 550124998551193578}
-    m_Position: {x: 380, y: -290, z: 0}
+    m_Position: {x: 150, y: -760, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 4922293788428163075}
-    m_Position: {x: 380, y: -170, z: 0}
+    m_Position: {x: 570, y: -760, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 9220107329416968430}
-    m_Position: {x: 380, y: -110, z: 0}
+    m_Position: {x: 780, y: -760, z: 0}
   - serializedVersion: 1
     m_State: {fileID: -1602108518286679092}
-    m_Position: {x: 670, y: -230, z: 0}
+    m_Position: {x: 970, y: -500, z: 0}
   - serializedVersion: 1
     m_State: {fileID: -4791460998788817760}
-    m_Position: {x: 670, y: -170, z: 0}
+    m_Position: {x: 1150, y: -410, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 8910083009169282698}
-    m_Position: {x: 670, y: -110, z: 0}
+    m_Position: {x: 1290, y: -300, z: 0}
   - serializedVersion: 1
     m_State: {fileID: -8750626110932990657}
-    m_Position: {x: 670, y: -40, z: 0}
+    m_Position: {x: 1410, y: -140, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 7503024474181376901}
-    m_Position: {x: 705, y: 25, z: 0}
+    m_Position: {x: 1470, y: -40, z: 0}
   m_ChildStateMachines: []
   m_AnyStateTransitions: []
   m_EntryTransitions: []
@@ -836,7 +962,22 @@ AnimatorStateTransition:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: 
-  m_Conditions: []
+  m_Conditions:
+  - m_ConditionMode: 1
+    m_ConditionEvent: isKickingMid
+    m_EventTreshold: 0
+  - m_ConditionMode: 2
+    m_ConditionEvent: punchHasFire
+    m_EventTreshold: 0
+  - m_ConditionMode: 2
+    m_ConditionEvent: punchHasIce
+    m_EventTreshold: 0
+  - m_ConditionMode: 1
+    m_ConditionEvent: punchHasAcid
+    m_EventTreshold: 0
+  - m_ConditionMode: 2
+    m_ConditionEvent: punchHasPlasma
+    m_EventTreshold: 0
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: 6593959771467203047}
   m_Solo: 0
@@ -846,7 +987,7 @@ AnimatorStateTransition:
   m_TransitionDuration: 0.25
   m_TransitionOffset: 0
   m_ExitTime: 0.9375
-  m_HasExitTime: 1
+  m_HasExitTime: 0
   m_HasFixedDuration: 1
   m_InterruptionSource: 0
   m_OrderedInterruption: 1
@@ -904,42 +1045,126 @@ AnimatorController:
   m_Name: Mech
   serializedVersion: 5
   m_AnimatorParameters:
-  - m_Name: isPunching
+  - m_Name: isPunchingHigh
     m_Type: 9
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
-    m_Controller: {fileID: 9100000}
-  - m_Name: isKicking
+    m_Controller: {fileID: 0}
+  - m_Name: isPunchingMid
     m_Type: 9
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
-    m_Controller: {fileID: 9100000}
+    m_Controller: {fileID: 0}
+  - m_Name: isSpecialingMid
+    m_Type: 9
+    m_DefaultFloat: 0
+    m_DefaultInt: 0
+    m_DefaultBool: 0
+    m_Controller: {fileID: 0}
+  - m_Name: isKickingMid
+    m_Type: 9
+    m_DefaultFloat: 0
+    m_DefaultInt: 0
+    m_DefaultBool: 0
+    m_Controller: {fileID: 0}
+  - m_Name: isKickingLow
+    m_Type: 9
+    m_DefaultFloat: 0
+    m_DefaultInt: 0
+    m_DefaultBool: 0
+    m_Controller: {fileID: 0}
   - m_Name: isGuarding
     m_Type: 9
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
-    m_Controller: {fileID: 9100000}
+    m_Controller: {fileID: 0}
   - m_Name: isCountering
     m_Type: 9
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
-    m_Controller: {fileID: 9100000}
+    m_Controller: {fileID: 0}
   - m_Name: isDamaged
     m_Type: 9
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
-    m_Controller: {fileID: 9100000}
+    m_Controller: {fileID: 0}
   - m_Name: isIdling
     m_Type: 9
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
-    m_Controller: {fileID: 9100000}
+    m_Controller: {fileID: 0}
+  - m_Name: isWinning
+    m_Type: 9
+    m_DefaultFloat: 0
+    m_DefaultInt: 0
+    m_DefaultBool: 0
+    m_Controller: {fileID: 0}
+  - m_Name: isLosing
+    m_Type: 9
+    m_DefaultFloat: 0
+    m_DefaultInt: 0
+    m_DefaultBool: 0
+    m_Controller: {fileID: 0}
+  - m_Name: isJazzersizing
+    m_Type: 9
+    m_DefaultFloat: 0
+    m_DefaultInt: 0
+    m_DefaultBool: 0
+    m_Controller: {fileID: 0}
+  - m_Name: punchHasFire
+    m_Type: 4
+    m_DefaultFloat: 0
+    m_DefaultInt: 0
+    m_DefaultBool: 0
+    m_Controller: {fileID: 0}
+  - m_Name: punchHasIce
+    m_Type: 4
+    m_DefaultFloat: 0
+    m_DefaultInt: 0
+    m_DefaultBool: 0
+    m_Controller: {fileID: 0}
+  - m_Name: punchHasAcid
+    m_Type: 4
+    m_DefaultFloat: 0
+    m_DefaultInt: 0
+    m_DefaultBool: 0
+    m_Controller: {fileID: 0}
+  - m_Name: punchHasPlasma
+    m_Type: 4
+    m_DefaultFloat: 0
+    m_DefaultInt: 0
+    m_DefaultBool: 0
+    m_Controller: {fileID: 0}
+  - m_Name: kickHasFire
+    m_Type: 4
+    m_DefaultFloat: 0
+    m_DefaultInt: 0
+    m_DefaultBool: 0
+    m_Controller: {fileID: 0}
+  - m_Name: kickHasIce
+    m_Type: 4
+    m_DefaultFloat: 0
+    m_DefaultInt: 0
+    m_DefaultBool: 0
+    m_Controller: {fileID: 0}
+  - m_Name: kickHasAcid
+    m_Type: 4
+    m_DefaultFloat: 0
+    m_DefaultInt: 0
+    m_DefaultBool: 0
+    m_Controller: {fileID: 0}
+  - m_Name: kickHasPlasma
+    m_Type: 4
+    m_DefaultFloat: 0
+    m_DefaultInt: 0
+    m_DefaultBool: 0
+    m_Controller: {fileID: 0}
   m_AnimatorLayers:
   - serializedVersion: 5
     m_Name: Base Layer
@@ -960,7 +1185,22 @@ AnimatorStateTransition:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: 
-  m_Conditions: []
+  m_Conditions:
+  - m_ConditionMode: 1
+    m_ConditionEvent: isKickingMid
+    m_EventTreshold: 0
+  - m_ConditionMode: 2
+    m_ConditionEvent: kickHasFire
+    m_EventTreshold: 0
+  - m_ConditionMode: 2
+    m_ConditionEvent: kickHasIce
+    m_EventTreshold: 0
+  - m_ConditionMode: 2
+    m_ConditionEvent: kickHasAcid
+    m_EventTreshold: 0
+  - m_ConditionMode: 2
+    m_ConditionEvent: kickHasPlasma
+    m_EventTreshold: 0
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: 1038254338726037930}
   m_Solo: 0
@@ -970,7 +1210,7 @@ AnimatorStateTransition:
   m_TransitionDuration: 0.25
   m_TransitionOffset: 0
   m_ExitTime: 0.9375
-  m_HasExitTime: 1
+  m_HasExitTime: 0
   m_HasFixedDuration: 1
   m_InterruptionSource: 0
   m_OrderedInterruption: 1
@@ -982,7 +1222,22 @@ AnimatorStateTransition:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: 
-  m_Conditions: []
+  m_Conditions:
+  - m_ConditionMode: 1
+    m_ConditionEvent: isPunchingMid
+    m_EventTreshold: 0
+  - m_ConditionMode: 2
+    m_ConditionEvent: punchHasFire
+    m_EventTreshold: 0
+  - m_ConditionMode: 2
+    m_ConditionEvent: punchHasIce
+    m_EventTreshold: 0
+  - m_ConditionMode: 1
+    m_ConditionEvent: punchHasAcid
+    m_EventTreshold: 0
+  - m_ConditionMode: 2
+    m_ConditionEvent: punchHasPlasma
+    m_EventTreshold: 0
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: -4791460998788817760}
   m_Solo: 0
@@ -992,7 +1247,7 @@ AnimatorStateTransition:
   m_TransitionDuration: 0.25
   m_TransitionOffset: 0
   m_ExitTime: 0.9375
-  m_HasExitTime: 1
+  m_HasExitTime: 0
   m_HasFixedDuration: 1
   m_InterruptionSource: 0
   m_OrderedInterruption: 1
@@ -1177,7 +1432,22 @@ AnimatorStateTransition:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: 
-  m_Conditions: []
+  m_Conditions:
+  - m_ConditionMode: 1
+    m_ConditionEvent: isPunchingMid
+    m_EventTreshold: 0
+  - m_ConditionMode: 1
+    m_ConditionEvent: punchHasFire
+    m_EventTreshold: 0
+  - m_ConditionMode: 2
+    m_ConditionEvent: punchHasIce
+    m_EventTreshold: 0
+  - m_ConditionMode: 2
+    m_ConditionEvent: punchHasAcid
+    m_EventTreshold: 0
+  - m_ConditionMode: 2
+    m_ConditionEvent: punchHasPlasma
+    m_EventTreshold: 0
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: -1602108518286679092}
   m_Solo: 0
@@ -1187,7 +1457,7 @@ AnimatorStateTransition:
   m_TransitionDuration: 0.25
   m_TransitionOffset: 0
   m_ExitTime: 0.9375
-  m_HasExitTime: 1
+  m_HasExitTime: 0
   m_HasFixedDuration: 1
   m_InterruptionSource: 0
   m_OrderedInterruption: 1
@@ -1243,7 +1513,10 @@ AnimatorStateTransition:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: 
-  m_Conditions: []
+  m_Conditions:
+  - m_ConditionMode: 1
+    m_ConditionEvent: isSpecialingMid
+    m_EventTreshold: 0
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: 6916567524911556079}
   m_Solo: 0
@@ -1253,7 +1526,7 @@ AnimatorStateTransition:
   m_TransitionDuration: 0.25
   m_TransitionOffset: 0
   m_ExitTime: 0.9166667
-  m_HasExitTime: 1
+  m_HasExitTime: 0
   m_HasFixedDuration: 1
   m_InterruptionSource: 0
   m_OrderedInterruption: 1
@@ -1265,7 +1538,22 @@ AnimatorStateTransition:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: 
-  m_Conditions: []
+  m_Conditions:
+  - m_ConditionMode: 1
+    m_ConditionEvent: isKickingMid
+    m_EventTreshold: 0
+  - m_ConditionMode: 2
+    m_ConditionEvent: punchHasFire
+    m_EventTreshold: 0
+  - m_ConditionMode: 2
+    m_ConditionEvent: punchHasIce
+    m_EventTreshold: 0
+  - m_ConditionMode: 2
+    m_ConditionEvent: punchHasAcid
+    m_EventTreshold: 0
+  - m_ConditionMode: 1
+    m_ConditionEvent: punchHasPlasma
+    m_EventTreshold: 0
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: -3398757628904175117}
   m_Solo: 0
@@ -1275,7 +1563,7 @@ AnimatorStateTransition:
   m_TransitionDuration: 0.25
   m_TransitionOffset: 0
   m_ExitTime: 0.9375
-  m_HasExitTime: 1
+  m_HasExitTime: 0
   m_HasFixedDuration: 1
   m_InterruptionSource: 0
   m_OrderedInterruption: 1
@@ -1394,7 +1682,22 @@ AnimatorStateTransition:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: 
-  m_Conditions: []
+  m_Conditions:
+  - m_ConditionMode: 1
+    m_ConditionEvent: isPunchingHigh
+    m_EventTreshold: 0
+  - m_ConditionMode: 2
+    m_ConditionEvent: punchHasFire
+    m_EventTreshold: 0
+  - m_ConditionMode: 2
+    m_ConditionEvent: punchHasIce
+    m_EventTreshold: 0
+  - m_ConditionMode: 2
+    m_ConditionEvent: punchHasAcid
+    m_EventTreshold: 0
+  - m_ConditionMode: 2
+    m_ConditionEvent: punchHasPlasma
+    m_EventTreshold: 0
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: -3492729678636877129}
   m_Solo: 0
@@ -1404,7 +1707,7 @@ AnimatorStateTransition:
   m_TransitionDuration: 0.25
   m_TransitionOffset: 0
   m_ExitTime: 0.875
-  m_HasExitTime: 1
+  m_HasExitTime: 0
   m_HasFixedDuration: 1
   m_InterruptionSource: 0
   m_OrderedInterruption: 1
@@ -1583,7 +1886,22 @@ AnimatorStateTransition:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: 
-  m_Conditions: []
+  m_Conditions:
+  - m_ConditionMode: 1
+    m_ConditionEvent: isKickingLow
+    m_EventTreshold: 0
+  - m_ConditionMode: 2
+    m_ConditionEvent: punchHasFire
+    m_EventTreshold: 0
+  - m_ConditionMode: 2
+    m_ConditionEvent: punchHasIce
+    m_EventTreshold: 0
+  - m_ConditionMode: 2
+    m_ConditionEvent: punchHasAcid
+    m_EventTreshold: 0
+  - m_ConditionMode: 1
+    m_ConditionEvent: punchHasPlasma
+    m_EventTreshold: 0
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: 8845691230253894825}
   m_Solo: 0
@@ -1593,7 +1911,7 @@ AnimatorStateTransition:
   m_TransitionDuration: 0.25
   m_TransitionOffset: 0
   m_ExitTime: 0.9375
-  m_HasExitTime: 1
+  m_HasExitTime: 0
   m_HasFixedDuration: 1
   m_InterruptionSource: 0
   m_OrderedInterruption: 1
@@ -1605,7 +1923,22 @@ AnimatorStateTransition:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: 
-  m_Conditions: []
+  m_Conditions:
+  - m_ConditionMode: 1
+    m_ConditionEvent: isPunchingHigh
+    m_EventTreshold: 0
+  - m_ConditionMode: 1
+    m_ConditionEvent: punchHasFire
+    m_EventTreshold: 0
+  - m_ConditionMode: 2
+    m_ConditionEvent: punchHasIce
+    m_EventTreshold: 0
+  - m_ConditionMode: 2
+    m_ConditionEvent: punchHasAcid
+    m_EventTreshold: 0
+  - m_ConditionMode: 2
+    m_ConditionEvent: punchHasPlasma
+    m_EventTreshold: 0
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: 550124998551193578}
   m_Solo: 0
@@ -1615,7 +1948,7 @@ AnimatorStateTransition:
   m_TransitionDuration: 0.25
   m_TransitionOffset: 0
   m_ExitTime: 0.9375
-  m_HasExitTime: 1
+  m_HasExitTime: 0
   m_HasFixedDuration: 1
   m_InterruptionSource: 0
   m_OrderedInterruption: 1
@@ -1671,7 +2004,22 @@ AnimatorStateTransition:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: 
-  m_Conditions: []
+  m_Conditions:
+  - m_ConditionMode: 1
+    m_ConditionEvent: isPunchingHigh
+    m_EventTreshold: 0
+  - m_ConditionMode: 2
+    m_ConditionEvent: punchHasFire
+    m_EventTreshold: 0
+  - m_ConditionMode: 2
+    m_ConditionEvent: punchHasIce
+    m_EventTreshold: 0
+  - m_ConditionMode: 1
+    m_ConditionEvent: punchHasAcid
+    m_EventTreshold: 0
+  - m_ConditionMode: 2
+    m_ConditionEvent: punchHasPlasma
+    m_EventTreshold: 0
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: 3314527083537411235}
   m_Solo: 0
@@ -1681,7 +2029,7 @@ AnimatorStateTransition:
   m_TransitionDuration: 0.25
   m_TransitionOffset: 0
   m_ExitTime: 0.9375
-  m_HasExitTime: 1
+  m_HasExitTime: 0
   m_HasFixedDuration: 1
   m_InterruptionSource: 0
   m_OrderedInterruption: 1
@@ -1737,7 +2085,22 @@ AnimatorStateTransition:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: 
-  m_Conditions: []
+  m_Conditions:
+  - m_ConditionMode: 1
+    m_ConditionEvent: isKickingLow
+    m_EventTreshold: 0
+  - m_ConditionMode: 1
+    m_ConditionEvent: punchHasFire
+    m_EventTreshold: 0
+  - m_ConditionMode: 2
+    m_ConditionEvent: punchHasIce
+    m_EventTreshold: 0
+  - m_ConditionMode: 2
+    m_ConditionEvent: punchHasAcid
+    m_EventTreshold: 0
+  - m_ConditionMode: 2
+    m_ConditionEvent: punchHasPlasma
+    m_EventTreshold: 0
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: -8700537358621956297}
   m_Solo: 0
@@ -1835,7 +2198,22 @@ AnimatorStateTransition:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: 
-  m_Conditions: []
+  m_Conditions:
+  - m_ConditionMode: 1
+    m_ConditionEvent: isPunchingHigh
+    m_EventTreshold: 0
+  - m_ConditionMode: 2
+    m_ConditionEvent: punchHasFire
+    m_EventTreshold: 0
+  - m_ConditionMode: 2
+    m_ConditionEvent: punchHasIce
+    m_EventTreshold: 0
+  - m_ConditionMode: 2
+    m_ConditionEvent: punchHasAcid
+    m_EventTreshold: 0
+  - m_ConditionMode: 1
+    m_ConditionEvent: punchHasPlasma
+    m_EventTreshold: 0
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: 9220107329416968430}
   m_Solo: 0
@@ -1845,7 +2223,7 @@ AnimatorStateTransition:
   m_TransitionDuration: 0.25
   m_TransitionOffset: 0
   m_ExitTime: 0.9375
-  m_HasExitTime: 1
+  m_HasExitTime: 0
   m_HasFixedDuration: 1
   m_InterruptionSource: 0
   m_OrderedInterruption: 1
@@ -1883,7 +2261,10 @@ AnimatorStateTransition:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: 
-  m_Conditions: []
+  m_Conditions:
+  - m_ConditionMode: 1
+    m_ConditionEvent: isWinning
+    m_EventTreshold: 0
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: 3544716912770582738}
   m_Solo: 0
@@ -1927,7 +2308,22 @@ AnimatorStateTransition:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: 
-  m_Conditions: []
+  m_Conditions:
+  - m_ConditionMode: 1
+    m_ConditionEvent: isPunchingMid
+    m_EventTreshold: 0
+  - m_ConditionMode: 2
+    m_ConditionEvent: punchHasFire
+    m_EventTreshold: 0
+  - m_ConditionMode: 2
+    m_ConditionEvent: punchHasIce
+    m_EventTreshold: 0
+  - m_ConditionMode: 2
+    m_ConditionEvent: punchHasAcid
+    m_EventTreshold: 0
+  - m_ConditionMode: 2
+    m_ConditionEvent: punchHasPlasma
+    m_EventTreshold: 0
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: -4973828788140074527}
   m_Solo: 0
@@ -1937,7 +2333,7 @@ AnimatorStateTransition:
   m_TransitionDuration: 0.25
   m_TransitionOffset: 0
   m_ExitTime: 0.875
-  m_HasExitTime: 1
+  m_HasExitTime: 0
   m_HasFixedDuration: 1
   m_InterruptionSource: 0
   m_OrderedInterruption: 1

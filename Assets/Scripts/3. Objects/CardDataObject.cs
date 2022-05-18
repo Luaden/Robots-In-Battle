@@ -53,7 +53,6 @@ public class CardDataObject
         
         cardType = data.CardType;
         cardCategory = data.CardCategory;
-        animationType = data.AnimationType;
         possibleChannels = data.PossibleChannels;
         affectedChannels = data.AffectedChannels;
         selectedChannels = Channels.None;
@@ -70,6 +69,44 @@ public class CardDataObject
     {
         selectedChannels = channel;
         cardUIObject.GetComponent<CardUIController>().UpdateSelectedChannel(selectedChannels);
+
+        switch (cardCategory)
+        {
+            case CardCategory.None:
+                Debug.Log(cardName + " wasn't flagged for a channel? SUPER weird.");
+                break;
+            case CardCategory.Punch:
+                if(channel == Channels.High)
+                    animationType = AnimationType.PunchHigh;
+                if (channel == Channels.Mid)
+                    animationType = AnimationType.PunchMid;
+                break;
+            case CardCategory.Kick:
+                if (channel == Channels.Mid)
+                    animationType = AnimationType.KickMid;
+                if (channel == Channels.Low)
+                    animationType = AnimationType.KickLow;
+                break;
+            case CardCategory.Special:
+                if (channel == Channels.Mid)
+                    animationType = AnimationType.SpecialMid;
+                break;
+            case CardCategory.Guard:
+                animationType = AnimationType.Guard;
+                break;
+            case CardCategory.Counter:
+                animationType = AnimationType.Counter;
+                break;
+            case CardCategory.Offensive:
+                Debug.Log(cardName + " was flagged for an incorrect channel.");
+                break;
+            case CardCategory.Defensive:
+                Debug.Log(cardName + " was flagged for an incorrect channel.");
+                break;
+            case CardCategory.All:
+                Debug.Log(cardName + " was flagged for an incorrect channel.");
+                break;
+        }
     }
 
     private void UpdateCardUIObject(GameObject cardUI)

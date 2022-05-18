@@ -49,8 +49,6 @@ public class SOItemDataObject : ScriptableObject
     [SerializeField] private int baseDamage;
     [Tooltip("Applies the effect before damage or interaction with the opponent. E.g. Shields will be applied before combat vs after.")]
     [SerializeField] private bool applyEffectsFirst = false;
-    [Tooltip("The animation associated with this card.")]
-    [SerializeField] private AnimationType animationType;
 
 
 
@@ -63,7 +61,6 @@ public class SOItemDataObject : ScriptableObject
     public string CardDescription { get => itemDescription; }
     public CardType CardType { get => cardType; }
     public CardCategory CardCategory { get => cardCategory; }
-    public AnimationType AnimationType { get => animationType; }
     public Channels PossibleChannels { get => possibleChannels; }
     public AffectedChannels AffectedChannels { get => affectedChannels; }
     public int EnergyCost { get => energyCost; }

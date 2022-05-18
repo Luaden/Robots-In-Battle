@@ -75,12 +75,14 @@ public class AIDialogueController : MonoBehaviour
     {
         PilotEffectManager.OnTurnComplete += CheckPlayDialogue;
         AIDialoguePopupController.OnAIDialogueComplete += OnAIDialoguePopupComplete;
+        AIConversationPopupController.OnAIDialogueComplete += OnAIDialoguePopupComplete;
     }
 
     private void OnDestroy()
     {
         PilotEffectManager.OnTurnComplete -= CheckPlayDialogue;
         AIDialoguePopupController.OnAIDialogueComplete -= OnAIDialoguePopupComplete;
+        AIConversationPopupController.OnAIDialogueComplete -= OnAIDialoguePopupComplete;
     }
 
     public void LoadCombatDialogue(SOAIDialogueObject opponentDialogue)
