@@ -61,10 +61,10 @@ public class AIDialoguePopupController : BaseUIElement<string, string, Character
                 newQueue.Enqueue(letter);
         }
 
-        if(dialogueQueues.Count > 0)
-            currentDialogueQueue = dialogueQueues.Dequeue();
+        dialogueQueues.Enqueue(newQueue);
+        currentDialogueQueue = dialogueQueues.Dequeue();
 
-            dialogueButton.SetActive(true);
+        dialogueButton.SetActive(true);
     }
 
     public void SkipText()
@@ -140,6 +140,7 @@ public class AIDialoguePopupController : BaseUIElement<string, string, Character
     private void Start()
     {
         currentDialogueQueue = new Queue<char>();
+        dialogueQueues = new Queue<Queue<char>>();
     }
 
     private void Update()
