@@ -123,6 +123,7 @@ public enum ActiveEffects
 {
     None = 0,
     Jazzersize = 1 << 0,
+    TutorialDialogue = 1 << 1,
 }
 
 public enum EffectTarget

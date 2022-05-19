@@ -21,6 +21,7 @@ public class MechAnimationController : MonoBehaviour
         {
             animator.ResetTrigger("isPunchingHigh");
             animator.ResetTrigger("isPunchingMid");
+            animator.ResetTrigger("isSpecialingMid");
             animator.ResetTrigger("isKickingMid");
             animator.ResetTrigger("isKickingLow");
             animator.ResetTrigger("isGuarding");
@@ -31,7 +32,6 @@ public class MechAnimationController : MonoBehaviour
             animator.ResetTrigger("isLosing");
             animator.SetTrigger("isIdling");
             isAnimating = false;
-
             return;
         }
 
@@ -72,8 +72,7 @@ public class MechAnimationController : MonoBehaviour
                 break;
 
             case AnimationType.Jazzersize:
-                Debug.Log("We need a jazzersize animation.");
-                animator.SetTrigger("isDamaged");
+                animator.SetTrigger("isJazzersizing");
                 break;
 
             case AnimationType.Win:
@@ -129,6 +128,12 @@ public class MechAnimationController : MonoBehaviour
             case ElementType.Void:
                 break;
         }
+    }
+
+    public void SetMechBossStatus(bool isBoss)
+    {
+        Debug.Log(mechController + " boss status: " + isBoss);
+        animator.SetBool("isBoss", isBoss);
     }
 
     private void MoveCameraToAttack()
