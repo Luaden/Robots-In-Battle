@@ -11,6 +11,7 @@ public class PlayerDataObject
     private List<MechComponentDataObject> playerInventory;
     private FighterDataObject playerFighterData;
     private List<FighterDataObject> otherFighters;
+    private List<FighterDataObject> bossFighters;
 
     private SOCompleteCharacter completeCharacterBase;
 
@@ -28,6 +29,7 @@ public class PlayerDataObject
     public int CurrencyToSpend { get => currencyToSpend; set => currencyToSpend = value; }
     public FighterDataObject PlayerFighterData { get => playerFighterData; }
     public List<FighterDataObject> OtherFighters { get => otherFighters; set => otherFighters = value; }
+    public List<FighterDataObject> BossFighters { get => bossFighters; set => bossFighters = value; }
 
     public PlayerDataObject()
     {
@@ -43,6 +45,7 @@ public class PlayerDataObject
 
         playerInventory = new List<MechComponentDataObject>();
         otherFighters = new List<FighterDataObject>();
+        bossFighters = new List<FighterDataObject>();
 
         completeCharacterBase = newPlayableCharacter;
         pilotUIObject = new FighterPilotUIObject(completeCharacterBase.FighterPilotUIObject.FighterHair,
