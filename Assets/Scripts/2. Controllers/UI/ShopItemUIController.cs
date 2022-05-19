@@ -12,6 +12,7 @@ public class ShopItemUIController : MonoBehaviour, IPointerDownHandler, IPointer
 
     [SerializeField] private GameObject cardUIObject;
     [SerializeField] private GameObject componentUIObject;
+    [SerializeField] private Image selectedImageObject;
     [Space]
     [Header("Card Attributes")]
     [SerializeField] private Image cardFrame;
@@ -230,6 +231,7 @@ public class ShopItemUIController : MonoBehaviour, IPointerDownHandler, IPointer
             draggableCanvasGroup.alpha = .6f;
         }
     }
+
     public void OnDrag(PointerEventData eventData)
     {
         if(notInMech)
@@ -261,16 +263,27 @@ public class ShopItemUIController : MonoBehaviour, IPointerDownHandler, IPointer
 
         if (DowntimeManager.instance.ShopManager.CurrentItemSelected == null)
         {
-            transform.localScale = Vector3.one * 1.5f;
+            Color selectedColor = selectedImageObject.color;
+            selectedColor.a = 0.4f;
+
+            selectedImageObject.color = selectedColor;
+
             DowntimeManager.instance.ShopManager.CurrentItemSelected = this;
             return;
         }
 
-        if(DowntimeManager.instance.ShopManager.CurrentItemSelected != this)
+        if (DowntimeManager.instance.ShopManager.CurrentItemSelected != this)
         {
-            DowntimeManager.instance.ShopManager.CurrentItemSelected.transform.localScale = Vector3.one;
+            Color transparent = selectedImageObject.color;
+            transparent.a = 0.0f;
 
-            transform.localScale = Vector3.one * 1.5f;
+            DowntimeManager.instance.ShopManager.CurrentItemSelected.selectedImageObject.color = transparent;
+
+            Color selectedColor = selectedImageObject.color;
+            selectedColor.a = 0.4f;
+
+            selectedImageObject.color = selectedColor;
+
             DowntimeManager.instance.ShopManager.CurrentItemSelected = this;
         }
 
