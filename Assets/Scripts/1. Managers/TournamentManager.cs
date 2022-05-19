@@ -28,17 +28,17 @@ public class TournamentManager : MonoBehaviour
     private void Start()
     {
         AssignNodeIndices();
+        GameManager.instance.Player.CurrentWinCount = 0;
 
         if (GameManager.instance.Player.CurrentWinCount == 0 && GameManager.instance.Player.OtherFighters.All(opponent => opponent.FighterNodeIndex == 0))
             InitTournamentScreen();
         else
         {
-            Debug.Log("start");
-            InitFighters();
+            AssignFightersToNodeIndex();
             nodeController.AssignWinners();
             nodeController.AssignActiveNodes();
             nodeController.ProgressFighters();
-
+            // assign in inspector window
             //fightButton.SetActive(false);
         }
     }
@@ -49,22 +49,24 @@ public class TournamentManager : MonoBehaviour
             nodeController.GetAllNodes()[i].NodeIndex = i;
     }
 
-    private void InitFighters()
+    // rename
+    private void AssignFightersToNodeIndex()
     {
         int fighterIndex = 0;
         bool player = true;
 
-        for (int j = 0; j < GameManager.instance.Player.OtherFighters.Count; j++)
-            GameManager.instance.Player.OtherFighters[j].FighterNodeIndex = j;
+/*        testing
+ *        for (int i = 0; i < GameManager.instance.Player.OtherFighters.Count; i++)
+            GameManager.instance.Player.OtherFighters[i].FighterNodeIndex = i;
 
-        GameManager.instance.Player.PlayerFighterData.FighterNodeIndex = 7;
+        GameManager.instance.Player.PlayerFighterData.FighterNodeIndex = 7;*/
 
         int playerFighterIndex = GameManager.instance.Player.PlayerFighterData.FighterNodeIndex;
         AddToActiveList(nodeController.GetAllNodes()[playerFighterIndex]);
 
-        for (int i = 0; i < nodeController.GetAllNodes().Count; i++)
+        for (int j = 0; j < nodeController.GetAllNodes().Count; j++)
         {
-            NodeDataObject node = nodeController.GetAllNodes()[i];
+            NodeDataObject node = nodeController.GetAllNodes()[j];
             if (GameManager.instance.Player.OtherFighters.Any(opponent => opponent.FighterNodeIndex == node.NodeIndex))
                 AddToActiveList(node);
         }
@@ -72,6 +74,7 @@ public class TournamentManager : MonoBehaviour
         for(int k = 0; k < GetActiveList().Count; k++)
         {
             NodeDataObject node = GetActiveList()[k];
+
             GameObject nodeUIGameObject;
             nodeUIGameObject = Instantiate(pilotPrefab, node.transform.position, Quaternion.identity, node.transform);
 
@@ -85,14 +88,12 @@ public class TournamentManager : MonoBehaviour
             {
                 nodeDataObject.nodeType = NodeDataObject.NodeType.Player;
                 fighter = GameManager.instance.Player.PlayerFighterData;
-                nodeDataObject.pilotType = fighter.FighterCompleteCharacter.PilotType;
                 player = false;
             }
             else
             {
                 nodeDataObject.nodeType = NodeDataObject.NodeType.Opponent;
                 fighter = GameManager.instance.Player.OtherFighters[fighterIndex];
-                nodeDataObject.pilotType = fighter.FighterCompleteCharacter.PilotType;
                 fighterIndex++;
             }
 
@@ -103,12 +104,9 @@ public class TournamentManager : MonoBehaviour
 
             nodeUIGameObject.SetActive(true);
         }
-
-        foreach (NodeDataObject node in GetActiveList())
-        {
-            if (!GetFighterPairs().Any(n => n.FighterA.FighterNodeIndex == node.NodeIndex || n.FighterB.FighterNodeIndex == node.NodeIndex))
-                AssignFighterPairs(node, node.PairNode);
-        }
+        NodeDataObject[] activeArray = GetActiveList().ToArray();
+        for (int i = 0; i < activeArray.Length - 1; i += 2)
+            DowntimeManager.instance.TournamentManager.AssignFighterPairs(activeArray[i], activeArray[i + 1]);
 
     }
     private void InitTournamentScreen()
@@ -171,39 +169,50 @@ public class TournamentManager : MonoBehaviour
 
     public void AssignFighterPairs(NodeDataObject nodeA, NodeDataObject nodeB)
     {
-        NodeDataObject childA = nodeA.transform.GetChild(0).GetComponent<NodeDataObject>();
-        NodeDataObject childB = nodeB.transform.GetChild(0).GetComponent<NodeDataObject>();
+        if (nodeA.transform.childCount > 0 && nodeB.transform.childCount > 0)
+        {
+            NodeDataObject childA = nodeA.transform.GetChild(0).GetComponent<NodeDataObject>();
+            NodeDataObject childB = nodeB.transform.GetChild(0).GetComponent<NodeDataObject>();
 
+            childA.FighterDataObject.FighterNodeIndex = nodeA.NodeIndex;
+            childB.FighterDataObject.FighterNodeIndex = nodeB.NodeIndex;
 
-        childA.FighterDataObject.FighterNodeIndex = nodeA.NodeIndex;
-        childB.FighterDataObject.FighterNodeIndex = nodeB.NodeIndex;
+            FighterPairObject fighterPairObject = new FighterPairObject(childA.FighterDataObject, childB.FighterDataObject);
 
-        FighterPairObject fighterPairObject = new FighterPairObject(childA.FighterDataObject, childB.FighterDataObject);
+            nodeController.FighterPairs.Add(fighterPairObject);
+            return;
+        }
 
-        nodeController.FighterPairs.Add(fighterPairObject);
+        Debug.Log(nodeA.NodeIndex + " is missing a fighter pair node!");
+        Debug.Log(nodeB.NodeIndex + " is missing a fighter pair node!");
+
     }
 
     public void ConfirmBattleChoices()
     {
+        GameManager.instance.Player.CurrentWinCount++;
         if (nodeController.GetAllActiveNodes().Any(fighterNode => fighterNode.HasBeenAssignedFighter == false))
         {
             Debug.Log("You have not assigned all fighters to a slot. Fighter Pairs are not completed");
             return;
         }
 
-        if (GameManager.instance.Player.CurrentWinCount > 0)
+        OnAssignAllFighters();
+        GetFighterPairs().Clear();
+
+        NodeDataObject[] node = GetActiveList().ToArray();
+
+        for (int i = 0; i < node.Length - 1; i += 2)
+            DowntimeManager.instance.TournamentManager.AssignFighterPairs(node[i], node[i + 1]);
+
+        for (int j = 0; j < GetFighterPairs().Count; j++)
         {
-            nodeController.AssignWinners();
-            nodeController.AssignActiveNodes();
-        }
-        else
-        {
-            NodeDataObject[] node = GetActiveList().ToArray();
-            for (int i = 0; i < node.Length - 1; i += 2)
-                AssignFighterPairs(node[i], node[i + 1]);
+            Debug.Log(GetFighterPairs()[j].FighterA.FighterNodeIndex);
+            Debug.Log(GetFighterPairs()[j].FighterB.FighterNodeIndex);
         }
 
-        OnAssignAllFighters();
+        nodeController.AssignWinners();
+        nodeController.AssignActiveNodes();
         nodeController.ProgressFighters();
     }
 

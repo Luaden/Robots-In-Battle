@@ -46,7 +46,6 @@ public class NodeDataObject : MonoBehaviour
     }
 
     public NodeType nodeType;
-    public PilotType pilotType;
 
     public void Init(FighterDataObject fighter)
     {
@@ -83,7 +82,8 @@ public class NodeDataObject : MonoBehaviour
         hasBeenAssignedFighter = parentNode.HasBeenAssignedFighter;
         hasWonBattle = parentNode.HasWonBattle;
 
-        pairNodeFighterData = pairNode.FighterDataObject;
+        if(pairNode?.FighterDataObject != null)
+            pairNodeFighterData = pairNode.FighterDataObject;
 
         nodeUIController.NodeSlotController = parentNode.GetComponent<NodeSlotController>();
 
@@ -122,8 +122,14 @@ public class NodeDataObject : MonoBehaviour
 
             return;
         }
+        MoveToNextNode();
 
-        transform.GetChild(0).GetComponent<NodeDataObject>().NodeUIController.SetInactive();
+        if (transform.childCount > 0)
+        {
+            transform.GetChild(0).GetComponent<NodeDataObject>().NodeUIController.SetInactive();
+        }
+        else
+            Debug.Log(nodeIndex + " is missing a child object");
     }
 
 }
