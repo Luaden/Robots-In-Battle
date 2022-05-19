@@ -28,7 +28,6 @@ public class TournamentManager : MonoBehaviour
     private void Start()
     {
         AssignNodeIndices();
-        GameManager.instance.Player.CurrentWinCount = 0;
 
         if (GameManager.instance.Player.CurrentWinCount == 0 && GameManager.instance.Player.OtherFighters.All(opponent => opponent.FighterNodeIndex == 0))
             InitTournamentScreen();
@@ -38,8 +37,9 @@ public class TournamentManager : MonoBehaviour
             nodeController.AssignWinners();
             nodeController.AssignActiveNodes();
             nodeController.ProgressFighters();
-            // assign in inspector window
-            //fightButton.SetActive(false);
+
+            if (fightButton != null)
+                fightButton.SetActive(false);
         }
     }
 
@@ -190,7 +190,6 @@ public class TournamentManager : MonoBehaviour
 
     public void ConfirmBattleChoices()
     {
-        GameManager.instance.Player.CurrentWinCount++;
         if (nodeController.GetAllActiveNodes().Any(fighterNode => fighterNode.HasBeenAssignedFighter == false))
         {
             Debug.Log("You have not assigned all fighters to a slot. Fighter Pairs are not completed");
@@ -204,16 +203,11 @@ public class TournamentManager : MonoBehaviour
 
         for (int i = 0; i < node.Length - 1; i += 2)
             DowntimeManager.instance.TournamentManager.AssignFighterPairs(node[i], node[i + 1]);
-
-        for (int j = 0; j < GetFighterPairs().Count; j++)
-        {
-            Debug.Log(GetFighterPairs()[j].FighterA.FighterNodeIndex);
-            Debug.Log(GetFighterPairs()[j].FighterB.FighterNodeIndex);
-        }
-
+/*
+ *      testing
         nodeController.AssignWinners();
         nodeController.AssignActiveNodes();
-        nodeController.ProgressFighters();
+        nodeController.ProgressFighters();*/
     }
 
     public List<FighterPairObject> GetFighterPairs()
