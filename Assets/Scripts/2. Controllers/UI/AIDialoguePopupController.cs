@@ -19,13 +19,15 @@ public class AIDialoguePopupController : BaseUIElement<string, string, Character
     [SerializeField] private GameObject opponentPopupObject;
     [SerializeField] private GameObject playerPopupObject;
 
+    private CharacterSelect currentSpeaker;
+    private float currentTimer = 0f;
+
+    private Queue<Queue<char>> dialogueQueues;
+    private Queue<char> currentDialogueQueue;
+    private string currentDialogueCompletion;
+
     public delegate void onAIDialogueComplete();
     public static event onAIDialogueComplete OnAIDialogueComplete;
-
-    private CharacterSelect currentSpeaker;
-    private string currentDialogue;
-    private Queue<char> completeDialogue;
-    private float currentTimer = 0f;
 
     public override void UpdateUI(string primaryData, string secondaryData, CharacterSelect character)
     {
@@ -45,28 +47,50 @@ public class AIDialoguePopupController : BaseUIElement<string, string, Character
             playerPopupObject.SetActive(true);
         }
 
-        foreach (char letter in secondaryData)
-            completeDialogue.Enqueue(letter);
+        Queue<char> newQueue = new Queue<char>();
 
-        dialogueButton.SetActive(true);
+        foreach (char letter in secondaryData)
+        {
+            if(letter.ToString() == "*")
+            {
+                dialogueQueues.Enqueue(newQueue);
+                newQueue = new Queue<char>();
+                continue;
+            }
+            else
+                newQueue.Enqueue(letter);
+        }
+
+        if(dialogueQueues.Count > 0)
+            currentDialogueQueue = dialogueQueues.Dequeue();
+
+            dialogueButton.SetActive(true);
     }
 
     public void SkipText()
     {
-        if (completeDialogue.Count > 0)
+        if (currentDialogueQueue.Count > 0)
         {
-            int letterCount = completeDialogue.Count;
+            int letterCount = currentDialogueQueue.Count;
 
             for (int i = 0; i < letterCount; i++)
-                currentDialogue += completeDialogue.Dequeue();
+                currentDialogueCompletion += currentDialogueQueue.Dequeue();
 
             if (currentSpeaker == CharacterSelect.Opponent)
-                opponentPopupDialogueText.text = currentDialogue;
+                opponentPopupDialogueText.text = currentDialogueCompletion;
             else
-                playerPopupDialogueText.text = currentDialogue;
+                playerPopupDialogueText.text = currentDialogueCompletion;
 
             return;
         }
+
+        if(currentDialogueQueue.Count == 0 && dialogueQueues.Count > 0)
+        {
+            currentDialogueQueue = dialogueQueues.Dequeue();
+            currentDialogueCompletion = string.Empty;
+            return;
+        }
+
         else
         {
             OnAIDialogueComplete?.Invoke();
@@ -82,8 +106,9 @@ public class AIDialoguePopupController : BaseUIElement<string, string, Character
             playerPopupDialogueText.text = string.Empty;
             opponentPopupNameText.text = string.Empty;
             opponentPopupDialogueText.text = string.Empty;
-            currentDialogue = string.Empty;
-            completeDialogue = new Queue<char>();
+            currentDialogueCompletion = string.Empty;
+            currentDialogueQueue = new Queue<char>();
+            dialogueQueues = new Queue<Queue<char>>();
 
             dialogueButton.SetActive(false);
             opponentPopupObject.SetActive(false);
@@ -98,8 +123,9 @@ public class AIDialoguePopupController : BaseUIElement<string, string, Character
             playerPopupDialogueText.text = string.Empty;
             opponentPopupNameText.text = string.Empty;
             opponentPopupDialogueText.text = string.Empty;
-            currentDialogue = string.Empty;
-            completeDialogue = new Queue<char>();
+            currentDialogueCompletion = string.Empty;
+            currentDialogueQueue = new Queue<char>();
+            dialogueQueues = new Queue<Queue<char>>();
 
             dialogueButton.SetActive(false);
             opponentPopupObject.SetActive(false);
@@ -113,7 +139,7 @@ public class AIDialoguePopupController : BaseUIElement<string, string, Character
 
     private void Start()
     {
-        completeDialogue = new Queue<char>();
+        currentDialogueQueue = new Queue<char>();
     }
 
     private void Update()
@@ -123,16 +149,16 @@ public class AIDialoguePopupController : BaseUIElement<string, string, Character
 
     private void UpdateTextOverTime()
     {
-        if(completeDialogue.Count != 0)
+        if(currentDialogueQueue.Count != 0)
         {
             if(CheckTimer())
             {
-                currentDialogue += completeDialogue.Dequeue();
+                currentDialogueCompletion += currentDialogueQueue.Dequeue();
 
                 if (currentSpeaker == CharacterSelect.Opponent)
-                    opponentPopupDialogueText.text = currentDialogue;
+                    opponentPopupDialogueText.text = currentDialogueCompletion;
                 else
-                    playerPopupDialogueText.text = currentDialogue;
+                    playerPopupDialogueText.text = currentDialogueCompletion;
             }
         }
     }
