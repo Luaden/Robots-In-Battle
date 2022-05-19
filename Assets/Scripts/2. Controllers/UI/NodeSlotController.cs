@@ -53,7 +53,7 @@ public class NodeSlotController : BaseSlotController<NodeUIController>
 
         slotNode.HasBeenAssignedFighter = true;
         NodeDataObject itemNode = item.GetComponent<NodeDataObject>();
-        itemNode.UpdateToParentNode(slotNode);
+        itemNode.SetParentNode(slotNode);
 
 
     }
