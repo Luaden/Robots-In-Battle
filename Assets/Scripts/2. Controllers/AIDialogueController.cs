@@ -81,7 +81,7 @@ public class AIDialogueController : MonoBehaviour
             OnDialogueComplete?.Invoke();
             return;
         }
-        Debug.Log("Playing dialogue: " + fightDialogue[dialogueIndex]);
+
         CombatManager.instance.PopupUIManager.HandlePopup(CombatManager.instance.OpponentFighter.FighterName, 
             fightDialogue[dialogueIndex], CharacterSelect.Opponent);
         dialogueIndex++;
