@@ -30,6 +30,11 @@ public class PilotEffectManager : MonoBehaviour
         opponentEffects = opponentFighter.FighterActiveEffects;
     }
 
+    public void ManuallyCallPilotEffects()
+    {
+        OnCombatComplete();
+    }
+
     private void Start()
     {
         CombatSequenceManager.OnCombatComplete += OnCombatComplete;
@@ -97,7 +102,6 @@ public class PilotEffectManager : MonoBehaviour
 
             if (opponentEffects.HasFlag(ActiveEffects.TutorialDialogue))
             {
-                Debug.Log("Tutorial dialogue starting.");
                 CombatManager.instance.AIManager.PlayFightDialogueInOrder();
                 activatingOpponentEffects = false;
                 return;

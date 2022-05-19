@@ -57,6 +57,7 @@ public class CombatManager : MonoBehaviour
 
     private bool canPlayCards = true;
     private bool hasStartedGame = false;
+    private bool hasNotCompletedIntroDialogue = true;
     private bool gameOver = false;
     private bool hasWon = false;
     private bool hasLost = false;
@@ -385,6 +386,13 @@ public class CombatManager : MonoBehaviour
     {
         if (hasStartedGame && !hasWon && !hasLost)
         {
+            if(GameManager.instance.SceneController.CheckIsTutorialScene() && hasNotCompletedIntroDialogue)
+            {
+                pilotEffectManager.ManuallyCallPilotEffects();
+                hasNotCompletedIntroDialogue = false;
+                return;
+            }
+
             deckManager.DrawPlayerCard(5 - HandManager.PlayerHand.CharacterHand.Count);
             deckManager.DrawOpponentCard(5 - HandManager.OpponentHand.CharacterHand.Count);
 

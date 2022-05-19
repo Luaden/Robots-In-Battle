@@ -116,7 +116,6 @@ public class GameManager : MonoBehaviour
         {
             if (starterPilot != null)
             {
-                Debug.Log("Creating new pilot.");
                 playerData = new PlayerDataObject(starterPilot);
                 return;
             }

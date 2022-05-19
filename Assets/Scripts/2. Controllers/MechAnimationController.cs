@@ -132,7 +132,6 @@ public class MechAnimationController : MonoBehaviour
 
     public void SetMechBossStatus(bool isBoss)
     {
-        Debug.Log(mechController + " boss status: " + isBoss);
         animator.SetBool("isBoss", isBoss);
     }
 
