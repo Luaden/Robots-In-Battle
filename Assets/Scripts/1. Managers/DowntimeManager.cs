@@ -85,16 +85,8 @@ public class DowntimeManager : MonoBehaviour
 
     public void LoadCombatScene()
     {
-        if(GameManager.instance.PlayerWins == 0)
-        {
-            OnLoadCombatScene?.Invoke();
-            GameManager.instance.SceneController.LoadTutorialScene();
-        }
-        else
-        {
-            OnLoadCombatScene?.Invoke();
-            GameManager.instance.SceneController.LoadCombatScene();
-        }
+        OnLoadCombatScene?.Invoke();
+        GameManager.instance.SceneController.LoadCombatScene();
     }
 
     public void RepairEquippedItems()

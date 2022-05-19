@@ -216,8 +216,12 @@ public class ChannelsUISlotManager : BaseSlotManager<CardUIController>
     {
         if (attackSlotAFilled && attackSlotBFilled)
             if(playerAttackSlotA.CurrentSlottedItem != newData && playerAttackSlotB.CurrentSlottedItem != newData)
+            {
+                CombatManager.instance.PopupUIManager.HandlePopup(CombatManager.instance.PlayerFighter.FighterName, 
+                    "The slots for " + newData.CardData.CardName + " are already filled.", CharacterSelect.Player);
                 return false;
-        
+            }
+
         int bonusEnergyCost = 0;
 
         if (aCardEnergyCost > 0)
@@ -233,7 +237,8 @@ public class ChannelsUISlotManager : BaseSlotManager<CardUIController>
                     if(bonusEnergyCost + (newData.CardData.EnergyCost * CombatManager.instance.IceChannelEnergyReductionModifier) >
                     CombatManager.instance.PlayerFighter.FighterMech.MechCurrentEnergy)
                     {
-                        Debug.Log("Not enough energy to use this card.");
+                        CombatManager.instance.PopupUIManager.HandlePopup(CombatManager.instance.PlayerFighter.FighterName, 
+                            "I don't have enough energy to play that card!", CharacterSelect.Player);
                         return false;
                     }
             }
@@ -245,14 +250,16 @@ public class ChannelsUISlotManager : BaseSlotManager<CardUIController>
                 if(bonusEnergyCost + (newData.CardData.EnergyCost * CombatManager.instance.IceChannelEnergyReductionModifier) >
                     CombatManager.instance.PlayerFighter.FighterMech.MechCurrentEnergy)
                 {
-                    Debug.Log("Not enough energy to use this card.");
+                    CombatManager.instance.PopupUIManager.HandlePopup(CombatManager.instance.PlayerFighter.FighterName, 
+                        "I don't have enough energy to play that card!", CharacterSelect.Player);
                     return false;
                 }
         }
 
         if (bonusEnergyCost + newData.CardData.EnergyCost > CombatManager.instance.PlayerFighter.FighterMech.MechCurrentEnergy)
         {
-            Debug.Log("Not enough energy to use this card.");
+            CombatManager.instance.PopupUIManager.HandlePopup(CombatManager.instance.PlayerFighter.FighterName, 
+                "I don't have enough energy to play that card!", CharacterSelect.Player);
             return false;
         }
 
@@ -266,7 +273,8 @@ public class ChannelsUISlotManager : BaseSlotManager<CardUIController>
 
         if (!CardChannelCheck(newData, selectedChannel))
         {
-            Debug.Log("Card does not fit into " + selectedChannel + " slot.");
+            CombatManager.instance.PopupUIManager.HandlePopup(CombatManager.instance.PlayerFighter.FighterName, 
+                newData.CardData.CardName + " doesn't fit into that slot.", CharacterSelect.Player);
             return false;
         }
 
