@@ -86,14 +86,14 @@ public class CombatManager : MonoBehaviour
     public float AcidComponentDamageMultiplier { get => acidComponentDamageMultiplier; }
     public float IceChannelEnergyReductionModifier { get => iceChannelEnergyReductionModifier; }
     public bool CanPlayCards { get => canPlayCards; }
+    public bool GameOver { get => gameOver; }
+
 
     public delegate void onDestroyScene();
     public static event onDestroyScene OnDestroyScene;
 
     public delegate void onStartNewTurn();
     public static event onStartNewTurn OnStartNewTurn;
-
-    public bool GameOver { get => gameOver; }
 
     public void RemoveHealthFromMech(DamageMechPairObject damageMechPair)
     {
@@ -304,7 +304,6 @@ public class CombatManager : MonoBehaviour
         CombatSequenceManager.OnCombatComplete += CheckForWinLoss;
 
         AIDialogueController.OnDialogueComplete += StartNewTurn;
-        AIConversationPopupController.OnAIDialogueComplete += StartNewTurn;
         AIDialogueController.OnDialogueComplete += EnableCanPlayCards;
 
         if (GameManager.instance.Player.PlayerFighterData == null)
@@ -315,7 +314,7 @@ public class CombatManager : MonoBehaviour
 
         InitPlayerFighter(GameManager.instance.Player.PlayerFighterData);
 
-        if (GameManager.instance.PlayerWins == 0)
+        if (GameManager.instance.SceneController.CheckIsTutorialScene())
             InitOpponentFighter(GameManager.instance.Player.BossFighters[0]);
         else
             InitOpponentFighter(GameManager.instance.Player.OtherFighters[0]);
@@ -334,7 +333,6 @@ public class CombatManager : MonoBehaviour
         CombatSequenceManager.OnCombatComplete -= CheckForWinLoss;
 
         AIDialogueController.OnDialogueComplete -= StartNewTurn;
-        AIConversationPopupController.OnAIDialogueComplete -= StartNewTurn;
         AIDialogueController.OnDialogueComplete -= EnableCanPlayCards;
     }
 
@@ -359,6 +357,7 @@ public class CombatManager : MonoBehaviour
         mechHUDManager.UpdatePlayerHP(playerFighter.FighterMech.MechCurrentHP);
 
         mechHUDManager.UpdatePlayerPilotImage(playerFighter.FighterUIObject);
+        combatAnimationManager.SetMechStartingAnimations(playerFighter.FighterMech, CharacterSelect.Player);
         mechSpriteSwapManager.UpdateMechSprites(newPlayerFighter.FighterMech, CharacterSelect.Player);
     }
 
@@ -377,6 +376,8 @@ public class CombatManager : MonoBehaviour
 
         aIManager.LoadAIBehaviorModule(opponentFighter.AIBehaviorModule);
         aIManager.LoadAIDialogueModule(opponentFighter.AIDialogueModule);
+
+        combatAnimationManager.SetMechStartingAnimations(opponentFighter.FighterMech, CharacterSelect.Opponent);
         mechSpriteSwapManager.UpdateMechSprites(newOpponentFighter.FighterMech, CharacterSelect.Opponent);
     }
 
@@ -389,7 +390,6 @@ public class CombatManager : MonoBehaviour
 
             AddEnergyToMech(CharacterSelect.Opponent, mechEnergyGain + OpponentFighter.FighterMech.MechEnergyGain);
             AddEnergyToMech(CharacterSelect.Player, mechEnergyGain + PlayerFighter.FighterMech.MechEnergyGain);
-
             OnStartNewTurn?.Invoke();
         }
         

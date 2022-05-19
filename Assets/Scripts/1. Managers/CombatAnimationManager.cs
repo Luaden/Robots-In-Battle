@@ -27,6 +27,20 @@ public class CombatAnimationManager : MonoBehaviour
             opponentMechAnimationController.SetMechAnimation(newAnimation.secondAnimation);
     }
 
+    public void SetMechStartingAnimations(MechObject mech, CharacterSelect character, bool isBoss = false)
+    {
+        if(character == CharacterSelect.Player)
+        {
+            playerMechAnimationController.SetMechBossStatus(isBoss);
+            playerMechAnimationController.SetMechElements(mech);
+        }
+        else
+        {
+            opponentMechAnimationController.SetMechBossStatus(isBoss);
+            opponentMechAnimationController.SetMechElements(mech);
+        }
+    }
+
     public void PrepCardsToBurn(CardBurnObject cardBurnObject)
     {
         burnPileController.PrepCardsToBurn(cardBurnObject);
@@ -43,11 +57,6 @@ public class CombatAnimationManager : MonoBehaviour
             GetComponent<BurnPileController>();
     }
 
-    private void Start()
-    {
-        playerMechAnimationController.SetMechElements(CombatManager.instance.PlayerFighter.FighterMech);
-        opponentMechAnimationController.SetMechElements(CombatManager.instance.OpponentFighter.FighterMech);
-    }
 
     private void Update()
     {

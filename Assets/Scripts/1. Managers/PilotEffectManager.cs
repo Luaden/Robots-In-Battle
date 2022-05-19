@@ -45,7 +45,6 @@ public class PilotEffectManager : MonoBehaviour
         CombatSequenceManager.OnCombatComplete -= OnCombatComplete;
     }
 
-    [ContextMenu("Check Effects")]
     private void OnCombatComplete()
     {
         if (CombatManager.instance.GameOver)
@@ -92,6 +91,14 @@ public class PilotEffectManager : MonoBehaviour
                                                                                                            CharacterSelect.Player, AnimationType.Idle));
                 CombatManager.instance.CombatEffectManager.EnablePilotEffects(CharacterSelect.Opponent, ActiveEffects.Jazzersize);
 
+                activatingOpponentEffects = false;
+                return;
+            }
+
+            if (opponentEffects.HasFlag(ActiveEffects.TutorialDialogue))
+            {
+                Debug.Log("Tutorial dialogue starting.");
+                CombatManager.instance.AIManager.PlayFightDialogueInOrder();
                 activatingOpponentEffects = false;
                 return;
             }
