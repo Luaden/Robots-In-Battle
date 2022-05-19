@@ -67,8 +67,6 @@ public class CombatAnimationManager : MonoBehaviour
     {
         if(!animationsComplete)
         {
-            Debug.Log("Player is animating: " + playerMechAnimationController.IsAnimating);
-            Debug.Log("Opponent is animating: " + opponentMechAnimationController.IsAnimating);
             if (playerMechAnimationController.IsAnimating)
                 return;
             if (opponentMechAnimationController.IsAnimating)

@@ -19,7 +19,6 @@ public class MechAnimationController : MonoBehaviour
     {
         if(animationType == AnimationType.Idle)
         {
-            Debug.Log(mechController + " is resetting animations.");
             animator.ResetTrigger("isPunchingHigh");
             animator.ResetTrigger("isPunchingMid");
             animator.ResetTrigger("isSpecialingMid");
