@@ -315,7 +315,7 @@ public class CombatManager : MonoBehaviour
 
         InitPlayerFighter(GameManager.instance.Player.PlayerFighterData);
 
-        if (GameManager.instance.SceneController.CheckIsTutorialScene())
+        if (GameManager.instance.PlayerWins == 0)
             InitOpponentFighter(GameManager.instance.Player.BossFighters[0]);
         else
             InitOpponentFighter(GameManager.instance.Player.OtherFighters[0]);
@@ -386,7 +386,7 @@ public class CombatManager : MonoBehaviour
     {
         if (hasStartedGame && !hasWon && !hasLost)
         {
-            if(GameManager.instance.SceneController.CheckIsTutorialScene() && hasNotCompletedIntroDialogue)
+            if(GameManager.instance.PlayerWins == 0 && hasNotCompletedIntroDialogue)
             {
                 pilotEffectManager.ManuallyCallPilotEffects();
                 hasNotCompletedIntroDialogue = false;

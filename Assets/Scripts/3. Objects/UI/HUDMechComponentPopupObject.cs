@@ -16,6 +16,7 @@ public class HUDMechComponentPopupObject : MonoBehaviour
     private void Start()
     {
         CombatSequenceManager.OnCombatComplete += CheckPickupUpdate;
+        CheckPickupUpdate();
     }
 
     private void OnDestroy()
