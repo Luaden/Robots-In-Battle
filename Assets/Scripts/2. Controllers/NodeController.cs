@@ -16,51 +16,93 @@ public class NodeController : MonoBehaviour
     //test
     public List<FighterPairObject> FighterPairs { get => fighterPairs; set => fighterPairs = value; }
 
+
+    // moves the fighters on the tournament board
     public void ProgressFighters()
     {
+        fighterPairs.Clear();
         List<NodeDataObject> tempList = new List<NodeDataObject>();
         tempList.AddRange(activeNodes);
 
-        foreach (NodeDataObject currentNode in tempList)
+        Debug.Log(tempList.Count);
+
+        foreach (NodeDataObject activeNode in tempList)
         {
-            if (currentNode != null)
+            if (activeNode != null)
             {
-                NodeDataObject fighterNode = currentNode.transform.GetChild(0).GetComponent<NodeDataObject>();
-
-                // if we have a winner
-                if (fighterNode != null && currentNode.HasWonBattle)
+                if(activeNode.transform.childCount > 0)
                 {
-                    currentNode.HasWonBattle = false;
-                    currentNode.HasBeenAssignedFighter = false;
+                    NodeDataObject fighterNode = activeNode.transform.GetChild(0).GetComponent<NodeDataObject>();
 
-                    NodeDataObject newCurrentNode = currentNode.NextNode;
-                    newCurrentNode.PreviousNode = currentNode;
-                    newCurrentNode.HasBeenAssignedFighter = true;
-
-                    fighterNode.SetParentNode(newCurrentNode);
-                    fighterNode.MoveToNextNode();
-
-                    activeNodes.Remove(newCurrentNode.PreviousNode);
-                    activeNodes.Add(newCurrentNode);
-
-                    FighterPairObject pairObj = fighterPairs.SingleOrDefault(p => p.FighterA == fighterNode.FighterDataObject || p.FighterB == fighterNode.FighterDataObject);
-                    if (pairObj != null)
+                    if(fighterNode.nodeType == NodeDataObject.NodeType.Player)
                     {
-                        Debug.Log("removed: " + pairObj.FighterA.FighterNodeIndex);
-                        Debug.Log("removed: " + pairObj.FighterB.FighterNodeIndex);
-                        fighterPairs.Remove(pairObj);
+                        Debug.Log("progress fighters player node");
+
+                        activeNode.HasWonBattle = false;
+                        activeNode.HasBeenAssignedFighter = false;
+
+                        NodeDataObject newCurrentNode = activeNode.NextNode;
+                        newCurrentNode.PreviousNode = activeNode;
+                        newCurrentNode.HasBeenAssignedFighter = true;
+
+                        fighterNode.SetParentNode(newCurrentNode);
+                        fighterNode.MoveToNextNode();
+
+                        activeNodes.Remove(newCurrentNode.PreviousNode);
+                        activeNodes.Add(newCurrentNode);
+
+                        FighterPairObject pairObj = fighterPairs.SingleOrDefault(p => p.FighterA == fighterNode.FighterDataObject || p.FighterB == fighterNode.FighterDataObject);
+                        if (pairObj != null)
+                        {
+                            Debug.Log("removed: " + pairObj.FighterA.FighterNodeIndex);
+                            Debug.Log("removed: " + pairObj.FighterB.FighterNodeIndex);
+                            fighterPairs.Remove(pairObj);
+                        }
+
+                        NodeDataObject playerPairNode = activeNode.PairNode;
+                        playerPairNode.Active = false;
+                        activeNodes.Remove(playerPairNode);
+
+                        continue;
                     }
-                }
 
-                NodeDataObject pairNode = currentNode.PairNode;
-
-                if (!pairNode.HasWonBattle)
-                {
-                    if (pairNode.transform.childCount > 0)
+                    // if we have a winner
+                    if (fighterNode != null && activeNode.HasWonBattle)
                     {
-                        // --------------------------
-                        pairNode.Active = false;
-                        activeNodes.Remove(pairNode);
+                        Debug.Log("we have a winner at: " + activeNode.NodeIndex);
+                        activeNode.HasWonBattle = false;
+                        activeNode.HasBeenAssignedFighter = false;
+
+                        NodeDataObject newCurrentNode = activeNode.NextNode;
+                        newCurrentNode.PreviousNode = activeNode;
+                        newCurrentNode.HasBeenAssignedFighter = true;
+
+                        fighterNode.SetParentNode(newCurrentNode);
+                        if(fighterNode.Active)
+                            fighterNode.MoveToNextNode();
+
+                        activeNodes.Remove(newCurrentNode.PreviousNode);
+                        activeNodes.Add(newCurrentNode);
+
+                        FighterPairObject pairObj = fighterPairs.SingleOrDefault(p => p.FighterA == fighterNode.FighterDataObject || p.FighterB == fighterNode.FighterDataObject);
+                        if (pairObj != null)
+                        {
+                            Debug.Log("removed: " + pairObj.FighterA.FighterNodeIndex);
+                            Debug.Log("removed: " + pairObj.FighterB.FighterNodeIndex);
+                            fighterPairs.Remove(pairObj);
+                        }
+                    }
+
+                    NodeDataObject pairNode = activeNode.PairNode;
+
+                    if (!pairNode.HasWonBattle)
+                    {
+                        if (pairNode.transform.childCount > 0)
+                        {
+                            // --------------------------
+                            pairNode.Active = false;
+                            activeNodes.Remove(pairNode);
+                        }
                     }
                 }
             }
@@ -75,46 +117,96 @@ public class NodeController : MonoBehaviour
     {
         activeNodes.Clear();
 
+        foreach (NodeDataObject n in GetAllNodes())
+            if (GameManager.instance.Player.PlayerFighterData.FighterNodeIndex == n.NodeIndex)
+                activeNodes.Add(n);
+
         foreach(NodeDataObject node in GetAllNodes())
-        {
             foreach (FighterDataObject fighter in GameManager.instance.Player.OtherFighters)
-            {
-                if (fighter.FighterNodeIndex == node.NodeIndex && node.HasWonBattle)
+                if (fighter.FighterNodeIndex == node.NodeIndex)
                     activeNodes.Add(node);
+
+
+        List<NodeDataObject> tempList = new List<NodeDataObject>();
+        tempList.AddRange(activeNodes);
+
+        NodeDataObject.NodeType playerNodeType = GetAllNodes()[GameManager.instance.Player.PlayerFighterData.FighterNodeIndex].nodeType;
+        Debug.Log("AssignActiveNodes_PlayerNodeType: " + playerNodeType);
+
+        foreach (FighterDataObject fighter in GameManager.instance.Player.OtherFighters)
+        {
+            foreach (NodeDataObject a_node in tempList)
+            {
+                if (fighter.FighterNodeIndex == a_node.NodeIndex)
+                {
+                    Debug.Log("AssignActiveNodes_a_node: " + a_node.nodeType);
+
+                    if (a_node.nodeType != playerNodeType)
+                    {
+                        activeNodes.Remove(a_node);
+                        a_node.Active = false;
+                    }
+                }
             }
-
-            if (!activeNodes.Contains(node) && GameManager.instance.Player.PlayerFighterData.FighterNodeIndex == node.NodeIndex && node.HasWonBattle)
-                activeNodes.Add(node);
         }
-
     }
 
     public void AssignWinners()
     {
         List<NodeDataObject> nodes = GetAllNodes();
+
+        Debug.Log("AssignWinners FighterPairs count: " + fighterPairs.Count);
+
         foreach(FighterPairObject fighterPair in FighterPairs)
         {
             foreach(NodeDataObject node in nodes)
             {
-                if (node.PairNode == null || (node.PairNode.HasWonBattle || node.HasWonBattle) || node.PairNode.NodeIndex == node.NodeIndex)
+                NodeDataObject pairNode = node.PairNode;
+                if (pairNode == null || (pairNode.HasWonBattle || node.HasWonBattle))
                     continue;
 
-                if(node.NodeIndex == fighterPair.FighterA.FighterNodeIndex || node.NodeIndex == fighterPair.FighterB.FighterNodeIndex)
+                FighterDataObject player = GameManager.instance.Player.PlayerFighterData;
+                if (node.NodeIndex == player.FighterNodeIndex)
+                {
+                    node.HasBeenAssignedFighter = true;
+                    pairNode.HasBeenAssignedFighter = true;
+
+                    node.HasWonBattle = true;
+                    pairNode.HasWonBattle = false;
+                    continue;
+                }
+
+                if ((node.NodeIndex == fighterPair.FighterA.FighterNodeIndex || node.NodeIndex == fighterPair.FighterB.FighterNodeIndex))
                 {
                     int fighterAWinChance = Random.Range(0, 101);
                     int fighterBWinChance = Random.Range(0, 101);
 
-                    bool n = (fighterAWinChance > fighterBWinChance) ? true : false;
+                    if(fighterAWinChance >= fighterBWinChance)
+                    {
+                        node.HasBeenAssignedFighter = true;
+                        pairNode.HasBeenAssignedFighter = true;
 
-                    node.HasWonBattle = n;
-                    node.PairNode.HasWonBattle = !n;
+                        node.HasWonBattle = true;
+                        pairNode.HasWonBattle = false;
 
-                    Debug.Log(node.NodeIndex + " has " + n + " won");
-                    Debug.Log(node.PairNode.NodeIndex + " has " + !n + " won");
+                        Debug.Log(node.NodeIndex + " has won");
+                        Debug.Log(pairNode.NodeIndex + " has lost");
+                        continue;
+                    }
+                    if (fighterAWinChance < fighterBWinChance)
+                    {
+                        pairNode.HasBeenAssignedFighter = true;
+                        node.HasBeenAssignedFighter = true;
+
+                        pairNode.HasWonBattle = true;
+                        node.HasWonBattle = false;
+
+                        Debug.Log(pairNode.NodeIndex + " has won");
+                        Debug.Log(node.NodeIndex + " has lost");
+                        continue;
+                    }
                 }
             }
-
         }
     }
-
 }
