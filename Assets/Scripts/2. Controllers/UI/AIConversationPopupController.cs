@@ -33,8 +33,8 @@ public class AIConversationPopupController : BaseUIElement<ConversationObject>
 
     private CharacterSelect characterSpeaking;
 
-    public delegate void onAIDialogueComplete();
-    public static event onAIDialogueComplete OnAIDialogueComplete;
+    public delegate void onAIConversationComplete();
+    public static event onAIConversationComplete OnAIConversationComplete;
 
     Queue<string> dialogueChain = new Queue<string>();
 
@@ -186,7 +186,7 @@ public class AIConversationPopupController : BaseUIElement<ConversationObject>
 
         if (completeDialogue.Count == 0 && dialogueChain.Count == 0)
         {
-            OnAIDialogueComplete?.Invoke();
+            OnAIConversationComplete?.Invoke();
             UpdateUI(null);
         }
     }
