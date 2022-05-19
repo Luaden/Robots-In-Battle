@@ -383,10 +383,8 @@ public class CombatManager : MonoBehaviour
 
     private void StartNewTurn()
     {
-        Debug.Log("Starting new turn");
         if (hasStartedGame && !hasWon && !hasLost)
         {
-            Debug.Log("Drawing new cards.");
             deckManager.DrawPlayerCard(5 - HandManager.PlayerHand.CharacterHand.Count);
             deckManager.DrawOpponentCard(5 - HandManager.OpponentHand.CharacterHand.Count);
 
