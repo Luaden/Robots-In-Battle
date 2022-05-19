@@ -102,7 +102,6 @@ public class PilotEffectManager : MonoBehaviour
 
             if (opponentEffects.HasFlag(ActiveEffects.TutorialDialogue))
             {
-                Debug.Log("Manually calling tutorial dialogue.");
                 CombatManager.instance.AIManager.PlayFightDialogueInOrder();
                 activatingOpponentEffects = false;
                 return;
