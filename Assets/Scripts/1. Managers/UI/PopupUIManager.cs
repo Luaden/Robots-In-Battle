@@ -84,10 +84,10 @@ public class PopupUIManager : MonoBehaviour
                 shopCardUIPopupController.UpdateUI(sOItemDataObject);
         }
     }
-    public void HandlePopup(string name, string dialogue)
+    public void HandlePopup(string name, string dialogue, CharacterSelect character)
     {
         ClearAllPopups();
-        aIDialoguePopupController.UpdateUI(name, dialogue);
+        aIDialoguePopupController.UpdateUI(name, dialogue, character);
     }
 
     public void HandlePopup(ConversationObject conversationObject)

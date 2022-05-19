@@ -4,36 +4,51 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
-public class AIDialoguePopupController : BaseUIElement<string, string>
+public class AIDialoguePopupController : BaseUIElement<string, string, CharacterSelect>
 {
+    [Header("Default Player Popup")]
+    [SerializeField] private TMP_Text playerPopupNameText;
+    [SerializeField] private TMP_Text playerPopupDialogueText;
+    [Space]
     [Header("Default Opponent Popup")]
-    [SerializeField] private TMP_Text smallPopupNameText;
-    [SerializeField] private TMP_Text smallPopupDialogueText;
+    [SerializeField] private TMP_Text opponentPopupNameText;
+    [SerializeField] private TMP_Text opponentPopupDialogueText;
     [Space]
     [Header("Global Popup Objects")]
     [SerializeField] private GameObject dialogueButton;
-    [SerializeField] private GameObject popupObject;
+    [SerializeField] private GameObject opponentPopupObject;
+    [SerializeField] private GameObject playerPopupObject;
 
     public delegate void onAIDialogueComplete();
     public static event onAIDialogueComplete OnAIDialogueComplete;
 
+    private CharacterSelect currentSpeaker;
     private string currentDialogue;
     private Queue<char> completeDialogue;
-    private bool completeTextNow;
     private float currentTimer = 0f;
 
-    public override void UpdateUI(string primaryData, string secondaryData)
+    public override void UpdateUI(string primaryData, string secondaryData, CharacterSelect character)
     {
-        if (ClearedIfEmpty(primaryData, secondaryData))
+        if (ClearedIfEmpty(primaryData, secondaryData, character))
             return;
 
-        smallPopupNameText.text = primaryData;
+        currentSpeaker = character;
 
-        foreach(char letter in secondaryData)
+        if (character == CharacterSelect.Opponent)
+        {
+            opponentPopupObject.SetActive(true);
+            opponentPopupNameText.text = primaryData;
+        }
+        else
+        {
+            playerPopupNameText.text = primaryData;
+            playerPopupObject.SetActive(true);
+        }
+
+        foreach (char letter in secondaryData)
             completeDialogue.Enqueue(letter);
 
         dialogueButton.SetActive(true);
-        popupObject.SetActive(true);
     }
 
     public void SkipText()
@@ -41,43 +56,54 @@ public class AIDialoguePopupController : BaseUIElement<string, string>
         if (completeDialogue.Count > 0)
         {
             int letterCount = completeDialogue.Count;
+
             for (int i = 0; i < letterCount; i++)
                 currentDialogue += completeDialogue.Dequeue();
 
-            smallPopupDialogueText.text = currentDialogue;
+            if (currentSpeaker == CharacterSelect.Opponent)
+                opponentPopupDialogueText.text = currentDialogue;
+            else
+                playerPopupDialogueText.text = currentDialogue;
+
             return;
         }
         else
         {
             OnAIDialogueComplete?.Invoke();
-            UpdateUI(null, null);
+            UpdateUI(null, null, CharacterSelect.Opponent);
         }
     }
 
-    protected override bool ClearedIfEmpty(string newData, string secondNewData)
+    protected override bool ClearedIfEmpty(string newData, string secondNewData, CharacterSelect character)
     {
         if (newData == null || secondNewData == null)
         {
-            smallPopupNameText.text = string.Empty;
-            smallPopupDialogueText.text = string.Empty;
+            playerPopupNameText.text = string.Empty;
+            playerPopupDialogueText.text = string.Empty;
+            opponentPopupNameText.text = string.Empty;
+            opponentPopupDialogueText.text = string.Empty;
             currentDialogue = string.Empty;
             completeDialogue = new Queue<char>();
 
             dialogueButton.SetActive(false);
-            popupObject.SetActive(false);
+            opponentPopupObject.SetActive(false);
+            playerPopupObject.SetActive(false);
 
             return true;
         }
 
         if (newData.Length == 0 || secondNewData.Length == 0)
         {
-            smallPopupNameText.text = string.Empty;
-            smallPopupDialogueText.text = string.Empty;
+            playerPopupNameText.text = string.Empty;
+            playerPopupDialogueText.text = string.Empty;
+            opponentPopupNameText.text = string.Empty;
+            opponentPopupDialogueText.text = string.Empty;
             currentDialogue = string.Empty;
             completeDialogue = new Queue<char>();
 
             dialogueButton.SetActive(false);
-            popupObject.SetActive(false);
+            opponentPopupObject.SetActive(false);
+            playerPopupObject.SetActive(false);
 
             return true;
         }
@@ -102,7 +128,11 @@ public class AIDialoguePopupController : BaseUIElement<string, string>
             if(CheckTimer())
             {
                 currentDialogue += completeDialogue.Dequeue();
-                smallPopupDialogueText.text = currentDialogue;
+
+                if (currentSpeaker == CharacterSelect.Opponent)
+                    opponentPopupDialogueText.text = currentDialogue;
+                else
+                    playerPopupDialogueText.text = currentDialogue;
             }
         }
     }

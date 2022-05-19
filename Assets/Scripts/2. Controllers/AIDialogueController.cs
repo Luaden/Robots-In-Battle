@@ -39,14 +39,14 @@ public class AIDialogueController : MonoBehaviour
     {
         OnDialogueStarted?.Invoke();
         CombatManager.instance.PopupUIManager.HandlePopup(CombatManager.instance.OpponentFighter.FighterName, 
-            GetRandomDialogue(aIWinDialogue));
+            GetRandomDialogue(aIWinDialogue), CharacterSelect.Opponent);
     }
 
     public void PlayAILoseDialogue()
     {
         OnDialogueStarted?.Invoke();
         CombatManager.instance.PopupUIManager.HandlePopup(CombatManager.instance.OpponentFighter.FighterName, 
-            GetRandomDialogue(aILoseDialogue));
+            GetRandomDialogue(aILoseDialogue), CharacterSelect.Opponent);
     }
 
     public void CheckPlayDialogue()
@@ -64,7 +64,8 @@ public class AIDialogueController : MonoBehaviour
             roll = Random.Range(0, fightDialogue.Count);
 
             OnDialogueStarted?.Invoke();
-            CombatManager.instance.PopupUIManager.HandlePopup(CombatManager.instance.OpponentFighter.FighterName, fightDialogue[roll]);
+            CombatManager.instance.PopupUIManager.HandlePopup(CombatManager.instance.OpponentFighter.FighterName, 
+                fightDialogue[roll], CharacterSelect.Opponent);
         }
         else
         {
@@ -80,7 +81,8 @@ public class AIDialogueController : MonoBehaviour
             return;
         }
 
-        CombatManager.instance.PopupUIManager.HandlePopup(CombatManager.instance.OpponentFighter.FighterName, fightDialogue[dialogueIndex]);
+        CombatManager.instance.PopupUIManager.HandlePopup(CombatManager.instance.OpponentFighter.FighterName, 
+            fightDialogue[dialogueIndex], CharacterSelect.Opponent);
         dialogueIndex++;
         OnDialogueStarted?.Invoke();
     }
