@@ -17,4 +17,12 @@ public class SceneController : MonoBehaviour
     {
         SceneManager.LoadScene(2);
     }
+
+    public bool CheckIsTutorialScene()
+    {
+        if (SceneManager.GetActiveScene().name == "Dont Touch (BattleScene Tutorial)")
+            return true;
+        else
+            return false;
+    }
 }

@@ -12,11 +12,11 @@ public class AIManager : MonoBehaviour
     private int baseDamageWeight;
     private int cDMWeight;
     private int componentHealthWeight;
-    private int benefitWeight;
-    private int mitigationWeight;
-    private int applicationWeight;
-    private int defensivePredictionAccuracy;
-    private int offensivePredictionAccuracy;
+    //private int benefitWeight;
+    //private int mitigationWeight;
+    //private int applicationWeight;
+    //private int defensivePredictionAccuracy;
+    //private int offensivePredictionAccuracy;
     //Need some way to weigh energy consumption as well
 
     private AIDialogueController aIDialogueController;
@@ -75,12 +75,18 @@ public class AIManager : MonoBehaviour
         aIDialogueController.PlayAILoseDialogue();
     }
 
+    public void PlayFightDialogueInOrder()
+    {
+        aIDialogueController.PlayDialogueInOrder();
+    }
+
     private void Start()
     {
         aIDialogueController = GetComponent<AIDialogueController>();
         CombatManager.OnStartNewTurn += BuildCardChannelPairA;
         ChannelsUISlotManager.OnSlotFilled += BuildCardChannelPairB;
         CardPlayManager.OnBeginCardPlay += FinalCheck;
+        PilotEffectManager.OnTurnComplete += OnTurnComplete;
     }
 
     private void OnDestroy()
@@ -88,9 +94,10 @@ public class AIManager : MonoBehaviour
         CombatManager.OnStartNewTurn -= BuildCardChannelPairA;
         ChannelsUISlotManager.OnSlotFilled -= BuildCardChannelPairB;
         CardPlayManager.OnBeginCardPlay -= FinalCheck;
+        PilotEffectManager.OnTurnComplete -= OnTurnComplete;
     }
 
-    private void OnCombatComplete()
+    private void OnTurnComplete()
     {
         aIDialogueController.CheckPlayDialogue();
     }

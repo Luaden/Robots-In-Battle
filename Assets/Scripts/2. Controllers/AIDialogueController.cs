@@ -11,6 +11,7 @@ public class AIDialogueController : MonoBehaviour
     private List<string> aIWinDialogue = new List<string>();
     private List<string> aILoseDialogue = new List<string>();
     private List<string> fightDialogue = new List<string>();
+    private int dialogueIndex = 0;
 
     public delegate void onDialogueStarted();
     public static event onDialogueStarted OnDialogueStarted;
@@ -50,7 +51,7 @@ public class AIDialogueController : MonoBehaviour
 
     public void CheckPlayDialogue()
     {
-        if(CombatManager.instance.GameOver)
+        if(CombatManager.instance.GameOver || GameManager.instance.SceneController.CheckIsTutorialScene())
         {
             OnDialogueComplete?.Invoke();
             return;
@@ -71,18 +72,31 @@ public class AIDialogueController : MonoBehaviour
         }
     }
 
+    public void PlayDialogueInOrder()
+    {
+        if(dialogueIndex == fightDialogue.Count - 1)
+        {
+            OnDialogueComplete?.Invoke();
+            return;
+        }
+
+        CombatManager.instance.PopupUIManager.HandlePopup(CombatManager.instance.OpponentFighter.FighterName, fightDialogue[dialogueIndex]);
+        dialogueIndex++;
+        OnDialogueStarted?.Invoke();
+    }
+
     private void Start()
     {
         PilotEffectManager.OnTurnComplete += CheckPlayDialogue;
         AIDialoguePopupController.OnAIDialogueComplete += OnAIDialoguePopupComplete;
-        AIConversationPopupController.OnAIDialogueComplete += OnAIDialoguePopupComplete;
+        AIConversationPopupController.OnAIConversationComplete += OnAIDialoguePopupComplete;
     }
 
     private void OnDestroy()
     {
         PilotEffectManager.OnTurnComplete -= CheckPlayDialogue;
         AIDialoguePopupController.OnAIDialogueComplete -= OnAIDialoguePopupComplete;
-        AIConversationPopupController.OnAIDialogueComplete -= OnAIDialoguePopupComplete;
+        AIConversationPopupController.OnAIConversationComplete -= OnAIDialoguePopupComplete;
     }
 
     public void LoadCombatDialogue(SOAIDialogueObject opponentDialogue)

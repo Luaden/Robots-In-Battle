@@ -45,8 +45,11 @@ public class CombatSequenceManager : MonoBehaviour
 
     private void RunCombatSequence()
     {
+        Debug.Log("Animations Complete: " + CombatManager.instance.CombatAnimationManager.AnimationsComplete);
         if (combatComplete || !CombatManager.instance.CombatAnimationManager.AnimationsComplete)
             return;
+
+        Debug.Log("Running combat sequence.");
 
         if (CheckCurrentCombatSequenceComplete())
         {
@@ -74,6 +77,7 @@ public class CombatSequenceManager : MonoBehaviour
     {
         if (!combatComplete && combatSequenceCollection.Count == 0)
         {
+            Debug.Log("Combat complete.");
             combatComplete = true;
             startedCombatSequences = false;
             currentCombatSequence = null;
