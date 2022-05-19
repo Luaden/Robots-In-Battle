@@ -25,7 +25,5 @@ public class FighterPilotUIObject
         this.fighterMouth = fighterMouth;
         this.fighterClothes = fighterClothes;
         this.fighterBody = fighterBody;
-
-        Debug.Log(this.fighterEyes);
     }
 }

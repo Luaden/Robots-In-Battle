@@ -12,6 +12,9 @@ public class ShopCameraBoomMoveController : MonoBehaviour
     public delegate void onShopPositionReached();
     public static event onShopPositionReached OnShopPositionReached;
 
+    public delegate void onBarPositionReached();
+    public static event onBarPositionReached OnBarPositionReached;
+
     private void Start()
     {
         ShopFadeController.OnReadyToMoveFromShop += MoveToInventoryPosition;
@@ -34,6 +37,11 @@ public class ShopCameraBoomMoveController : MonoBehaviour
         boomAnimator.SetTrigger("checkingInventory");
     }
 
+    public void MoveToBarPosition()
+    {
+        boomAnimator.SetTrigger("checkingBar");
+    }
+
     private void ReachedInventory()
     {
         boomAnimator.ResetTrigger("checkingInventory");
@@ -44,5 +52,11 @@ public class ShopCameraBoomMoveController : MonoBehaviour
     {
         boomAnimator.ResetTrigger("checkingShop");
         OnShopPositionReached?.Invoke();
+    }
+
+    private void ReachedBar()
+    {
+        boomAnimator.ResetTrigger("checkingBar");
+        OnBarPositionReached?.Invoke();
     }
 }

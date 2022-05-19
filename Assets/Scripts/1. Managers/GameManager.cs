@@ -11,6 +11,8 @@ public class GameManager : MonoBehaviour
     [Space]
     [Header("Character Settings")]
     [SerializeField] private SOCompleteCharacter starterPilot;
+    [Header("Bosses")]
+    [SerializeField] private List<SOCompleteCharacter> bossCharacters;
 
 
     private int currencyGainModifier = 0;
@@ -55,14 +57,29 @@ public class GameManager : MonoBehaviour
     {
         LoadPlayer();
 
+        List<FighterDataObject> bossFighters = new List<FighterDataObject>();
         List<FighterDataObject> newFighters = new List<FighterDataObject>();
 
+        foreach(SOCompleteCharacter boss in bossCharacters)
+        {
+            FighterDataObject newBoss = new FighterDataObject(boss);
+            newBoss.FighterUIObject = new FighterPilotUIObject(boss.FighterPilotUIObject.FighterHair,
+                                                               boss.FighterPilotUIObject.FighterEyes,
+                                                               boss.FighterPilotUIObject.FighterNose,
+                                                               boss.FighterPilotUIObject.FighterMouth,
+                                                               boss.FighterPilotUIObject.FighterClothes,
+                                                               boss.FighterPilotUIObject.FighterBody);
+            bossFighters.Add(newBoss);
+            Debug.Log("Creating new boss: " + boss.PilotName);
+        }
+        
         for(int i = 0; i < 7; i++)
         {
             FighterDataObject opponentFighter = fighterBuildController.GetRandomFighter();
             newFighters.Add(opponentFighter);
         }
 
+        playerData.BossFighters = bossFighters;
         playerData.OtherFighters = newFighters;
     }
 
@@ -100,13 +117,6 @@ public class GameManager : MonoBehaviour
             if (starterPilot != null)
             {
                 Debug.Log("Creating new pilot.");
-
-                if (starterPilot.FighterPilotUIObject.FighterEyes == null)
-                    Debug.Log("Oops, no eyes.");
-
-                if (starterPilot.FighterPilotUIObject.FighterBody == null)
-                    Debug.Log("Oops, no body.");
-
                 playerData = new PlayerDataObject(starterPilot);
                 return;
             }

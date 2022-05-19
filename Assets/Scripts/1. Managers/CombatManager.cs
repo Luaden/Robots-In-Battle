@@ -314,7 +314,11 @@ public class CombatManager : MonoBehaviour
             Debug.Log("No Opponent.");
 
         InitPlayerFighter(GameManager.instance.Player.PlayerFighterData);
-        InitOpponentFighter(GameManager.instance.Player.OtherFighters[0]);
+
+        if (GameManager.instance.PlayerWins == 0)
+            InitOpponentFighter(GameManager.instance.Player.BossFighters[0]);
+        else
+            InitOpponentFighter(GameManager.instance.Player.OtherFighters[0]);
 
         pilotEffectManager.InitPilotEffectManager();
         StartNewTurn();
