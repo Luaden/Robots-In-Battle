@@ -58,6 +58,7 @@ public class CombatManager : MonoBehaviour
     private bool canPlayCards = true;
     private bool hasStartedGame = false;
     private bool hasNotCompletedIntroDialogue = true;
+    private bool hasStartedCombat = false;
     private bool gameOver = false;
     private bool hasWon = false;
     private bool hasLost = false;
@@ -314,7 +315,7 @@ public class CombatManager : MonoBehaviour
         CombatSequenceManager.OnRoundComplete += CheckForWinLoss;
         CombatSequenceManager.OnCombatComplete += CheckForWinLoss;
 
-        AIDialogueController.OnDialogueComplete += StartNewTurn;
+        AIDialogueController.OnDialogueComplete += StartNewTurnCheck;
         AIDialogueController.OnDialogueComplete += EnableCanPlayCards;
 
         if (GameManager.instance.Player.PlayerFighterData == null)
@@ -345,13 +346,14 @@ public class CombatManager : MonoBehaviour
         CombatSequenceManager.OnRoundComplete -= CheckForWinLoss;
         CombatSequenceManager.OnCombatComplete -= CheckForWinLoss;
 
-        AIDialogueController.OnDialogueComplete -= StartNewTurn;
+        AIDialogueController.OnDialogueComplete -= StartNewTurnCheck;
         AIDialogueController.OnDialogueComplete -= EnableCanPlayCards;
     }
 
     private void DisableCanPlayCards()
     {
         canPlayCards = false;
+        hasStartedCombat = true;
     }
 
     private void EnableCanPlayCards()
@@ -393,16 +395,24 @@ public class CombatManager : MonoBehaviour
         combatAnimationManager.SetMechStartingAnimations(opponentFighter.FighterMech, CharacterSelect.Opponent);
         mechSpriteSwapManager.UpdateMechSprites(newOpponentFighter.FighterMech, CharacterSelect.Opponent);
     }
+    
+    private void StartNewTurnCheck()
+    {
+        if(hasStartedCombat)
+        {
+            StartNewTurn();
+            hasStartedCombat = false;
+        }
+    }
 
     private void StartNewTurn()
     {
         if (hasStartedGame && !hasWon && !hasLost)
         {
-            if(GameManager.instance.PlayerWins == 0 && hasNotCompletedIntroDialogue)
+            if (GameManager.instance.PlayerWins == 0 && hasNotCompletedIntroDialogue)
             {
                 pilotEffectManager.ManuallyCallPilotEffects();
                 hasNotCompletedIntroDialogue = false;
-                return;
             }
 
             deckManager.DrawPlayerCard(5 - HandManager.PlayerHand.CharacterHand.Count);
@@ -417,6 +427,7 @@ public class CombatManager : MonoBehaviour
         {
             AIManager.PlayAIIntroDialogue();
             hasStartedGame = true;
+            hasStartedCombat = true;
         }
 
         if(hasWon)
