@@ -176,7 +176,7 @@ public class ShopItemUIController : MonoBehaviour, IPointerDownHandler, IPointer
         }
         else
         {
-            componentImage.sprite = itemImage;
+            //componentImage.sprite = itemImage;
             componentName.text = itemName;
             componentSpriteID = shopItemUIObject.PrimaryComponentSpriteID;
             connectionComponentSpriteID = shopItemUIObject.SecondaryComponentSpriteID;
