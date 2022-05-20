@@ -84,12 +84,12 @@ public class GameManager : MonoBehaviour
     }
 
 
-    public void LoadTitle()
+    public void LoadTitleScene()
     {
         sceneController.LoadTitleScene();
     }
 
-    public void LoadShoppingScene()
+    public void LoadWorkshopScene()
     {
         sceneController.LoadWorkshopScene();
         playerBankController.AddPlayerCurrency(PlayerCurrencyGainOnWin);
@@ -100,7 +100,6 @@ public class GameManager : MonoBehaviour
     {
         PlayerMechController.SetNewPlayerMech(newMech);
         playerData.CurrentWinCount += 1;
-        Debug.Log("Player win count:" + playerData.CurrentWinCount);
     }
 
     public void LoadPlayer(PlayerDataObject playerDataObject = null)
@@ -339,12 +338,6 @@ public class GameManager : MonoBehaviour
             instance.playerData.TimeLeftToSpend = instance.timeBetweenFights;
             OnUpdatePlayerCurrencies?.Invoke();
         }
-    }
-
-    private void CreateFighters()
-    {
-        //Create all fighters
-        //Store all fighters in playerdata
     }
 }
 

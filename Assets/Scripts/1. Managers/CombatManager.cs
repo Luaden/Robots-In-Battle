@@ -279,12 +279,12 @@ public class CombatManager : MonoBehaviour
 
     public void LoadWorkshop()
     {
-        GameManager.instance.SceneController.LoadWorkshopScene();
+        GameManager.instance.LoadWorkshopScene();
     }
 
     public void LoadTitleScene()
     {
-        GameManager.instance.SceneController.LoadTitleScene();
+        GameManager.instance.LoadTitleScene();
     }
 
     private void Awake()
