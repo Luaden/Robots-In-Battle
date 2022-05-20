@@ -47,8 +47,6 @@ public class GeneralHUDPopupCallController : MonoBehaviour, IPointerEnterHandler
 
     private void IgnorePopups(Channels channel)
     {
-        Debug.Log(channel);
-
         if (channel == Channels.None)
             canPopup = true;
         else

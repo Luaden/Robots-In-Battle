@@ -110,6 +110,7 @@ public class CombatSequenceManager : MonoBehaviour
                     CombatManager.instance.CombatEffectManager.EnableCombatEffects(currentCombatSequence.damageQueue.Peek().CardCharacterPairB);
             }
 
+            CombatManager.instance.PopupUIManager.HandlePopup(currentCombatSequence.damageQueue.Peek());
             CombatManager.instance.CombatAnimationManager.SetMechAnimation(currentCombatSequence.animationQueue.Dequeue());
             CombatManager.instance.CombatAnimationManager.PrepCardsToBurn(currentCombatSequence.cardBurnObject);
             animationsComplete = false;
@@ -126,10 +127,7 @@ public class CombatSequenceManager : MonoBehaviour
     {
         if (currentCombatSequence.damageQueue.Count > 0)
         {
-            DamageMechPairObject currentDamage = currentCombatSequence.damageQueue.Dequeue();
-
-            CombatManager.instance.PopupUIManager.HandlePopup(currentDamage);
-            
+            DamageMechPairObject currentDamage = currentCombatSequence.damageQueue.Dequeue();            
             CombatManager.instance.RemoveHealthFromMech(currentDamage);
             if (!currentDamage.CardCharacterPairA.cardChannelPair.CardData.ApplyEffectsFirst && !currentDamage.DenyOffensiveEffects)
                 CombatManager.instance.CombatEffectManager.EnableCombatEffects(currentDamage.CardCharacterPairA);

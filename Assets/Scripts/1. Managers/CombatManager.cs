@@ -276,6 +276,16 @@ public class CombatManager : MonoBehaviour
         return channelList;
     }
 
+    public void LoadWorkshop()
+    {
+        GameManager.instance.SceneController.LoadWorkshopScene();
+    }
+
+    public void LoadTitleScene()
+    {
+        GameManager.instance.SceneController.LoadTitleScene();
+    }
+
     private void Awake()
     {
         instance = this;
@@ -317,8 +327,10 @@ public class CombatManager : MonoBehaviour
 
         if (GameManager.instance.PlayerWins == 0)
             InitOpponentFighter(GameManager.instance.Player.BossFighters[0]);
+        else if (GameManager.instance.PlayerWins == 3)
+            InitOpponentFighter(GameManager.instance.Player.BossFighters[1]);
         else
-            InitOpponentFighter(GameManager.instance.Player.OtherFighters[0]);
+            InitOpponentFighter(GameManager.instance.Player.OtherFighters[GameManager.instance.PlayerWins]);
 
         pilotEffectManager.InitPilotEffectManager();
         StartNewTurn();

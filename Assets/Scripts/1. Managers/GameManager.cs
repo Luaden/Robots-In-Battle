@@ -91,7 +91,7 @@ public class GameManager : MonoBehaviour
 
     public void LoadShoppingScene()
     {
-        sceneController.LoadDowntimeScene();
+        sceneController.LoadWorkshopScene();
         playerBankController.AddPlayerCurrency(PlayerCurrencyGainOnWin);
         playerBankController.ResetPlayerTime();
     }

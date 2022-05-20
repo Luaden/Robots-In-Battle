@@ -9,7 +9,7 @@ public class SceneController : MonoBehaviour
     {
         SceneManager.LoadScene(0);
     }
-    public void LoadDowntimeScene()
+    public void LoadWorkshopScene()
     {
         SceneManager.LoadScene(1);
     }
