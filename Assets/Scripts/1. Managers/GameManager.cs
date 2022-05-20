@@ -25,7 +25,6 @@ public class GameManager : MonoBehaviour
     private DowntimeDeckController playerDeckController;
     private DowntimeBankController playerBankController;
     private PlayerDataObject playerData;
-    private SceneController sceneController;
 
     public static GameManager instance;
 
@@ -34,7 +33,6 @@ public class GameManager : MonoBehaviour
     public DowntimeMechBuilderController PlayerMechController { get => playerMechController; }
     public DowntimeDeckController PlayerDeckController { get => playerDeckController; }
     public DowntimeBankController PlayerBankController { get => playerBankController; }
-    public SceneController SceneController { get => sceneController; }
 
     public int EnemyHealthModifier { get => enemyHealthModifier; set => enemyHealthModifier = value; }
     public int PlayerWins { get => playerData.CurrentWinCount; }
@@ -86,12 +84,19 @@ public class GameManager : MonoBehaviour
 
     public void LoadTitleScene()
     {
-        sceneController.LoadTitleScene();
+        SceneController.instance.LoadTitleScene();
+        instance = null;
+        Destroy(gameObject);
+    }
+
+    public void LoadCombatScene()
+    {
+        SceneController.instance.LoadCombatScene();
     }
 
     public void LoadWorkshopScene()
     {
-        sceneController.LoadWorkshopScene();
+        SceneController.instance.LoadWorkshopScene();
         playerBankController.AddPlayerCurrency(PlayerCurrencyGainOnWin);
         playerBankController.ResetPlayerTime();
     }
@@ -142,9 +147,6 @@ public class GameManager : MonoBehaviour
         playerDeckController = new DowntimeDeckController();
         playerBankController = new DowntimeBankController();
         activeEvents = new List<SOEventObject>();
-
-        sceneController = GetComponent<SceneController>();
-
         CreatePlayerAndFighters();
     }
 

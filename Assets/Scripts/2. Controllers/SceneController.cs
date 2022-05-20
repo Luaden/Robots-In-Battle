@@ -5,6 +5,8 @@ using UnityEngine.SceneManagement;
 
 public class SceneController : MonoBehaviour
 {
+    public static SceneController instance;
+
     public void LoadTitleScene()
     {
         SceneManager.LoadScene(0);
@@ -16,5 +18,16 @@ public class SceneController : MonoBehaviour
     public void LoadCombatScene()
     {
         SceneManager.LoadScene(2);
+    }
+
+    private void Start()
+    {
+        if (instance != null && instance != this)
+            Destroy(this);
+        else
+        {
+            instance = this;
+            DontDestroyOnLoad(this);
+        }
     }
 }
