@@ -261,7 +261,7 @@ public class ShopItemUIController : MonoBehaviour, IPointerDownHandler, IPointer
             transform.SetParent(itemShopUISlotController.SlotManager.MainCanvas.transform);
         }
 
-        if (DowntimeManager.instance.ShopManager.CurrentItemSelected == null)
+        if (DowntimeManager.instance.ShopManager.CurrentItemSelected == null || DowntimeManager.instance.ShopManager.CurrentItemSelected == this)
         {
             Color selectedColor = selectedImageObject.color;
             selectedColor.a = 0.4f;
@@ -285,7 +285,9 @@ public class ShopItemUIController : MonoBehaviour, IPointerDownHandler, IPointer
             selectedImageObject.color = selectedColor;
 
             DowntimeManager.instance.ShopManager.CurrentItemSelected = this;
+            return;
         }
+
 
     }
 
@@ -333,5 +335,15 @@ public class ShopItemUIController : MonoBehaviour, IPointerDownHandler, IPointer
             previousParentObject = newSlot.transform;
             transform.SetParent(newSlot.transform);
         }
+    }
+
+    private void OnDisable()
+    {
+        Color transparentColor = selectedImageObject.color;
+        transparentColor.a = 0.0f;
+
+        ShopItemUIController item = DowntimeManager.instance.ShopManager.CurrentItemSelected;
+        if (item == this)
+            item.selectedImageObject.color = transparentColor;
     }
 }
