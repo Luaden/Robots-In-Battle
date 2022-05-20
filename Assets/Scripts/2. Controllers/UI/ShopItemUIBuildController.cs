@@ -10,7 +10,7 @@ public class ShopItemUIBuildController : MonoBehaviour
         MechComponentDataObject oldMechComponentData = null)
     {
         GameObject shopItemUIGameObject;
-        shopItemUIGameObject = Instantiate(itemPrefab);
+        shopItemUIGameObject = Instantiate(itemPrefab, this.transform);
 
         ShopItemUIController shopItemUIController = shopItemUIGameObject.GetComponent<ShopItemUIController>();
         shopItemUIController.InitUI(shopItem, oldMechComponentData);

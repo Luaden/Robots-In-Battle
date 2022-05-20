@@ -100,6 +100,7 @@ public class GameManager : MonoBehaviour
     {
         PlayerMechController.SetNewPlayerMech(newMech);
         playerData.CurrentWinCount += 1;
+        Debug.Log("Player win count:" + playerData.CurrentWinCount);
     }
 
     public void LoadPlayer(PlayerDataObject playerDataObject = null)
