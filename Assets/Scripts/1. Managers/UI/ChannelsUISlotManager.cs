@@ -274,7 +274,7 @@ public class ChannelsUISlotManager : BaseSlotManager<CardUIController>
         if (!CardChannelCheck(newData, selectedChannel))
         {
             CombatManager.instance.PopupUIManager.HandlePopup(CombatManager.instance.PlayerFighter.FighterName, 
-                newData.CardData.CardName + " doesn't fit into that slot.", CharacterSelect.Player);
+                newData.CardData.CardName + " doesn't fit into that channel.", CharacterSelect.Player);
             return false;
         }
 
