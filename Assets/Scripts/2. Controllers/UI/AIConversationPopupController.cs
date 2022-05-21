@@ -32,18 +32,21 @@ public class AIConversationPopupController : BaseUIElement<ConversationObject>
     [SerializeField] private GameObject bigPopupObject;
 
     private CharacterSelect characterSpeaking;
+    private AudioClip playerDialogueSound;
+    private AudioClip opponentDialogueSound;
+    private AudioClip currentDialogueSound;
+    private GameObject currentDialoguePopupObject;
+    private TMP_Text currentDialogueText;
+
+    Queue<string> dialogueChain = new Queue<string>();
+    private Queue<char> completeDialogue;
+    private string currentDialogue;
+    private float currentTimer = 0f;
+
+    private bool playingDialogueSound = false;
 
     public delegate void onAIConversationComplete();
     public static event onAIConversationComplete OnAIConversationComplete;
-
-    Queue<string> dialogueChain = new Queue<string>();
-
-    private GameObject currentDialoguePopupObject;
-    private TMP_Text currentDialogueText; 
-
-    private string currentDialogue;
-    private Queue<char> completeDialogue;
-    private float currentTimer = 0f;
 
     public override void UpdateUI(ConversationObject primaryData)
     {
@@ -55,6 +58,9 @@ public class AIConversationPopupController : BaseUIElement<ConversationObject>
             AssignPlayerSprites(primaryData.firstCharacter);
             AssignOpponentSprites(primaryData.secondCharacter);
 
+            playerDialogueSound = primaryData.firstCharacter.FighterDialogueSound;
+            opponentDialogueSound = primaryData.secondCharacter.FighterDialogueSound;
+
             playerNameText.text = primaryData.firstCharacter.FighterName;
             opponentNameText.text = primaryData.secondCharacter.FighterName;
 
@@ -64,6 +70,7 @@ public class AIConversationPopupController : BaseUIElement<ConversationObject>
 
                 currentDialogueText = playerDialogueText;
                 currentDialoguePopupObject = playerDialoguePopupObject;
+                currentDialogueSound = playerDialogueSound;
 
                 for(int i = 0; i < primaryData.firstCharacterDialogue.Count; i++)
                 {
@@ -77,6 +84,7 @@ public class AIConversationPopupController : BaseUIElement<ConversationObject>
 
                 currentDialogueText = opponentDialogueText;
                 currentDialoguePopupObject = opponentDialoguePopupObject;
+                currentDialogueSound = opponentDialogueSound;
 
                 for(int i = 0; i < primaryData.firstCharacterDialogue.Count; i++)
                 {
@@ -90,6 +98,9 @@ public class AIConversationPopupController : BaseUIElement<ConversationObject>
             AssignPlayerSprites(primaryData.secondCharacter);
             AssignOpponentSprites(primaryData.firstCharacter);
 
+            opponentDialogueSound = primaryData.firstCharacter.FighterDialogueSound;
+            playerDialogueSound = primaryData.secondCharacter.FighterDialogueSound;
+
             opponentNameText.text = primaryData.firstCharacter.FighterName;
             playerNameText.text = primaryData.secondCharacter.FighterName;
 
@@ -99,6 +110,7 @@ public class AIConversationPopupController : BaseUIElement<ConversationObject>
 
                 currentDialogueText = opponentDialogueText;
                 currentDialoguePopupObject = opponentDialoguePopupObject;
+                currentDialogueSound = opponentDialogueSound;
 
                 for (int i = 0; i < primaryData.firstCharacterDialogue.Count; i++)
                 {
@@ -112,6 +124,7 @@ public class AIConversationPopupController : BaseUIElement<ConversationObject>
 
                 currentDialogueText = playerDialogueText;
                 currentDialoguePopupObject = playerDialoguePopupObject;
+                currentDialogueSound = playerDialogueSound;
 
                 for (int i = 0; i < primaryData.firstCharacterDialogue.Count; i++)
                 {
@@ -138,7 +151,8 @@ public class AIConversationPopupController : BaseUIElement<ConversationObject>
                 currentDialogue += completeDialogue.Dequeue();
 
             currentDialogueText.text = currentDialogue;
-
+            AudioController.instance.StopDialogue();
+            playingDialogueSound = false;
             return;
         }
 
@@ -151,6 +165,7 @@ public class AIConversationPopupController : BaseUIElement<ConversationObject>
 
                 currentDialoguePopupObject = opponentDialoguePopupObject;
                 currentDialogueText = opponentDialogueText;
+                currentDialogueSound = opponentDialogueSound;
 
                 string newDialogue = dialogueChain.Dequeue();
                 completeDialogue.Clear();
@@ -161,6 +176,8 @@ public class AIConversationPopupController : BaseUIElement<ConversationObject>
 
                 currentDialoguePopupObject.SetActive(true);
                 characterSpeaking = CharacterSelect.Opponent;
+                AudioController.instance.StopDialogue();
+                playingDialogueSound = false;
                 return;
             }
             else
@@ -170,6 +187,7 @@ public class AIConversationPopupController : BaseUIElement<ConversationObject>
 
                 currentDialoguePopupObject = playerDialoguePopupObject;
                 currentDialogueText = playerDialogueText;
+                currentDialogueSound = playerDialogueSound;
 
                 string newDialogue = dialogueChain.Dequeue();
                 completeDialogue.Clear();
@@ -180,6 +198,8 @@ public class AIConversationPopupController : BaseUIElement<ConversationObject>
 
                 currentDialoguePopupObject.SetActive(true);
                 characterSpeaking = CharacterSelect.Player;
+                AudioController.instance.StopDialogue();
+                playingDialogueSound = false;
                 return;
             }
         }
@@ -202,6 +222,9 @@ public class AIConversationPopupController : BaseUIElement<ConversationObject>
             currentDialoguePopupObject = null;
             currentDialogue = string.Empty;
             completeDialogue = new Queue<char>();
+            currentDialogue = null;
+            playingDialogueSound = false;
+
 
             playerDialoguePopupObject.SetActive(false);
             opponentDialoguePopupObject.SetActive(false);
@@ -234,7 +257,19 @@ public class AIConversationPopupController : BaseUIElement<ConversationObject>
             {
                 currentDialogue += completeDialogue.Dequeue();
                 currentDialogueText.text = currentDialogue;
+
+                if(!playingDialogueSound)
+                {
+                    AudioController.instance.PlayDialogue(currentDialogueSound);
+                    playingDialogueSound = true;
+                }
             }
+        }
+        else if (currentDialogueSound != null)
+        {
+            AudioController.instance.StopDialogue();
+            currentDialogueSound = null;
+            playingDialogueSound = false;
         }
     }
 

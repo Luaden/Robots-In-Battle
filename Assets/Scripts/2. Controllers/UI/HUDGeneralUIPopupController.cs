@@ -5,6 +5,8 @@ using TMPro;
 
 public class HUDGeneralUIPopupController : BaseUIElement<HUDGeneralElement>
 {
+    [SerializeField] private Canvas mainCanvas;
+    [SerializeField] private RectTransform thisRect;
     [SerializeField] private GameObject popupObject;
     [SerializeField] private TMP_Text nameText;
     [SerializeField] private TMP_Text descriptionText;
@@ -103,8 +105,27 @@ public class HUDGeneralUIPopupController : BaseUIElement<HUDGeneralElement>
         currentTimer += Time.deltaTime;
         if (currentTimer >= CombatManager.instance.PopupUIManager.GeneralHUDPopupDelay)
         {
-            popupQueued = false;
+            //Vector2 mousePos;
+            //RectTransformUtility.ScreenPointToLocalPointInRectangle(mainCanvas.transform as RectTransform, Input.mousePosition, mainCanvas.worldCamera, out mousePos);
+
+
+            //Vector3 adjustedPosition = mainCanvas.transform.TransformPoint(mousePos);
+            Vector3 mousePosition = Input.mousePosition / mainCanvas.scaleFactor;
+
+            if(mousePosition.x + popupObject.GetComponent<RectTransform>().rect.width > mainCanvas.GetComponent<RectTransform>().rect.width)
+            {
+                mousePosition.x = mainCanvas.GetComponent<RectTransform>().rect.width - popupObject.GetComponent<RectTransform>().rect.width;
+            }
+
+            if (mousePosition.y + popupObject.GetComponent<RectTransform>().rect.height > mainCanvas.GetComponent<RectTransform>().rect.height)
+            {
+                mousePosition.y = mainCanvas.GetComponent<RectTransform>().rect.height - popupObject.GetComponent<RectTransform>().rect.height;
+            }
+
+            thisRect.anchoredPosition = mousePosition;
+
             popupObject.SetActive(true);
+            popupQueued = false;
         }
     }
 }
