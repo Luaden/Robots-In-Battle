@@ -194,8 +194,6 @@ public class HUDMechComponentPopupController : BaseUIElement<MechSelect>
 
     private void SetComponentPopups(MechSelect mech, Channels channel, bool activeStatus)
     {
-        Debug.Log("Setting " + mech + " popup in channel " + channel + " to: " + activeStatus);
-
         if(mech == MechSelect.Opponent)
         {
             switch (channel)

@@ -7,6 +7,7 @@ public class SOCompleteCharacter : ScriptableObject
 {
     [SerializeField] private string pilotName;
     [SerializeField] private PilotType pilotType;
+    [SerializeField] private AudioClip dialogueSound;
     [SerializeField] private FighterPilotUIObject fighterPilotUIObject;
     [SerializeField] private PassiveEffects pilotPassiveEffects;
     [SerializeField] private ActiveEffects pilotActiveEffects;
@@ -18,6 +19,7 @@ public class SOCompleteCharacter : ScriptableObject
 
     public string PilotName { get => pilotName; }
     public PilotType PilotType { get => pilotType; }
+    public AudioClip DialogueSound { get => dialogueSound; }
     public FighterPilotUIObject FighterPilotUIObject { get => fighterPilotUIObject; }
     public PassiveEffects PilotPassiveEffects { get => pilotPassiveEffects; }
     public ActiveEffects PilotActiveEffcts { get => pilotActiveEffects; }

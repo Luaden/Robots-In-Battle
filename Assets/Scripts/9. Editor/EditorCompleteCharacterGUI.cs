@@ -14,6 +14,7 @@ public class EditorCompleteCharacterGUI : Editor
         {
             case (int)PilotType.Unique:
                 EditorGUILayout.PropertyField(serializedObject.FindProperty("fighterPilotUIObject"));
+                EditorGUILayout.PropertyField(serializedObject.FindProperty("dialogueSound"));
                 DisplayBasePilotAttributes();
                 break;
 

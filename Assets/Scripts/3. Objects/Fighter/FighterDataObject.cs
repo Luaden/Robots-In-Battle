@@ -6,6 +6,7 @@ public class FighterDataObject
 {
     private string fighterName;
     private MechObject fighterMech;
+    private AudioClip fighterDialogueSound;
     private List<SOItemDataObject> fighterDeck;
     private PassiveEffects fighterPassiveEffects;
     private ActiveEffects fighterActiveEffects;
@@ -20,20 +21,11 @@ public class FighterDataObject
     public PassiveEffects FighterPassiveEffects { get => fighterPassiveEffects; }
     public ActiveEffects FighterActiveEffects { get => fighterActiveEffects; }
     public MechObject FighterMech { get => fighterMech; set => fighterMech = value; }
+    public AudioClip FighterDialogueSound { get => fighterDialogueSound; set => fighterDialogueSound = value; }
     public List<SOItemDataObject> FighterDeck { get => fighterDeck; set => fighterDeck = value; }
     public SOAIDialogueObject AIDialogueModule { get => completeCharacterBase.DialogueModule; }
     public SOAIBehaviorObject AIBehaviorModule { get => completeCharacterBase.BehaviorModule; }
     public int FighterNodeIndex { get => nodeIndex; set => nodeIndex = value; }
-
-    public FighterDataObject(PlayerDataObject player)
-    {
-        fighterName = player.CompletePilot.PilotName;
-        FighterUIObject = player.PilotCharacter;
-        fighterPassiveEffects = player.PilotPassiveEffects;
-        fighterActiveEffects = player.PilotActiveEffects;
-
-        completeCharacterBase = player.CompletePilot; 
-    }
 
     public FighterDataObject(SOCompleteCharacter opponent)
     {
@@ -42,6 +34,7 @@ public class FighterDataObject
         fighterDeck = opponent.DeckList;
         fighterPassiveEffects = opponent.PilotPassiveEffects;
         fighterActiveEffects = opponent.PilotActiveEffcts;
+        fighterDialogueSound = opponent.DialogueSound;
         completeCharacterBase = opponent;
     }
 }
