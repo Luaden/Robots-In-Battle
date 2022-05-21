@@ -45,7 +45,7 @@ public class CardUISlotController : BaseSlotController<CardUIController>
             CardUIController.OnPickUp -= CheckPickUpFlash;
     }
 
-    private void CheckPickUpFlash(Channels possibleChannels)
+    private void CheckPickUpFlash(Channels possibleChannels, MechSelect destinationMech, Channels originChannel)
     {
         if (possibleChannels == Channels.None)
             flashChannel = false;

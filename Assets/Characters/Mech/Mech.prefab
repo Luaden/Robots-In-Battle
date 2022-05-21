@@ -1995,6 +1995,9 @@ GameObject:
   - component: {fileID: 5945969477208481797}
   - component: {fileID: 6525549870437437524}
   - component: {fileID: 1910273652876500224}
+  - component: {fileID: 4474804437662793844}
+  - component: {fileID: 7999266055347083815}
+  - component: {fileID: 541891343862505961}
   m_Layer: 0
   m_Name: Mech
   m_TagString: Untagged
@@ -2129,6 +2132,48 @@ MonoBehaviour:
   rightLegPrimarySpriteResolver: {fileID: 8193390562858880916}
   rightLegSecondarySpriteResolver: {fileID: 3530743011112211253}
   rightLegTertiarySpriteResolver: {fileID: 7959389150423204292}
+--- !u!114 &4474804437662793844
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6629087618380523962}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6ebd95192940f7b40af36aa286ffe759, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  animator: {fileID: 6525549870437437524}
+  mechController: 0
+--- !u!114 &7999266055347083815
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6629087618380523962}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6ebd95192940f7b40af36aa286ffe759, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  animator: {fileID: 6525549870437437524}
+  mechController: 0
+--- !u!114 &541891343862505961
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6629087618380523962}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6ebd95192940f7b40af36aa286ffe759, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  animator: {fileID: 6525549870437437524}
+  mechController: 1
 --- !u!1 &6739218304828324373
 GameObject:
   m_ObjectHideFlags: 0

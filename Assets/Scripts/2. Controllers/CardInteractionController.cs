@@ -274,12 +274,13 @@ public class CardInteractionController
                     combatLog += ("\n" + offensiveMech + "'s attack is " + (i + 1) + " of " + repeatOffense + " total attacks. ");
                 }
 
-                newAnimations.Enqueue(new AnimationQueueObject(offensiveMech, offensiveAttack.CardData.AnimationType, defensiveMech, AnimationType.Damaged));
+                if(offensiveAttack.CardData.CardType == CardType.Attack)
+                    newAnimations.Enqueue(new AnimationQueueObject(offensiveMech, offensiveAttack.CardData.AnimationType, defensiveMech, AnimationType.Damaged));
+                else
+                    newAnimations.Enqueue(new AnimationQueueObject(offensiveMech, offensiveAttack.CardData.AnimationType, defensiveMech, AnimationType.Idle));
 
-                if(defensiveCard == null)
-                {
+                if (defensiveCard == null)
                     newDamageQueue.Enqueue(new DamageMechPairObject(new CardCharacterPairObject(offensiveAttack, defensiveMech, repeatDefense), null, false, false, combatLog));
-                }
                 else
                 {
                     newDamageQueue.Enqueue(new DamageMechPairObject(new CardCharacterPairObject(offensiveAttack, defensiveMech, repeatDefense),

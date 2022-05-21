@@ -45,9 +45,9 @@ public class GeneralHUDPopupCallController : MonoBehaviour, IPointerEnterHandler
         CardUIController.OnPickUp -= IgnorePopups;
     }
 
-    private void IgnorePopups(Channels channel)
+    private void IgnorePopups(Channels destinationChannel, MechSelect destinationMech, Channels originChannel)
     {
-        if (channel == Channels.None)
+        if (destinationChannel == Channels.None)
             canPopup = true;
         else
             canPopup = false;
