@@ -46,14 +46,14 @@ public class CardUIController : MonoBehaviour, IPointerDownHandler, IPointerUpHa
     
     private bool isPickedUp = false;
 
-    public delegate void onPickUp(Channels channel);
-    public static event onPickUp OnPickUp;
-
     public CardDataObject CardData { get => cardData; }
     public bool IsPlayerCard { get => isPlayerCard; }
     public Transform PreviousParentObject { get => previousParentObject; set => previousParentObject = value; }
     public Animator CardAnimator { get => cardAnimator; }
     public BaseSlotController<CardUIController> CardSlotController { get => cardSlotController; set => UpdateCardSlot(value); }
+
+    public delegate void onPickUp(Channels destinationChannel, MechSelect destinationMech, Channels originChannel);
+    public static event onPickUp OnPickUp;
 
     public void InitCardUI(CardDataObject newCardData, CharacterSelect character)
     {
@@ -128,7 +128,24 @@ public class CardUIController : MonoBehaviour, IPointerDownHandler, IPointerUpHa
         {
             isPickedUp = true;
             transform.SetParent(cardSlotController.SlotManager.MainCanvas.transform);
-            OnPickUp?.Invoke(cardData.PossibleChannels);
+
+            if (CardCategory.Offensive.HasFlag(cardData.CardCategory))
+            {
+                switch (cardData.CardCategory)
+                {
+                    case CardCategory.Punch:
+                        OnPickUp?.Invoke(cardData.PossibleChannels, MechSelect.Opponent, Channels.High);
+                        break;
+                    case CardCategory.Kick:
+                        OnPickUp?.Invoke(cardData.PossibleChannels, MechSelect.Opponent, Channels.Low);
+                        break;
+                    case CardCategory.Special:
+                        OnPickUp?.Invoke(cardData.PossibleChannels, MechSelect.Opponent, Channels.Mid);
+                        break;
+                }
+            }
+            else
+                OnPickUp?.Invoke(cardData.PossibleChannels, MechSelect.Player, Channels.None);
         }
     }
 
@@ -138,7 +155,7 @@ public class CardUIController : MonoBehaviour, IPointerDownHandler, IPointerUpHa
         {
             isPickedUp = false;
             transform.SetParent(previousParentObject);
-            OnPickUp?.Invoke(Channels.None);
+            OnPickUp?.Invoke(Channels.None, MechSelect.None, Channels.None);
         }
     }
 
