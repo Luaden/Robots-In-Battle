@@ -217,7 +217,7 @@ public class CardInteractionController
                 CombatManager.instance.CombatEffectManager.AddFlurryBonus(effect, offensiveMech);
             }
         }
-        
+
         if (defensiveCard != null && defensiveCard.CardData != null & defensiveCard.CardData.CardEffects != null)
         {
             foreach (SOCardEffectObject effect in defensiveCard.CardData.CardEffects)
@@ -226,7 +226,12 @@ public class CardInteractionController
                     repeatDefense = effect.EffectMagnitude;
 
                 if (effect.EffectType == CardEffectTypes.KeyWord && effect.CardKeyWord == CardKeyWord.Flurry)
+                {
+                    Debug.Log("Repeat Defense : " + repeatDefense);
+                    Debug.Log("Adding to Repeat Defense:" + CombatManager.instance.CombatEffectManager.GetFlurryBonus(defensiveMech));
                     repeatDefense += CombatManager.instance.CombatEffectManager.GetAndConsumeFlurryBonus(defensiveMech);
+                    Debug.Log("Repeat Defense : " + repeatDefense);
+                }
 
                 CombatManager.instance.CombatEffectManager.AddFlurryBonus(effect, defensiveMech);
             }
@@ -244,18 +249,27 @@ public class CardInteractionController
                     combatLog += ("\n" + offensiveMech + "'s attack is " + (i + 1) + " of " + repeatOffense + " total attacks. ");
                 }
 
-                if(i == 0)
+                //There are more than one defenses in this queue object.
+                if(repeatDefense > 0)
                 {
-                    newDamageQueue.Enqueue(new DamageMechPairObject(new CardCharacterPairObject(offensiveAttack, offensiveMech),
+                    //If it's the last offense, queue up all remaining defenses and send them off
+                    if (i + 1 == repeatOffense)
+                    {
+                        newDamageQueue.Enqueue(new DamageMechPairObject(new CardCharacterPairObject(offensiveAttack, offensiveMech),
                                                                 new CardCharacterPairObject(defensiveCard, offensiveMech, repeatDefense), true, false));
-                    newAnimations.Enqueue(new AnimationQueueObject(offensiveMech, offensiveAttack.CardData.AnimationType, defensiveMech, defensiveCard.CardData.AnimationType));
+                        newAnimations.Enqueue(new AnimationQueueObject(offensiveMech, offensiveAttack.CardData.AnimationType, defensiveMech, defensiveCard.CardData.AnimationType));
+                    }
+                    //otherwise remove a repeat defense and play the card interactions, lower repeatDefense.
+                    else
+                    {
+                        newDamageQueue.Enqueue(new DamageMechPairObject(new CardCharacterPairObject(offensiveAttack, offensiveMech),
+                                            new CardCharacterPairObject(defensiveCard, offensiveMech, 1), true, false));
+                        newAnimations.Enqueue(new AnimationQueueObject(offensiveMech, offensiveAttack.CardData.AnimationType, defensiveMech, defensiveCard.CardData.AnimationType));
+
+                        repeatDefense--;
+                    }
                 }
-                else if (i < repeatDefense)
-                {
-                    newDamageQueue.Enqueue(new DamageMechPairObject(new CardCharacterPairObject(offensiveAttack, offensiveMech),
-                                                                new CardCharacterPairObject(defensiveCard, offensiveMech, repeatDefense), true, false));
-                    newAnimations.Enqueue(new AnimationQueueObject(offensiveMech, offensiveAttack.CardData.AnimationType, defensiveMech, defensiveCard.CardData.AnimationType));
-                }
+                //Not the first or second passes, but there are no defenses remaining.
                 else
                 {
                     newDamageQueue.Enqueue(new DamageMechPairObject(new CardCharacterPairObject(offensiveAttack, defensiveMech), null, false, false));
@@ -274,41 +288,32 @@ public class CardInteractionController
                     combatLog += ("\n" + offensiveMech + "'s attack is " + (i + 1) + " of " + repeatOffense + " total attacks. ");
                 }
 
-                if(i == 0)
+                //There are more than one defenses in this queue object.
+                if (repeatDefense > 0)
                 {
-                    if(repeatOffense == 1)
+                    //If it's the last offense, queue up all remaining defenses and send them off
+                    if (i + 1 == repeatOffense)
                     {
                         newAnimations.Enqueue(new AnimationQueueObject(offensiveMech, offensiveAttack.CardData.AnimationType, defensiveMech, defensiveCard.CardData.AnimationType));
                         newDamageQueue.Enqueue(new DamageMechPairObject(new CardCharacterPairObject(offensiveAttack, defensiveMech),
-                                                                        new CardCharacterPairObject(defensiveCard, offensiveMech, repeatDefense), false, true, combatLog));
+                                                new CardCharacterPairObject(defensiveCard, offensiveMech, repeatDefense), false, true, combatLog));
                     }
+                    //otherwise remove a repeat defense and play the card interactions, lower repeatDefense.
                     else
                     {
                         newAnimations.Enqueue(new AnimationQueueObject(offensiveMech, offensiveAttack.CardData.AnimationType, defensiveMech, defensiveCard.CardData.AnimationType));
                         newDamageQueue.Enqueue(new DamageMechPairObject(new CardCharacterPairObject(offensiveAttack, defensiveMech),
-                                                                        new CardCharacterPairObject(defensiveCard, offensiveMech, 1), false, true, combatLog));
+                                                new CardCharacterPairObject(defensiveCard, offensiveMech, repeatDefense), false, true, combatLog));
+                        
+                        repeatDefense--;
                     }
                 }
-                else if(i > 0)
-                {
-                    if(i < repeatDefense)
-                    {
-                        newAnimations.Enqueue(new AnimationQueueObject(offensiveMech, offensiveAttack.CardData.AnimationType, defensiveMech, defensiveCard.CardData.AnimationType));
-                        newDamageQueue.Enqueue(new DamageMechPairObject(new CardCharacterPairObject(offensiveAttack, defensiveMech),
-                                                new CardCharacterPairObject(defensiveCard, offensiveMech, 1), false, true, combatLog));
-                    }
-                    else
-                    {
-                        newDamageQueue.Enqueue(new DamageMechPairObject(new CardCharacterPairObject(offensiveAttack, defensiveMech), null, false, false));
-                        newAnimations.Enqueue(new AnimationQueueObject(offensiveMech, offensiveAttack.CardData.AnimationType, defensiveMech, AnimationType.Damaged));
-                    }
-                }
+                //Not the first or second passes, but there are no defenses remaining.
                 else
                 {
                     newDamageQueue.Enqueue(new DamageMechPairObject(new CardCharacterPairObject(offensiveAttack, defensiveMech), null, false, false));
                     newAnimations.Enqueue(new AnimationQueueObject(offensiveMech, offensiveAttack.CardData.AnimationType, defensiveMech, AnimationType.Damaged));
                 }
-
 
                 combatLog = string.Empty;
             }
@@ -337,6 +342,8 @@ public class CardInteractionController
                 }
             }
 
+
+            Debug.Log("One iteration.");
             combatQueueObject.damageQueue = newDamageQueue;
             combatQueueObject.animationQueue = newAnimations;
 

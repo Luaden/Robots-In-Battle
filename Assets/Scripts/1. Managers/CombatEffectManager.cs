@@ -262,6 +262,7 @@ public class CombatEffectManager : MonoBehaviour
         int flurryBonus = 0;
 
         if (characterToCheck == CharacterSelect.Player)
+        {
             if (playerFighterEffectObject.KeyWordDuration.ContainsKey(CardKeyWord.Flurry))
             {
                 List<CardEffectObject> flurryBonuses = new List<CardEffectObject>();
@@ -271,6 +272,7 @@ public class CombatEffectManager : MonoBehaviour
                 {
                     foreach (CardEffectObject effect in flurryBonuses)
                     {
+                        Debug.Log("Found a player Flurry.");
                         flurryBonus += effect.EffectMagnitude;
                         removalKeyWordEffects.Add(effect);
                     }
@@ -284,9 +286,12 @@ public class CombatEffectManager : MonoBehaviour
 
                 if (playerFighterEffectObject.KeyWordDuration[CardKeyWord.Flurry].Count == 0)
                     playerFighterEffectObject.KeyWordDuration.Remove(CardKeyWord.Flurry);
-
             }
-            else
+
+            return flurryBonus;
+        }
+        else
+        {
             if (opponentFighterEffectObject.KeyWordDuration.ContainsKey(CardKeyWord.Flurry))
             {
                 List<CardEffectObject> flurryBonuses = new List<CardEffectObject>();
@@ -299,6 +304,8 @@ public class CombatEffectManager : MonoBehaviour
 
                     foreach (CardEffectObject effect in flurryBonuses)
                     {
+                        Debug.Log("Found an opponent Flurry.");
+
                         flurryBonus += effect.EffectMagnitude;
                         removalKeyWordEffects.Add(effect);
                     }
@@ -312,10 +319,10 @@ public class CombatEffectManager : MonoBehaviour
 
                 if (opponentFighterEffectObject.KeyWordDuration[CardKeyWord.Flurry].Count == 0)
                     opponentFighterEffectObject.KeyWordDuration.Remove(CardKeyWord.Flurry);
-
             }
 
-        return flurryBonus;
+            return flurryBonus;
+        }
     }
 
     public int GetFlurryBonus(CharacterSelect characterToCheck)
