@@ -5,6 +5,8 @@ using TMPro;
 
 public class CombatCardUIPopupController : BaseUIElement<CardDataObject>
 {
+    [SerializeField] private Canvas mainCanvas;
+    [SerializeField] private RectTransform popupRect;
     [SerializeField] protected GameObject popupObject;
     [SerializeField] private TMP_Text nameText;
     [SerializeField] private TMP_Text descriptionText;
@@ -20,6 +22,20 @@ public class CombatCardUIPopupController : BaseUIElement<CardDataObject>
         descriptionText.text = primaryData.CardDescription;
         energyCostText.text = ("Energy: ") + primaryData.EnergyCost.ToString();
         damageDealtText.text = ("Damage: ") + primaryData.BaseDamage.ToString();
+
+        Vector3 mousePosition = Input.mousePosition / mainCanvas.scaleFactor;
+
+        if (mousePosition.x + popupObject.GetComponent<RectTransform>().rect.width > mainCanvas.GetComponent<RectTransform>().rect.width)
+        {
+            mousePosition.x = mainCanvas.GetComponent<RectTransform>().rect.width - popupObject.GetComponent<RectTransform>().rect.width;
+        }
+
+        if (mousePosition.y + popupObject.GetComponent<RectTransform>().rect.height > mainCanvas.GetComponent<RectTransform>().rect.height)
+        {
+            mousePosition.y = mainCanvas.GetComponent<RectTransform>().rect.height - popupObject.GetComponent<RectTransform>().rect.height;
+        }
+
+        popupRect.anchoredPosition = mousePosition;
 
         popupObject.SetActive(true);
     }
