@@ -250,6 +250,12 @@ public class CardInteractionController
                                                                 new CardCharacterPairObject(defensiveCard, offensiveMech, repeatDefense), true, false));
                     newAnimations.Enqueue(new AnimationQueueObject(offensiveMech, offensiveAttack.CardData.AnimationType, defensiveMech, defensiveCard.CardData.AnimationType));
                 }
+                else if (i < repeatDefense)
+                {
+                    newDamageQueue.Enqueue(new DamageMechPairObject(new CardCharacterPairObject(offensiveAttack, offensiveMech),
+                                                                new CardCharacterPairObject(defensiveCard, offensiveMech, repeatDefense), true, false));
+                    newAnimations.Enqueue(new AnimationQueueObject(offensiveMech, offensiveAttack.CardData.AnimationType, defensiveMech, defensiveCard.CardData.AnimationType));
+                }
                 else
                 {
                     newDamageQueue.Enqueue(new DamageMechPairObject(new CardCharacterPairObject(offensiveAttack, defensiveMech), null, false, false));
@@ -269,6 +275,12 @@ public class CardInteractionController
                 }
 
                 if(i == 0)
+                {
+                    newAnimations.Enqueue(new AnimationQueueObject(offensiveMech, offensiveAttack.CardData.AnimationType, defensiveMech, defensiveCard.CardData.AnimationType));
+                    newDamageQueue.Enqueue(new DamageMechPairObject(new CardCharacterPairObject(offensiveAttack, defensiveMech),
+                                                                    new CardCharacterPairObject(defensiveCard, offensiveMech, repeatDefense), false, true, combatLog));
+                }
+                else if(i < repeatDefense)
                 {
                     newAnimations.Enqueue(new AnimationQueueObject(offensiveMech, offensiveAttack.CardData.AnimationType, defensiveMech, defensiveCard.CardData.AnimationType));
                     newDamageQueue.Enqueue(new DamageMechPairObject(new CardCharacterPairObject(offensiveAttack, defensiveMech),
