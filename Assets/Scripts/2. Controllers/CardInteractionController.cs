@@ -280,12 +280,6 @@ public class CardInteractionController
                     newDamageQueue.Enqueue(new DamageMechPairObject(new CardCharacterPairObject(offensiveAttack, defensiveMech),
                                                                     new CardCharacterPairObject(defensiveCard, offensiveMech, repeatDefense), false, true, combatLog));
                 }
-                else if(i < repeatDefense)
-                {
-                    newAnimations.Enqueue(new AnimationQueueObject(offensiveMech, offensiveAttack.CardData.AnimationType, defensiveMech, defensiveCard.CardData.AnimationType));
-                    newDamageQueue.Enqueue(new DamageMechPairObject(new CardCharacterPairObject(offensiveAttack, defensiveMech),
-                                                                    new CardCharacterPairObject(defensiveCard, offensiveMech, repeatDefense), false, true, combatLog));
-                }
                 else
                 {
                     newDamageQueue.Enqueue(new DamageMechPairObject(new CardCharacterPairObject(offensiveAttack, defensiveMech), null, false, false));
