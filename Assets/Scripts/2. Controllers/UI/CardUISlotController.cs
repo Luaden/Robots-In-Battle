@@ -12,6 +12,8 @@ public class CardUISlotController : BaseSlotController<CardUIController>
     [SerializeField] private Color fadeColor;
 
     private bool flashChannel = false;
+    private bool combatStarted = false;
+    private bool combatComplete = true;
     private bool fadeOut = true;
 
     public override void OnDrop(PointerEventData eventData)
@@ -31,18 +33,36 @@ public class CardUISlotController : BaseSlotController<CardUIController>
     {
         if(channelFlag != Channels.None)
             FlashChannelColor();
+
+        if(combatStarted && channelFlag != Channels.None)
+        {
+            if(!combatComplete)
+            {
+                FadeChannelColorOnCombat();
+            }
+            else
+            {
+                GainColorOnCombatComplete();
+            }
+        }
     }
 
     private void Awake()
     {
         if(channelFlag != Channels.None)
             CardUIController.OnPickUp += CheckPickUpFlash;
+
+        CombatSequenceManager.OnCombatStart += OnCombatStart;
+        CombatSequenceManager.OnCombatComplete += OnCombatComplete;
     }
 
     private void OnDestroy()
     {
         if (channelFlag != Channels.None)
             CardUIController.OnPickUp -= CheckPickUpFlash;
+
+        CombatSequenceManager.OnCombatStart -= OnCombatStart;
+        CombatSequenceManager.OnCombatComplete -= OnCombatComplete;
     }
 
     private void CheckPickUpFlash(Channels possibleChannels, MechSelect destinationMech, Channels originChannel)
@@ -52,6 +72,38 @@ public class CardUISlotController : BaseSlotController<CardUIController>
 
         if (possibleChannels.HasFlag(channelFlag))
             flashChannel = true;
+    }
+
+    private void OnCombatStart()
+    {
+        combatStarted = true;
+        combatComplete = false;
+    }
+
+    private void OnCombatComplete()
+    {
+        combatComplete = true;
+    }
+
+    private void FadeChannelColorOnCombat()
+    {
+        if(channelImage.color.a > 0)
+        {
+            channelImage.color = new Color(fadeColor.r, fadeColor.g, fadeColor.b, channelImage.color.a -
+                    (CombatManager.instance.ChannelsUISlotManager.ChannelFadeTimeModifier * Time.deltaTime));
+        }
+    }
+
+    private void GainColorOnCombatComplete()
+    {
+        channelImage.color = new Color(fadeColor.r, fadeColor.g, fadeColor.b, channelImage.color.a +
+                (CombatManager.instance.ChannelsUISlotManager.ChannelFadeTimeModifier * Time.deltaTime));
+
+        if (channelImage.color.a >= fullColor.a)
+        {
+            channelImage.color = fullColor;
+            combatStarted = false;
+        }
     }
 
     private void FlashChannelColor()
