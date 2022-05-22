@@ -7,6 +7,7 @@ public class DowntimeManager : MonoBehaviour
     [SerializeField] private GameObject inventory;
     [SerializeField] private GameObject shopCartWindow;
 
+    [SerializeField] private GameObject repairButton;
     [SerializeField] private int repairCost;
     [SerializeField] private int minimumShopItemCount;
 
@@ -75,6 +76,8 @@ public class DowntimeManager : MonoBehaviour
 
     public void MoveToInventory()
     {
+        if (GameManager.instance.PlayerMechController.PlayerMech.MechCurrentHP < GameManager.instance.PlayerMechController.PlayerMech.MechMaxHP)
+            repairButton.SetActive(true);
         OnMoveToInventory?.Invoke();
     }
 
