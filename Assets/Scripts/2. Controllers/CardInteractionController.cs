@@ -244,9 +244,18 @@ public class CardInteractionController
                     combatLog += ("\n" + offensiveMech + "'s attack is " + (i + 1) + " of " + repeatOffense + " total attacks. ");
                 }
 
-                newDamageQueue.Enqueue(new DamageMechPairObject(new CardCharacterPairObject(offensiveAttack, offensiveMech), 
+                if(i == 0)
+                {
+                    newDamageQueue.Enqueue(new DamageMechPairObject(new CardCharacterPairObject(offensiveAttack, offensiveMech),
                                                                 new CardCharacterPairObject(defensiveCard, offensiveMech, repeatDefense), true, false));
-                newAnimations.Enqueue(new AnimationQueueObject(offensiveMech, offensiveAttack.CardData.AnimationType, defensiveMech, defensiveCard.CardData.AnimationType));
+                    newAnimations.Enqueue(new AnimationQueueObject(offensiveMech, offensiveAttack.CardData.AnimationType, defensiveMech, defensiveCard.CardData.AnimationType));
+                }
+                else
+                {
+                    newDamageQueue.Enqueue(new DamageMechPairObject(new CardCharacterPairObject(offensiveAttack, defensiveMech), null, false, false));
+                    newAnimations.Enqueue(new AnimationQueueObject(offensiveMech, offensiveAttack.CardData.AnimationType, defensiveMech, AnimationType.Damaged));
+                }
+                
                 combatLog = string.Empty;
             }
             else if (guardDamage)
@@ -259,9 +268,18 @@ public class CardInteractionController
                     combatLog += ("\n" + offensiveMech + "'s attack is " + (i + 1) + " of " + repeatOffense + " total attacks. ");
                 }
 
-                newAnimations.Enqueue(new AnimationQueueObject(offensiveMech, offensiveAttack.CardData.AnimationType, defensiveMech, defensiveCard.CardData.AnimationType));
-                newDamageQueue.Enqueue(new DamageMechPairObject(new CardCharacterPairObject(offensiveAttack, defensiveMech),
-                                                                new CardCharacterPairObject(defensiveCard, offensiveMech, repeatDefense), false, true, combatLog));
+                if(i == 0)
+                {
+                    newAnimations.Enqueue(new AnimationQueueObject(offensiveMech, offensiveAttack.CardData.AnimationType, defensiveMech, defensiveCard.CardData.AnimationType));
+                    newDamageQueue.Enqueue(new DamageMechPairObject(new CardCharacterPairObject(offensiveAttack, defensiveMech),
+                                                                    new CardCharacterPairObject(defensiveCard, offensiveMech, repeatDefense), false, true, combatLog));
+                }
+                else
+                {
+                    newDamageQueue.Enqueue(new DamageMechPairObject(new CardCharacterPairObject(offensiveAttack, defensiveMech), null, false, false));
+                    newAnimations.Enqueue(new AnimationQueueObject(offensiveMech, offensiveAttack.CardData.AnimationType, defensiveMech, AnimationType.Damaged));
+                }
+
 
                 combatLog = string.Empty;
             }
