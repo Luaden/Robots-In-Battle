@@ -52,6 +52,12 @@ public class ChannelsUISlotManager : BaseSlotManager<CardUIController>
                 FillASlot(item, slot);
                 return;
             }
+            else if(attackSlotAFilled)
+            {
+                CombatManager.instance.PlayerHandSlotManager.AddItemToCollection(playerAttackSlotA.CurrentSlottedItem.CardData.CardUIController, playerAttackSlotA);
+                FillASlot(item, slot);
+                return;
+            }
             else
                 return;
         }
@@ -73,6 +79,12 @@ public class ChannelsUISlotManager : BaseSlotManager<CardUIController>
             else if (attackSlotBFilled && !attackSlotAFilled && playerAttackSlotB.CurrentSlottedItem.CardData.CardType == CardType.Neutral)
             {
                 FillASlot(playerAttackSlotB.CurrentSlottedItem.CardData.CardUIController, playerAttackSlotB, false);
+                FillBSlot(item, slot);
+                return;
+            }
+            else if (attackSlotBFilled)
+            {
+                CombatManager.instance.PlayerHandSlotManager.AddItemToCollection(playerAttackSlotB.CurrentSlottedItem.CardData.CardUIController, playerAttackSlotB);
                 FillBSlot(item, slot);
                 return;
             }
@@ -214,13 +226,13 @@ public class ChannelsUISlotManager : BaseSlotManager<CardUIController>
 
     private bool ValidateCardChannelSelection(CardUIController newData, BaseSlotController<CardUIController> slot)
     {
-        if (attackSlotAFilled && attackSlotBFilled)
-            if(playerAttackSlotA.CurrentSlottedItem != newData && playerAttackSlotB.CurrentSlottedItem != newData)
-            {
-                CombatManager.instance.PopupUIManager.HandlePopup(CombatManager.instance.PlayerFighter.FighterName, 
-                    "The slots for " + newData.CardData.CardName + " are already filled.", CharacterSelect.Player);
-                return false;
-            }
+        //if (attackSlotAFilled && attackSlotBFilled)
+        //    if(playerAttackSlotA.CurrentSlottedItem != newData && playerAttackSlotB.CurrentSlottedItem != newData)
+        //    {
+        //        CombatManager.instance.PopupUIManager.HandlePopup(CombatManager.instance.PlayerFighter.FighterName, 
+        //            "The slots for " + newData.CardData.CardName + " are already filled.", CharacterSelect.Player);
+        //        return false;
+        //    }
 
         int bonusEnergyCost = 0;
 

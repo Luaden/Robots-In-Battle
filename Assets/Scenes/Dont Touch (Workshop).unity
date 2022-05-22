@@ -315,7 +315,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7984178396188095201, guid: f3d7e5f43fb3aaf449af3ceb4c7af47f, type: 3}
       propertyPath: m_Name
-      value: Workshop_Scene 1
+      value: Workshop Scene
       objectReference: {fileID: 0}
     - target: {fileID: 8694908481121429102, guid: f3d7e5f43fb3aaf449af3ceb4c7af47f, type: 3}
       propertyPath: m_LocalRotation.x
@@ -392,6 +392,36 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 2b2032fc692b93a4ab21791b760b753c, type: 3}
+--- !u!1 &1718672372 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5282501210029617433, guid: f3d7e5f43fb3aaf449af3ceb4c7af47f, type: 3}
+  m_PrefabInstance: {fileID: 725381313}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1718672374
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1718672372}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 19af6e22ad5066246b3cb02af0d1ddf5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerMech: {fileID: 1718672376}
+  opponentMech: {fileID: 0}
+--- !u!114 &1718672376 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 590764341827847587, guid: f3d7e5f43fb3aaf449af3ceb4c7af47f, type: 3}
+  m_PrefabInstance: {fileID: 725381313}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1718672372}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5e28c5ae8460b9e44beddcae2f42c225, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &1865097109
 PrefabInstance:
   m_ObjectHideFlags: 0
