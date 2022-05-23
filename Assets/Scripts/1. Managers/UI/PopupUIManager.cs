@@ -17,6 +17,7 @@ public class PopupUIManager : MonoBehaviour
     private AIConversationPopupController aIConversationPopupController;
     private EventDialoguePopupController eventDialoguePopupController;
     private HUDFloatingDamagePopupController floatingDamagePopupController;
+    private DamageSplashEffectPopupController damageSplashEffectPopupController;
 
     [SerializeField] private bool popupsEnabled = true;
     public float TextPace { get => textRate; }
@@ -34,6 +35,7 @@ public class PopupUIManager : MonoBehaviour
         hudBuffUIPopupController = GetComponentInChildren<HUDBuffUIPopupController>();
         hudMechComponentPopupController = GetComponentInChildren<HUDMechComponentPopupController>();
         floatingDamagePopupController = GetComponentInChildren<HUDFloatingDamagePopupController>();
+        damageSplashEffectPopupController = GetComponentInChildren<DamageSplashEffectPopupController>();
 
         if (CombatManager.instance != null)
         {
@@ -128,6 +130,11 @@ public class PopupUIManager : MonoBehaviour
     public void HandlePopup(DamageMechPairObject damageObject)
     {
         floatingDamagePopupController.UpdateUI(damageObject);
+    }
+
+    public void HandlePopup(CardChannelPairObject damageSplashEffectLocation)
+    {
+        damageSplashEffectPopupController.UpdateUI(damageSplashEffectLocation);
     }
 
     public void ClearAllPopups()
