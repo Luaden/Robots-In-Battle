@@ -122,7 +122,10 @@ public class CombatManager : MonoBehaviour
                         playerFighter.FighterMech.DamageComponentHP(
                             combatEffectManager.GetComponentDamageWithModifiers(
                                 damageMechPair.GetDamageWithAndConsumeModifiers(), channel, 
-                                damageMechPair.CharacterTakingDamage), MechComponent.Arms);
+                                damageMechPair.CharacterTakingDamage), MechComponent.Head);
+
+                        if (playerFighter.FighterMech.MechHead.ComponentCurrentHP <= 0)
+                            combatAnimationManager.BreakComponent(MechComponent.Head, CharacterSelect.Player);
                         break;
 
                     case Channels.Mid:
@@ -130,6 +133,9 @@ public class CombatManager : MonoBehaviour
                             combatEffectManager.GetComponentDamageWithModifiers(
                                 damageMechPair.GetDamageWithAndConsumeModifiers(), channel,
                                 damageMechPair.CharacterTakingDamage), MechComponent.Torso);
+
+                        if (playerFighter.FighterMech.MechTorso.ComponentCurrentHP <= 0)
+                            combatAnimationManager.BreakComponent(MechComponent.Torso, CharacterSelect.Player);
                         break;
 
                     case Channels.Low:
@@ -137,6 +143,9 @@ public class CombatManager : MonoBehaviour
                             combatEffectManager.GetComponentDamageWithModifiers(
                                 damageMechPair.GetDamageWithAndConsumeModifiers(), channel,
                                 damageMechPair.CharacterTakingDamage), MechComponent.Legs);
+
+                        if (playerFighter.FighterMech.MechLegs.ComponentCurrentHP <= 0)
+                            combatAnimationManager.BreakComponent(MechComponent.Legs, CharacterSelect.Player);
                         break;                
                 }
             }
@@ -152,7 +161,10 @@ public class CombatManager : MonoBehaviour
                         opponentFighter.FighterMech.DamageComponentHP(
                             combatEffectManager.GetComponentDamageWithModifiers(
                                 damageMechPair.GetDamageWithAndConsumeModifiers(), channel,
-                                damageMechPair.CharacterTakingDamage), MechComponent.Arms);
+                                damageMechPair.CharacterTakingDamage), MechComponent.Head);
+
+                        if (opponentFighter.FighterMech.MechHead.ComponentCurrentHP <= 0)
+                            combatAnimationManager.BreakComponent(MechComponent.Head, CharacterSelect.Opponent);
                         break;
 
                     case Channels.Mid:
@@ -160,6 +172,9 @@ public class CombatManager : MonoBehaviour
                             combatEffectManager.GetComponentDamageWithModifiers(
                                 damageMechPair.GetDamageWithAndConsumeModifiers(), channel,
                                 damageMechPair.CharacterTakingDamage), MechComponent.Torso);
+
+                        if (opponentFighter.FighterMech.MechTorso.ComponentCurrentHP <= 0)
+                            combatAnimationManager.BreakComponent(MechComponent.Torso, CharacterSelect.Opponent);
                         break;
 
                     case Channels.Low:
@@ -167,6 +182,9 @@ public class CombatManager : MonoBehaviour
                             combatEffectManager.GetComponentDamageWithModifiers(
                                 damageMechPair.GetDamageWithAndConsumeModifiers(), channel,
                                 damageMechPair.CharacterTakingDamage), MechComponent.Legs);
+
+                        if (opponentFighter.FighterMech.MechLegs.ComponentCurrentHP <= 0)
+                            combatAnimationManager.BreakComponent(MechComponent.Legs, CharacterSelect.Opponent);
                         break;
                 }
             }

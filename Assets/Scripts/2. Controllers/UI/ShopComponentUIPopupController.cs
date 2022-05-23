@@ -44,7 +44,7 @@ public class ShopComponentUIPopupController : BaseUIElement<SOItemDataObject>
                 currentItem = GameManager.instance.PlayerMechController.PlayerMech.MechTorso;
                 break;
             case MechComponent.Arms:
-                currentItem = GameManager.instance.PlayerMechController.PlayerMech.MechArms;
+                currentItem = GameManager.instance.PlayerMechController.PlayerMech.MechHead;
                 break;
             case MechComponent.Legs:
                 currentItem = GameManager.instance.PlayerMechController.PlayerMech.MechLegs;

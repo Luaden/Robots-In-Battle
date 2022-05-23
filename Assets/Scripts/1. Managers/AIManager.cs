@@ -377,7 +377,7 @@ public class AIManager : MonoBehaviour
             switch (cardData.CardCategory)
             {
                 case CardCategory.Punch:
-                    componentDamageMultiplier += CombatManager.instance.OpponentFighter.FighterMech.MechArms.CDMFromComponent;
+                    componentDamageMultiplier += CombatManager.instance.OpponentFighter.FighterMech.MechHead.CDMFromComponent;
                     break;
 
                 case CardCategory.Kick:
@@ -410,7 +410,7 @@ public class AIManager : MonoBehaviour
         MechObject playerFighter = CombatManager.instance.PlayerFighter.FighterMech;
 
         List<MechComponentDataObject> componentList = new List<MechComponentDataObject>();
-        componentList.Add(playerFighter.MechArms);
+        componentList.Add(playerFighter.MechHead);
         componentList.Add(playerFighter.MechTorso);
         componentList.Add(playerFighter.MechLegs);
 

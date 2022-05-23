@@ -28,7 +28,7 @@ public class MechSpriteSwapManager : MonoBehaviour
     public void UpdateMechSprites(MechObject mech, MechSpriteResolverController activeResolver)
     {
         activeResolver.UpdateHeadSprite(mech.MechHead);
-        activeResolver.UpdateArmSprites(mech.MechArms);
+        activeResolver.UpdateArmSprites(mech.MechHead);
         activeResolver.UpdateTorsoSprite(mech.MechTorso);
         activeResolver.UpdateLegSprites(mech.MechLegs);
     }

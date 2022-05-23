@@ -27,6 +27,14 @@ public class CombatAnimationManager : MonoBehaviour
             opponentMechAnimationController.SetMechAnimation(newAnimation.secondAnimation);
     }
 
+    public void BreakComponent(MechComponent componentType, CharacterSelect character)
+    {
+        if (character == CharacterSelect.Player)
+            playerMechAnimationController.BreakComponent(componentType);
+        else
+            opponentMechAnimationController.BreakComponent(componentType);
+    }
+
     public void SetMechStartingAnimations(MechObject mech, CharacterSelect character, bool isBoss = false)
     {
         if(character == CharacterSelect.Player)

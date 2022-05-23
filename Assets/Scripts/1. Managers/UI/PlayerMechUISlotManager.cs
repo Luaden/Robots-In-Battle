@@ -211,7 +211,7 @@ public class PlayerMechUISlotManager : BaseSlotManager<ShopItemUIController>
 
         currentParts.Add(playerMech.MechHead);
         currentParts.Add(playerMech.MechTorso);
-        currentParts.Add(playerMech.MechArms);
+        currentParts.Add(playerMech.MechHead);
         currentParts.Add(playerMech.MechLegs);
 
         foreach (MechComponentDataObject item in currentParts)

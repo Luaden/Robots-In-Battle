@@ -34,11 +34,11 @@ public class HUDMechComponentPopupController : BaseUIElement<MechSelect>
     [Space]
     [SerializeField] private float fadeAlpha;
 
-    private MechComponentDataObject playerArmsComponent;
+    private MechComponentDataObject playerHeadComponent;
     private MechComponentDataObject playerTorsoComponent;
     private MechComponentDataObject playerLegsComponent;
 
-    private MechComponentDataObject opponentArmsComponent;
+    private MechComponentDataObject opponentHeadComponent;
     private MechComponentDataObject opponentTorsoComponent;
     private MechComponentDataObject opponentLegsComponent;
 
@@ -54,21 +54,21 @@ public class HUDMechComponentPopupController : BaseUIElement<MechSelect>
     private void Start()
     {
 
-        opponentArmsComponent = CombatManager.instance.OpponentFighter.FighterMech.MechArms;
+        opponentHeadComponent = CombatManager.instance.OpponentFighter.FighterMech.MechHead;
         opponentTorsoComponent = CombatManager.instance.OpponentFighter.FighterMech.MechTorso;
         opponentLegsComponent = CombatManager.instance.OpponentFighter.FighterMech.MechLegs;
         opponentMechEnergyRegenerationText.text = "Energy Regen: " + (CombatManager.instance.OpponentFighter.FighterMech.MechEnergyGain + CombatManager.instance.MechEnergyGain).ToString();
 
-        playerArmsComponent = CombatManager.instance.PlayerFighter.FighterMech.MechArms;
+        playerHeadComponent = CombatManager.instance.PlayerFighter.FighterMech.MechHead;
         playerTorsoComponent = CombatManager.instance.PlayerFighter.FighterMech.MechTorso;
         playerLegsComponent = CombatManager.instance.PlayerFighter.FighterMech.MechLegs;
         playerMechEnergyRegenerationText.text = "Energy Regen: " + (CombatManager.instance.PlayerFighter.FighterMech.MechEnergyGain + CombatManager.instance.MechEnergyGain).ToString();
 
-        opponentHighChannelElementTypeText.text = "Component Element: " + Enum.GetName(typeof(ElementType), opponentArmsComponent.ComponentElement);
+        opponentHighChannelElementTypeText.text = "Component Element: " + Enum.GetName(typeof(ElementType), opponentHeadComponent.ComponentElement);
         opponentMidChannelElementTypeText.text = "Component Element: " + Enum.GetName(typeof(ElementType), opponentTorsoComponent.ComponentElement);
         opponentLowChannelElementTypeText.text = "Component Element: " + Enum.GetName(typeof(ElementType), opponentLegsComponent.ComponentElement);
 
-        playerHighChannelElementTypeText.text = "Component Element: " + Enum.GetName(typeof(ElementType), playerArmsComponent.ComponentElement);
+        playerHighChannelElementTypeText.text = "Component Element: " + Enum.GetName(typeof(ElementType), playerHeadComponent.ComponentElement);
         playerMidChannelElementTypeText.text = "Component Element: " + Enum.GetName(typeof(ElementType), playerTorsoComponent.ComponentElement);
         playerLowChannelElementTypeText.text = "Component Element: " + Enum.GetName(typeof(ElementType), playerLegsComponent.ComponentElement);
     }
@@ -85,7 +85,7 @@ public class HUDMechComponentPopupController : BaseUIElement<MechSelect>
 
         if (character == MechSelect.Player)
         {
-            playerHighChannelComponentHealthText.text = "Component Health: " + Mathf.Clamp(playerArmsComponent.ComponentCurrentHP, 0, int.MaxValue).ToString();
+            playerHighChannelComponentHealthText.text = "Component Health: " + Mathf.Clamp(playerHeadComponent.ComponentCurrentHP, 0, int.MaxValue).ToString();
             playerMidChannelComponentHealthText.text = "Component Health: " + Mathf.Clamp(playerTorsoComponent.ComponentCurrentHP, 0, int.MaxValue).ToString();
             playerLowChannelComponentHealthText.text = "Component Health: " + Mathf.Clamp(playerLegsComponent.ComponentCurrentHP, 0, int.MaxValue).ToString();
             
@@ -98,7 +98,7 @@ public class HUDMechComponentPopupController : BaseUIElement<MechSelect>
 
         if(character == MechSelect.Opponent)
         {
-            opponentHighChannelComponentHealthText.text = "Component Health: " + Mathf.Clamp(opponentArmsComponent.ComponentCurrentHP, 0, int.MaxValue).ToString();
+            opponentHighChannelComponentHealthText.text = "Component Health: " + Mathf.Clamp(opponentHeadComponent.ComponentCurrentHP, 0, int.MaxValue).ToString();
             opponentMidChannelComponentHealthText.text = "Component Health: " + Mathf.Clamp(opponentTorsoComponent.ComponentCurrentHP, 0, int.MaxValue).ToString();
             opponentLowChannelComponentHealthText.text = "Component Health: " + Mathf.Clamp(opponentLegsComponent.ComponentCurrentHP, 0, int.MaxValue).ToString();
 
@@ -204,16 +204,19 @@ public class HUDMechComponentPopupController : BaseUIElement<MechSelect>
                 case Channels.High:
                     opponentHighChannelTypeObject.SetActive(activeStatus);
                     opponentHighChannelComponentHealthText.gameObject.SetActive(activeStatus);
+                    opponentHighChannelComponentHealthText.text = "Component Health: " + Mathf.Clamp(opponentHeadComponent.ComponentCurrentHP, 0, int.MaxValue).ToString();
                     opponentHighChannelElementTypeText.gameObject.SetActive(activeStatus);
                     break;
                 case Channels.Mid:
                     opponentMidChannelTypeObject.SetActive(activeStatus);
                     opponentMidChannelComponentHealthText.gameObject.SetActive(activeStatus);
+                    opponentMidChannelComponentHealthText.text = "Component Health: " + Mathf.Clamp(opponentTorsoComponent.ComponentCurrentHP, 0, int.MaxValue).ToString();
                     opponentMidChannelElementTypeText.gameObject.SetActive(activeStatus);
                     break;
                 case Channels.Low:
                     opponentLowChannelTypeObject.SetActive(activeStatus);
                     opponentLowChannelComponentHealthText.gameObject.SetActive(activeStatus);
+                    opponentLowChannelComponentHealthText.text = "Component Health: " + Mathf.Clamp(opponentLegsComponent.ComponentCurrentHP, 0, int.MaxValue).ToString();
                     opponentLowChannelElementTypeText.gameObject.SetActive(activeStatus);
                     break;
             }
@@ -228,17 +231,20 @@ public class HUDMechComponentPopupController : BaseUIElement<MechSelect>
                 case Channels.High:
                     playerHighChannelTypeObject.SetActive(activeStatus);
                     playerHighChannelComponentHealthText.gameObject.SetActive(activeStatus);
+                    playerHighChannelComponentHealthText.text = "Component Health: " + Mathf.Clamp(playerHeadComponent.ComponentCurrentHP, 0, int.MaxValue).ToString();
                     playerHighChannelElementTypeText.gameObject.SetActive(activeStatus);
                     break;
                 case Channels.Mid:
                     playerMidChannelTypeObject.SetActive(activeStatus);
                     playerMidChannelComponentHealthText.gameObject.SetActive(activeStatus);
+                    playerMidChannelComponentHealthText.text = "Component Health: " + Mathf.Clamp(playerTorsoComponent.ComponentCurrentHP, 0, int.MaxValue).ToString();
                     playerMidChannelElementTypeText.gameObject.SetActive(activeStatus);
                     break;
                 case Channels.Low:
                     playerLowChannelTypeObject.SetActive(activeStatus);
                     playerLowChannelComponentHealthText.gameObject.SetActive(activeStatus);
                     playerLowChannelElementTypeText.gameObject.SetActive(activeStatus);
+                    playerLowChannelComponentHealthText.text = "Component Health: " + Mathf.Clamp(playerLegsComponent.ComponentCurrentHP, 0, int.MaxValue).ToString();
                     break;
             }
 
