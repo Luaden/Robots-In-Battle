@@ -87,7 +87,7 @@ public class CardUISlotController : BaseSlotController<CardUIController>
 
     private void FadeChannelColorOnCombat()
     {
-        if(channelImage.color.a > 0)
+        if(channelImage.color.a > fadeColor.a)
         {
             channelImage.color = new Color(fadeColor.r, fadeColor.g, fadeColor.b, channelImage.color.a -
                     (CombatManager.instance.ChannelsUISlotManager.ChannelFadeTimeModifier * Time.deltaTime));
