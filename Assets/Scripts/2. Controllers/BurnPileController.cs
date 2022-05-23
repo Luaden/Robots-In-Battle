@@ -75,6 +75,7 @@ public class BurnPileController : MonoBehaviour
                         break;
                 }
 
+                card.ShrinkCard();
                 return;
             }
 
@@ -96,6 +97,7 @@ public class BurnPileController : MonoBehaviour
                     break;
             }
 
+            card.ShrinkCard();
             return;
         }
         else
@@ -115,6 +117,7 @@ public class BurnPileController : MonoBehaviour
                         break;
                 }
 
+                card.ShrinkCard();
                 return;
             }
 
@@ -136,6 +139,7 @@ public class BurnPileController : MonoBehaviour
                     break;
             }
 
+            card.ShrinkCard();
             return;
         }
     }

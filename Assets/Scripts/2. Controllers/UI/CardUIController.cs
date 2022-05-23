@@ -275,7 +275,7 @@ public class CardUIController : MonoBehaviour, IPointerEnterHandler, IPointerExi
         }
     }
 
-    private void DestroyCardUI()
+    public void DestroyCardUI()
     {
         Destroy(gameObject);
     }
