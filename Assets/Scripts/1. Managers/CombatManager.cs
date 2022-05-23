@@ -57,6 +57,7 @@ public class CombatManager : MonoBehaviour
     private AIManager aIManager;
     private MechSpriteSwapManager mechSpriteSwapManager;
     private StatTrackerController statTrackerController;
+    private InventoryCardDeckUISlotManager inventoryCardDeckSlotManager;
 
     private FighterDataObject playerFighter;
     private FighterDataObject opponentFighter;
@@ -87,6 +88,7 @@ public class CombatManager : MonoBehaviour
     public AIManager AIManager { get => aIManager; }
     public MechSpriteSwapManager MechSpriteSwapManager { get => mechSpriteSwapManager; }
     public StatTrackerController StatTrackerController { get => statTrackerController; }
+    public InventoryCardDeckUISlotManager InventoryCardDeckSlotManager { get => inventoryCardDeckSlotManager; }
 
     public int MechEnergyGain { get => mechEnergyGain; }
     public float BrokenCDM { get => brokenComponentDamageMultiplier; }
@@ -333,6 +335,7 @@ public class CombatManager : MonoBehaviour
         aIManager = FindObjectOfType<AIManager>(true);
         mechSpriteSwapManager = FindObjectOfType<MechSpriteSwapManager>(true);
         statTrackerController = FindObjectOfType<StatTrackerController>(true);
+        inventoryCardDeckSlotManager = FindObjectOfType<InventoryCardDeckUISlotManager>(true);
     }
 
     private void Start()
