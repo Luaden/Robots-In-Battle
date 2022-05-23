@@ -56,6 +56,7 @@ public class CombatManager : MonoBehaviour
     private CombatSequenceManager combatSequenceManager;
     private AIManager aIManager;
     private MechSpriteSwapManager mechSpriteSwapManager;
+    private StatTrackerController statTrackerController;
 
     private FighterDataObject playerFighter;
     private FighterDataObject opponentFighter;
@@ -85,6 +86,7 @@ public class CombatManager : MonoBehaviour
     public CombatSequenceManager CombatSequenceManager { get => combatSequenceManager; }
     public AIManager AIManager { get => aIManager; }
     public MechSpriteSwapManager MechSpriteSwapManager { get => mechSpriteSwapManager; }
+    public StatTrackerController StatTrackerController { get => statTrackerController; }
 
     public int MechEnergyGain { get => mechEnergyGain; }
     public float BrokenCDM { get => brokenComponentDamageMultiplier; }
@@ -312,6 +314,7 @@ public class CombatManager : MonoBehaviour
         combatSequenceManager = FindObjectOfType<CombatSequenceManager>(true);
         aIManager = FindObjectOfType<AIManager>(true);
         mechSpriteSwapManager = FindObjectOfType<MechSpriteSwapManager>(true);
+        statTrackerController = FindObjectOfType<StatTrackerController>(true);
     }
 
     private void Start()
@@ -334,11 +337,16 @@ public class CombatManager : MonoBehaviour
         if (GameManager.instance.PlayerWins == 0)
             InitOpponentFighter(GameManager.instance.Player.BossFighters[0]);
         else if (GameManager.instance.PlayerWins == winsBeforeBoss)
+        {
             InitOpponentFighter(GameManager.instance.Player.BossFighters[1]);
+            combatAnimationManager.SetMechStartingAnimations(opponentFighter.FighterMech, CharacterSelect.Opponent, true);
+        }
         else
             InitOpponentFighter(GameManager.instance.Player.OtherFighters[GameManager.instance.PlayerWins]);
 
         pilotEffectManager.InitPilotEffectManager();
+        statTrackerController.InitializeStatTracking();
+
         StartNewTurn();
     }
 
@@ -441,6 +449,7 @@ public class CombatManager : MonoBehaviour
 
         if(hasWon)
         {
+            statTrackerController.GameOver(true);
             winLossPanel.SetActive(true);
             winPanel.SetActive(true);
             fightButton.SetActive(false);
@@ -448,6 +457,7 @@ public class CombatManager : MonoBehaviour
 
         if(hasLost)
         {
+            statTrackerController.GameOver(false);
             winLossPanel.SetActive(true);
             lossPanel.SetActive(true);
             fightButton.SetActive(false);

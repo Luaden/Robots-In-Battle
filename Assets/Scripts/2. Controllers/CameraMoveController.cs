@@ -81,6 +81,7 @@ public class CameraMoveController : MonoBehaviour
         {
             playerHasControl = false;
             cameraAnim.SetTrigger("isFilmingADopeTrailer");
+            trailerCamAnimations = false;
             return;
         }
 

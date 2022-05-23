@@ -65,7 +65,7 @@ public class PopupUIManager : MonoBehaviour
 
     public void HandlePopup(CardDataObject cardDataObject)
     {
-        if(popupsEnabled)
+        if(popupsEnabled && !GameManager.instance.isTrailerMaking)
             combatCardUIPopupController.UpdateUI(cardDataObject);
     }
 
@@ -76,7 +76,7 @@ public class PopupUIManager : MonoBehaviour
 
     public void HandlePopup(SOItemDataObject sOItemDataObject)
     {
-        if(popupsEnabled)
+        if(popupsEnabled && !GameManager.instance.isTrailerMaking)
         {
             if (sOItemDataObject.ItemType == ItemType.Component)
                 shopComponentUIPopupController.UpdateUI(sOItemDataObject);
@@ -103,7 +103,7 @@ public class PopupUIManager : MonoBehaviour
 
     public void HandlePopup(HUDGeneralElement elementType)
     {
-        if(popupsEnabled)
+        if(popupsEnabled && !GameManager.instance.isTrailerMaking)
         {
             hudGeneralUIPopupController.UpdateUI(elementType);
         }
@@ -111,7 +111,7 @@ public class PopupUIManager : MonoBehaviour
 
     public void HandlePopup(HUDBuffElement elementType)
     {
-        if(popupsEnabled)
+        if(popupsEnabled && !GameManager.instance.isTrailerMaking)
         {
             hudBuffUIPopupController.UpdateUI(elementType);
         }
@@ -119,7 +119,7 @@ public class PopupUIManager : MonoBehaviour
 
     public void HandlePopup(MechSelect character)
     {
-        if(popupsEnabled)
+        if(popupsEnabled && !GameManager.instance.isTrailerMaking)
         {
             hudMechComponentPopupController.UpdateUI(character);
         }
