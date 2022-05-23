@@ -13,6 +13,8 @@ public class PlayerHandUISlotManager : BaseSlotManager<CardUIController>
             CombatManager.instance.HandManager.AddCardToPlayerHand(item.CardData);
             slot.CurrentSlottedItem = item;
             item.CardSlotController = slot;
+
+            item.GrowCard();
             return;
         }
 
@@ -22,6 +24,8 @@ public class PlayerHandUISlotManager : BaseSlotManager<CardUIController>
                 CombatManager.instance.HandManager.AddCardToPlayerHand(item.CardData);
                 slotOption.CurrentSlottedItem = item;
                 item.CardSlotController = slotOption;
+
+                item.GrowCard();
                 return;
             }
 

@@ -43,6 +43,15 @@ public class OpponentHandUISlotManager : BaseSlotManager<CardUIController>
 
     public override void HandleDrop(PointerEventData eventData, CardUIController droppedCard, BaseSlotController<CardUIController> slot)
     {
+        if (droppedCard.CardSlotController.SlotManager == CombatManager.instance.ChannelsUISlotManager ||
+            droppedCard.CardSlotController.SlotManager == CombatManager.instance.PlayerHandSlotManager)
+        {
+            CombatManager.instance.PopupUIManager.HandlePopup(CombatManager.instance.OpponentFighter.FighterName, 
+                                                              "Uh... I really don't think I'm allowed to take your cards.",
+                                                              CharacterSelect.Opponent);
+            return;
+        }
+
         Debug.Log("Dropping Opponent Card");
         if (droppedCard == null)
         {
