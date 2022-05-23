@@ -5,6 +5,7 @@ using UnityEngine;
 public class CardUIBuildController : MonoBehaviour
 {
     [SerializeField] private GameObject cardPrefab;
+    [SerializeField] private GameObject itemPrefab;
 
     public CardUIController BuildPlayerCard(CardDataObject cardToDraw, Transform cardStartPoint)
     {
@@ -35,4 +36,19 @@ public class CardUIBuildController : MonoBehaviour
 
         return cardUIObject;
     }
+
+    public ShopItemUIController BuildAndDisplayItemUI(SOItemDataObject shopItem, Transform startPoint,
+    MechComponentDataObject oldMechComponentData = null)
+    {
+        GameObject shopItemUIGameObject;
+        shopItemUIGameObject = Instantiate(itemPrefab, this.transform);
+        shopItemUIGameObject.transform.position = startPoint.position;
+
+        ShopItemUIController shopItemUIController = shopItemUIGameObject.GetComponent<ShopItemUIController>();
+        shopItemUIController.InitUI(shopItem, oldMechComponentData);
+
+        shopItemUIGameObject.SetActive(true);
+        return shopItemUIController;
+    }
+
 }

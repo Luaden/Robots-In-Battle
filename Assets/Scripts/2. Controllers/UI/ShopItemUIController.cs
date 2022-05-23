@@ -214,12 +214,18 @@ public class ShopItemUIController : MonoBehaviour, IPointerDownHandler, IPointer
 
     public void OnPointerEnter(PointerEventData eventData)
     {
-        DowntimeManager.instance.PopupUIManager.HandlePopup(baseSOItemDataObject);
+        if (DowntimeManager.instance != null)
+            DowntimeManager.instance.PopupUIManager.HandlePopup(baseSOItemDataObject);
+        else if (CombatManager.instance != null)
+            CombatManager.instance.PopupUIManager.HandlePopup(baseSOItemDataObject);
     }
 
     public void OnPointerExit(PointerEventData eventData)
     {
-        DowntimeManager.instance.PopupUIManager.ClearAllPopups();
+        if (DowntimeManager.instance != null)
+            DowntimeManager.instance.PopupUIManager.ClearAllPopups();
+        else if (CombatManager.instance != null)
+            CombatManager.instance.PopupUIManager.ClearAllPopups();
     }
 
     public virtual void OnBeginDrag(PointerEventData eventData)
@@ -261,7 +267,7 @@ public class ShopItemUIController : MonoBehaviour, IPointerDownHandler, IPointer
             transform.SetParent(itemShopUISlotController.SlotManager.MainCanvas.transform);
         }
 
-        if (DowntimeManager.instance.ShopManager.CurrentItemSelected == null || DowntimeManager.instance.ShopManager.CurrentItemSelected == this)
+        if (DowntimeManager.instance != null && (DowntimeManager.instance.ShopManager.CurrentItemSelected == null || DowntimeManager.instance.ShopManager.CurrentItemSelected == this))
         {
             Color selectedColor = selectedImageObject.color;
             selectedColor.a = 0.4f;
@@ -272,7 +278,7 @@ public class ShopItemUIController : MonoBehaviour, IPointerDownHandler, IPointer
             return;
         }
 
-        if (DowntimeManager.instance.ShopManager.CurrentItemSelected != this)
+        if (DowntimeManager.instance != null && DowntimeManager.instance.ShopManager.CurrentItemSelected != this)
         {
             Color transparent = selectedImageObject.color;
             transparent.a = 0.0f;
@@ -339,11 +345,14 @@ public class ShopItemUIController : MonoBehaviour, IPointerDownHandler, IPointer
 
     private void OnDisable()
     {
-        Color transparentColor = selectedImageObject.color;
-        transparentColor.a = 0.0f;
+        if(DowntimeManager.instance != null)
+        {
+            Color transparentColor = selectedImageObject.color;
+            transparentColor.a = 0.0f;
 
-        ShopItemUIController item = DowntimeManager.instance.ShopManager.CurrentItemSelected;
-        if (item == this)
-            item.selectedImageObject.color = transparentColor;
+            ShopItemUIController item = DowntimeManager.instance.ShopManager.CurrentItemSelected;
+            if (item == this)
+                item.selectedImageObject.color = transparentColor;
+        }
     }
 }
