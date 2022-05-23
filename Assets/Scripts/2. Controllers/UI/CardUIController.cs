@@ -5,8 +5,7 @@ using UnityEngine.UI;
 using UnityEngine.EventSystems;
 using TMPro;
 
-public class CardUIController : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, IPointerEnterHandler, IPointerExitHandler, 
-                                               IBeginDragHandler, IEndDragHandler, IDragHandler, IPointerClickHandler
+public class CardUIController : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IBeginDragHandler, IEndDragHandler, IDragHandler, IPointerClickHandler
 {
     [Header("Card Attributes")]
     [SerializeField] private Image cardBackground;
@@ -133,13 +132,10 @@ public class CardUIController : MonoBehaviour, IPointerDownHandler, IPointerUpHa
         CombatManager.instance.PopupUIManager.ClearCardUIPopup();
     }
 
-    public virtual void OnPointerDown(PointerEventData eventData)
+    public void OnPointerClick(PointerEventData eventData)
     {
         if (isPlayerCard && CombatManager.instance.CanPlayCards)
         {
-            isPickedUp = true;
-            transform.SetParent(cardSlotController.SlotManager.MainCanvas.transform);
-
             if (CardCategory.Offensive.HasFlag(cardData.CardCategory))
             {
                 switch (cardData.CardCategory)
@@ -158,11 +154,8 @@ public class CardUIController : MonoBehaviour, IPointerDownHandler, IPointerUpHa
             else
                 OnPickUp?.Invoke(cardData.PossibleChannels, MechSelect.Player, Channels.None);
         }
-    }
 
-    public void OnPointerClick(PointerEventData eventData)
-    {
-        if(CombatManager.instance != null & isPlayerCard & CombatManager.instance.CanPlayCards)
+        if (CombatManager.instance != null & isPlayerCard & CombatManager.instance.CanPlayCards)
         {
             CombatManager.instance.CardClickController.HandleClick(eventData);
         }
@@ -170,12 +163,12 @@ public class CardUIController : MonoBehaviour, IPointerDownHandler, IPointerUpHa
 
     public void OnPointerUp(PointerEventData eventData)
     {
-        if(isPlayerCard && CombatManager.instance.CanPlayCards)
-        {
-            isPickedUp = false;
-            transform.SetParent(previousParentObject);
-            OnPickUp?.Invoke(Channels.None, MechSelect.None, Channels.None);
-        }
+        //if (isPlayerCard && CombatManager.instance.CanPlayCards)
+        //{
+        //    isPickedUp = false;
+        //    transform.SetParent(previousParentObject);
+        //    OnPickUp?.Invoke(Channels.None, MechSelect.None, Channels.None);
+        //}
     }
 
     public virtual void OnBeginDrag(PointerEventData eventData)
@@ -183,25 +176,28 @@ public class CardUIController : MonoBehaviour, IPointerDownHandler, IPointerUpHa
         if(isPlayerCard && CombatManager.instance.CanPlayCards)
         {
             isPickedUp = true;
+            transform.SetParent(cardSlotController.SlotManager.MainCanvas.transform);
             draggableCanvasGroup.blocksRaycasts = false;
             draggableCanvasGroup.alpha = .6f;
         }
+    }
+    public void OnDrag(PointerEventData eventData)
+    {
+        if(isPlayerCard && CombatManager.instance.CanPlayCards)
+            cardSlotController.HandleDrag(eventData);
     }
 
     public virtual void OnEndDrag(PointerEventData eventData)
     {
         if (isPlayerCard && CombatManager.instance.CanPlayCards)
         {
+            transform.SetParent(previousParentObject);
+            OnPickUp?.Invoke(Channels.None, MechSelect.None, Channels.None);
+
             isPickedUp = false;
             draggableCanvasGroup.blocksRaycasts = true;
             draggableCanvasGroup.alpha = 1f;
         }
-    }
-
-    public void OnDrag(PointerEventData eventData)
-    {
-        if(isPlayerCard && CombatManager.instance.CanPlayCards)
-            cardSlotController.HandleDrag(eventData);
     }
 
     public void UpdateSelectedChannel(Channels channel)
