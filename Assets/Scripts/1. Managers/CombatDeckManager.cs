@@ -76,7 +76,7 @@ public class CombatDeckManager : MonoBehaviour
         }
 
         playerDeck.AddCardToBottom(cardToReturn);
-        cardToReturn.CardUIController.CardAnimator.enabled = true;
+        cardToReturn.CardUIController.DestroyCardUI();
     }
 
     public void ReturnCardToOpponentDeck(CardDataObject cardToReturn)
@@ -88,7 +88,7 @@ public class CombatDeckManager : MonoBehaviour
         }
 
         opponentDeck.AddCardToBottom(cardToReturn);
-        cardToReturn.CardUIController.CardAnimator.enabled = true;
+        cardToReturn.CardUIController.DestroyCardUI();
     }
 
     private void RandomizeCardDeck(CombatDeckController destinationDeck)
