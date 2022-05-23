@@ -10,8 +10,13 @@ public class CardUIController : MonoBehaviour, IPointerDownHandler, IPointerUpHa
     [Header("Card Attributes")]
     [SerializeField] private Image cardBackground;
     [SerializeField] private Image cardImage;
-    [SerializeField] private TMP_Text cardName;
-    
+    [SerializeField] private GameObject cardNameAttackObject;
+    [SerializeField] private TMP_Text cardNameAttack;
+    [SerializeField] private GameObject cardNameDefenseObject;
+    [SerializeField] private TMP_Text cardNameDefense;
+    [SerializeField] private GameObject cardNameNeutralObject;
+    [SerializeField] private TMP_Text cardNameNeutral;
+
     [Header("Channel Icons")]
     [SerializeField] private Image highChannelIcon;
     [SerializeField] private Image midChannelIcon;
@@ -57,7 +62,6 @@ public class CardUIController : MonoBehaviour, IPointerDownHandler, IPointerUpHa
 
     public void InitCardUI(CardDataObject newCardData, CharacterSelect character)
     {
-        cardName.text = newCardData.CardName;
         cardData = newCardData;
         newCardData.CardUIObject = this.gameObject;
         cardAnimator = GetComponent<Animator>();
@@ -90,12 +94,18 @@ public class CardUIController : MonoBehaviour, IPointerDownHandler, IPointerUpHa
         {
             case CardType.Attack:
                 cardBackground.sprite = attackFrame;
+                cardNameAttack.text = newCardData.CardName;
+                cardNameAttackObject.SetActive(true);
                 break;
             case CardType.Defense:
                 cardBackground.sprite = defenseFrame;
+                cardNameDefense.text = newCardData.CardName;
+                cardNameDefenseObject.SetActive(true);
                 break;
             case CardType.Neutral:
                 cardBackground.sprite = neutralFrame;
+                cardNameNeutral.text = newCardData.CardName;
+                cardNameNeutralObject.SetActive(true);
                 break;
         }
 
