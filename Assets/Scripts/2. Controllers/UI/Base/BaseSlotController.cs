@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 
-public abstract class BaseSlotController<T> : MonoBehaviour, IDropHandler
+public abstract class BaseSlotController<T> : MonoBehaviour, IDropHandler, IPointerClickHandler
 {
     [SerializeField] protected BaseSlotManager<T> slotManager;
     protected T currentSlottedItem;
@@ -24,5 +24,10 @@ public abstract class BaseSlotController<T> : MonoBehaviour, IDropHandler
     public void HandleDrag(PointerEventData eventData)
     {
         slotManager.HandleDrag(eventData);
+    }
+
+    public virtual void OnPointerClick(PointerEventData eventData)
+    {
+        return;
     }
 }

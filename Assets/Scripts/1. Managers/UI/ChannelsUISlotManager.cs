@@ -222,6 +222,8 @@ public class ChannelsUISlotManager : BaseSlotManager<CardUIController>
     {
         if(ValidateCardChannelSelection(newData, slot))
             AddItemToCollection(newData, slot);
+
+        CombatManager.instance.CardClickController.ClearClickedCard();
     }
 
     private bool ValidateCardChannelSelection(CardUIController newData, BaseSlotController<CardUIController> slot)

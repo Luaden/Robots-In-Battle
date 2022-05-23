@@ -18,17 +18,35 @@ public class CardUISlotController : BaseSlotController<CardUIController>
 
     public override void OnDrop(PointerEventData eventData)
     {
-        if (eventData.pointerDrag.GetComponent<CardUIController>() == null)
+        if (eventData == null)
+            return; 
+        
+        if(eventData.pointerDrag != null)
         {
-            Debug.Log("Item was dropped in a slot that does not fit it.");
-            return;
-        }
+            if (eventData.pointerDrag.GetComponent<CardUIController>() == null)
+                return;
 
-        if (CombatManager.instance.CanPlayCards && eventData.pointerDrag.GetComponent<CardUIController>().IsPlayerCard)
-        {
-            slotManager.HandleDrop(eventData, eventData.pointerDrag.GetComponent<CardUIController>(), this);
+            if (CombatManager.instance.CanPlayCards && eventData.pointerDrag.GetComponent<CardUIController>().IsPlayerCard)
+            {
+                slotManager.HandleDrop(eventData, eventData.pointerDrag.GetComponent<CardUIController>(), this);
+            }
         }
     }
+
+    public override void OnPointerClick(PointerEventData eventData)
+    {
+        if(CombatManager.instance != null)
+        {
+            CardUIController newEventData = CombatManager.instance.CardClickController.GetCardFromClick();
+
+            if (newEventData == null)
+                return;
+
+            if (CombatManager.instance.CanPlayCards && newEventData.IsPlayerCard)
+                slotManager.HandleDrop(eventData, newEventData, this);
+        }
+    }
+
     private void Update()
     {
         if(channelFlag != Channels.None)
