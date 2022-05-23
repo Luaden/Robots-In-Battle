@@ -6,6 +6,7 @@ using System.Linq;
 public class GameManager : MonoBehaviour
 {
     [Header("Game Settings")]
+    public bool isTrailerMaking;
     [SerializeField] protected float timeBetweenFights;
     [SerializeField] protected int playerCurrencyGainOnWin;
     [Space]

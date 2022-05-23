@@ -131,6 +131,9 @@ public class HUDMechComponentPopupController : BaseUIElement<MechSelect>
 
     private void OnSelectChannel(Channels destinationChannel, MechSelect destinationMech, Channels originChannels)
     {
+        if (GameManager.instance.isTrailerMaking)
+            return;
+
         if(destinationChannel == Channels.None || destinationMech == MechSelect.None)
         {
             UpdateUI(MechSelect.None);

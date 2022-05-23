@@ -92,7 +92,7 @@ public class PilotEffectManager : MonoBehaviour
         {
             if (opponentEffects.HasFlag(ActiveEffects.Jazzersize))
             {
-                CombatManager.instance.CombatAnimationManager.SetMechAnimation(new AnimationQueueObject(CharacterSelect.Opponent, AnimationType.SpecialMid,
+                CombatManager.instance.CombatAnimationManager.SetMechAnimation(new AnimationQueueObject(CharacterSelect.Opponent, AnimationType.Jazzersize,
                                                                                                            CharacterSelect.Player, AnimationType.Idle));
                 CombatManager.instance.CombatEffectManager.EnablePilotEffects(CharacterSelect.Opponent, ActiveEffects.Jazzersize);
 

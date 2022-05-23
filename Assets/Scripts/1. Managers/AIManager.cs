@@ -83,6 +83,9 @@ public class AIManager : MonoBehaviour
 
     private void Start()
     {
+        if (GameManager.instance.PlayerWins > 0)
+            playNoAttacks = false;
+
         aIDialogueController = GetComponent<AIDialogueController>();
         CombatManager.OnStartNewTurn += BuildCardChannelPairA;
         ChannelsUISlotManager.OnSlotFilled += BuildCardChannelPairB;

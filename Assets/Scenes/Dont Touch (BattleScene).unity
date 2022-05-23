@@ -130,10 +130,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 1309980378889028130, guid: fda3282e074714e48b78fc797600f2d9, type: 3}
-      propertyPath: m_AnchoredPosition.y
-      value: -10.000122
-      objectReference: {fileID: 0}
     - target: {fileID: 1318728399973563444, guid: fda3282e074714e48b78fc797600f2d9, type: 3}
       propertyPath: m_Name
       value: Combat Canvas
@@ -238,6 +234,26 @@ PrefabInstance:
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 607359503}
+    - target: {fileID: 3308787729623393425, guid: fda3282e074714e48b78fc797600f2d9, type: 3}
+      propertyPath: pointsGainedForWin
+      value: 50
+      objectReference: {fileID: 0}
+    - target: {fileID: 3308787729623393425, guid: fda3282e074714e48b78fc797600f2d9, type: 3}
+      propertyPath: turnLimitForMaxPoints
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 3308787729623393425, guid: fda3282e074714e48b78fc797600f2d9, type: 3}
+      propertyPath: pointLossPerHealthLoss
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 3308787729623393425, guid: fda3282e074714e48b78fc797600f2d9, type: 3}
+      propertyPath: pointsGainedForNoHealthLoss
+      value: 50
+      objectReference: {fileID: 0}
+    - target: {fileID: 3308787729623393425, guid: fda3282e074714e48b78fc797600f2d9, type: 3}
+      propertyPath: pointsGainedForWinUnderTurnLimit
+      value: 50
+      objectReference: {fileID: 0}
     - target: {fileID: 3332088084043860751, guid: fda3282e074714e48b78fc797600f2d9, type: 3}
       propertyPath: playerMechAnimationController
       value: 
@@ -246,22 +262,6 @@ PrefabInstance:
       propertyPath: opponentMechAnimationController
       value: 
       objectReference: {fileID: 1744905463}
-    - target: {fileID: 7687182243779946435, guid: fda3282e074714e48b78fc797600f2d9, type: 3}
-      propertyPath: m_AnchoredPosition.y
-      value: -21.000015
-      objectReference: {fileID: 0}
-    - target: {fileID: 7687182244163790646, guid: fda3282e074714e48b78fc797600f2d9, type: 3}
-      propertyPath: m_AnchoredPosition.x
-      value: -614.00006
-      objectReference: {fileID: 0}
-    - target: {fileID: 7687182244163790646, guid: fda3282e074714e48b78fc797600f2d9, type: 3}
-      propertyPath: m_AnchoredPosition.y
-      value: -14
-      objectReference: {fileID: 0}
-    - target: {fileID: 8792695408190782294, guid: fda3282e074714e48b78fc797600f2d9, type: 3}
-      propertyPath: m_AnchoredPosition.y
-      value: -21.000015
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: fda3282e074714e48b78fc797600f2d9, type: 3}
 --- !u!108 &18726013 stripped
@@ -624,7 +624,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9220097237095229161, guid: aa1799106a844084581ba3e4a87718f3, type: 3}
       propertyPath: xDriftMaximum
-      value: 1
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 9220097237095229161, guid: aa1799106a844084581ba3e4a87718f3, type: 3}
       propertyPath: yDriftMaximum
@@ -644,7 +644,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9220097237095229161, guid: aa1799106a844084581ba3e4a87718f3, type: 3}
       propertyPath: trailerCamAnimations
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 9220097237095229162, guid: aa1799106a844084581ba3e4a87718f3, type: 3}
       propertyPath: m_Name
@@ -1540,12 +1540,20 @@ PrefabInstance:
       value: -0.9990516
       objectReference: {fileID: 0}
     - target: {fileID: 6137217525460879633, guid: e3c6543c1d35252419c196a0be9a7101, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6137217525460879633, guid: e3c6543c1d35252419c196a0be9a7101, type: 3}
       propertyPath: m_LocalRotation.x
       value: 0.00000003496378
       objectReference: {fileID: 0}
     - target: {fileID: 6137217525460879633, guid: e3c6543c1d35252419c196a0be9a7101, type: 3}
       propertyPath: m_LocalRotation.y
       value: 0.0000016182203
+      objectReference: {fileID: 0}
+    - target: {fileID: 6137217525460879633, guid: e3c6543c1d35252419c196a0be9a7101, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0.000000029795366
       objectReference: {fileID: 0}
     - target: {fileID: 6196832960994739655, guid: e3c6543c1d35252419c196a0be9a7101, type: 3}
       propertyPath: m_LocalRotation.w
