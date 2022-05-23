@@ -5,7 +5,8 @@ using UnityEngine.UI;
 using UnityEngine.EventSystems;
 using TMPro;
 
-public class CardUIController : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, IPointerEnterHandler, IPointerExitHandler, IBeginDragHandler, IEndDragHandler, IDragHandler
+public class CardUIController : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, IPointerEnterHandler, IPointerExitHandler, 
+                                               IBeginDragHandler, IEndDragHandler, IDragHandler, IPointerClickHandler
 {
     [Header("Card Attributes")]
     [SerializeField] private Image cardBackground;
@@ -156,6 +157,14 @@ public class CardUIController : MonoBehaviour, IPointerDownHandler, IPointerUpHa
             }
             else
                 OnPickUp?.Invoke(cardData.PossibleChannels, MechSelect.Player, Channels.None);
+        }
+    }
+
+    public void OnPointerClick(PointerEventData eventData)
+    {
+        if(CombatManager.instance != null & isPlayerCard & CombatManager.instance.CanPlayCards)
+        {
+            CombatManager.instance.CardClickController.HandleClick(eventData);
         }
     }
 
