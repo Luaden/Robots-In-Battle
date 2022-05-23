@@ -198,7 +198,7 @@ public class EventManager : MonoBehaviour
                 case EventObjective.EndFightWithEquippedItem:
                     if (playerMech.MechHead.SOItemDataObject != objective.EventObjectiveRequiredComponent &&
                         playerMech.MechTorso.SOItemDataObject != objective.EventObjectiveRequiredComponent &&
-                        playerMech.MechArms.SOItemDataObject != objective.EventObjectiveRequiredComponent && 
+                        playerMech.MechHead.SOItemDataObject != objective.EventObjectiveRequiredComponent && 
                         playerMech.MechLegs.SOItemDataObject != objective.EventObjectiveRequiredComponent)
                         return false;
                         break;

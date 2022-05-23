@@ -473,7 +473,7 @@ public class CombatEffectManager : MonoBehaviour
             case MechComponent.Arms:
                 if (characterAdding == CharacterSelect.Player)
                 {
-                    ElementType currentElement = CombatManager.instance.OpponentFighter.FighterMech.MechArms.ComponentElement;
+                    ElementType currentElement = CombatManager.instance.OpponentFighter.FighterMech.MechHead.ComponentElement;
 
                     if (currentElement == ElementType.None)
                         return;
@@ -515,7 +515,7 @@ public class CombatEffectManager : MonoBehaviour
 
                 if (characterAdding == CharacterSelect.Opponent)
                 {
-                    ElementType currentElement = CombatManager.instance.PlayerFighter.FighterMech.MechArms.ComponentElement;
+                    ElementType currentElement = CombatManager.instance.PlayerFighter.FighterMech.MechHead.ComponentElement;
 
                     if (currentElement == ElementType.None)
                         return;
@@ -825,7 +825,7 @@ public class CombatEffectManager : MonoBehaviour
             switch (channel)
             {
                 case Channels.High:
-                    damageToReturn = Mathf.RoundToInt(damageToReturn * (1 + CombatManager.instance.PlayerFighter.FighterMech.MechArms.CDMFromComponent));
+                    damageToReturn = Mathf.RoundToInt(damageToReturn * (1 + CombatManager.instance.PlayerFighter.FighterMech.MechHead.CDMFromComponent));
                     break;
                 case Channels.Mid:
                     damageToReturn = Mathf.RoundToInt(damageToReturn * (1 + CombatManager.instance.PlayerFighter.FighterMech.MechLegs.CDMFromComponent));
@@ -842,7 +842,7 @@ public class CombatEffectManager : MonoBehaviour
             switch (channel)
             {
                 case Channels.High:
-                    damageToReturn = Mathf.RoundToInt(damageToReturn * (1 + CombatManager.instance.OpponentFighter.FighterMech.MechArms.CDMFromComponent));
+                    damageToReturn = Mathf.RoundToInt(damageToReturn * (1 + CombatManager.instance.OpponentFighter.FighterMech.MechHead.CDMFromComponent));
                     break;
                 case Channels.Mid:
                     damageToReturn = Mathf.RoundToInt(damageToReturn * (1 + CombatManager.instance.OpponentFighter.FighterMech.MechLegs.CDMFromComponent));
@@ -1405,8 +1405,8 @@ public class CombatEffectManager : MonoBehaviour
             case MechComponent.Arms:
                 if (destinationMech == CharacterSelect.Player)
                 {
-                    ElementType currentElement = CombatManager.instance.OpponentFighter.FighterMech.MechArms.ComponentElement;
-                    newStacks += CombatManager.instance.OpponentFighter.FighterMech.MechArms.ExtraElementStacks;
+                    ElementType currentElement = CombatManager.instance.OpponentFighter.FighterMech.MechHead.ComponentElement;
+                    newStacks += CombatManager.instance.OpponentFighter.FighterMech.MechHead.ExtraElementStacks;
 
                     if (currentElement == ElementType.None)
                         return;
@@ -1459,8 +1459,8 @@ public class CombatEffectManager : MonoBehaviour
 
                 if (destinationMech == CharacterSelect.Opponent)
                 {
-                    ElementType currentElement = CombatManager.instance.PlayerFighter.FighterMech.MechArms.ComponentElement;
-                    newStacks += CombatManager.instance.PlayerFighter.FighterMech.MechArms.ExtraElementStacks;
+                    ElementType currentElement = CombatManager.instance.PlayerFighter.FighterMech.MechHead.ComponentElement;
+                    newStacks += CombatManager.instance.PlayerFighter.FighterMech.MechHead.ExtraElementStacks;
 
                     if (currentElement == ElementType.None)
                         return;

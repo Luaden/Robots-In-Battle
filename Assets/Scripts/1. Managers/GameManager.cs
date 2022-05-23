@@ -19,6 +19,7 @@ public class GameManager : MonoBehaviour
     private int currencyGainModifier = 0;
     private int enemyHealthModifier = 0;
     private List<SOEventObject> activeEvents;
+    private FighterDataObject nextFighter;
 
     private FighterBuildController fighterBuildController;
     private DowntimeMechBuilderController playerMechController;
@@ -40,6 +41,7 @@ public class GameManager : MonoBehaviour
     public int PlayerCurrencyGainOnWin { get => playerCurrencyGainOnWin + currencyGainModifier; set => currencyGainModifier = value; }
     public List<SOEventObject> ActiveEvents { get => activeEvents; }
     public PlayerDataObject Player { get => playerData; }
+    public FighterDataObject NextFighter { get => nextFighter; set => nextFighter = value; }
 
     public delegate void onUpdatePlayerCurrencies();
     public static event onUpdatePlayerCurrencies OnUpdatePlayerCurrencies;

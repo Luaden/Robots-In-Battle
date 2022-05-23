@@ -6,6 +6,10 @@ public class MechAnimationController : MonoBehaviour
 {
     [SerializeField] private Animator animator;
     [SerializeField] private CharacterSelect mechController;
+    [SerializeField] private GameObject headDamageEffect;
+    [SerializeField] private GameObject torsoDamageEffect;
+    [SerializeField] private GameObject legDamageEffect;
+
     private bool isAnimating;
 
     public delegate void onAttackingPlayer();
@@ -89,7 +93,7 @@ public class MechAnimationController : MonoBehaviour
 
     public void SetMechElements(MechObject mechObject)
     {
-        switch (mechObject.MechArms.ComponentElement)
+        switch (mechObject.MechHead.ComponentElement)
         {
             case ElementType.None:
                 break;
@@ -128,11 +132,40 @@ public class MechAnimationController : MonoBehaviour
             case ElementType.Void:
                 break;
         }
+
+        if (mechObject.MechHead.ComponentCurrentHP <= 0)
+            BreakComponent(MechComponent.Head);
+        if (mechObject.MechTorso.ComponentCurrentHP <= 0)
+            BreakComponent(MechComponent.Torso);
+        if (mechObject.MechLegs.ComponentCurrentHP <= 0)
+            BreakComponent(MechComponent.Legs);
     }
 
     public void SetMechBossStatus(bool isBoss)
     {
         animator.SetBool("isBoss", isBoss);
+    }
+
+    public void BreakComponent(MechComponent componentType)
+    {
+        switch (componentType)
+        {
+            case MechComponent.None:
+                break;
+            case MechComponent.Head:
+                headDamageEffect.SetActive(true);
+                break;
+            case MechComponent.Torso:
+                torsoDamageEffect.SetActive(true);
+                break;
+            case MechComponent.Arms:
+                break;
+            case MechComponent.Legs:
+                break;
+                legDamageEffect.SetActive(true);
+            case MechComponent.Back:
+                break;
+        }
     }
 
     private void MoveCameraToAttack()

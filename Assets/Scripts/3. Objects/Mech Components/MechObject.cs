@@ -105,13 +105,13 @@ public class MechObject
 
         switch (component)
         {
-            case MechComponent.Torso:
-                if (mechTorso.ComponentCurrentHP >= 0)
+            case MechComponent.Head:
+                if (mechArms.ComponentCurrentHP >= 0)
                 {
-                    mechTorso.ComponentCurrentHP -= damageToDeal;
+                    mechArms.ComponentCurrentHP -= damageToDeal;
 
                     if (mechTorso.ComponentCurrentHP < 0)
-                        bonusDamage = Mathf.Abs(mechTorso.ComponentCurrentHP);
+                        bonusDamage = Mathf.Abs(mechArms.ComponentCurrentHP);
                     break;
                 }
                 else
@@ -120,13 +120,13 @@ public class MechObject
                     break;
                 }
 
-            case MechComponent.Arms:
-                if (mechArms.ComponentCurrentHP >= 0)
+            case MechComponent.Torso:
+                if (mechTorso.ComponentCurrentHP >= 0)
                 {
-                    mechArms.ComponentCurrentHP -= damageToDeal;
+                    mechTorso.ComponentCurrentHP -= damageToDeal;
 
                     if (mechTorso.ComponentCurrentHP < 0)
-                        bonusDamage = Mathf.Abs(mechArms.ComponentCurrentHP);
+                        bonusDamage = Mathf.Abs(mechTorso.ComponentCurrentHP);
                     break;
                 }
                 else
@@ -152,7 +152,7 @@ public class MechObject
 
             case MechComponent.None:
                 break;
-            case MechComponent.Head:
+            case MechComponent.Arms:
                 break;
             case MechComponent.Back:
                 break;
