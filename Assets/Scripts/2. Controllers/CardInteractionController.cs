@@ -343,7 +343,6 @@ public class CardInteractionController
             }
 
 
-            Debug.Log("One iteration.");
             combatQueueObject.damageQueue = newDamageQueue;
             combatQueueObject.animationQueue = newAnimations;
 

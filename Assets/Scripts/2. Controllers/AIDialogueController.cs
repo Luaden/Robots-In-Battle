@@ -29,8 +29,7 @@ public class AIDialogueController : MonoBehaviour
         newConversation.firstCharacterStartsDialogue = true;
         newConversation.firstCharacterIsPlayer = false;
         newConversation.firstCharacterDialogue.Add(GetRandomDialogue(aIIntroDialogue));
-        newConversation.secondCharacterDialogue.Add(
-            GetRandomDialogue(CombatManager.instance.PlayerFighter.FighterCompleteCharacter.DialogueModule.IntroResponseDialogue));
+        newConversation.secondCharacterDialogue.Add(GetRandomDialogue(CombatManager.instance.PlayerFighter.FighterCompleteCharacter.DialogueModule.IntroResponseDialogue));
 
         CombatManager.instance.PopupUIManager.HandlePopup(newConversation);
     }
@@ -76,7 +75,7 @@ public class AIDialogueController : MonoBehaviour
 
     public void PlayDialogueInOrder()
     {
-        if(dialogueIndex == fightDialogue.Count - 1)
+        if(dialogueIndex == fightDialogue.Count)
         {
             OnDialogueComplete?.Invoke();
             return;

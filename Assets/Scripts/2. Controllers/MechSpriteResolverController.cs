@@ -23,9 +23,18 @@ public class MechSpriteResolverController : MonoBehaviour
         headSpriteResolver.SetCategoryAndLabel(headSpriteResolver.GetCategory(), newHead.PrimaryComponentSpriteID);
     }
 
+    public void UpdateHeadSprite(string newHead)
+    {
+        headSpriteResolver.SetCategoryAndLabel(headSpriteResolver.GetCategory(), newHead);
+    }
+
     public void UpdateTorsoSprite(MechComponentDataObject newTorso)
     {
         torsoSpriteResolver.SetCategoryAndLabel(torsoSpriteResolver.GetCategory(), newTorso.PrimaryComponentSpriteID);
+    }
+    public void UpdateTorsoSprite(string newTorso)
+    {
+        torsoSpriteResolver.SetCategoryAndLabel(torsoSpriteResolver.GetCategory(), newTorso);
     }
 
     public void UpdateArmSprites(MechComponentDataObject newArm)
@@ -37,6 +46,15 @@ public class MechSpriteResolverController : MonoBehaviour
         rightArmSecondarySpriteResolver.SetCategoryAndLabel(rightArmSecondarySpriteResolver.GetCategory(), newArm.SecondaryComponentSpriteID);
     }
 
+    public void UpdateArmSprites(string newBicep1, string newBicep2, string newArm1, string newArm2)
+    {
+        leftArmPrimarySpriteResolver.SetCategoryAndLabel(leftArmPrimarySpriteResolver.GetCategory(), newBicep2);
+        leftArmSecondarySpriteResolver.SetCategoryAndLabel(leftArmSecondarySpriteResolver.GetCategory(), newArm2);
+
+        rightArmPrimarySpriteResolver.SetCategoryAndLabel(rightArmPrimarySpriteResolver.GetCategory(), newBicep1);
+        rightArmSecondarySpriteResolver.SetCategoryAndLabel(rightArmSecondarySpriteResolver.GetCategory(), newArm1);
+    }
+
     public void UpdateLegSprites(MechComponentDataObject newLegs)
     {
         leftLegPrimarySpriteResolver.SetCategoryAndLabel(leftLegPrimarySpriteResolver.GetCategory(), newLegs.AltPrimaryComponentSpriteID);
@@ -46,5 +64,16 @@ public class MechSpriteResolverController : MonoBehaviour
         rightLegPrimarySpriteResolver.SetCategoryAndLabel(rightLegPrimarySpriteResolver.GetCategory(), newLegs.PrimaryComponentSpriteID);
         rightLegSecondarySpriteResolver.SetCategoryAndLabel(rightLegSecondarySpriteResolver.GetCategory(), newLegs.SecondaryComponentSpriteID);
         rightLegTertiarySpriteResolver.SetCategoryAndLabel(rightLegTertiarySpriteResolver.GetCategory(), newLegs.TertiaryComponentSpriteID);
+    }
+
+    public void UpdateLegSprites(string newThigh1, string newThigh2, string newLeg1, string newLeg2, string newFoot1, string newFoot2)
+    {
+        leftLegPrimarySpriteResolver.SetCategoryAndLabel(leftLegPrimarySpriteResolver.GetCategory(), newThigh2);
+        leftLegSecondarySpriteResolver.SetCategoryAndLabel(leftLegSecondarySpriteResolver.GetCategory(), newLeg2);
+        leftLegTertiarySpriteResolver.SetCategoryAndLabel(leftLegTertiarySpriteResolver.GetCategory(), newFoot2);
+
+        rightLegPrimarySpriteResolver.SetCategoryAndLabel(rightLegPrimarySpriteResolver.GetCategory(), newThigh1);
+        rightLegSecondarySpriteResolver.SetCategoryAndLabel(rightLegSecondarySpriteResolver.GetCategory(), newLeg1);
+        rightLegTertiarySpriteResolver.SetCategoryAndLabel(rightLegTertiarySpriteResolver.GetCategory(), newFoot1);
     }
 }

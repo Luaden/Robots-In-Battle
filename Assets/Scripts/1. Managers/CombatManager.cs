@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class CombatManager : MonoBehaviour
 {
+    [Header("Gameplay")]
+    [SerializeField] private int winsBeforeBoss;
+    [Space]
     [Header("Combat Modifiers")]
     [SerializeField] private int mechEnergyGain;
     [SerializeField] private float brokenComponentDamageMultiplier;
@@ -11,20 +14,22 @@ public class CombatManager : MonoBehaviour
     [SerializeField] private float guardDamageMultiplier;
     [SerializeField] private float acidComponentDamageMultiplier;
     [SerializeField] private float iceChannelEnergyReductionModifier;
-
+    [Space]
     [Header("Scene References")]
     [SerializeField] private GameObject winLossPanel;
-    [SerializeField] private GameObject reloadGameButton;
-    [SerializeField] private GameObject loadShoppingButton;
+    [SerializeField] private GameObject winPanel;
+    [SerializeField] private GameObject lossPanel;
+    [SerializeField] private GameObject fightButton;
+    [Space]
 
     #region Debug
     [Header("Debug / Testing")]
-
     [SerializeField] private bool narrateCardSelection;
     [SerializeField] private bool narrateCombat;
     [SerializeField] private bool narrateEffects;
     [SerializeField] private bool narrateAIDecisionMaking;
     [SerializeField] private bool displayAIDecisionIndicator;
+    [SerializeField] private bool playPilotEffectsOnFirstTurn;
 
     public bool NarrateCardSelection { get => narrateCardSelection; }
     public bool NarrateCombat { get => narrateCombat; }
@@ -328,7 +333,7 @@ public class CombatManager : MonoBehaviour
 
         if (GameManager.instance.PlayerWins == 0)
             InitOpponentFighter(GameManager.instance.Player.BossFighters[0]);
-        else if (GameManager.instance.PlayerWins == 3)
+        else if (GameManager.instance.PlayerWins == winsBeforeBoss)
             InitOpponentFighter(GameManager.instance.Player.BossFighters[1]);
         else
             InitOpponentFighter(GameManager.instance.Player.OtherFighters[GameManager.instance.PlayerWins]);
@@ -411,7 +416,11 @@ public class CombatManager : MonoBehaviour
         {
             if (GameManager.instance.PlayerWins == 0 && hasNotCompletedIntroDialogue)
             {
-                pilotEffectManager.ManuallyCallPilotEffects();
+                if(playPilotEffectsOnFirstTurn)
+                {
+                    pilotEffectManager.ManuallyCallPilotEffects();
+                }
+
                 hasNotCompletedIntroDialogue = false;
             }
 
@@ -433,13 +442,15 @@ public class CombatManager : MonoBehaviour
         if(hasWon)
         {
             winLossPanel.SetActive(true);
-            loadShoppingButton.SetActive(true);
+            winPanel.SetActive(true);
+            fightButton.SetActive(false);
         }
 
         if(hasLost)
         {
             winLossPanel.SetActive(true);
-            reloadGameButton.SetActive(true);
+            lossPanel.SetActive(true);
+            fightButton.SetActive(false);
         }
     }
 

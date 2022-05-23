@@ -6,6 +6,7 @@ using UnityEngine;
 public class SOEventObject : ScriptableObject
 {
     #region Introduction
+    [SerializeField] private string eventSpeakerName;
     [Header("Event Introduction")]
     [Tooltip("This will play sequentially and can be the introduction or follow on of a previous event object.")]
     [TextArea(5, 10)]
@@ -13,8 +14,15 @@ public class SOEventObject : ScriptableObject
     [Tooltip("This should be true unless the purpose of this event object is to act as the end result of a dialogue or event chain. Ticking this box indicates" +
         "that the event dialogue should be played, but that the player will have no requirements and receive no outcomes after the dialogue completes.")]
     [SerializeField] private bool eventCanBeAccepted;
+    [Tooltip("This will be the text for the button that signals acceptance.")]
+    [SerializeField] private string acceptButtonText = "Accept";
+    [Tooltip("This will be the text for the button that signals refusal.")]
+    [SerializeField] private string refuseButtonText = "Refuse";
+    [Tooltip("This will be the text for the button that closes an event.")]
+    [SerializeField] private string leaveButtonText = "Leave";
     [Tooltip("These are requirements for the player to successfully accept the event. Unsuccessful acceptance will be the result if the requirement cannot be met.")]
     [SerializeField] private List<SOEventRequirementObject> eventRequirements;
+    [Space]
     [Tooltip("This is objective will be logged and checked the next time the player returns to the workshop.")]
     [SerializeField] private List<SOEventObjectiveObject> eventObjectives;
     #endregion
@@ -66,11 +74,15 @@ public class SOEventObject : ScriptableObject
 
     public FighterDataObject AssociatedFighter { get => associatedFighter; set => associatedFighter = value; }
 
-    #region Event Intro
+    #region Event Intro Fields
+    public string EventSpeakerName { get => eventSpeakerName; }
     public List<string> EventDialogue { get => eventDialogue; }
     public bool EventCanBeAccepted { get => eventCanBeAccepted; }
     public List<SOEventRequirementObject> EventRequirements { get => eventRequirements; }
     public List<SOEventObjectiveObject> EventObjectives { get => eventObjectives; }
+    public string AcceptButtonText { get => acceptButtonText; }
+    public string RefuseButtonText { get => refuseButtonText; }
+    public string LeaveButtonText { get => leaveButtonText; }
     #endregion
 
     #region Event Follow On Dialogues
@@ -81,7 +93,7 @@ public class SOEventObject : ScriptableObject
     public SOEventObject ObjectiveFailureDialogue { get => objectiveFailureDialogue; }
     #endregion
 
-    #region Outcomes
+    #region Outcomes Fields
     public List<SOEventOutcomeObject> SuccessfulAcceptanceOutcomes { get => successfulAcceptanceOutcomes; }
     public List<SOEventOutcomeObject> RefusalOutcomes { get => refusalOutcomes; }
     public List<SOEventOutcomeObject> ObjectiveCompletionOutcomes { get => objectiveCompletionOutcomes; }

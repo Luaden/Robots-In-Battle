@@ -6,6 +6,7 @@ using UnityEngine;
 
 public class AIManager : MonoBehaviour
 {
+    [SerializeField] private bool playNoAttacks;
     private int randomizationWeight;
     private int aggressivenessWeight;
     private int defensivenessWeight;
@@ -204,20 +205,31 @@ public class AIManager : MonoBehaviour
 
     private void FinalCheck()
     {
-        if (attackA == null)
+        if(playNoAttacks)
         {
-            BuildCardChannelPairA();
-        }
+            CombatManager.instance.CardPlayManager.BuildOpponentAttackPlan(null, null);
 
-        if (attackB == null)
+            attackA = null;
+            attackB = null;
+            return;
+        }
+        else
         {
-            BuildCardChannelPairB();
+            if (attackA == null)
+            {
+                BuildCardChannelPairA();
+            }
+
+            if (attackB == null)
+            {
+                BuildCardChannelPairB();
+            }
+
+            CombatManager.instance.CardPlayManager.BuildOpponentAttackPlan(attackA, attackB);
+
+            attackA = null;
+            attackB = null;
         }
-
-        CombatManager.instance.CardPlayManager.BuildOpponentAttackPlan(attackA, attackB);
-
-        attackA = null;
-        attackB = null;
     }
 
     private List<CardPlayPriorityObject> GetCurrentPossibleCards(bool aSlot)

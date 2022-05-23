@@ -10,12 +10,15 @@ public class EventDialoguePopupController : BaseUIElement<SOEventObject>
     [SerializeField] protected GameObject popupObject;
     [SerializeField] private TMP_Text nameText;
     [SerializeField] private TMP_Text dialogueText;
+    [SerializeField] private TMP_Text acceptButtonText;
+    [SerializeField] private TMP_Text refuseButtonText;
+    [SerializeField] private TMP_Text leaveButtonText;
 
     [Header("Buttons")]
     [SerializeField] private GameObject skipDialogueButton;
     [SerializeField] private GameObject acceptDialogueButton;
     [SerializeField] private GameObject refuseDialogueButton;
-    [SerializeField] private GameObject endDialogue;
+    [SerializeField] private GameObject leaveDialogueButton;
 
     private SOEventObject currentEvent;
     private Queue<string> dialogueQueue = new Queue<string>();
@@ -31,13 +34,23 @@ public class EventDialoguePopupController : BaseUIElement<SOEventObject>
 
         currentEvent = primaryData;
 
-        nameText.text = "No Name Input";
+        nameText.text = primaryData.EventSpeakerName;
 
         foreach (string dialogue in primaryData.EventDialogue)
             dialogueQueue.Enqueue(dialogue);
 
         foreach (char letter in dialogueQueue.Dequeue())
             completeDialogue.Enqueue(letter);
+
+        if(primaryData.EventCanBeAccepted)
+        {
+            acceptButtonText.text = primaryData.AcceptButtonText;
+            refuseButtonText.text = primaryData.RefuseButtonText;
+        }
+        else
+        {
+            leaveButtonText.text = primaryData.LeaveButtonText;
+        }
 
         skipDialogueButton.SetActive(true);
         popupObject.SetActive(true);
@@ -84,7 +97,7 @@ public class EventDialoguePopupController : BaseUIElement<SOEventObject>
         dialogueQueue = new Queue<string>();
 
         skipDialogueButton.SetActive(false);
-        endDialogue.SetActive(false);
+        leaveDialogueButton.SetActive(false);
         acceptDialogueButton.SetActive(false);
         refuseDialogueButton.SetActive(false);
         popupObject.SetActive(false);
@@ -128,7 +141,7 @@ public class EventDialoguePopupController : BaseUIElement<SOEventObject>
                 acceptDialogueButton.SetActive(true);
                 refuseDialogueButton.SetActive(true);
                 skipDialogueButton.SetActive(false);
-                endDialogue.SetActive(false);
+                leaveDialogueButton.SetActive(false);
                 dialogueComplete = true;
             }
             if(!currentEvent.EventCanBeAccepted)
@@ -136,7 +149,7 @@ public class EventDialoguePopupController : BaseUIElement<SOEventObject>
                 acceptDialogueButton.SetActive(false);
                 refuseDialogueButton.SetActive(false);
                 skipDialogueButton.SetActive(false);
-                endDialogue.SetActive(true);
+                leaveDialogueButton.SetActive(true);
                 dialogueComplete = true;
             }
         }
