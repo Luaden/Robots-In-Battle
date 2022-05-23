@@ -27,19 +27,37 @@ public class StatTrackerController : MonoBehaviour
         turnsTaken = 0;
     }
 
+    [ContextMenu("Test")]
     public void GameOver(bool playerWon)
     {
         int maxPoints = pointsGainedForNoHealthLoss + pointsGainedForWin + pointsGainedForWinUnderTurnLimit;
+        Debug.Log("Max possible points: " + maxPoints);
 
-        pointsForPlayerHP = playerStartingHealth - CombatManager.instance.PlayerFighter.FighterMech.MechCurrentHP;
-        pointsForPlayerHP *= pointLossPerHealthLoss;
-        pointsForPlayerHP = pointsGainedForNoHealthLoss - pointsForPlayerHP;
-
-        if (turnsTaken <= turnLimitForMaxPoints)
-            pointsForTurnLimit = pointsGainedForWinUnderTurnLimit;
+        if(CombatManager.instance.PlayerFighter.FighterMech.MechCurrentHP == playerStartingHealth)
+        {
+            pointsForPlayerHP = pointsGainedForNoHealthLoss;
+            Debug.Log("Points for Player HP: " + pointsForPlayerHP);
+        }
         else
         {
-            pointsForTurnLimit = Mathf.RoundToInt(pointsGainedForWinUnderTurnLimit * (turnLimitForMaxPoints / turnsTaken));
+            int healthLost = playerStartingHealth - CombatManager.instance.PlayerFighter.FighterMech.MechCurrentHP;
+            int pointLoss = pointLossPerHealthLoss * healthLost;
+            pointsForPlayerHP = pointsGainedForNoHealthLoss - pointLoss;
+            Debug.Log("Points lost due to health loss: " + pointLoss);
+            Debug.Log("Points for Player HP: " + pointsForPlayerHP);
+        }
+
+        if (turnsTaken <= turnLimitForMaxPoints)
+        {
+            pointsForTurnLimit = pointsGainedForWinUnderTurnLimit;
+            Debug.Log("Points for Turn Limit: " + pointsForTurnLimit);
+        }
+        else
+        {
+            Debug.Log("Turn limit: " + turnLimitForMaxPoints);
+            Debug.Log("Turns taken: " + turnsTaken);
+            pointsForTurnLimit = Mathf.RoundToInt(pointsGainedForWinUnderTurnLimit * ((float)turnLimitForMaxPoints / (float)turnsTaken));
+            Debug.Log("Points for Turn Limit: " + pointsForTurnLimit);
         }
 
         if (playerWon)
@@ -47,8 +65,8 @@ public class StatTrackerController : MonoBehaviour
         else
             pointsForWin = 0;
 
-        playerTotalScore = (pointsForPlayerHP + pointsForTurnLimit + pointsForWin) / maxPoints;
-        Debug.Log("Player Score: " + playerTotalScore * 100);
+        playerTotalScore = ((float)(pointsForPlayerHP + pointsForTurnLimit + pointsForWin) / (float)maxPoints);
+        Debug.Log("Player score percentile: " + (playerTotalScore * 100));
     }
 
     private void Start()

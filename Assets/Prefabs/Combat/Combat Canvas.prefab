@@ -645,11 +645,11 @@ GameObject:
   m_Component:
   - component: {fileID: 385108169453431275}
   - component: {fileID: 385108169453431272}
+  - component: {fileID: 3308787729623393425}
   - component: {fileID: 385108169453431274}
   - component: {fileID: 5349775949421294362}
   - component: {fileID: 7508849027245043434}
   - component: {fileID: 1405654908546983705}
-  - component: {fileID: 3308787729623393425}
   m_Layer: 0
   m_Name: Combat Manager
   m_TagString: Untagged
@@ -701,6 +701,23 @@ MonoBehaviour:
   narrateAIDecisionMaking: 0
   displayAIDecisionIndicator: 0
   playPilotEffectsOnFirstTurn: 1
+--- !u!114 &3308787729623393425
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 385108169453431270}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e59a1eafa71a75b4baa0bd7421f7d6cd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  turnLimitForMaxPoints: 0
+  pointsGainedForWinUnderTurnLimit: 0
+  pointLossPerHealthLoss: 0
+  pointsGainedForNoHealthLoss: 0
+  pointsGainedForWin: 0
 --- !u!114 &385108169453431274
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -750,23 +767,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   effectDelayTimer: 1
---- !u!114 &3308787729623393425
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 385108169453431270}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e59a1eafa71a75b4baa0bd7421f7d6cd, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  turnLimitForMaxPoints: 0
-  pointsGainedForWinUnderTurnLimit: 0
-  pointLossPerHealthLoss: 0
-  pointsGainedForNoHealthLoss: 0
-  pointsGainedForWin: 0
 --- !u!1 &491813949901296150
 GameObject:
   m_ObjectHideFlags: 0
