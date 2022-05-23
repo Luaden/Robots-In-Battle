@@ -161,7 +161,7 @@ public class EventManager : MonoBehaviour
     {
         int requiredCurrency = 0;
 
-        if (currentEvent.EventRequirements == null)
+        if (currentEvent.EventRequirements == null || currentEvent.EventRequirements.Count == 0)
             return true;
 
         foreach(SOEventRequirementObject requirement in currentEvent.EventRequirements)

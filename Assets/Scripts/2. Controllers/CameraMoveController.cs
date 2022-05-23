@@ -5,6 +5,7 @@ using TMPro;
 
 public class CameraMoveController : MonoBehaviour
 {
+    [SerializeField] private bool trailerCamAnimations;
     [SerializeField] private float xDriftMaximum;
     [SerializeField] private float yDriftMaximum;
     [SerializeField] private float yDriftMinimum;
@@ -32,6 +33,11 @@ public class CameraMoveController : MonoBehaviour
         cameraMovementDisabled = !cameraMovementDisabled;
     }
 
+    public void EnablePlayerHasControl()
+    {
+        playerHasControl = true;
+    }
+
     private void Start()
     {
         if (SystemInfo.supportsGyroscope)
@@ -48,7 +54,6 @@ public class CameraMoveController : MonoBehaviour
         startRot = transform.rotation;
 
 
-        CombatSequenceManager.OnCombatComplete += EnablePlayerHasControl;
         MechAnimationController.OnAttackingPlayer += AttackingPlayer;
         MechAnimationController.OnAttackingOpponent += AttackingOpponent;
 
@@ -66,13 +71,19 @@ public class CameraMoveController : MonoBehaviour
 
     private void OnDestroy()
     {
-        CombatSequenceManager.OnCombatComplete -= EnablePlayerHasControl;
         MechAnimationController.OnAttackingPlayer -= AttackingPlayer;
         MechAnimationController.OnAttackingOpponent -= AttackingOpponent;
     }
 
     public void AttackingOpponent()
     {
+        if (trailerCamAnimations && GameManager.instance.PlayerWins == 0)
+        {
+            playerHasControl = false;
+            cameraAnim.SetTrigger("isFilmingADopeTrailer");
+            return;
+        }
+
         if (!cameraMovementDisabled)
         {
             if (gyroEnabled)
@@ -146,10 +157,5 @@ public class CameraMoveController : MonoBehaviour
 
             transform.position = startPos;
         }
-    }
-
-    private void EnablePlayerHasControl()
-    {
-        playerHasControl = true;
     }
 }
