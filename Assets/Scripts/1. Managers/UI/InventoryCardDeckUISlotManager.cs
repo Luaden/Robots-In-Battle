@@ -7,6 +7,12 @@ public class InventoryCardDeckUISlotManager : BaseSlotManager<ShopItemUIControll
 {
     [SerializeField] private GameObject slotContainer;
     [SerializeField] private GameObject slotPrefab;
+    [SerializeField] private GameObject deckPanel;
+    [SerializeField] private CanvasGroup canvasGroup;
+
+    [SerializeField] private GameObject fadeObject;
+    [SerializeField] private float fadeInTime;
+    [SerializeField] private float fadeOutTime;
     public override void AddItemToCollection(ShopItemUIController item, BaseSlotController<ShopItemUIController> slot)
     {
         if (slot != null && slot.CurrentSlottedItem == null)
@@ -71,8 +77,32 @@ public class InventoryCardDeckUISlotManager : BaseSlotManager<ShopItemUIControll
 
     private void Start()
     {
-        foreach (SOItemDataObject item in GameManager.instance.PlayerDeckController.PlayerDeck)
-            if (item.ItemType == ItemType.Card)
-                DowntimeManager.instance.ShopItemUIBuildController.BuildAndDisplayItemUI(item, this);
+        if(DowntimeManager.instance != null)
+        {
+            foreach (SOItemDataObject item in GameManager.instance.PlayerDeckController.PlayerDeck)
+                if (item.ItemType == ItemType.Card)
+                    DowntimeManager.instance.ShopItemUIBuildController.BuildAndDisplayItemUI(item, this);
+        }
+        else if(CombatManager.instance != null)
+        {
+            foreach (SOItemDataObject item in GameManager.instance.PlayerDeckController.PlayerDeck)
+                if (item.ItemType == ItemType.Card)
+                    CombatManager.instance.CardUIManager.BuildInventoryCard(item);
+        }
+    }
+
+    public void SetActive()
+    {
+        if (!deckPanel.activeInHierarchy)
+        {
+            fadeObject.SetActive(true);
+            deckPanel.SetActive(true);
+
+        }
+        else
+        {
+            fadeObject.SetActive(false);
+            deckPanel.SetActive(false);
+        }
     }
 }
