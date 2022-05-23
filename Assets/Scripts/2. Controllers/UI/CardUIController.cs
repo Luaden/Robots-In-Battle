@@ -5,7 +5,7 @@ using UnityEngine.UI;
 using UnityEngine.EventSystems;
 using TMPro;
 
-public class CardUIController : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IBeginDragHandler, IEndDragHandler, IDragHandler, IPointerClickHandler
+public class CardUIController : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerUpHandler, IBeginDragHandler, IEndDragHandler, IDragHandler, IPointerClickHandler
 {
     [Header("Card Attributes")]
     [SerializeField] private Image cardBackground;
@@ -25,13 +25,15 @@ public class CardUIController : MonoBehaviour, IPointerEnterHandler, IPointerExi
     [Header("Required Interaction Components")]
     [SerializeField] private RectTransform draggableRectTransform;
     [SerializeField] private CanvasGroup draggableCanvasGroup;
+    [SerializeField] private GameObject cardHolder;
 
     [Header("Interaction Attributes")]
     [SerializeField] private float travelSpeed;
     [SerializeField] private Color fullColor;
     [SerializeField] private Color fadeColor;
+    [SerializeField] private Animator cardAnimator;
     private Transform previousParentObject;
-    [SerializeField] private bool isPlayerCard;
+    private bool isPlayerCard;
 
     [Header("Card Frames")]
     [SerializeField] private Sprite attackFrame;
@@ -46,7 +48,6 @@ public class CardUIController : MonoBehaviour, IPointerEnterHandler, IPointerExi
     [SerializeField] private Sprite guardIcon;
 
     private CardDataObject cardData;
-    private Animator cardAnimator;
     private BaseSlotController<CardUIController> cardSlotController;
     
     private bool isPickedUp = false;
@@ -64,7 +65,6 @@ public class CardUIController : MonoBehaviour, IPointerEnterHandler, IPointerExi
     {
         cardData = newCardData;
         newCardData.CardUIObject = this.gameObject;
-        cardAnimator = GetComponent<Animator>();
 
         switch (newCardData.CardCategory)
         {
@@ -136,6 +136,23 @@ public class CardUIController : MonoBehaviour, IPointerEnterHandler, IPointerExi
     {
         if (isPlayerCard && CombatManager.instance.CanPlayCards)
         {
+            if (cardSlotController.SlotManager == CombatManager.instance.ChannelsUISlotManager)
+                return;
+
+            CombatManager.instance.CardClickController.HandleClick(eventData);
+        }
+    }
+
+    public void OnPointerUp(PointerEventData eventData)
+    {
+        if(cardSlotController.SlotManager != CombatManager.instance.ChannelsUISlotManager)
+            GrowCard();
+    }
+
+    public virtual void OnBeginDrag(PointerEventData eventData)
+    {
+        if (isPlayerCard && CombatManager.instance.CanPlayCards)
+        {
             if (CardCategory.Offensive.HasFlag(cardData.CardCategory))
             {
                 switch (cardData.CardCategory)
@@ -155,30 +172,14 @@ public class CardUIController : MonoBehaviour, IPointerEnterHandler, IPointerExi
                 OnPickUp?.Invoke(cardData.PossibleChannels, MechSelect.Player, Channels.None);
         }
 
-        if (CombatManager.instance != null & isPlayerCard & CombatManager.instance.CanPlayCards)
-        {
-            CombatManager.instance.CardClickController.HandleClick(eventData);
-        }
-    }
-
-    public void OnPointerUp(PointerEventData eventData)
-    {
-        //if (isPlayerCard && CombatManager.instance.CanPlayCards)
-        //{
-        //    isPickedUp = false;
-        //    transform.SetParent(previousParentObject);
-        //    OnPickUp?.Invoke(Channels.None, MechSelect.None, Channels.None);
-        //}
-    }
-
-    public virtual void OnBeginDrag(PointerEventData eventData)
-    {
-        if(isPlayerCard && CombatManager.instance.CanPlayCards)
+        if (isPlayerCard && CombatManager.instance.CanPlayCards)
         {
             isPickedUp = true;
             transform.SetParent(cardSlotController.SlotManager.MainCanvas.transform);
             draggableCanvasGroup.blocksRaycasts = false;
             draggableCanvasGroup.alpha = .6f;
+
+            ShrinkCard();
         }
     }
     public void OnDrag(PointerEventData eventData)
@@ -198,6 +199,28 @@ public class CardUIController : MonoBehaviour, IPointerEnterHandler, IPointerExi
             draggableCanvasGroup.blocksRaycasts = true;
             draggableCanvasGroup.alpha = 1f;
         }
+    }
+
+    public void ShrinkCard()
+    {
+        cardHolder.transform.localScale = new Vector3(.75f, .75f, .75f);
+    }
+
+    public void SelectCard()
+    {
+        cardAnimator.SetBool("isSelected", true);
+        Debug.Log(cardData.CardName + " is selected.");
+    }
+
+    public void DeselectCard()
+    {
+        cardAnimator.SetBool("isSelected", false);
+        Debug.Log(cardData.CardName + " is deselected.");
+    }
+
+    public void GrowCard()
+    {
+        cardHolder.transform.localScale = new Vector3(1f, 1f, 1f);
     }
 
     public void UpdateSelectedChannel(Channels channel)

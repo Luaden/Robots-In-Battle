@@ -12,9 +12,21 @@ public class CardClickController : MonoBehaviour
         {
             if (pointerEventData.pointerClick.GetComponent<CardUIController>() == null)
                 return;
+
+            if (pointerEventData.pointerClick.GetComponent<CardUIController>() == clickedCard)
+            {
+                ClearClickedCard();
+                return;
+            }
+        }
+
+        if(clickedCard != null)
+        {
+            clickedCard.DeselectCard();
         }
 
         clickedCard = pointerEventData.pointerClick.GetComponent<CardUIController>();
+        clickedCard.SelectCard();
     }
 
     public CardUIController GetCardFromClick()
@@ -24,6 +36,10 @@ public class CardClickController : MonoBehaviour
 
     public void ClearClickedCard()
     {
+        if (clickedCard == null)
+            return;
+
+        clickedCard.DeselectCard();
         clickedCard = null;
     }
 }

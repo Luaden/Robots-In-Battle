@@ -158,6 +158,7 @@ public class ChannelsUISlotManager : BaseSlotManager<CardUIController>
                 CombatManager.instance.PreviewEnergyConsumption(CharacterSelect.Player, aCardEnergyCost);
             }
 
+            item.ShrinkCard();
             attackSlotAFilled = true;
             OnSlotFilled?.Invoke();
         }
@@ -202,6 +203,7 @@ public class ChannelsUISlotManager : BaseSlotManager<CardUIController>
                 CombatManager.instance.PreviewEnergyConsumption(CharacterSelect.Player, bCardEnergyCost);
             }
 
+            item.ShrinkCard();
             attackSlotBFilled = true;
             OnSlotFilled?.Invoke();
             return;
@@ -228,14 +230,6 @@ public class ChannelsUISlotManager : BaseSlotManager<CardUIController>
 
     private bool ValidateCardChannelSelection(CardUIController newData, BaseSlotController<CardUIController> slot)
     {
-        //if (attackSlotAFilled && attackSlotBFilled)
-        //    if(playerAttackSlotA.CurrentSlottedItem != newData && playerAttackSlotB.CurrentSlottedItem != newData)
-        //    {
-        //        CombatManager.instance.PopupUIManager.HandlePopup(CombatManager.instance.PlayerFighter.FighterName, 
-        //            "The slots for " + newData.CardData.CardName + " are already filled.", CharacterSelect.Player);
-        //        return false;
-        //    }
-
         int bonusEnergyCost = 0;
 
         if (aCardEnergyCost > 0)
@@ -275,6 +269,12 @@ public class ChannelsUISlotManager : BaseSlotManager<CardUIController>
             CombatManager.instance.PopupUIManager.HandlePopup(CombatManager.instance.PlayerFighter.FighterName, 
                 "I don't have enough energy to play that card!", CharacterSelect.Player);
             return false;
+        }
+
+        if(slot == playerAttackSlotA || slot == playerAttackSlotB)
+        {
+            CombatManager.instance.PopupUIManager.HandlePopup(CombatManager.instance.PlayerFighter.FighterName,
+                                            "I need to move the card to the channel I want to attack.", CharacterSelect.Player);
         }
 
         selectedChannel = CheckChannelSlot(slot);
