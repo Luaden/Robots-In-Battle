@@ -11,6 +11,8 @@ public class CameraMoveController : MonoBehaviour
     [SerializeField] private float yDriftMinimum;
     [SerializeField] private float mouseDriftSpeed;
     [SerializeField] private float mobileDriftSpeed;
+    [SerializeField] private GameObject cameraEnabledIcon;
+    [SerializeField] private GameObject cameraDisabledIcon;
 
     [SerializeField] private float xRotationMax = 10;
     [SerializeField] private float yRotationMax = 10;
@@ -31,6 +33,18 @@ public class CameraMoveController : MonoBehaviour
     public void ToggleCameraMovement()
     {
         cameraMovementDisabled = !cameraMovementDisabled;
+
+        if(cameraMovementDisabled)
+        {
+            cameraDisabledIcon.SetActive(true);
+            cameraEnabledIcon.SetActive(false);
+        }
+
+        if(!cameraMovementDisabled)
+        {
+            cameraDisabledIcon.SetActive(false);
+            cameraEnabledIcon.SetActive(true);
+        }
     }
 
     public void EnablePlayerHasControl()
