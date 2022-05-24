@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class InventoryCardDeckUISlotManager : BaseSlotManager<ShopItemUIController>
+public class OpponentInventoryCardDeckUISlotManager : BaseSlotManager<ShopItemUIController>
 {
     [SerializeField] private GameObject slotContainer;
     [SerializeField] private GameObject slotPrefab;
@@ -11,8 +11,6 @@ public class InventoryCardDeckUISlotManager : BaseSlotManager<ShopItemUIControll
     [SerializeField] private CanvasGroup canvasGroup;
 
     [SerializeField] private GameObject fadeObject;
-    [SerializeField] private float fadeInTime;
-    [SerializeField] private float fadeOutTime;
     public override void AddItemToCollection(ShopItemUIController item, BaseSlotController<ShopItemUIController> slot)
     {
         if (slot != null && slot.CurrentSlottedItem == null)
@@ -85,9 +83,9 @@ public class InventoryCardDeckUISlotManager : BaseSlotManager<ShopItemUIControll
         }
         else if(CombatManager.instance != null)
         {
-            foreach (SOItemDataObject item in GameManager.instance.PlayerDeckController.PlayerDeck)
+            foreach (SOItemDataObject item in CombatManager.instance.OpponentFighter.FighterDeck)
                 if (item.ItemType == ItemType.Card)
-                    CombatManager.instance.CardUIManager.BuildInventoryCard(item);
+                    CombatManager.instance.CardUIManager.BuildOpponentInventoryCard(item);
         }
     }
 
@@ -97,7 +95,6 @@ public class InventoryCardDeckUISlotManager : BaseSlotManager<ShopItemUIControll
         {
             fadeObject.SetActive(true);
             deckPanel.SetActive(true);
-
         }
         else
         {
