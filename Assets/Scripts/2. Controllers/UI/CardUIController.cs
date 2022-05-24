@@ -260,7 +260,7 @@ public class CardUIController : MonoBehaviour, IPointerEnterHandler, IPointerExi
         if (transform.parent != null)
         {
             draggableRectTransform.position =
-                    Vector3.MoveTowards(draggableRectTransform.position, transform.parent.position, travelSpeed * FindObjectOfType<Canvas>().scaleFactor * Time.deltaTime);
+                    Vector3.MoveTowards(draggableRectTransform.position, transform.parent.position, travelSpeed * Time.deltaTime);
         }
     }
 
