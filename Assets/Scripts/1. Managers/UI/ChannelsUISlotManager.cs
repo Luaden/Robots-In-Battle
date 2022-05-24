@@ -29,6 +29,8 @@ public class ChannelsUISlotManager : BaseSlotManager<CardUIController>
     public delegate void onSlotFilled();
     public static event onSlotFilled OnSlotFilled;
 
+    public delegate void onSlotFilledOrRemoved(int slotsFilled);
+    public static event onSlotFilledOrRemoved OnSlotFilledOrRemoved;
 
     public override void AddItemToCollection(CardUIController item, BaseSlotController<CardUIController> slot)
     {
@@ -161,6 +163,11 @@ public class ChannelsUISlotManager : BaseSlotManager<CardUIController>
             item.ShrinkCard();
             attackSlotAFilled = true;
             OnSlotFilled?.Invoke();
+
+            if (attackSlotBFilled)
+                OnSlotFilledOrRemoved.Invoke(2);
+            else
+                OnSlotFilledOrRemoved?.Invoke(1);
         }
 
         void FillBSlot(CardUIController item, BaseSlotController<CardUIController> slot, bool newSelectedChannel = true)
@@ -206,7 +213,11 @@ public class ChannelsUISlotManager : BaseSlotManager<CardUIController>
             item.ShrinkCard();
             attackSlotBFilled = true;
             OnSlotFilled?.Invoke();
-            return;
+
+            if (attackSlotAFilled)
+                OnSlotFilledOrRemoved.Invoke(2);
+            else
+                OnSlotFilledOrRemoved?.Invoke(1);
         }
 
         Debug.Log("No slots available in the hand to add a card to.");
@@ -311,6 +322,11 @@ public class ChannelsUISlotManager : BaseSlotManager<CardUIController>
                 CombatManager.instance.PreviewEnergyConsumption(CharacterSelect.Player, cardChannelPairObjectB.CardData.EnergyCost);
             else
                 CombatManager.instance.ResetMechEnergyHUD(CharacterSelect.Player);
+
+            if (attackSlotBFilled)
+                OnSlotFilledOrRemoved?.Invoke(1);
+            else
+                OnSlotFilledOrRemoved?.Invoke(0);
             return;
         }
 
@@ -328,6 +344,11 @@ public class ChannelsUISlotManager : BaseSlotManager<CardUIController>
                 CombatManager.instance.PreviewEnergyConsumption(CharacterSelect.Player, cardChannelPairObjectA.CardData.EnergyCost);
             else
                 CombatManager.instance.ResetMechEnergyHUD(CharacterSelect.Player);
+
+            if (attackSlotAFilled)
+                OnSlotFilledOrRemoved?.Invoke(1);
+            else
+                OnSlotFilledOrRemoved?.Invoke(0);
             return;
         }
     }
