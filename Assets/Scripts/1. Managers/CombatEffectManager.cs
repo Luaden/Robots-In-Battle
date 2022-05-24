@@ -473,7 +473,7 @@ public class CombatEffectManager : MonoBehaviour
             case MechComponent.Arms:
                 if (characterAdding == CharacterSelect.Player)
                 {
-                    ElementType currentElement = CombatManager.instance.OpponentFighter.FighterMech.MechHead.ComponentElement;
+                    ElementType currentElement = CombatManager.instance.OpponentFighter.FighterMech.MechArms.ComponentElement;
 
                     if (currentElement == ElementType.None)
                         return;
@@ -515,7 +515,7 @@ public class CombatEffectManager : MonoBehaviour
 
                 if (characterAdding == CharacterSelect.Opponent)
                 {
-                    ElementType currentElement = CombatManager.instance.PlayerFighter.FighterMech.MechHead.ComponentElement;
+                    ElementType currentElement = CombatManager.instance.PlayerFighter.FighterMech.MechArms.ComponentElement;
 
                     if (currentElement == ElementType.None)
                         return;
