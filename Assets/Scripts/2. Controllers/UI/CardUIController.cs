@@ -16,6 +16,7 @@ public class CardUIController : MonoBehaviour, IPointerEnterHandler, IPointerExi
     [SerializeField] private TMP_Text cardNameDefense;
     [SerializeField] private GameObject cardNameNeutralObject;
     [SerializeField] private TMP_Text cardNameNeutral;
+    [SerializeField] private TMP_Text energyText;
 
     [Header("Channel Icons")]
     [SerializeField] private Image highChannelIcon;
@@ -69,6 +70,7 @@ public class CardUIController : MonoBehaviour, IPointerEnterHandler, IPointerExi
     {
         cardData = newCardData;
         newCardData.CardUIObject = this.gameObject;
+        energyText.text = newCardData.EnergyCost.ToString();
 
         switch (newCardData.CardCategory)
         {
