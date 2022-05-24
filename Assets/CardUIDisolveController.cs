@@ -5,7 +5,7 @@ using UnityEngine;
 public class CardUIDisolveController : MonoBehaviour
 {
     [SerializeField] private CardUIController controller;
-    private void DestroyCardUIUI()
+    private void DestroyCardUI()
     {
         controller.DestroyCardUI();
     }

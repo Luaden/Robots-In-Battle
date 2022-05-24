@@ -285,6 +285,7 @@ public class CardUIController : MonoBehaviour, IPointerEnterHandler, IPointerExi
         }
     }
 
+    [ContextMenu("Dissolve UI")]
     public void DissolveCardUI()
     {
         cardAnimator.SetTrigger("isDissolving");
