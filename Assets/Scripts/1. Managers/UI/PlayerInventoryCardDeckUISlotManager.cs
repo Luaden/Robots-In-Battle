@@ -7,8 +7,8 @@ public class PlayerInventoryCardDeckUISlotManager : BaseSlotManager<ShopItemUICo
 {
     [SerializeField] private GameObject slotContainer;
     [SerializeField] private GameObject slotPrefab;
-    [SerializeField] private GameObject deckPanel;
-    [SerializeField] private CanvasGroup canvasGroup;
+    [SerializeField] private GameObject playerDeckPanel;
+    [SerializeField] private GameObject opponentDeckPanel;
 
     [SerializeField] private GameObject fadeObject;
     public override void AddItemToCollection(ShopItemUIController item, BaseSlotController<ShopItemUIController> slot)
@@ -91,15 +91,17 @@ public class PlayerInventoryCardDeckUISlotManager : BaseSlotManager<ShopItemUICo
 
     public void SetActive()
     {
-        if (!deckPanel.activeInHierarchy)
+        if (!playerDeckPanel.activeInHierarchy)
         {
             fadeObject.SetActive(true);
-            deckPanel.SetActive(true);
+            playerDeckPanel.SetActive(true);
+            opponentDeckPanel.SetActive(false);
         }
         else
         {
             fadeObject.SetActive(false);
-            deckPanel.SetActive(false);
+            playerDeckPanel.SetActive(false);
+            opponentDeckPanel.SetActive(false);
         }
     }
 }
