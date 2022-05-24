@@ -32,6 +32,7 @@ public class CardUIController : MonoBehaviour, IPointerEnterHandler, IPointerExi
     [SerializeField] private Color fullColor;
     [SerializeField] private Color fadeColor;
     [SerializeField] private Animator cardAnimator;
+    [SerializeField] private MeshRenderer cardRenderer;
     private Transform previousParentObject;
     private bool isPlayerCard;
 
@@ -39,6 +40,9 @@ public class CardUIController : MonoBehaviour, IPointerEnterHandler, IPointerExi
     [SerializeField] private Sprite attackFrame;
     [SerializeField] private Sprite defenseFrame;
     [SerializeField] private Sprite neutralFrame;
+    [SerializeField] private Material attackMaterial;
+    [SerializeField] private Material defenseMaterial;
+    [SerializeField] private Material neutralMaterial;
 
     [Header("Card Icons")]
     [SerializeField] private Sprite punchIcon;
@@ -96,16 +100,19 @@ public class CardUIController : MonoBehaviour, IPointerEnterHandler, IPointerExi
                 cardBackground.sprite = attackFrame;
                 cardNameAttack.text = newCardData.CardName;
                 cardNameAttackObject.SetActive(true);
+                cardRenderer.material = attackMaterial;
                 break;
             case CardType.Defense:
                 cardBackground.sprite = defenseFrame;
                 cardNameDefense.text = newCardData.CardName;
                 cardNameDefenseObject.SetActive(true);
+                cardRenderer.material = defenseMaterial;
                 break;
             case CardType.Neutral:
                 cardBackground.sprite = neutralFrame;
                 cardNameNeutral.text = newCardData.CardName;
                 cardNameNeutralObject.SetActive(true);
+                cardRenderer.material = neutralMaterial;
                 break;
         }
 
@@ -274,6 +281,11 @@ public class CardUIController : MonoBehaviour, IPointerEnterHandler, IPointerExi
             previousParentObject = newSlot.transform;
             transform.SetParent(newSlot.transform);
         }
+    }
+
+    public void DissolveCardUI()
+    {
+        cardAnimator.SetTrigger("isDissolving");
     }
 
     public void DestroyCardUI()
