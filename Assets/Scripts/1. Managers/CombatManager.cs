@@ -57,7 +57,8 @@ public class CombatManager : MonoBehaviour
     private AIManager aIManager;
     private MechSpriteSwapManager mechSpriteSwapManager;
     private StatTrackerController statTrackerController;
-    private InventoryCardDeckUISlotManager inventoryCardDeckSlotManager;
+    private PlayerInventoryCardDeckUISlotManager playerInventoryCardDeckSlotManager;
+    private OpponentInventoryCardDeckUISlotManager opponentInventoryCardDeckSlotManager;
     private CardClickController cardClickController;
 
     private FighterDataObject playerFighter;
@@ -89,7 +90,8 @@ public class CombatManager : MonoBehaviour
     public AIManager AIManager { get => aIManager; }
     public MechSpriteSwapManager MechSpriteSwapManager { get => mechSpriteSwapManager; }
     public StatTrackerController StatTrackerController { get => statTrackerController; }
-    public InventoryCardDeckUISlotManager InventoryCardDeckSlotManager { get => inventoryCardDeckSlotManager; }
+    public PlayerInventoryCardDeckUISlotManager PlayerInventoryCardDeckSlotManager { get => playerInventoryCardDeckSlotManager; }
+    public OpponentInventoryCardDeckUISlotManager OpponentInventoryCardDeckSlotManager { get => opponentInventoryCardDeckSlotManager; }
     public CardClickController CardClickController { get => cardClickController; }
 
     public int MechEnergyGain { get => mechEnergyGain; }
@@ -337,8 +339,9 @@ public class CombatManager : MonoBehaviour
         aIManager = FindObjectOfType<AIManager>(true);
         mechSpriteSwapManager = FindObjectOfType<MechSpriteSwapManager>(true);
         statTrackerController = FindObjectOfType<StatTrackerController>(true);
-        inventoryCardDeckSlotManager = FindObjectOfType<InventoryCardDeckUISlotManager>(true);
+        playerInventoryCardDeckSlotManager = FindObjectOfType<PlayerInventoryCardDeckUISlotManager>(true);
         cardClickController = FindObjectOfType<CardClickController>(true);
+        opponentInventoryCardDeckSlotManager = FindObjectOfType<OpponentInventoryCardDeckUISlotManager>(true);
     }
 
     private void Start()

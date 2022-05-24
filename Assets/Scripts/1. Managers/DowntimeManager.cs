@@ -16,7 +16,7 @@ public class DowntimeManager : MonoBehaviour
     private ShopUISlotManager shopUISlotManager;
     private ShopItemUIBuildController shopItemUIBuildController;
     private InventoryUISlotManager inventoryUISlotManager;
-    private InventoryCardDeckUISlotManager inventoryCardDeckUISlotManager;
+    private PlayerInventoryCardDeckUISlotManager inventoryCardDeckUISlotManager;
     private PopupUIManager popupUIManager;
     private ShopCameraBoomMoveController cameraBoomMoveController;
     private TournamentManager tournamentManager;
@@ -34,7 +34,7 @@ public class DowntimeManager : MonoBehaviour
     public ShopUISlotManager ShopUISlotManager { get => shopUISlotManager; }
     public ShopItemUIBuildController ShopItemUIBuildController { get => shopItemUIBuildController; }
     public InventoryUISlotManager InventoryUISlotManager { get => inventoryUISlotManager; }
-    public InventoryCardDeckUISlotManager InventoryCardDeckUISlotManager { get => inventoryCardDeckUISlotManager; }
+    public PlayerInventoryCardDeckUISlotManager InventoryCardDeckUISlotManager { get => inventoryCardDeckUISlotManager; }
     public PopupUIManager PopupUIManager { get => popupUIManager; }
     public ShopCameraBoomMoveController CameraBoomMoveController { get => cameraBoomMoveController; }
     public MechSpriteSwapManager MechSpriteSwapManager { get => mechSpriteSwapManager; }
@@ -65,7 +65,7 @@ public class DowntimeManager : MonoBehaviour
         shopUISlotManager = FindObjectOfType<ShopUISlotManager>(true);
         shopItemUIBuildController = FindObjectOfType<ShopItemUIBuildController>(true);
         inventoryUISlotManager = FindObjectOfType<InventoryUISlotManager>(true);
-        inventoryCardDeckUISlotManager = FindObjectOfType<InventoryCardDeckUISlotManager>(true);
+        inventoryCardDeckUISlotManager = FindObjectOfType<PlayerInventoryCardDeckUISlotManager>(true);
         cameraBoomMoveController = FindObjectOfType<ShopCameraBoomMoveController>(true);
         mechSpriteSwapManager = FindObjectOfType<MechSpriteSwapManager>(true);
         mechSpriteSwapManager.UpdateMechSprites(GameManager.instance.Player.PlayerFighterData.FighterMech, CharacterSelect.Player);
