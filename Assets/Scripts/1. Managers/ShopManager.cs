@@ -50,4 +50,32 @@ public class ShopManager : MonoBehaviour
         }
     }
 
+    public void RemoveItem()
+    {
+        if (currentItemSelected == null)
+        {
+            Debug.Log("You haven't selected an item to remove.");
+            return;
+        }
+
+        if (DowntimeManager.instance.RemovalCost <= GameManager.instance.PlayerBankController.GetPlayerCurrency() && (GameManager.instance.PlayerDeckController.PlayerDeck.Contains(currentItemSelected.BaseSOItemDataObject)
+            || GameManager.instance.PlayerInventoryController.PlayerInventory.Contains(currentItemSelected.MechComponentDataObject)))
+        {
+            if (currentItemSelected.BaseSOItemDataObject.ItemType == ItemType.Component)
+            {
+                GameManager.instance.PlayerInventoryController.RemoveItemFromInventory(currentItemSelected.MechComponentDataObject);
+                DowntimeManager.instance.InventoryUISlotManager.RemoveItemFromCollection(currentItemSelected);
+
+            }
+            else if(currentItemSelected.BaseSOItemDataObject.ItemType == ItemType.Card)
+            {
+                GameManager.instance.PlayerDeckController.RemoveCardFromPlayerDeck(currentItemSelected.BaseSOItemDataObject);
+                currentItemSelected.ItemSlotController.SlotManager.RemoveItemFromCollection(currentItemSelected);
+            }
+
+            GameManager.instance.PlayerBankController.SpendPlayerCurrency(DowntimeManager.instance.RemovalCost);
+        }
+
+    }
+
 }
