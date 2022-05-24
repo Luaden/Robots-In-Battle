@@ -34,6 +34,8 @@ public class MechAnimationController : MonoBehaviour
             animator.ResetTrigger("isJazzersizing");
             animator.ResetTrigger("isWinning");
             animator.ResetTrigger("isLosing");
+            animator.ResetTrigger("isDamagedFire");
+            animator.ResetTrigger("isDamagedPlasma");
             animator.SetTrigger("isIdling");
             isAnimating = false;
             return;
@@ -83,11 +85,20 @@ public class MechAnimationController : MonoBehaviour
                 animator.SetTrigger("isWinning");
                 break;
 
+            case AnimationType.DamagedFire:
+                animator.SetTrigger("isDamagedFire");
+                break;
+
+            case AnimationType.DamagedPlasma:
+                animator.SetTrigger("isDamagedPlasma");
+                break;
+
             case AnimationType.Lose:
                 animator.SetTrigger("isLosing");
                 break;
             case AnimationType.Idle:
                 break;
+
         }
     }
 

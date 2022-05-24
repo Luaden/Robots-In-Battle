@@ -17,6 +17,7 @@ public class CombatSequenceManager : MonoBehaviour
     private bool startedCombatSequences = false;
     private bool animationsComplete = true;
     private bool combatComplete = true;
+    private bool effectsComplete = true;
 
     public void AddCombatSequenceToQueue(CombatQueueObject newCombatSequence)
     {
@@ -25,6 +26,7 @@ public class CombatSequenceManager : MonoBehaviour
 
         combatSequenceCollection.Enqueue(newCombatSequence);
         combatComplete = false;
+        effectsComplete = false;
     }
 
     public void ClearCombatQueue()
@@ -74,10 +76,21 @@ public class CombatSequenceManager : MonoBehaviour
     {
         if (!combatComplete && combatSequenceCollection.Count == 0)
         {
+            if(!effectsComplete)
+            {
+                Debug.Log("Incrementing effects.");
+                CombatManager.instance.CombatEffectManager.IncrementEffectsAtTurnEnd();
+                CombatManager.instance.CombatAnimationManager.BurnCurrentCards();
+
+                effectsComplete = true;
+                return;
+            }
+
+            Debug.Log("Combat complete.");
             combatComplete = true;
             startedCombatSequences = false;
             currentCombatSequence = null;
-            CombatManager.instance.CombatAnimationManager.BurnCurrentCards();
+
             OnCombatComplete?.Invoke();
         }
         else if (!combatComplete)
