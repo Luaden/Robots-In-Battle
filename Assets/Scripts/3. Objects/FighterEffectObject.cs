@@ -138,6 +138,8 @@ public class FighterEffectObject
                 DamageEffectMechPairObject damageEffectMechPair = new DamageEffectMechPairObject();
                 damageEffectMechPair.damageToTake = pair.Value;
                 damageEffectMechPair.characterToTakeDamage = character;
+
+                CombatManager.instance.CombatAnimationManager.SetMechAnimation(character, AnimationType.DamagedFire);
                 CombatManager.instance.RemoveHealthFromMech(damageEffectMechPair);
 
                 newStacks = pair.Value - 1;
@@ -151,6 +153,7 @@ public class FighterEffectObject
                 newEnergyToRemove.firstMech = character;
                 newEnergyToRemove.firstMechEnergyRemoval = pair.Value;
 
+                CombatManager.instance.CombatAnimationManager.SetMechAnimation(character, AnimationType.DamagedPlasma);
                 CombatManager.instance.RemoveEnergyFromMechs(newEnergyToRemove);
                 CombatManager.instance.AddEnergyToMech(character == CharacterSelect.Player ? CharacterSelect.Opponent : CharacterSelect.Player, pair.Value);
             }

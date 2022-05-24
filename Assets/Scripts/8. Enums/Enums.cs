@@ -47,6 +47,8 @@ public enum AnimationType
     Jazzersize,
     Win,
     Lose,
+    DamagedFire,
+    DamagedPlasma
 }
 
 [Flags]

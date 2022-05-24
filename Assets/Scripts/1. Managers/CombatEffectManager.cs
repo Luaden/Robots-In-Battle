@@ -11,7 +11,6 @@ public class CombatEffectManager : MonoBehaviour
     public FighterEffectObject PlayerEffects { get => playerFighterEffectObject; }
     public FighterEffectObject OpponentEffects { get => opponentFighterEffectObject; }
 
-
     public void EnableCombatEffects(CardCharacterPairObject currentEffect)
     {
         if (currentEffect == null)
@@ -126,6 +125,13 @@ public class CombatEffectManager : MonoBehaviour
             }
         }
 
+        UpdateFighterBuffs();
+    }
+
+    public void IncrementEffectsAtTurnEnd()
+    {
+        playerFighterEffectObject.IncrementFighterEffects();
+        opponentFighterEffectObject.IncrementFighterEffects();
         UpdateFighterBuffs();
     }
 
@@ -418,15 +424,6 @@ public class CombatEffectManager : MonoBehaviour
     {
         playerFighterEffectObject = new FighterEffectObject(CharacterSelect.Player);
         opponentFighterEffectObject = new FighterEffectObject(CharacterSelect.Opponent);
-
-        CombatSequenceManager.OnCombatComplete += IncrementEffectsAtTurnEnd;
-        CombatSequenceManager.OnCombatComplete += UpdateFighterBuffs;
-    }
-
-    private void OnDestroy()
-    {
-        CombatSequenceManager.OnCombatComplete -= UpdateFighterBuffs;
-        CombatSequenceManager.OnCombatComplete -= IncrementEffectsAtTurnEnd;
     }
 
     private void UpdateFighterBuffs()
@@ -449,13 +446,6 @@ public class CombatEffectManager : MonoBehaviour
         CombatManager.instance.BuffUIManager.UpdateGlobalCategoryDamageBuffs(CharacterSelect.Opponent, opponentFighterEffectObject.CardCategoryDamageBonus);
         CombatManager.instance.BuffUIManager.UpdateGlobalKeyWordDamageBuffs(CharacterSelect.Opponent, opponentFighterEffectObject.KeyWordDuration);
         CombatManager.instance.BuffUIManager.UpdatePilotEffectBuffs(CharacterSelect.Opponent, opponentFighterEffectObject.PilotEffectDuration);
-    }
-
-    private void IncrementEffectsAtTurnEnd()
-    {
-        playerFighterEffectObject.IncrementFighterEffects();
-        opponentFighterEffectObject.IncrementFighterEffects();
-        UpdateFighterBuffs();
     }
 
     private void AddElementalStacks(SOCardEffectObject effect, Channels channel, MechComponent component, CharacterSelect characterAdding)
