@@ -6,12 +6,12 @@ public class ShopCardUIPopupController : BaseUIElement<SOItemDataObject>
 {
     [Header("General Popup Attributes")]
     [SerializeField] private Canvas mainCanvas;
-    [SerializeField] protected GameObject popupObject;
-    [SerializeField] private TMP_Text nameText;
-    [SerializeField] private TMP_Text descriptionText;
-    [SerializeField] private TMP_Text energyCostText;
-    [SerializeField] private TMP_Text damageDealtText;
-    [SerializeField] private TMP_Text currencyCostText;
+    [SerializeField] protected GameObject cardPopupObject;
+    [SerializeField] private TMP_Text cardNameText;
+    [SerializeField] private TMP_Text cardDescriptionText;
+    [SerializeField] private TMP_Text cardEnergyCostText;
+    [SerializeField] private TMP_Text cardDamageDealtText;
+    [SerializeField] private TMP_Text cardCurrencyCostText;
 
     private void Awake()
     {
@@ -25,45 +25,45 @@ public class ShopCardUIPopupController : BaseUIElement<SOItemDataObject>
 
         if (primaryData.ItemType == ItemType.Card)
         {
-            nameText.text = primaryData.CardName;
-            descriptionText.text = primaryData.CardDescription;
-            energyCostText.text = ("Energy: ") + primaryData.EnergyCost.ToString();
-            damageDealtText.text = ("Damage: ") + primaryData.BaseDamage.ToString();
+            cardNameText.text = primaryData.CardName;
+            cardDescriptionText.text = primaryData.CardDescription;
+            cardEnergyCostText.text = ("Energy: ") + primaryData.EnergyCost.ToString();
+            cardDamageDealtText.text = ("Damage: ") + primaryData.BaseDamage.ToString();
 
-            if (currencyCostText != null)
-                currencyCostText.text = ("Price: ") + primaryData.CurrencyCost.ToString();
+            if (cardCurrencyCostText != null)
+                cardCurrencyCostText.text = ("Price: ") + primaryData.CurrencyCost.ToString();
         }
 
         Vector3 mousePosition = Input.mousePosition / mainCanvas.scaleFactor;
 
-        if (mousePosition.x + popupObject.GetComponent<RectTransform>().rect.width > mainCanvas.GetComponent<RectTransform>().rect.width)
+        if (mousePosition.x + cardPopupObject.GetComponent<RectTransform>().rect.width > mainCanvas.GetComponent<RectTransform>().rect.width)
         {
-            mousePosition.x = mainCanvas.GetComponent<RectTransform>().rect.width - popupObject.GetComponent<RectTransform>().rect.width;
+            mousePosition.x = mainCanvas.GetComponent<RectTransform>().rect.width - cardPopupObject.GetComponent<RectTransform>().rect.width;
         }
 
-        if (mousePosition.y + popupObject.GetComponent<RectTransform>().rect.height > mainCanvas.GetComponent<RectTransform>().rect.height)
+        if (mousePosition.y + cardPopupObject.GetComponent<RectTransform>().rect.height > mainCanvas.GetComponent<RectTransform>().rect.height)
         {
-            mousePosition.y = mainCanvas.GetComponent<RectTransform>().rect.height - popupObject.GetComponent<RectTransform>().rect.height;
+            mousePosition.y = mainCanvas.GetComponent<RectTransform>().rect.height - cardPopupObject.GetComponent<RectTransform>().rect.height;
         }
 
-        popupObject.GetComponent<RectTransform>().anchoredPosition = mousePosition;
-        popupObject.SetActive(true);
+        cardPopupObject.GetComponent<RectTransform>().anchoredPosition = mousePosition;
+        cardPopupObject.SetActive(true);
     }
 
     protected override bool ClearedIfEmpty(SOItemDataObject newData)
     {
         if (newData == null)
         {
-            nameText.text = string.Empty;
+            cardNameText.text = string.Empty;
 
-            descriptionText.text = string.Empty;
-            energyCostText.text = string.Empty;
-            damageDealtText.text = string.Empty;
+            cardDescriptionText.text = string.Empty;
+            cardEnergyCostText.text = string.Empty;
+            cardDamageDealtText.text = string.Empty;
 
-            if (currencyCostText != null)
-                currencyCostText.text = string.Empty;
+            if (cardCurrencyCostText != null)
+                cardCurrencyCostText.text = string.Empty;
 
-            popupObject.SetActive(false);
+            cardPopupObject.SetActive(false);
 
             return true;
         }

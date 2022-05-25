@@ -57,7 +57,7 @@ public class EventDialoguePopupController : BaseUIElement<SOEventObject>
         dialogueComplete = false;
     }
 
-    public void UpdateUI()
+    public void SkipText()
     {
         if (completeDialogue.Count > 0)
         {

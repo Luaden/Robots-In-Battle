@@ -5,19 +5,30 @@ using UnityEngine.SceneManagement;
 
 public class SceneController : MonoBehaviour
 {
+    private SceneTransitionController sceneTransitionController;
+    
+    private int sceneToLoad;
+    private bool sceneQueued;
+
     public static SceneController instance;
 
     public void LoadTitleScene()
     {
-        SceneManager.LoadScene(0);
+        sceneToLoad = 0;
+        sceneQueued = true;
+        sceneTransitionController.LoadTransitionScene();
     }
     public void LoadWorkshopScene()
     {
-        SceneManager.LoadScene(1);
+        sceneToLoad = 1;
+        sceneQueued = true;
+        sceneTransitionController.LoadTransitionScene();
     }
     public void LoadCombatScene()
     {
-        SceneManager.LoadScene(2);
+        sceneToLoad = 2;
+        sceneQueued = true;
+        sceneTransitionController.LoadTransitionScene();
     }
 
     private void Start()
@@ -28,6 +39,24 @@ public class SceneController : MonoBehaviour
         {
             instance = this;
             DontDestroyOnLoad(this);
+        }
+
+        sceneTransitionController = GetComponent<SceneTransitionController>();
+        SceneTransitionController.OnFirstPageTurned += LoadScene;
+    }
+
+    private void OnDestroy()
+    {
+        SceneTransitionController.OnFirstPageTurned -= LoadScene;
+    }
+
+    private void LoadScene()
+    {
+        if(sceneQueued)
+        {
+            Debug.Log("Loading scene");
+            SceneManager.LoadScene(sceneToLoad);
+            sceneQueued = false;
         }
     }
 }
