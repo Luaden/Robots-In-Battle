@@ -218,13 +218,11 @@ public class CardUIController : MonoBehaviour, IPointerEnterHandler, IPointerExi
     public void SelectCard()
     {
         cardAnimator.SetBool("isSelected", true);
-        Debug.Log(cardData.CardName + " is selected.");
     }
 
     public void DeselectCard()
     {
         cardAnimator.SetBool("isSelected", false);
-        Debug.Log(cardData.CardName + " is deselected.");
     }
 
     public void GrowCard()

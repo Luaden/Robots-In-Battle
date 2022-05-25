@@ -6,10 +6,12 @@ using TMPro;
 
 public class WinLossPanelController : BaseUIElement<ScoreObject>
 {
+    [SerializeField] private float statCrawlSpeedModifier;
     [SerializeField] private GameObject winPanel;
     [SerializeField] private GameObject losePanel;
     [SerializeField] private GameObject starsBackground;
     [SerializeField] private GameObject starsForeground;
+    [SerializeField] private GameObject textHolder;
     [SerializeField] private Image starsForegroundFillImage;
     [SerializeField] private TMP_Text maxWinPointsText;
     [SerializeField] private TMP_Text maxHealthLossPointsText;
@@ -24,9 +26,9 @@ public class WinLossPanelController : BaseUIElement<ScoreObject>
     private int playerHealthLossPoints;
     private int playerTurnLimitPoints;
 
-    private int playerCurrentWinPoints = 0;
-    private int playerCurrentHealthLossPoints = 0;
-    private int playerCurrentTurnLimitPoints = 0;
+    private float playerCurrentWinPoints = 0;
+    private float playerCurrentHealthLossPoints = 0;
+    private float playerCurrentTurnLimitPoints = 0;
     private float playerCurrentStarPoints = 0f;
 
     private bool playerStatsSet = false;
@@ -45,15 +47,18 @@ public class WinLossPanelController : BaseUIElement<ScoreObject>
     private void SetGameOverText(ScoreObject newScoreObject)
     {
         currentScoreObject = newScoreObject;
-        maxHealthLossPointsText.text = newScoreObject.pointsGainedForNoHealthLoss.ToString();
-        maxTurnLimitPointsText.text = newScoreObject.turnLimitMaxPoints.ToString();
-        maxWinPointsText.text = newScoreObject.winPoints.ToString();
+        maxHealthLossPointsText.text = "/ " + newScoreObject.pointsGainedForNoHealthLoss.ToString();
+        maxTurnLimitPointsText.text = "/ " + newScoreObject.turnLimitMaxPoints.ToString();
+        maxWinPointsText.text = "/ " + newScoreObject.winPoints.ToString();
 
         playerPercentile = newScoreObject.playerScorePercentile;
         playerWinPoints = newScoreObject.playerWinPoints;
         playerHealthLossPoints = newScoreObject.playerPointsGainedForHealthLoss;
         playerTurnLimitPoints = newScoreObject.playerTurnLimitPoints;
 
+        starsBackground.SetActive(true);
+        starsForeground.SetActive(true);
+        textHolder.SetActive(true);
         playerStatsSet = true;
     }
 
@@ -65,20 +70,13 @@ public class WinLossPanelController : BaseUIElement<ScoreObject>
         if(primaryData.hasWon)
         {
             SetGameOverText(primaryData);
-
             winPanel.SetActive(true);
-            starsBackground.SetActive(true);
-            starsForeground.SetActive(true);
         }
         else
         {
             SetGameOverText(primaryData);
-
             losePanel.SetActive(true);
-            starsBackground.SetActive(true);
-            starsForeground.SetActive(true);
         }
-
     }
 
     protected override bool ClearedIfEmpty(ScoreObject newData)
@@ -89,86 +87,74 @@ public class WinLossPanelController : BaseUIElement<ScoreObject>
         return false;
     }
 
-    private bool CheckTimer()
-    {
-        currentTimer += Time.deltaTime;
-        if (currentTimer >= CombatManager.instance.PopupUIManager.TextPace)
-        {
-            currentTimer = 0f;
-            return true;
-        }
-
-        return false;
-    }
-
     private void UpdateStats()
     {
         if (!playerStatsSet)
             return;
 
-        if(!playerHealthLossStatsComplete)
+        if (!playerHealthLossStatsComplete)
         {
-            if(CheckTimer())
-            {
-                playerHealthLossPointsText.text = Mathf.RoundToInt(playerCurrentHealthLossPoints + Time.deltaTime).ToString();
+            playerCurrentHealthLossPoints += Time.deltaTime * statCrawlSpeedModifier;
+            playerHealthLossPointsText.text = Mathf.RoundToInt(playerCurrentHealthLossPoints).ToString();
 
-                if(playerCurrentHealthLossPoints >= playerHealthLossPoints)
-                {
-                    playerCurrentHealthLossPoints = playerHealthLossPoints;
-                    playerHealthLossPointsText.text = playerCurrentHealthLossPoints.ToString();
-                    playerHealthLossStatsComplete = true;
-                    return;
-                }
+            if (playerCurrentHealthLossPoints >= playerHealthLossPoints)
+            {
+                playerCurrentHealthLossPoints = playerHealthLossPoints;
+                playerHealthLossPointsText.text = playerCurrentHealthLossPoints.ToString();
+                playerHealthLossStatsComplete = true;
+                return;
             }
+
+            return;
         }
 
         if (!playerTurnLimitStatsComplete)
         {
-            if (CheckTimer())
-            {
-                playerTurnLimitPointsText.text = Mathf.RoundToInt(playerCurrentTurnLimitPoints + Time.deltaTime).ToString();
+            playerCurrentTurnLimitPoints += Time.deltaTime * statCrawlSpeedModifier;
+            playerTurnLimitPointsText.text = Mathf.RoundToInt(playerCurrentTurnLimitPoints).ToString();
 
-                if (playerCurrentTurnLimitPoints >= playerTurnLimitPoints)
-                {
-                    playerCurrentTurnLimitPoints = playerTurnLimitPoints;
-                    playerTurnLimitPointsText.text = playerCurrentTurnLimitPoints.ToString();
-                    playerTurnLimitStatsComplete = true;
-                    return;
-                }
+            if (playerCurrentTurnLimitPoints >= playerTurnLimitPoints)
+            {
+                playerCurrentTurnLimitPoints = playerTurnLimitPoints;
+                playerTurnLimitPointsText.text = playerCurrentTurnLimitPoints.ToString();
+                playerTurnLimitStatsComplete = true;
+                return;
             }
+
+            return;
         }
 
         if (!playerWinStatsComplete)
         {
-            if (CheckTimer())
-            {
-                playerWinPointsText.text = Mathf.RoundToInt(playerCurrentWinPoints + Time.deltaTime).ToString();
+            playerCurrentWinPoints += Time.deltaTime * statCrawlSpeedModifier;
+            playerWinPointsText.text = Mathf.RoundToInt(playerCurrentWinPoints).ToString();
 
-                if (playerCurrentWinPoints >= playerWinPoints)
-                {
-                    playerCurrentWinPoints = playerWinPoints;
-                    playerWinPointsText.text = playerWinPoints.ToString();
-                    playerWinStatsComplete = true;
-                    return;
-                }
+            if (playerCurrentWinPoints >= playerWinPoints)
+            {
+                playerCurrentWinPoints = playerWinPoints;
+                playerWinPointsText.text = playerWinPoints.ToString();
+                playerWinStatsComplete = true;
+                return;
             }
+
+            return;
         }
 
         if (!playerStarStatsComplete)
         {
-            if (CheckTimer())
-            {
-                starsForegroundFillImage.fillAmount = (playerCurrentStarPoints + Time.deltaTime);
+            playerCurrentStarPoints += Time.deltaTime;
+            starsForegroundFillImage.fillAmount = playerCurrentStarPoints;
 
-                if (playerCurrentStarPoints >= playerPercentile)
-                {
-                    playerCurrentStarPoints = playerPercentile;
-                    starsForegroundFillImage.fillAmount = playerPercentile;
-                    playerStarStatsComplete = true;
-                    return;
-                }
+            if (playerCurrentStarPoints >= playerPercentile)
+            {
+                playerCurrentStarPoints = playerPercentile;
+                starsForegroundFillImage.fillAmount = playerPercentile;
+                playerStarStatsComplete = true;
+                playerStatsSet = false;
+                return;
             }
+
+            return;
         }
     }
-    //starsForeground.GetComponent<Image>().fillAmount = primaryData.playerScorePercentile;
 }

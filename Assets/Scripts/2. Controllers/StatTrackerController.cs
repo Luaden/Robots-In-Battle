@@ -18,7 +18,7 @@ public class StatTrackerController : MonoBehaviour
     private int pointsForPlayerHP;
     private int pointsForTurnLimit;
     private int pointsForWin;
-    private float playerTotalScore;
+    private float playerPercentile;
 
     public void InitializeStatTracking()
     {
@@ -52,7 +52,55 @@ public class StatTrackerController : MonoBehaviour
         else
             pointsForWin = 0;
 
-        playerTotalScore = ((float)(pointsForPlayerHP + pointsForTurnLimit + pointsForWin) / (float)maxPoints);
+        playerPercentile = ((float)(pointsForPlayerHP + pointsForTurnLimit + pointsForWin) / (float)maxPoints);
+
+        ScoreObject newScoreObject = new ScoreObject(playerPercentile, pointsGainedForWinUnderTurnLimit, pointsForTurnLimit, pointsGainedForWin,
+                                             pointsForWin, pointsGainedForNoHealthLoss, pointsForPlayerHP, playerWon);
+
+        Debug.Log("Player HP Score: " + pointsForPlayerHP);
+        Debug.Log("Player Turn Score: " + pointsForTurnLimit);
+        Debug.Log("Player Win Score: " + pointsForWin);
+        Debug.Log("Player Total Score: " + playerPercentile);
+
+        CombatManager.instance.WinLossPanelController.UpdateUI(newScoreObject);
+    }
+
+    [ContextMenu("Test game over")]
+    public void GameOver()
+    {
+        int maxPoints = pointsGainedForNoHealthLoss + pointsGainedForWin + pointsGainedForWinUnderTurnLimit;
+
+        if (CombatManager.instance.PlayerFighter.FighterMech.MechCurrentHP == playerStartingHealth)
+        {
+            pointsForPlayerHP = pointsGainedForNoHealthLoss;
+        }
+        else
+        {
+            int healthLost = playerStartingHealth - CombatManager.instance.PlayerFighter.FighterMech.MechCurrentHP;
+            int pointLoss = pointLossPerHealthLoss * healthLost;
+            pointsForPlayerHP = pointsGainedForNoHealthLoss - pointLoss;
+
+        }
+
+        if (turnsTaken <= turnLimitForMaxPoints)
+            pointsForTurnLimit = pointsGainedForWinUnderTurnLimit;
+        else
+            pointsForTurnLimit = Mathf.RoundToInt(pointsGainedForWinUnderTurnLimit * ((float)turnLimitForMaxPoints / (float)turnsTaken));
+
+        pointsForWin = pointsGainedForWin;
+
+
+        playerPercentile = ((float)(pointsForPlayerHP + pointsForTurnLimit + pointsForWin) / (float)maxPoints);
+
+        ScoreObject newScoreObject = new ScoreObject(playerPercentile, pointsGainedForWinUnderTurnLimit, pointsForTurnLimit, pointsGainedForWin,
+                                             pointsForWin, pointsGainedForNoHealthLoss, pointsForPlayerHP, true);
+
+        Debug.Log("Player HP Score: " + pointsForPlayerHP);
+        Debug.Log("Player Turn Score: " + pointsForTurnLimit);
+        Debug.Log("Player Win Score: " + pointsForWin);
+        Debug.Log("Player Total Score: " + playerPercentile);
+
+        CombatManager.instance.WinLossPanelController.UpdateUI(newScoreObject);
     }
 
     private void Start()
