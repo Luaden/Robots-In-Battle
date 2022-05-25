@@ -15,18 +15,15 @@ public class ShopItemUIController : MonoBehaviour, IPointerDownHandler, IPointer
     [SerializeField] private Image selectedImageObject;
     [Space]
     [Header("Card Attributes")]
-    [SerializeField] private Image cardFrame;
+    [SerializeField] private Image cardBackground;
     [SerializeField] private Image cardImage;
-    [SerializeField] private TMP_Text cardName;
-    [SerializeField] private TMP_Text cardTimeCostText;
-    [SerializeField] private TMP_Text cardCurrencyCostText;
-
-    [Space]
-    [SerializeField] private Image componentFrame;
-    [SerializeField] private Image componentImage;
-    [SerializeField] private TMP_Text componentName;
-    [SerializeField] private TMP_Text componentTimeCostText;
-    [SerializeField] private TMP_Text componentCurrencyCostText;
+    [SerializeField] private GameObject cardNameAttackObject;
+    [SerializeField] private TMP_Text cardNameAttack;
+    [SerializeField] private GameObject cardNameDefenseObject;
+    [SerializeField] private TMP_Text cardNameDefense;
+    [SerializeField] private GameObject cardNameNeutralObject;
+    [SerializeField] private TMP_Text cardNameNeutral;
+    [SerializeField] private TMP_Text energyText;
 
     [Header("Channel Icons")]
     [SerializeField] private Image highChannelIcon;
@@ -36,16 +33,22 @@ public class ShopItemUIController : MonoBehaviour, IPointerDownHandler, IPointer
     [Header("Required Interaction Components")]
     [SerializeField] private RectTransform draggableRectTransform;
     [SerializeField] private CanvasGroup draggableCanvasGroup;
+    [SerializeField] private GameObject cardHolder;
 
     [Header("Interaction Attributes")]
     [SerializeField] private float travelSpeed;
     [SerializeField] private Color fullColor;
     [SerializeField] private Color fadeColor;
+    [SerializeField] private MeshRenderer cardRenderer;
+    private Transform previousParentObject;
 
     [Header("Card Frames")]
     [SerializeField] private Sprite attackFrame;
     [SerializeField] private Sprite defenseFrame;
     [SerializeField] private Sprite neutralFrame;
+    [SerializeField] private Material attackMaterial;
+    [SerializeField] private Material defenseMaterial;
+    [SerializeField] private Material neutralMaterial;
 
     [Header("Card Icons")]
     [SerializeField] private Sprite punchIcon;
@@ -55,6 +58,8 @@ public class ShopItemUIController : MonoBehaviour, IPointerDownHandler, IPointer
     [SerializeField] private Sprite guardIcon;
     [Space]
     [Header("Component Attributes")]
+    [SerializeField] private TMP_Text componentName;
+    [SerializeField] private TMP_Text componentCurrencyCostText;
     [SerializeField] private Image elementIcon;
     [SerializeField] private Sprite fireElement;
     [SerializeField] private Sprite iceElement;
@@ -73,30 +78,14 @@ public class ShopItemUIController : MonoBehaviour, IPointerDownHandler, IPointer
     private int chanceToSpawn;
 
     //Base Component Attributes
-    private MechComponent componentType;
-    private int componentHP;
-    private int componentEnergy;
     private string componentSpriteID;
     private string connectionComponentSpriteID;
     private string tertiaryComponentID;
     private ElementType componentElement;
-    private float cDMFromComponent;
-    private float cDMToComponent;
-    private int extraElementStacks;
-    private int energyGainModifier;
 
-    //Card Attributes
-    private CardType cardType;
-    private CardCategory cardCategory;
-    private Channels possibleChannels;
-    private AffectedChannels affectedChannels;
-    private int energyCost;
-    private int baseDamage;
-    private AnimationType animationType;
 
     public bool isPickedUp = false;
     [SerializeField] public bool notInMech = true;
-    private Transform previousParentObject; 
     private SOItemDataObject baseSOItemDataObject;
     private MechComponentDataObject mechComponentDataObject;
     private BaseSlotController<ShopItemUIController> itemShopUISlotController;
@@ -106,21 +95,21 @@ public class ShopItemUIController : MonoBehaviour, IPointerDownHandler, IPointer
     public BaseSlotController<ShopItemUIController> ItemSlotController { get => itemShopUISlotController; set => UpdateItemSlot(value); }
     public Transform PreviousParentObject { get => previousParentObject; set => previousParentObject = value; }
 
-    public void InitUI(SOItemDataObject shopItemUIObject, MechComponentDataObject oldMechComponentData = null)
+    public void InitUI(SOItemDataObject sOItemData, MechComponentDataObject oldMechComponentData = null)
     {
-        baseSOItemDataObject = shopItemUIObject;
-        itemType = shopItemUIObject.ItemType;
-        itemName = shopItemUIObject.ItemName;
-        itemDescription = shopItemUIObject.ItemDescription;
-        itemImage = shopItemUIObject.ItemShopImage;
-        timeCost = shopItemUIObject.TimeCost;
-        currencyCost = shopItemUIObject.CurrencyCost;
-        chanceToSpawn = shopItemUIObject.ChanceToSpawn;
+        baseSOItemDataObject = sOItemData;
+        itemType = sOItemData.ItemType;
+        itemName = sOItemData.ItemName;
+        itemDescription = sOItemData.ItemDescription;
+        itemImage = sOItemData.ItemShopImage;
+        currencyCost = sOItemData.CurrencyCost;
+        chanceToSpawn = sOItemData.ChanceToSpawn;
 
         if(itemType == ItemType.Card)
         {
-            cardName.text = itemName;
-            switch (shopItemUIObject.CardCategory)
+            energyText.text = sOItemData.EnergyCost.ToString();
+
+            switch (sOItemData.CardCategory)
             {
                 case CardCategory.Punch:
                     cardImage.sprite = punchIcon;
@@ -144,49 +133,47 @@ public class ShopItemUIController : MonoBehaviour, IPointerDownHandler, IPointer
                     break;
             }
 
-            switch (shopItemUIObject.CardType)
+            switch (sOItemData.CardType)
             {
                 case CardType.Attack:
-                    cardFrame.sprite = attackFrame;
+                    cardBackground.sprite = attackFrame;
+                    cardNameAttack.text = sOItemData.CardName;
+                    cardNameAttackObject.SetActive(true);
+                    cardRenderer.material = attackMaterial;
                     break;
                 case CardType.Defense:
-                    cardFrame.sprite = defenseFrame;
+                    cardBackground.sprite = defenseFrame;
+                    cardNameDefense.text = sOItemData.CardName;
+                    cardNameDefenseObject.SetActive(true);
+                    cardRenderer.material = defenseMaterial;
                     break;
                 case CardType.Neutral:
-                    cardFrame.sprite = neutralFrame;
+                    cardBackground.sprite = neutralFrame;
+                    cardNameNeutral.text = sOItemData.CardName;
+                    cardNameNeutralObject.SetActive(true);
+                    cardRenderer.material = neutralMaterial;
                     break;
             }
 
-            if (shopItemUIObject.PossibleChannels.HasFlag(Channels.High))
+            if (sOItemData.PossibleChannels.HasFlag(Channels.High))
                 highChannelIcon.color = fullColor;
-            else
-                highChannelIcon.color = fadeColor;
-            if (shopItemUIObject.PossibleChannels.HasFlag(Channels.Mid))
+            if (sOItemData.PossibleChannels.HasFlag(Channels.Mid))
                 midChannelIcon.color = fullColor;
-            else
-                midChannelIcon.color = fadeColor;
-            if (shopItemUIObject.PossibleChannels.HasFlag(Channels.Low))
+            if (sOItemData.PossibleChannels.HasFlag(Channels.Low))
                 lowChannelIcon.color = fullColor;
-            else
-                lowChannelIcon.color = fadeColor;
 
-            cardTimeCostText.text = timeCost.ToString();
-            cardCurrencyCostText.text = currencyCost.ToString();
             cardUIObject.SetActive(true);
         }
         else
         {
-            //componentImage.sprite = itemImage;
             componentName.text = itemName;
-            componentSpriteID = shopItemUIObject.PrimaryComponentSpriteID;
-            connectionComponentSpriteID = shopItemUIObject.SecondaryComponentSpriteID;
-            tertiaryComponentID = shopItemUIObject.TertiaryComponentID;
-            componentCurrencyCostText.text = currencyCost.ToString();
-            componentTimeCostText.text = timeCost.ToString();
-            componentUIObject.SetActive(true);
+            componentSpriteID = sOItemData.PrimaryComponentSpriteID;
+            connectionComponentSpriteID = sOItemData.SecondaryComponentSpriteID;
+            tertiaryComponentID = sOItemData.TertiaryComponentID;
+            componentCurrencyCostText.text = ("Cost: " + currencyCost.ToString());
             mechComponentDataObject = oldMechComponentData;
 
-            switch (componentElement)
+            switch (sOItemData.ComponentElement)
             {
                 case ElementType.None:
                     break;
@@ -207,6 +194,8 @@ public class ShopItemUIController : MonoBehaviour, IPointerDownHandler, IPointer
                     elementIcon.color = fullColor;
                     break;
             }
+
+            componentUIObject.SetActive(true);
         }
 
         notInMech = true;
