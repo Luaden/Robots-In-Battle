@@ -9,6 +9,7 @@ public class FightButtonAnimatorController : MonoBehaviour
     private void Start()
     {
         ChannelsUISlotManager.OnSlotFilledOrRemoved += CheckFightButtonStatus;
+        CombatSequenceManager.OnCombatStart += FightButtonDisappear;
         animator = GetComponent<Animator>();
     }
 
