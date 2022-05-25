@@ -19,25 +19,25 @@ public class PlayerMechUISlotManager : BaseSlotManager<ShopItemUIController>
                 case MechComponent.Head:
                     headSlot.CurrentSlottedItem = item;
                     item.ItemSlotController = headSlot;
-                    item.notInMech = false;
+                    item.NotInMech = false;
                     break;
 
                 case MechComponent.Torso:
                     torsoSlot.CurrentSlottedItem = item;
                     item.ItemSlotController = torsoSlot;
-                    item.notInMech = false;
+                    item.NotInMech = false;
 
                     break;
                 case MechComponent.Arms:
                     armsSlot.CurrentSlottedItem = item;
                     item.ItemSlotController = armsSlot;
-                    item.notInMech = false;
+                    item.NotInMech = false;
                     break;
 
                 case MechComponent.Legs:
                     legsSlot.CurrentSlottedItem = item;
                     item.ItemSlotController = legsSlot;
-                    item.notInMech = false;
+                    item.NotInMech = false;
                     break;
             }
 
@@ -55,7 +55,7 @@ public class PlayerMechUISlotManager : BaseSlotManager<ShopItemUIController>
                         item.ItemSlotController.SlotManager.RemoveItemFromCollection(item);
                         slot.CurrentSlottedItem = item;
                         item.ItemSlotController = slot;
-                        item.notInMech = false;
+                        item.NotInMech = false;
 
                         CheckSlotItems();
                         UpdateCurrentMech();
@@ -70,7 +70,7 @@ public class PlayerMechUISlotManager : BaseSlotManager<ShopItemUIController>
                         item.ItemSlotController.SlotManager.RemoveItemFromCollection(item);
                         slot.CurrentSlottedItem = item;
                         item.ItemSlotController = slot;
-                        item.notInMech = false;
+                        item.NotInMech = false;
 
                         CheckSlotItems();
                         UpdateCurrentMech();
@@ -85,7 +85,7 @@ public class PlayerMechUISlotManager : BaseSlotManager<ShopItemUIController>
                         item.ItemSlotController.SlotManager.RemoveItemFromCollection(item);
                         slot.CurrentSlottedItem = item;
                         item.ItemSlotController = slot;
-                        item.notInMech = false;
+                        item.NotInMech = false;
 
                         CheckSlotItems();
                         UpdateCurrentMech();
@@ -100,7 +100,7 @@ public class PlayerMechUISlotManager : BaseSlotManager<ShopItemUIController>
                         item.ItemSlotController.SlotManager.RemoveItemFromCollection(item);
                         slot.CurrentSlottedItem = item;
                         item.ItemSlotController = slot;
-                        item.notInMech = false;
+                        item.NotInMech = false;
 
                         CheckSlotItems();
                         UpdateCurrentMech();
@@ -156,7 +156,7 @@ public class PlayerMechUISlotManager : BaseSlotManager<ShopItemUIController>
             newItem.ItemSlotController.SlotManager.RemoveItemFromCollection(newItem);
             DowntimeManager.instance.InventoryUISlotManager.AddItemToCollection(slotToAddTo.CurrentSlottedItem, slotToAddTo);
 
-            newItem.notInMech = false;
+            newItem.NotInMech = false;
             slotToAddTo.CurrentSlottedItem = newItem;
             newItem.ItemSlotController = slot;
             CheckSlotItems();
@@ -183,7 +183,7 @@ public class PlayerMechUISlotManager : BaseSlotManager<ShopItemUIController>
 
     public override void HandleDrop(PointerEventData eventData, ShopItemUIController newData, BaseSlotController<ShopItemUIController> slot)
     {
-        if (newData == null || !newData.notInMech)
+        if (newData == null || !newData.NotInMech)
         {
             Debug.Log("Could not find appropriate data for slot.");
             return;

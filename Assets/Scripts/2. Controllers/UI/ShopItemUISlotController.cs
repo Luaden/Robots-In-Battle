@@ -13,7 +13,7 @@ public class ShopItemUISlotController : BaseSlotController<ShopItemUIController>
 
     public override void OnDrop(PointerEventData eventData)
     {
-        if (eventData.pointerDrag.GetComponent<ShopItemUIController>() == null || !eventData.pointerDrag.GetComponent<ShopItemUIController>().notInMech)
+        if (eventData.pointerDrag.GetComponent<ShopItemUIController>() == null || !eventData.pointerDrag.GetComponent<ShopItemUIController>().NotInMech)
         {
             return;
         }

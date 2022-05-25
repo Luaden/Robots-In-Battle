@@ -24,7 +24,7 @@ public class InventoryUISlotManager : BaseSlotManager<ShopItemUIController>
 
         if (slot != null && slot.CurrentSlottedItem == null)
         {
-            item.notInMech = true;
+            item.NotInMech = true;
             item.ItemSlotController.SlotManager.RemoveItemFromCollection(item);
             slot.CurrentSlottedItem = item;
             item.ItemSlotController = slot;
@@ -38,7 +38,7 @@ public class InventoryUISlotManager : BaseSlotManager<ShopItemUIController>
                     if (item.ItemSlotController != null)
                         item.ItemSlotController.SlotManager.RemoveItemFromCollection(item);
 
-                    item.notInMech = true;
+                    item.NotInMech = true;
                     slotOption.CurrentSlottedItem = item;
                     item.ItemSlotController = slotOption;
                     return;
@@ -52,7 +52,7 @@ public class InventoryUISlotManager : BaseSlotManager<ShopItemUIController>
 
             if (item.ItemSlotController != null)
                 item.ItemSlotController.SlotManager.RemoveItemFromCollection(item);
-            item.notInMech = true;
+            item.NotInMech = true;
             slotController.CurrentSlottedItem = item;
             item.ItemSlotController = slotController;
         }
