@@ -7,23 +7,21 @@ public class HUDFloatingDamagePopupController : BaseUIElement<DamageMechPairObje
 {
     [SerializeField] private GameObject playerFloatingTextObject;
     [SerializeField] private GameObject playerDamageTextObject;
+    [SerializeField] private GameObject playerBonusDamageTextObject;
     [SerializeField] private GameObject playerShieldTextObject;
     [SerializeField] private GameObject playerGuardedTextObject;
     [SerializeField] private GameObject playerCounteredTextObject;
-    [SerializeField] private GameObject playerComponentBreakObject;
     [SerializeField] private TMP_Text playerShieldText;
     [SerializeField] private TMP_Text playerDamageText;
-    [SerializeField] private TMP_Text playerComponentBonusDamageText;
 
     [SerializeField] private GameObject opponentFloatingTextObject;
     [SerializeField] private GameObject opponentDamageTextObject;
+    [SerializeField] private GameObject opponentBonusDamageTextObject;
     [SerializeField] private GameObject opponentShieldTextObject;
     [SerializeField] private GameObject opponentGuardedTextObject;
     [SerializeField] private GameObject opponentCounteredTextObject;
-    [SerializeField] private GameObject opponentComponentBreakObject;
     [SerializeField] private TMP_Text opponentShieldText;
     [SerializeField] private TMP_Text opponentDamageText;
-    [SerializeField] private TMP_Text opponentComponentBonusDamageText;
 
     public override void UpdateUI(DamageMechPairObject primaryData)
     {
@@ -33,6 +31,35 @@ public class HUDFloatingDamagePopupController : BaseUIElement<DamageMechPairObje
         if(primaryData.CharacterTakingDamage == CharacterSelect.Player)
         {
             Vector2Int damageShieldPair = primaryData.GetDamageAndShieldWithModifiers();
+            
+            int bonusDamage = 0;
+
+            switch (primaryData.CardCharacterPairA.cardChannelPair.CardData.SelectedChannels)
+            {
+                case Channels.High:
+                    bonusDamage = CombatManager.instance.PlayerFighter.FighterMech.GetBonusDamage(damageShieldPair.x, MechComponent.Head);
+                    break;
+                case Channels.Mid:
+                    bonusDamage = CombatManager.instance.PlayerFighter.FighterMech.GetBonusDamage(damageShieldPair.x, MechComponent.Torso);
+                    break;
+                case Channels.Low:
+                    bonusDamage = CombatManager.instance.PlayerFighter.FighterMech.GetBonusDamage(damageShieldPair.x, MechComponent.Torso);
+                    break;
+            }
+
+            if(bonusDamage > 0)
+            {
+                playerDamageText.text = (bonusDamage + damageShieldPair.x).ToString();
+                playerBonusDamageTextObject.SetActive(true);
+            }
+            else
+            {
+                if(damageShieldPair.x > 0)
+                {
+                    playerDamageText.text = damageShieldPair.x.ToString();
+                    playerDamageTextObject.SetActive(true);
+                }                
+            }
 
             if (primaryData.CounterDamage)
                 opponentCounteredTextObject.SetActive(true);
@@ -46,9 +73,6 @@ public class HUDFloatingDamagePopupController : BaseUIElement<DamageMechPairObje
                 playerShieldTextObject.SetActive(true);
             }
 
-            playerDamageText.text = damageShieldPair.x.ToString();
-            playerDamageTextObject.SetActive(true);
-
             playerFloatingTextObject.SetActive(true);
             return;
         }
@@ -56,6 +80,35 @@ public class HUDFloatingDamagePopupController : BaseUIElement<DamageMechPairObje
         if (primaryData.CharacterTakingDamage == CharacterSelect.Opponent)
         {
             Vector2Int damageShieldPair = primaryData.GetDamageAndShieldWithModifiers();
+
+            int bonusDamage = 0;
+
+            switch (primaryData.CardCharacterPairA.cardChannelPair.CardData.SelectedChannels)
+            {
+                case Channels.High:
+                    bonusDamage = CombatManager.instance.OpponentFighter.FighterMech.GetBonusDamage(damageShieldPair.x, MechComponent.Head);
+                    break;
+                case Channels.Mid:
+                    bonusDamage = CombatManager.instance.OpponentFighter.FighterMech.GetBonusDamage(damageShieldPair.x, MechComponent.Torso);
+                    break;
+                case Channels.Low:
+                    bonusDamage = CombatManager.instance.OpponentFighter.FighterMech.GetBonusDamage(damageShieldPair.x, MechComponent.Torso);
+                    break;
+            }
+
+            if (bonusDamage > 0)
+            {
+                opponentDamageText.text = (bonusDamage + damageShieldPair.x).ToString();
+                opponentBonusDamageTextObject.SetActive(true);
+            }
+            else
+            {
+                if(damageShieldPair.x > 0)
+                {
+                    opponentDamageText.text = damageShieldPair.x.ToString();
+                    opponentDamageTextObject.SetActive(true);
+                }
+            }
 
             if (primaryData.CounterDamage)
                 playerCounteredTextObject.SetActive(true);
@@ -69,24 +122,7 @@ public class HUDFloatingDamagePopupController : BaseUIElement<DamageMechPairObje
                 opponentShieldTextObject.SetActive(true);
             }
 
-            opponentDamageText.text = damageShieldPair.x.ToString();
-            opponentDamageTextObject.SetActive(true);
-
             opponentFloatingTextObject.SetActive(true);
-        }
-    }
-
-    public void UpdateUI(CharacterSelect characterBroken, int bonusDamage)
-    {
-        if (characterBroken == CharacterSelect.Player)
-        {
-            playerComponentBonusDamageText.text = bonusDamage.ToString();
-            playerComponentBreakObject.SetActive(true);
-        }
-        else
-        {
-            opponentComponentBonusDamageText.text = bonusDamage.ToString();
-            opponentComponentBreakObject.SetActive(true);
         }
     }
 
@@ -95,6 +131,7 @@ public class HUDFloatingDamagePopupController : BaseUIElement<DamageMechPairObje
         if(newData.CharacterTakingDamage == CharacterSelect.Player)
         {
             playerDamageTextObject.SetActive(false);
+            playerBonusDamageTextObject.SetActive(false);
             playerShieldTextObject.SetActive(false);
             playerGuardedTextObject.SetActive(false);
             playerCounteredTextObject.SetActive(false);
@@ -105,6 +142,7 @@ public class HUDFloatingDamagePopupController : BaseUIElement<DamageMechPairObje
         if(newData.CharacterTakingDamage == CharacterSelect.Opponent)
         {
             opponentDamageTextObject.SetActive(false);
+            opponentBonusDamageTextObject.SetActive(false);
             opponentShieldTextObject.SetActive(false);
             opponentGuardedTextObject.SetActive(false);
             opponentCounteredTextObject.SetActive(false);
