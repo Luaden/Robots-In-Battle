@@ -48,40 +48,4 @@ public class CameraRenderController : MonoBehaviour
         screenCaptureDestination.sprite = screenCaptureSprite;
         imageObject.SetActive(true);
     }
-
-    //[ContextMenu("Capture Screen")]
-    //private void CaptureScreen()
-    //{
-    //    height = Screen.width;
-    //    width = Screen.height;
-
-    //    Debug.Log("Screen width and height: " + height + " / " + width);
-    //    Debug.Log("Camera aspect ratio: " + mainCamera.aspect);
-    //    depth = 24;
-
-    //    renderTexture = new RenderTexture(width, height, depth);
-    //    mainCamera.targetTexture = renderTexture;
-
-    //    mainCamera.Render();
-
-    //    texture2D = new Texture2D(width, height, TextureFormat.RGBA32, false);
-    //    Rect rect = new Rect(0, 0, width, height);
-
-    //    RenderTexture currentRenderTexture = RenderTexture.active;
-    //    RenderTexture.active = renderTexture;
-    //    texture2D.ReadPixels(rect, 0, 0);
-    //    texture2D.Apply();
-
-    //    mainCamera.targetTexture = null;
-    //    RenderTexture.active = currentRenderTexture;
-
-    //    Destroy(renderTexture);
-
-    //    Sprite sprite = Sprite.Create(texture2D, rect, Vector2.zero);
-    //    //screenCaptureDestination.mainTexture = texture2D;
-    //    imageObject.GetComponent<Image>().sprite = sprite;
-
-    //    //imageObject.GetComponent<RectTransform>().pivot = new Vector2(.5f, .5f);
-    //    imageObject.SetActive(true);
-    //}
 }
