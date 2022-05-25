@@ -9,6 +9,12 @@ public class HUDBuffUIPopupController : BaseUIElement<HUDBuffElement>
     [SerializeField] private TMP_Text nameText;
     [SerializeField] private TMP_Text descriptionText;
 
+    [SerializeField] private SOHUDBuffDescription fireDescription;
+    [SerializeField] private SOHUDBuffDescription plasmaDescription;
+    [SerializeField] private SOHUDBuffDescription iceDescription;
+    [SerializeField] private SOHUDBuffDescription acidDescription;
+    [SerializeField] private SOHUDBuffDescription damageUpDescription;
+    [SerializeField] private SOHUDBuffDescription damageDownDescription;
     [SerializeField] private SOHUDBuffDescription shieldDescription;
     [SerializeField] private SOHUDBuffDescription flurryDescription;
     [SerializeField] private SOHUDBuffDescription jazzersizeDescription;
@@ -27,32 +33,54 @@ public class HUDBuffUIPopupController : BaseUIElement<HUDBuffElement>
         {
             case HUDBuffElement.None:
                 break;
+
             case HUDBuffElement.Shield:
                 nameText.text = shieldDescription.NameText;
                 descriptionText.text = shieldDescription.DescriptionText;
-                popupQueued = true;
                 break;
-            case HUDBuffElement.DamageModifier:
+
+            case HUDBuffElement.DamageUp:
+                nameText.text = damageUpDescription.NameText;
+                descriptionText.text = damageUpDescription.DescriptionText;
                 break;
+
+            case HUDBuffElement.DamageDown:
+                nameText.text = damageDownDescription.NameText;
+                descriptionText.text = damageDownDescription.DescriptionText;
+                break;
+
             case HUDBuffElement.Flurry:
                 nameText.text = flurryDescription.NameText;
                 descriptionText.text = flurryDescription.DescriptionText;
-                popupQueued = true;
                 break;
+
             case HUDBuffElement.Ice:
+                nameText.text = iceDescription.NameText;
+                descriptionText.text = iceDescription.DescriptionText;
                 break;
+
             case HUDBuffElement.Acid:
+                nameText.text = acidDescription.NameText;
+                descriptionText.text = acidDescription.DescriptionText;
                 break;
+
             case HUDBuffElement.Fire:
+                nameText.text = fireDescription.NameText;
+                descriptionText.text = fireDescription.DescriptionText;
                 break;
+
             case HUDBuffElement.Plasma:
+                nameText.text = plasmaDescription.NameText;
+                descriptionText.text = plasmaDescription.DescriptionText;
                 break;
+
             case HUDBuffElement.Jazzersize:
                 nameText.text = jazzersizeDescription.NameText;
                 descriptionText.text = jazzersizeDescription.DescriptionText;
-                popupQueued = true;
                 break;
         }
+
+        popupQueued = true;
     }
 
     private void Update()

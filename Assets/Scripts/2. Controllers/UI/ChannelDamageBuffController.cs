@@ -5,18 +5,26 @@ using TMPro;
 
 public class ChannelDamageBuffController : BaseUIElement<Dictionary<Channels, List<CardEffectObject>>>
 {
-    [SerializeField] private GameObject highDamageIndicator;
-    [SerializeField] private TMP_Text highDamageIndicatorText;
-    [SerializeField] private GameObject midDamageIndicator;
-    [SerializeField] private TMP_Text midDamageIndicatorText;
-    [SerializeField] private GameObject lowDamageIndicator;
-    [SerializeField] private TMP_Text lowDamageIndicatorText;
+    [SerializeField] private GameObject highDamageUpIndicator;
+    [SerializeField] private TMP_Text highDamageUpIndicatorText;
+    [SerializeField] private GameObject highDamageDownIndicator;
+    [SerializeField] private TMP_Text highDamageDownIndicatorText;
+
+    [SerializeField] private GameObject midDamageUpIndicator;
+    [SerializeField] private TMP_Text midDamageUpIndicatorText;
+    [SerializeField] private GameObject midDamageDownIndicator;
+    [SerializeField] private TMP_Text midDamageDownIndicatorText;
+
+    [SerializeField] private GameObject lowDamageUpIndicator;
+    [SerializeField] private TMP_Text lowDamageUpIndicatorText;
+    [SerializeField] private GameObject lowDamageDownIndicator;
+    [SerializeField] private TMP_Text lowDamageDownIndicatorText;
 
     public override void UpdateUI(Dictionary<Channels, List<CardEffectObject>> primaryData)
     {
         if (ClearedIfEmpty(primaryData))
             return;
-        Debug.Log("Here again!");
+
         List<CardEffectObject> checkValue = new List<CardEffectObject>();
         int damageModifier = 0;
 
@@ -30,8 +38,22 @@ public class ChannelDamageBuffController : BaseUIElement<Dictionary<Channels, Li
                     damageModifier -= effect.EffectMagnitude;
             }
 
-            highDamageIndicatorText.text = damageModifier.ToString();
-            highDamageIndicator.SetActive(true);
+            if(damageModifier > 0)
+            {
+                highDamageUpIndicatorText.text = damageModifier.ToString();
+                highDamageUpIndicator.SetActive(true);
+            }
+            else if(damageModifier < 0)
+            {
+                highDamageDownIndicatorText.text = damageModifier.ToString();
+                highDamageDownIndicator.SetActive(true);
+            }
+            else
+            {
+                highDamageDownIndicator.SetActive(false);
+                highDamageUpIndicator.SetActive(false);
+            }
+
         }
 
         if (primaryData.TryGetValue(Channels.Mid, out checkValue))
@@ -44,8 +66,21 @@ public class ChannelDamageBuffController : BaseUIElement<Dictionary<Channels, Li
                     damageModifier -= effect.EffectMagnitude;
             }
 
-            midDamageIndicatorText.text = damageModifier.ToString();
-            midDamageIndicator.SetActive(true);
+            if (damageModifier > 0)
+            {
+                midDamageUpIndicatorText.text = damageModifier.ToString();
+                midDamageUpIndicator.SetActive(true);
+            }
+            else if (damageModifier < 0)
+            {
+                midDamageDownIndicatorText.text = damageModifier.ToString();
+                midDamageDownIndicator.SetActive(true);
+            }
+            else
+            {
+                midDamageDownIndicator.SetActive(false);
+                midDamageUpIndicator.SetActive(false);
+            }
         }
 
         if (primaryData.TryGetValue(Channels.Low, out checkValue))
@@ -58,11 +93,22 @@ public class ChannelDamageBuffController : BaseUIElement<Dictionary<Channels, Li
                     damageModifier -= effect.EffectMagnitude;
             }
 
-            lowDamageIndicatorText.text = damageModifier.ToString();
-            lowDamageIndicator.SetActive(true);
+            if (damageModifier > 0)
+            {
+                lowDamageUpIndicatorText.text = damageModifier.ToString();
+                lowDamageUpIndicator.SetActive(true);
+            }
+            else if (damageModifier < 0)
+            {
+                lowDamageDownIndicatorText.text = damageModifier.ToString();
+                lowDamageUpIndicator.SetActive(true);
+            }
+            else
+            {
+                lowDamageUpIndicator.SetActive(false);
+                lowDamageDownIndicator.SetActive(false);
+            }
         }
-
-        //Change damage indicator to reflect net effect.
     }
 
     protected override bool ClearedIfEmpty(Dictionary<Channels, List<CardEffectObject>> newData)
@@ -71,33 +117,48 @@ public class ChannelDamageBuffController : BaseUIElement<Dictionary<Channels, Li
 
         if(newData.Keys.Count == 0)
         {
-            highDamageIndicatorText.text = null;
-            midDamageIndicatorText.text = null;
-            lowDamageIndicatorText.text = null;
+            highDamageUpIndicatorText.text = string.Empty;
+            highDamageDownIndicatorText.text = string.Empty;
+            midDamageUpIndicatorText.text = string.Empty;
+            midDamageDownIndicatorText.text = string.Empty;
+            lowDamageUpIndicatorText.text = string.Empty;
+            lowDamageDownIndicatorText.text = string.Empty;
 
-            highDamageIndicator.SetActive(false);
-            midDamageIndicator.SetActive(false);
-            lowDamageIndicator.SetActive(false);
+            highDamageUpIndicator.SetActive(false);
+            highDamageDownIndicator.SetActive(false);
+            midDamageUpIndicator.SetActive(false);
+            midDamageDownIndicator.SetActive(false);
+            lowDamageUpIndicator.SetActive(false);
+            lowDamageDownIndicator.SetActive(false);
 
             return true;
         }
 
         if (!newData.TryGetValue(Channels.High, out checkValue))
         {
-            highDamageIndicatorText.text = null;
-            highDamageIndicator.SetActive(false);
+            highDamageUpIndicatorText.text = string.Empty;
+            highDamageDownIndicatorText.text = string.Empty;
+
+            highDamageUpIndicator.SetActive(false);
+            highDamageDownIndicator.SetActive(false);
         }
 
         if (!newData.TryGetValue(Channels.Mid, out checkValue))
         {
-            midDamageIndicatorText.text = null;
-            midDamageIndicator.SetActive(false);
+            midDamageUpIndicatorText.text = string.Empty;
+            midDamageDownIndicatorText.text = string.Empty;
+
+            midDamageUpIndicator.SetActive(false);
+            midDamageDownIndicator.SetActive(false);
         }
 
         if (!newData.TryGetValue(Channels.Low, out checkValue))
         {
-            lowDamageIndicatorText.text = null;
-            lowDamageIndicator.SetActive(false);
+            lowDamageUpIndicatorText.text = string.Empty;
+            lowDamageDownIndicatorText.text = string.Empty;
+
+            lowDamageUpIndicator.SetActive(false);
+            lowDamageDownIndicator.SetActive(false);
         }
 
         return false;

@@ -224,11 +224,12 @@ public enum HUDBuffElement
 
     //Buffs
     Shield,
-    DamageModifier,
+    DamageUp,
     Flurry,
     Ice,
     Acid,
     Fire,
     Plasma,
-    Jazzersize
+    Jazzersize,
+    DamageDown,
 }
