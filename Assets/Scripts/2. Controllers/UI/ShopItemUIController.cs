@@ -13,6 +13,8 @@ public class ShopItemUIController : MonoBehaviour, IPointerDownHandler, IPointer
     [SerializeField] private GameObject cardUIObject;
     [SerializeField] private GameObject componentUIObject;
     [SerializeField] private Image selectedImageObject;
+    [SerializeField] private GameObject cardPricetagObject;
+    [SerializeField] private GameObject componentPricetagObject;
     [Space]
     [Header("Card Attributes")]
     [SerializeField] private Image cardBackground;
@@ -24,6 +26,7 @@ public class ShopItemUIController : MonoBehaviour, IPointerDownHandler, IPointer
     [SerializeField] private GameObject cardNameNeutralObject;
     [SerializeField] private TMP_Text cardNameNeutral;
     [SerializeField] private TMP_Text energyText;
+    [SerializeField] private TMP_Text cardCurrencyText;
 
     [Header("Channel Icons")]
     [SerializeField] private Image highChannelIcon;
@@ -108,6 +111,7 @@ public class ShopItemUIController : MonoBehaviour, IPointerDownHandler, IPointer
         if(itemType == ItemType.Card)
         {
             energyText.text = sOItemData.EnergyCost.ToString();
+            cardCurrencyText.text = currencyCost.ToString();
 
             switch (sOItemData.CardCategory)
             {
@@ -170,7 +174,7 @@ public class ShopItemUIController : MonoBehaviour, IPointerDownHandler, IPointer
             componentSpriteID = sOItemData.PrimaryComponentSpriteID;
             connectionComponentSpriteID = sOItemData.SecondaryComponentSpriteID;
             tertiaryComponentID = sOItemData.TertiaryComponentID;
-            componentCurrencyCostText.text = ("Cost: " + currencyCost.ToString());
+            componentCurrencyCostText.text = currencyCost.ToString();
             mechComponentDataObject = oldMechComponentData;
 
             switch (sOItemData.ComponentElement)
