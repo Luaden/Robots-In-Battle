@@ -6,8 +6,8 @@ using UnityEngine.UI;
 public class CameraRenderController : MonoBehaviour
 {
     [SerializeField] private GameObject imageObject;
-    //[SerializeField] private Material screenCaptureDestination;
-    [SerializeField] private Image screenCaptureDestination;
+    [SerializeField] private Material screenCaptureDestination;
+    //[SerializeField] private Image screenCaptureDestination;
     [SerializeField] private Canvas mainCanvas;
 
     private Camera mainCamera;
@@ -39,13 +39,14 @@ public class CameraRenderController : MonoBehaviour
 
         texture2D.ReadPixels(screenCapture, 0, 0, false);
         texture2D.Apply();
-        CreateImage();
+        screenCaptureDestination.mainTexture = texture2D;
+        //CreateImage();
     }
 
-    private void CreateImage()
-    {
-        Sprite screenCaptureSprite = Sprite.Create(texture2D, new Rect(0f, 0f, texture2D.width, texture2D.height), new Vector2(.5f, .5f), 100f);
-        screenCaptureDestination.sprite = screenCaptureSprite;
-        imageObject.SetActive(true);
-    }
+    //private void CreateImage()
+    //{
+    //    Sprite screenCaptureSprite = Sprite.Create(texture2D, new Rect(0f, 0f, texture2D.width, texture2D.height), new Vector2(.5f, .5f), 100f);
+    //    screenCaptureDestination.sprite = screenCaptureSprite;
+    //    imageObject.SetActive(true);
+    //}
 }
