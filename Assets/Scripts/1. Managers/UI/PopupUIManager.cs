@@ -7,6 +7,8 @@ public class PopupUIManager : MonoBehaviour
     [SerializeField] private float textRate;
     [SerializeField] private float generalHUDPopupDelay;
     [SerializeField] private AIDialoguePopupController aIDialoguePopupController;
+    [SerializeField] private EventDialoguePopupController eventDialoguePopupController;
+
     private CombatCardUIPopupController combatCardUIPopupController;
     private ShopComponentUIPopupController shopComponentUIPopupController;
     private ShopCardUIPopupController shopCardUIPopupController;
@@ -15,7 +17,6 @@ public class PopupUIManager : MonoBehaviour
     private HUDMechComponentPopupController hudMechComponentPopupController;
     //private AIDialoguePopupController aIDialoguePopupController;
     private AIConversationPopupController aIConversationPopupController;
-    private EventDialoguePopupController eventDialoguePopupController;
     private HUDFloatingDamagePopupController floatingDamagePopupController;
     private DamageSplashEffectPopupController damageSplashEffectPopupController;
 
@@ -31,7 +32,7 @@ public class PopupUIManager : MonoBehaviour
         shopCardUIPopupController = GetComponentInChildren<ShopCardUIPopupController>();
         //aIDialoguePopupController = GetComponentInChildren<AIDialoguePopupController>();
         aIConversationPopupController = GetComponentInChildren<AIConversationPopupController>();
-        eventDialoguePopupController = GetComponentInChildren<EventDialoguePopupController>();
+        //eventDialoguePopupController = GetComponentInChildren<EventDialoguePopupController>();
         hudBuffUIPopupController = GetComponentInChildren<HUDBuffUIPopupController>();
         hudMechComponentPopupController = GetComponentInChildren<HUDMechComponentPopupController>();
         floatingDamagePopupController = GetComponentInChildren<HUDFloatingDamagePopupController>();
@@ -80,10 +81,7 @@ public class PopupUIManager : MonoBehaviour
     {
         if(popupsEnabled && !GameManager.instance.isTrailerMaking)
         {
-            if (sOItemDataObject.ItemType == ItemType.Component)
-                shopComponentUIPopupController.UpdateUI(sOItemDataObject);
-            else
-                shopCardUIPopupController.UpdateUI(sOItemDataObject);
+            shopComponentUIPopupController.UpdateUI(sOItemDataObject);
         }
     }
     public void HandlePopup(string name, string dialogue, CharacterSelect character)

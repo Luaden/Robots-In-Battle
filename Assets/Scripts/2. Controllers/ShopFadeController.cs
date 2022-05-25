@@ -50,6 +50,7 @@ public class ShopFadeController : MonoBehaviour
 
             if(canvasGroup.alpha == 1f && !DowntimeManager.instance.ShopInitialized)
             {
+                Debug.Log("Initializing Shop.");
                 DowntimeManager.instance.InitializeShop();
                 DowntimeManager.instance.ShopInitialized = true;
             }
