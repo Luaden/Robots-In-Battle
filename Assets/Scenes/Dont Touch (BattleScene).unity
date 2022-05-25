@@ -230,6 +230,10 @@ PrefabInstance:
       propertyPath: opponentMech
       value: 
       objectReference: {fileID: 1689824925}
+    - target: {fileID: 1405654908279642797, guid: fda3282e074714e48b78fc797600f2d9, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: -406.00006
+      objectReference: {fileID: 0}
     - target: {fileID: 3332088084043860751, guid: fda3282e074714e48b78fc797600f2d9, type: 3}
       propertyPath: playerMechAnimationController
       value: 
@@ -238,6 +242,10 @@ PrefabInstance:
       propertyPath: opponentMechAnimationController
       value: 
       objectReference: {fileID: 1744905463}
+    - target: {fileID: 7687182244163790646, guid: fda3282e074714e48b78fc797600f2d9, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: -576.00006
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: fda3282e074714e48b78fc797600f2d9, type: 3}
 --- !u!1 &1708944 stripped
@@ -266,7 +274,7 @@ GameObject:
   - component: {fileID: 63490329}
   - component: {fileID: 63490331}
   - component: {fileID: 63490330}
-  m_Layer: 7
+  m_Layer: 5
   m_Name: Dialogue
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -288,10 +296,10 @@ RectTransform:
   m_Father: {fileID: 1374451976}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 370.3, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 305.15, y: -212.44498}
+  m_SizeDelta: {x: 370.3, y: 109.10999}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &63490330
 MonoBehaviour:
@@ -1053,7 +1061,7 @@ GameObject:
   - component: {fileID: 447986540}
   - component: {fileID: 447986542}
   - component: {fileID: 447986541}
-  m_Layer: 7
+  m_Layer: 5
   m_Name: Name
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1075,10 +1083,10 @@ RectTransform:
   m_Father: {fileID: 1374451976}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 370.3, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 305.15, y: -111.44499}
+  m_SizeDelta: {x: 370.3, y: 62.88999}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &447986541
 MonoBehaviour:
@@ -1190,13 +1198,13 @@ GameObject:
   - component: {fileID: 481666181}
   - component: {fileID: 481666180}
   - component: {fileID: 481666179}
-  m_Layer: 7
+  m_Layer: 5
   m_Name: Player Popup Object
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &481666178
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1217,7 +1225,7 @@ RectTransform:
   m_AnchorMin: {x: 1, y: 1}
   m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: -1818, y: -406}
-  m_SizeDelta: {x: 0, y: 0}
+  m_SizeDelta: {x: 610.3, y: 347}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &481666179
 MonoBehaviour:
@@ -1796,7 +1804,7 @@ GameObject:
   - component: {fileID: 795267211}
   - component: {fileID: 795267213}
   - component: {fileID: 795267212}
-  m_Layer: 7
+  m_Layer: 5
   m_Name: Dialogue
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1818,10 +1826,10 @@ RectTransform:
   m_Father: {fileID: 481666178}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 370.3, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 305.15, y: -212.44498}
+  m_SizeDelta: {x: 370.3, y: 109.10999}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &795267212
 MonoBehaviour:
@@ -2103,7 +2111,7 @@ Canvas:
   m_SortingBucketNormalizedSize: 0
   m_AdditionalShaderChannelsFlag: 25
   m_SortingLayerID: 1851237995
-  m_SortingOrder: 100
+  m_SortingOrder: 0
   m_TargetDisplay: 0
 --- !u!1 &855584111
 GameObject:
@@ -2116,7 +2124,7 @@ GameObject:
   - component: {fileID: 855584112}
   - component: {fileID: 855584114}
   - component: {fileID: 855584113}
-  m_Layer: 7
+  m_Layer: 5
   m_Name: Name
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2138,10 +2146,10 @@ RectTransform:
   m_Father: {fileID: 481666178}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 370.3, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 305.15, y: -111.44499}
+  m_SizeDelta: {x: 370.3, y: 62.88999}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &855584113
 MonoBehaviour:
@@ -3183,13 +3191,13 @@ GameObject:
   - component: {fileID: 1374451979}
   - component: {fileID: 1374451978}
   - component: {fileID: 1374451977}
-  m_Layer: 7
+  m_Layer: 5
   m_Name: Opponent Popup Object
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1374451976
 RectTransform:
   m_ObjectHideFlags: 0
@@ -3210,7 +3218,7 @@ RectTransform:
   m_AnchorMin: {x: 1, y: 1}
   m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: -311, y: -382}
-  m_SizeDelta: {x: 0, y: 0}
+  m_SizeDelta: {x: 610.3, y: 347}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1374451977
 MonoBehaviour:
@@ -3488,7 +3496,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1624006168}
   - component: {fileID: 1624006169}
-  m_Layer: 7
+  m_Layer: 5
   m_Name: AI Dialogue Popup Controller
   m_TagString: Untagged
   m_Icon: {fileID: 0}

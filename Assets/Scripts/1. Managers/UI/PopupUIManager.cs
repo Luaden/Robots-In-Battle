@@ -6,14 +6,14 @@ public class PopupUIManager : MonoBehaviour
 {
     [SerializeField] private float textRate;
     [SerializeField] private float generalHUDPopupDelay;
-
+    [SerializeField] private AIDialoguePopupController aIDialoguePopupController;
     private CombatCardUIPopupController combatCardUIPopupController;
     private ShopComponentUIPopupController shopComponentUIPopupController;
     private ShopCardUIPopupController shopCardUIPopupController;
     private HUDGeneralUIPopupController hudGeneralUIPopupController;
     private HUDBuffUIPopupController hudBuffUIPopupController;
     private HUDMechComponentPopupController hudMechComponentPopupController;
-    private AIDialoguePopupController aIDialoguePopupController;
+    //private AIDialoguePopupController aIDialoguePopupController;
     private AIConversationPopupController aIConversationPopupController;
     private EventDialoguePopupController eventDialoguePopupController;
     private HUDFloatingDamagePopupController floatingDamagePopupController;
@@ -29,7 +29,7 @@ public class PopupUIManager : MonoBehaviour
         shopComponentUIPopupController = GetComponentInChildren<ShopComponentUIPopupController>();
         hudGeneralUIPopupController = GetComponentInChildren<HUDGeneralUIPopupController>();
         shopCardUIPopupController = GetComponentInChildren<ShopCardUIPopupController>();
-        aIDialoguePopupController = GetComponentInChildren<AIDialoguePopupController>();
+        //aIDialoguePopupController = GetComponentInChildren<AIDialoguePopupController>();
         aIConversationPopupController = GetComponentInChildren<AIConversationPopupController>();
         eventDialoguePopupController = GetComponentInChildren<EventDialoguePopupController>();
         hudBuffUIPopupController = GetComponentInChildren<HUDBuffUIPopupController>();
