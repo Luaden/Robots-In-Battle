@@ -60,6 +60,7 @@ public class CombatManager : MonoBehaviour
     private PlayerInventoryCardDeckUISlotManager playerInventoryCardDeckSlotManager;
     private OpponentInventoryCardDeckUISlotManager opponentInventoryCardDeckSlotManager;
     private CardClickController cardClickController;
+    private WinLossPanelController winLossPanelController;
 
     private FighterDataObject playerFighter;
     private FighterDataObject opponentFighter;
@@ -93,6 +94,7 @@ public class CombatManager : MonoBehaviour
     public PlayerInventoryCardDeckUISlotManager PlayerInventoryCardDeckSlotManager { get => playerInventoryCardDeckSlotManager; }
     public OpponentInventoryCardDeckUISlotManager OpponentInventoryCardDeckSlotManager { get => opponentInventoryCardDeckSlotManager; }
     public CardClickController CardClickController { get => cardClickController; }
+    public WinLossPanelController WinLossPanelController { get => winLossPanelController; }
 
     public int MechEnergyGain { get => mechEnergyGain; }
     public float BrokenCDM { get => brokenComponentDamageMultiplier; }
@@ -342,6 +344,7 @@ public class CombatManager : MonoBehaviour
         playerInventoryCardDeckSlotManager = FindObjectOfType<PlayerInventoryCardDeckUISlotManager>(true);
         cardClickController = FindObjectOfType<CardClickController>(true);
         opponentInventoryCardDeckSlotManager = FindObjectOfType<OpponentInventoryCardDeckUISlotManager>(true);
+        winLossPanelController = FindObjectOfType<WinLossPanelController>(true);
     }
 
     private void Start()

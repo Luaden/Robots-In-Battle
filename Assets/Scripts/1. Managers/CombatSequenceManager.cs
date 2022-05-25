@@ -78,7 +78,6 @@ public class CombatSequenceManager : MonoBehaviour
         {
             if(!effectsComplete)
             {
-                Debug.Log("Incrementing effects.");
                 CombatManager.instance.CombatEffectManager.IncrementEffectsAtTurnEnd();
                 CombatManager.instance.CombatAnimationManager.BurnCurrentCards();
 
@@ -86,7 +85,6 @@ public class CombatSequenceManager : MonoBehaviour
                 return;
             }
 
-            Debug.Log("Combat complete.");
             combatComplete = true;
             startedCombatSequences = false;
             currentCombatSequence = null;
