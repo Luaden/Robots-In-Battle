@@ -47,11 +47,12 @@ public class CameraRenderController : MonoBehaviour
 
         Destroy(renderTexture);
 
-        Sprite sprite = Sprite.Create(texture2D, rect, Vector2.zero);
+        //Sprite sprite = Sprite.Create(texture2D, rect, Vector2.zero);
         screenCaptureDestination.mainTexture = texture2D;
+        //imageObject.GetComponent<Image>().sprite = sprite;
 
-        imageObject.SetActive(true);
         //imageObject.GetComponent<RectTransform>().pivot = new Vector2(.5f, .5f);
         //mainCanvas.renderMode = RenderMode.ScreenSpaceOverlay;
+        imageObject.SetActive(true);
     }
 }
