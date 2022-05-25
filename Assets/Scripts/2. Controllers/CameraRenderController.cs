@@ -6,7 +6,7 @@ using UnityEngine.UI;
 public class CameraRenderController : MonoBehaviour
 {
     [SerializeField] private GameObject imageObject;
-    [SerializeField] private Image renderImage;
+    [SerializeField] private Material screenCaptureDestination;
     [SerializeField] private Canvas mainCanvas;
 
     private Camera mainCamera;
@@ -24,7 +24,7 @@ public class CameraRenderController : MonoBehaviour
     [ContextMenu("Capture Screen")]
     private void CaptureScreen()
     {
-        mainCanvas.renderMode = RenderMode.ScreenSpaceCamera;
+        //mainCanvas.renderMode = RenderMode.ScreenSpaceCamera;
         height = Screen.width;
         width = Screen.height;
         depth = 24;
@@ -48,10 +48,10 @@ public class CameraRenderController : MonoBehaviour
         Destroy(renderTexture);
 
         Sprite sprite = Sprite.Create(texture2D, rect, Vector2.zero);
-        renderImage.sprite = sprite;
+        screenCaptureDestination.mainTexture = texture2D;
 
         imageObject.SetActive(true);
-        imageObject.GetComponent<RectTransform>().pivot = new Vector2(.5f, .5f);
-        mainCanvas.renderMode = RenderMode.ScreenSpaceOverlay;
+        //imageObject.GetComponent<RectTransform>().pivot = new Vector2(.5f, .5f);
+        //mainCanvas.renderMode = RenderMode.ScreenSpaceOverlay;
     }
 }

@@ -69,8 +69,6 @@ public class DowntimeManager : MonoBehaviour
         cameraBoomMoveController = FindObjectOfType<ShopCameraBoomMoveController>(true);
         mechSpriteSwapManager = FindObjectOfType<MechSpriteSwapManager>(true);
         mechSpriteSwapManager.UpdateMechSprites(GameManager.instance.Player.PlayerFighterData.FighterMech, CharacterSelect.Player);
-
-        Debug.Log(GameManager.instance.Player.PlayerFighterData.FighterMech.MechArms.ComponentName);
     }
 
     public void InitializeShop()

@@ -37,14 +37,4 @@ public class FightButtonAnimatorController : MonoBehaviour
         animator.SetTrigger("isDisappearing");
         animator.ResetTrigger("isAppearing");
     }
-
-    private void HideButton()
-    {
-
-    }
-
-    private void ShowButton()
-    {
-
-    }
 }
