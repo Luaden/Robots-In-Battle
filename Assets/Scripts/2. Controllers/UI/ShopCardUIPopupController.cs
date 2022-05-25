@@ -11,8 +11,7 @@ public class ShopCardUIPopupController : BaseUIElement<SOItemDataObject>
     [SerializeField] private TMP_Text descriptionText;
     [SerializeField] private TMP_Text energyCostText;
     [SerializeField] private TMP_Text damageDealtText;
-    [SerializeField] private TMP_Text costText;
-    [SerializeField] private TMP_Text timeCostText;
+    [SerializeField] private TMP_Text currencyCostText;
 
     private void Awake()
     {
@@ -31,10 +30,8 @@ public class ShopCardUIPopupController : BaseUIElement<SOItemDataObject>
             energyCostText.text = ("Energy: ") + primaryData.EnergyCost.ToString();
             damageDealtText.text = ("Damage: ") + primaryData.BaseDamage.ToString();
 
-            if (costText != null)
-                costText.text = primaryData.CurrencyCost.ToString();
-            if (timeCostText != null)
-                timeCostText.text = primaryData.TimeCost.ToString();
+            if (currencyCostText != null)
+                currencyCostText.text = ("Price: ") + primaryData.CurrencyCost.ToString();
         }
 
         Vector3 mousePosition = Input.mousePosition / mainCanvas.scaleFactor;
@@ -63,10 +60,8 @@ public class ShopCardUIPopupController : BaseUIElement<SOItemDataObject>
             energyCostText.text = string.Empty;
             damageDealtText.text = string.Empty;
 
-            if (costText != null)
-                costText.text = string.Empty;
-            if (timeCostText != null)
-                timeCostText.text = string.Empty;
+            if (currencyCostText != null)
+                currencyCostText.text = string.Empty;
 
             popupObject.SetActive(false);
 
