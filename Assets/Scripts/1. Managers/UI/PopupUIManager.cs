@@ -132,6 +132,11 @@ public class PopupUIManager : MonoBehaviour
         floatingDamagePopupController.UpdateUI(damageObject);
     }
 
+    public void HandlePopup(CharacterSelect characterBroken, int bonusDamage)
+    {
+        floatingDamagePopupController.UpdateUI(characterBroken, bonusDamage);
+    }
+
     public void HandlePopup(CardChannelPairObject damageSplashEffectLocation)
     {
         damageSplashEffectPopupController.UpdateUI(damageSplashEffectLocation);
