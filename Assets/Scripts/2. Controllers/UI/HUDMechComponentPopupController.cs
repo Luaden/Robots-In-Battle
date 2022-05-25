@@ -85,9 +85,20 @@ public class HUDMechComponentPopupController : BaseUIElement<MechSelect>
 
         if (character == MechSelect.Player)
         {
-            playerHighChannelComponentHealthText.text = "Component Health: " + Mathf.Clamp(playerHeadComponent.ComponentCurrentHP, 0, int.MaxValue).ToString();
-            playerMidChannelComponentHealthText.text = "Component Health: " + Mathf.Clamp(playerTorsoComponent.ComponentCurrentHP, 0, int.MaxValue).ToString();
-            playerLowChannelComponentHealthText.text = "Component Health: " + Mathf.Clamp(playerLegsComponent.ComponentCurrentHP, 0, int.MaxValue).ToString();
+            if (playerHeadComponent.ComponentCurrentHP > 0)
+                playerHighChannelComponentHealthText.text = "Component Health: " + Mathf.Clamp(playerHeadComponent.ComponentCurrentHP, 0, int.MaxValue).ToString();
+            else
+                playerHighChannelComponentHealthText.text = "Component Health: BROKEN!";
+
+            if (playerTorsoComponent.ComponentCurrentHP > 0)
+                playerMidChannelComponentHealthText.text = "Component Health: " + Mathf.Clamp(playerTorsoComponent.ComponentCurrentHP, 0, int.MaxValue).ToString();
+            else
+                playerMidChannelComponentHealthText.text = "Component Health: BROKEN!";
+
+            if (playerLegsComponent.ComponentCurrentHP > 0)
+                playerLowChannelComponentHealthText.text = "Component Health: " + Mathf.Clamp(playerLegsComponent.ComponentCurrentHP, 0, int.MaxValue).ToString();
+            else
+                playerLowChannelComponentHealthText.text = "Component Health: BROKEN!";
             
             foreach (Channels channel in CombatManager.instance.GetChannelListFromFlags(Channels.All))
                 SetComponentPopups(MechSelect.Player, channel, true);
@@ -98,9 +109,20 @@ public class HUDMechComponentPopupController : BaseUIElement<MechSelect>
 
         if(character == MechSelect.Opponent)
         {
-            opponentHighChannelComponentHealthText.text = "Component Health: " + Mathf.Clamp(opponentHeadComponent.ComponentCurrentHP, 0, int.MaxValue).ToString();
-            opponentMidChannelComponentHealthText.text = "Component Health: " + Mathf.Clamp(opponentTorsoComponent.ComponentCurrentHP, 0, int.MaxValue).ToString();
-            opponentLowChannelComponentHealthText.text = "Component Health: " + Mathf.Clamp(opponentLegsComponent.ComponentCurrentHP, 0, int.MaxValue).ToString();
+            if (opponentHeadComponent.ComponentCurrentHP > 0)
+                opponentHighChannelComponentHealthText.text = "Component Health: " + Mathf.Clamp(opponentHeadComponent.ComponentCurrentHP, 0, int.MaxValue).ToString();
+            else
+                opponentHighChannelComponentHealthText.text = "Component Health: BROKEN!";
+
+            if (opponentTorsoComponent.ComponentCurrentHP > 0)
+                opponentMidChannelComponentHealthText.text = "Component Health: " + Mathf.Clamp(opponentTorsoComponent.ComponentCurrentHP, 0, int.MaxValue).ToString();
+            else
+                opponentMidChannelComponentHealthText.text = "Component Health: BROKEN!";
+
+            if (opponentLegsComponent.ComponentCurrentHP > 0)
+                opponentLowChannelComponentHealthText.text = "Component Health: " + Mathf.Clamp(opponentLegsComponent.ComponentCurrentHP, 0, int.MaxValue).ToString();
+            else
+                opponentLowChannelComponentHealthText.text = "Component Health: BROKEN!";
 
             foreach (Channels channel in CombatManager.instance.GetChannelListFromFlags(Channels.All))
                 SetComponentPopups(MechSelect.Opponent, channel, true);
