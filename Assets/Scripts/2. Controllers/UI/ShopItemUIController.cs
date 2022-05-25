@@ -87,12 +87,13 @@ public class ShopItemUIController : MonoBehaviour, IPointerDownHandler, IPointer
     private ElementType componentElement;
 
 
+    private bool notInMech = true;
     public bool isPickedUp = false;
-    [SerializeField] public bool notInMech = true;
     private SOItemDataObject baseSOItemDataObject;
     private MechComponentDataObject mechComponentDataObject;
     private BaseSlotController<ShopItemUIController> itemShopUISlotController;
 
+    public bool NotInMech { get => notInMech; set => UpdateMechStatus(value); }
     public SOItemDataObject BaseSOItemDataObject { get => baseSOItemDataObject; }
     public MechComponentDataObject MechComponentDataObject { get => mechComponentDataObject; set => mechComponentDataObject = value; }
     public BaseSlotController<ShopItemUIController> ItemSlotController { get => itemShopUISlotController; set => UpdateItemSlot(value); }
@@ -334,6 +335,16 @@ public class ShopItemUIController : MonoBehaviour, IPointerDownHandler, IPointer
             previousParentObject = newSlot.transform;
             transform.SetParent(newSlot.transform);
         }
+    }
+
+    private void UpdateMechStatus(bool value)
+    {
+        notInMech = value;
+        if(notInMech && itemType == ItemType.Component)
+            componentPricetagObject.SetActive(true);
+        else if (!notInMech && itemType == ItemType.Component)
+            componentPricetagObject.SetActive(false);
+
     }
 
     private void OnDisable()
