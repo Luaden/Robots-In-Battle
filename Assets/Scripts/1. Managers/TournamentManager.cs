@@ -28,10 +28,10 @@ public class TournamentManager : MonoBehaviour
     private void Start()
     {
         AssignNodeIndices();
+        AssignFightersToNodeIndex();
 
-        if(GameManager.instance.Player.CurrentWinCount > 1)
+        if (GameManager.instance.Player.CurrentWinCount > 1)
         {
-            AssignFightersToNodeIndex();
             nodeController.AssignWinners();
             nodeController.AssignActiveNodes();
             nodeController.ProgressFighters();
