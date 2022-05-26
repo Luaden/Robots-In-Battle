@@ -71,6 +71,7 @@ public class TournamentManager : MonoBehaviour
             NodeDataObject node = nodeController.GetAllNodes()[j];
             if (GameManager.instance.Player.OtherFighters.Any(opponent => opponent.FighterNodeIndex == node.NodeIndex))
                 AddToActiveList(node);
+
         }
 
         for(int k = 0; k < GetActiveList().Count; k++)
@@ -91,6 +92,7 @@ public class TournamentManager : MonoBehaviour
                 nodeDataObject.nodeType = NodeType.Player;
                 fighter = GameManager.instance.Player.PlayerFighterData;
                 player = false;
+
             }
             else
             {

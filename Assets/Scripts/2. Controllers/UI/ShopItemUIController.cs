@@ -12,7 +12,7 @@ public class ShopItemUIController : MonoBehaviour, IPointerDownHandler, IPointer
 
     [SerializeField] private GameObject cardUIObject;
     [SerializeField] private GameObject componentUIObject;
-    [SerializeField] private Image selectedImageObject;
+    [SerializeField][Range(1.00f, 1.25f)] private float selectedScaleValue;
     [SerializeField] private GameObject cardPricetagObject;
     [SerializeField] private GameObject componentPricetagObject;
     [Space]
@@ -261,26 +261,16 @@ public class ShopItemUIController : MonoBehaviour, IPointerDownHandler, IPointer
 
         if (DowntimeManager.instance != null && (DowntimeManager.instance.ShopManager.CurrentItemSelected == null || DowntimeManager.instance.ShopManager.CurrentItemSelected == this))
         {
-            Color selectedColor = selectedImageObject.color;
-            selectedColor.a = 0.4f;
-
-            selectedImageObject.color = selectedColor;
-
+            transform.localScale = Vector3.one * selectedScaleValue;
             DowntimeManager.instance.ShopManager.CurrentItemSelected = this;
             return;
         }
 
         if (DowntimeManager.instance != null && DowntimeManager.instance.ShopManager.CurrentItemSelected != this)
         {
-            Color transparent = selectedImageObject.color;
-            transparent.a = 0.0f;
-
-            DowntimeManager.instance.ShopManager.CurrentItemSelected.selectedImageObject.color = transparent;
-
-            Color selectedColor = selectedImageObject.color;
-            selectedColor.a = 0.4f;
-
-            selectedImageObject.color = selectedColor;
+            ShopItemUIController shopItem = DowntimeManager.instance.ShopManager.CurrentItemSelected;
+            shopItem.transform.localScale = Vector3.one;
+            transform.localScale = Vector3.one * selectedScaleValue;
 
             DowntimeManager.instance.ShopManager.CurrentItemSelected = this;
             return;
@@ -349,19 +339,15 @@ public class ShopItemUIController : MonoBehaviour, IPointerDownHandler, IPointer
             cardPricetagObject.SetActive(false);
             componentPricetagObject.SetActive(false);
         }
-
     }
 
     private void OnDisable()
     {
         if(DowntimeManager.instance != null)
         {
-            Color transparentColor = selectedImageObject.color;
-            transparentColor.a = 0.0f;
-
             ShopItemUIController item = DowntimeManager.instance.ShopManager.CurrentItemSelected;
             if (item == this)
-                item.selectedImageObject.color = transparentColor;
+                item.transform.localScale = Vector3.one;
         }
     }
 }

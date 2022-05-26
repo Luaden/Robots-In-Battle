@@ -1,5 +1,6 @@
 using System.Collections;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class NodeDataObject : MonoBehaviour
 {
@@ -16,6 +17,8 @@ public class NodeDataObject : MonoBehaviour
     [SerializeField] private FighterDataObject fighterData;
     private NodeUIController nodeUIController;
     [SerializeField] private FighterDataObject pairNodeFighterData;
+    [SerializeField] private Sprite playerBackgroundBox;
+    [SerializeField] private Sprite opponentBackgroundBox;
 
     public bool Active { get => active; set => UpdateStatus(value); }
     public FighterDataObject FighterDataObject { get => fighterData; }
@@ -37,6 +40,11 @@ public class NodeDataObject : MonoBehaviour
 
     public void Init(FighterDataObject fighter)
     {
+        if (nodeType == NodeType.Player)
+            GetComponent<Image>().sprite = playerBackgroundBox;
+        else if (nodeType == NodeType.Opponent)
+            GetComponent<Image>().sprite = opponentBackgroundBox;
+
         parentNode = transform.parent.GetComponent<NodeDataObject>();
         fighterData = fighter;
 
