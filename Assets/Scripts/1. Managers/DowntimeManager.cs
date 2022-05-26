@@ -11,6 +11,7 @@ public class DowntimeManager : MonoBehaviour
     [SerializeField] private GameObject repairButton;
     [SerializeField] private int repairCost;
     [SerializeField] private int minimumShopItemCount;
+    [SerializeField] private int maximumShopItemCount;
     [SerializeField] private int removalCost;
 
     private ShopManager shopManager;
@@ -29,6 +30,7 @@ public class DowntimeManager : MonoBehaviour
     private bool shopInitialized = false;
     public int RepairCost { get => repairCost; }
     public int MinimumShopItemCount { get => minimumShopItemCount; }
+    public int MaximumShopItemCount { get => maximumShopItemCount; }
     public bool ShopInitialized { get => shopInitialized; set => shopInitialized = value; }
     public int RemovalCost { get => removalCost; }
     public WorkshopLocation CurrentLocation { get => currentLocation; set => currentLocation = value; }

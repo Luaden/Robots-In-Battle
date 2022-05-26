@@ -10,7 +10,7 @@ public class ShopManager : MonoBehaviour
     private ShopItemUIController currentItemSelected;
 
     private ShopCollectionRandomizationController shopCollectionRandomizationController;
-    public ShopItemUIController CurrentItemSelected { get => currentItemSelected; set => currentItemSelected = value; }
+    public ShopItemUIController CurrentItemSelected { get => currentItemSelected; set => UpdateSelectedItem(value); }
     
     public void InitializeShop()
     {
@@ -79,4 +79,18 @@ public class ShopManager : MonoBehaviour
 
     }
 
+    private void UpdateSelectedItem(ShopItemUIController newSelectedItem)
+    {
+        if(currentItemSelected != null)
+            currentItemSelected.ShopItemAnimator.SetBool("isSelected", false);
+
+        if(newSelectedItem == currentItemSelected)
+        {
+            currentItemSelected = null;
+            return;
+        }
+
+        currentItemSelected = newSelectedItem;
+        newSelectedItem.ShopItemAnimator.SetBool("isSelected", true);
+    }
 }

@@ -12,7 +12,6 @@ public class ShopItemUIController : MonoBehaviour, IPointerDownHandler, IPointer
 
     [SerializeField] private GameObject cardUIObject;
     [SerializeField] private GameObject componentUIObject;
-    [SerializeField][Range(1.00f, 1.25f)] private float selectedScaleValue;
     [SerializeField] private GameObject cardPricetagObject;
     [SerializeField] private GameObject componentPricetagObject;
     [Space]
@@ -43,6 +42,7 @@ public class ShopItemUIController : MonoBehaviour, IPointerDownHandler, IPointer
     [SerializeField] private Color fullColor;
     [SerializeField] private Color fadeColor;
     [SerializeField] private MeshRenderer cardRenderer;
+    [SerializeField] private Animator shopItemAnimator;
     private Transform previousParentObject;
 
     [Header("Card Frames")]
@@ -96,6 +96,7 @@ public class ShopItemUIController : MonoBehaviour, IPointerDownHandler, IPointer
     public bool NotInMech { get => notInMech; set => UpdateMechStatus(value); }
     public SOItemDataObject BaseSOItemDataObject { get => baseSOItemDataObject; }
     public MechComponentDataObject MechComponentDataObject { get => mechComponentDataObject; set => mechComponentDataObject = value; }
+    public Animator ShopItemAnimator { get => shopItemAnimator; }
     public BaseSlotController<ShopItemUIController> ItemSlotController { get => itemShopUISlotController; set => UpdateItemSlot(value); }
     public Transform PreviousParentObject { get => previousParentObject; set => previousParentObject = value; }
 
@@ -257,26 +258,9 @@ public class ShopItemUIController : MonoBehaviour, IPointerDownHandler, IPointer
         {
             isPickedUp = true;
             transform.SetParent(itemShopUISlotController.SlotManager.MainCanvas.transform);
-        }
-
-        if (DowntimeManager.instance != null && (DowntimeManager.instance.ShopManager.CurrentItemSelected == null || DowntimeManager.instance.ShopManager.CurrentItemSelected == this))
-        {
-            //transform.localScale = Vector3.one * selectedScaleValue;
-            DowntimeManager.instance.ShopManager.CurrentItemSelected = this;
-            return;
-        }
-
-        if (DowntimeManager.instance != null && DowntimeManager.instance.ShopManager.CurrentItemSelected != this)
-        {
-            //ShopItemUIController shopItem = DowntimeManager.instance.ShopManager.CurrentItemSelected;
-            //shopItem.transform.localScale = Vector3.one;
-           // transform.localScale = Vector3.one * selectedScaleValue;
 
             DowntimeManager.instance.ShopManager.CurrentItemSelected = this;
-            return;
         }
-
-
     }
 
     public void OnPointerUp(PointerEventData eventData)
@@ -338,19 +322,6 @@ public class ShopItemUIController : MonoBehaviour, IPointerDownHandler, IPointer
         {
             cardPricetagObject.SetActive(false);
             componentPricetagObject.SetActive(false);
-        }
-    }
-
-    private void OnDisable()
-    {
-        if(DowntimeManager.instance != null)
-        {
-            ShopItemUIController item = DowntimeManager.instance.ShopManager.CurrentItemSelected;
-            if (item == this)
-            {
-
-            }
-                //item.transform.localScale = Vector3.one;
         }
     }
 }
