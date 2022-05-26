@@ -41,7 +41,7 @@ Camera:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2134957543}
-  m_Enabled: 0
+  m_Enabled: 1
   serializedVersion: 2
   m_ClearFlags: 1
   m_BackGroundColor: {r: 0.19215687, g: 0.3019608, b: 0.4745098, a: 0}
@@ -84,7 +84,7 @@ AudioListener:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2134957543}
-  m_Enabled: 1
+  m_Enabled: 0
 --- !u!114 &2134957546
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -364,6 +364,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Page
       objectReference: {fileID: 0}
+    - target: {fileID: 2381411245161412526, guid: 3b95fbaf97ceded40b60964d3214435a, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4321794630527088383, guid: 3b95fbaf97ceded40b60964d3214435a, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
@@ -504,11 +508,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2056310507286636857, guid: 3b95fbaf97ceded40b60964d3214435a, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: -953
+      value: -959
       objectReference: {fileID: 0}
     - target: {fileID: 2056310507286636857, guid: 3b95fbaf97ceded40b60964d3214435a, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 558
+      value: 541
       objectReference: {fileID: 0}
     - target: {fileID: 2056310507286636857, guid: 3b95fbaf97ceded40b60964d3214435a, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -526,10 +530,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: Page 2
       objectReference: {fileID: 0}
+    - target: {fileID: 2381411245161412526, guid: 3b95fbaf97ceded40b60964d3214435a, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4321794630527088383, guid: 3b95fbaf97ceded40b60964d3214435a, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
-      objectReference: {fileID: 2100000, guid: 9256ffb70a452294bb6dd2ccf155bb1b, type: 2}
+      objectReference: {fileID: 2100000, guid: a0fa941e8baf3824eb024cf87164c342, type: 2}
     - target: {fileID: 4321794630527088383, guid: 3b95fbaf97ceded40b60964d3214435a, type: 3}
       propertyPath: m_BlendShapeWeights.Array.size
       value: 7
@@ -565,4 +573,4 @@ SortingGroup:
   m_Enabled: 1
   m_SortingLayerID: -2014246803
   m_SortingLayer: 3
-  m_SortingOrder: 1
+  m_SortingOrder: 0

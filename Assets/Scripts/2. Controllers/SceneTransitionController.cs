@@ -30,6 +30,7 @@ public class SceneTransitionController : MonoBehaviour
     public void FirstPageTurned()
     {
         OnFirstPageTurned?.Invoke();
+        firstPageAnimator.ResetTrigger("isTurningPage");
     }
 
     public void OnSceneLoaded()
@@ -44,8 +45,10 @@ public class SceneTransitionController : MonoBehaviour
 
     public void SecondPageTurned()
     {
+        secondPageAnimator.ResetTrigger("isTurningPageTwo");
         firstPage.SetActive(false);
         secondPage.SetActive(false);
+
 
         GameManager.instance.CurrentMainCanvas.worldCamera = worldCamera;
         worldCamera.enabled = true;

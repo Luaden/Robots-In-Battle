@@ -92,19 +92,19 @@ public class GameManager : MonoBehaviour
 
     public void LoadTitleScene()
     {
-        SceneController.instance.LoadTitleScene();
+        SceneManager.instance.LoadTitleScene();
         instance = null;
         Destroy(gameObject);
     }
 
     public void LoadCombatScene()
     {
-        SceneController.instance.LoadCombatScene();
+        SceneManager.instance.LoadCombatScene();
     }
 
     public void LoadWorkshopScene()
     {
-        SceneController.instance.LoadWorkshopScene();
+        SceneManager.instance.LoadWorkshopScene();
         playerBankController.AddPlayerCurrency(PlayerCurrencyGainOnWin);
         playerBankController.ResetPlayerTime();
     }
