@@ -99,7 +99,7 @@ public class NodeUIController : MonoBehaviour, IPointerDownHandler, IPointerUpHa
         draggableCanvasGroup.alpha = 1f;
 
 /*        // if what we are dragging is nodedata
-        if(eventData.pointerDrag.GetComponent<NodeDataObject>() != null)
+        if (eventData.pointerDrag.GetComponent<NodeDataObject>() != null)
         {
             Debug.Log(eventData.pointerDrag.GetComponent<NodeDataObject>().PairNode);
             Debug.Log(nodeSlotController.GetComponent<NodeDataObject>().PairNode);
@@ -163,13 +163,13 @@ public class NodeUIController : MonoBehaviour, IPointerDownHandler, IPointerUpHa
 
     public void SetInactive()
     {
-        crossedOutObject.SetActive(false);
+        crossedOutObject.SetActive(true);
         this.enabled = false;
 
     }
     public void SetActive()
     {
-        crossedOutObject.SetActive(true);
+        crossedOutObject.SetActive(false);
         this.enabled = true;
     }
 
