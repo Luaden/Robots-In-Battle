@@ -29,12 +29,10 @@ public class SceneTransitionController : MonoBehaviour
     {
         OnFirstPageTurned?.Invoke();
         secondPageAnimator.SetTrigger("isTurningPageTwo");
-        Debug.Log("First page turn complete.");
     }
 
     public void SecondPageTurned()
     {
-        Debug.Log("Second page turning.");
         OnSecondPageTurned?.Invoke();
         firstPage.SetActive(false);
         secondPage.SetActive(false);

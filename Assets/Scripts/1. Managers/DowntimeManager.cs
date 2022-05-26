@@ -6,6 +6,7 @@ public class DowntimeManager : MonoBehaviour
 {
     [SerializeField] private GameObject inventory;
     [SerializeField] private GameObject shopCartWindow;
+    [SerializeField] private Canvas mainCanvas;
 
     [SerializeField] private GameObject repairButton;
     [SerializeField] private int repairCost;
@@ -70,6 +71,8 @@ public class DowntimeManager : MonoBehaviour
         cameraBoomMoveController = FindObjectOfType<ShopCameraBoomMoveController>(true);
         mechSpriteSwapManager = FindObjectOfType<MechSpriteSwapManager>(true);
         mechSpriteSwapManager.UpdateMechSprites(GameManager.instance.Player.PlayerFighterData.FighterMech, CharacterSelect.Player);
+
+        GameManager.instance.CurrentMainCanvas = mainCanvas;
     }
 
     public void InitializeShop()

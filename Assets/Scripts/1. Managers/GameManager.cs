@@ -20,6 +20,7 @@ public class GameManager : MonoBehaviour
     private int enemyHealthModifier = 0;
     private List<SOEventObject> activeEvents;
     private FighterDataObject nextFighter;
+    private Canvas currentMainCanvas;
 
     private FighterBuildController fighterBuildController;
     private DowntimeMechBuilderController playerMechController;
@@ -35,6 +36,7 @@ public class GameManager : MonoBehaviour
     public DowntimeMechBuilderController PlayerMechController { get => playerMechController; }
     public DowntimeDeckController PlayerDeckController { get => playerDeckController; }
     public DowntimeBankController PlayerBankController { get => playerBankController; }
+    public Canvas CurrentMainCanvas { get => currentMainCanvas; set => AssignCurrentMainCanvas(value); }
 
     public int EnemyHealthModifier { get => enemyHealthModifier; set => enemyHealthModifier = value; }
     public int PlayerWins { get => playerData.CurrentWinCount; }
@@ -45,6 +47,9 @@ public class GameManager : MonoBehaviour
 
     public delegate void onUpdatePlayerCurrencies();
     public static event onUpdatePlayerCurrencies OnUpdatePlayerCurrencies;
+
+    public delegate void onUpdatedMainCanvas();
+    public static event onUpdatedMainCanvas OnUpdatedMainCanvas;
 
     public void StashCurrentEvents(List<SOEventObject> newEvents)
     {
@@ -134,14 +139,18 @@ public class GameManager : MonoBehaviour
 
     private void Awake()
     {
+        Debug.Log("Creating GM");
         if (instance != null && instance != this)
+        {
             Destroy(this);
+            return;
+        }
         else
         {
             instance = this;
             DontDestroyOnLoad(this);
         }
-
+        Debug.Log("Building GM");
         Application.targetFrameRate = Screen.currentResolution.refreshRate;
 
         fighterBuildController = GetComponent<FighterBuildController>();
@@ -153,6 +162,11 @@ public class GameManager : MonoBehaviour
         CreatePlayerAndFighters();
     }
 
+    private void AssignCurrentMainCanvas(Canvas canvas)
+    {
+        currentMainCanvas = canvas;
+        OnUpdatedMainCanvas?.Invoke();
+    }
 
     public class DowntimeDeckController
     {
