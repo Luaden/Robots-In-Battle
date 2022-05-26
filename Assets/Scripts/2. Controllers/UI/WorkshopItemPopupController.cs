@@ -92,7 +92,7 @@ public class WorkshopItemPopupController : BaseUIElement<SOItemDataObject>
                     currentItem = GameManager.instance.PlayerMechController.PlayerMech.MechTorso;
                     break;
                 case MechComponent.Arms:
-                    currentItem = GameManager.instance.PlayerMechController.PlayerMech.MechHead;
+                    currentItem = GameManager.instance.PlayerMechController.PlayerMech.MechArms;
                     break;
                 case MechComponent.Legs:
                     currentItem = GameManager.instance.PlayerMechController.PlayerMech.MechLegs;

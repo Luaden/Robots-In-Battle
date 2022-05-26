@@ -104,7 +104,7 @@ public class MechAnimationController : MonoBehaviour
 
     public void SetMechElements(MechObject mechObject)
     {
-        switch (mechObject.MechHead.ComponentElement)
+        switch (mechObject.MechArms.ComponentElement)
         {
             case ElementType.None:
                 break;
