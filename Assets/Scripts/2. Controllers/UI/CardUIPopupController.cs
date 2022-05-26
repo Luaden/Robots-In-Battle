@@ -2,7 +2,7 @@ using System;
 using UnityEngine;
 using TMPro;
 
-public class ShopCardUIPopupController : BaseUIElement<SOItemDataObject>
+public class CardUIPopupController : BaseUIElement<SOItemDataObject>
 {
     [Header("General Popup Attributes")]
     [SerializeField] private Canvas mainCanvas;

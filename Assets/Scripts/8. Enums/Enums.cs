@@ -233,3 +233,9 @@ public enum HUDBuffElement
     Jazzersize,
     DamageDown,
 }
+
+public enum WorkshopLocation
+{
+    Shop,
+    Inventory
+}

@@ -21,6 +21,7 @@ public class DowntimeManager : MonoBehaviour
     private ShopCameraBoomMoveController cameraBoomMoveController;
     private TournamentManager tournamentManager;
     private MechSpriteSwapManager mechSpriteSwapManager;
+    private WorkshopLocation currentLocation = WorkshopLocation.Shop;
 
     public static DowntimeManager instance;
 
@@ -29,6 +30,7 @@ public class DowntimeManager : MonoBehaviour
     public int MinimumShopItemCount { get => minimumShopItemCount; }
     public bool ShopInitialized { get => shopInitialized; set => shopInitialized = value; }
     public int RemovalCost { get => removalCost; }
+    public WorkshopLocation CurrentLocation { get => currentLocation; set => currentLocation = value; }
 
     public ShopManager ShopManager { get => shopManager; }
     public ShopUISlotManager ShopUISlotManager { get => shopUISlotManager; }
@@ -38,7 +40,6 @@ public class DowntimeManager : MonoBehaviour
     public PopupUIManager PopupUIManager { get => popupUIManager; }
     public ShopCameraBoomMoveController CameraBoomMoveController { get => cameraBoomMoveController; }
     public MechSpriteSwapManager MechSpriteSwapManager { get => mechSpriteSwapManager; }
-
     public TournamentManager TournamentManager { get => tournamentManager; }
 
     public delegate void onLoadCombatScene();
@@ -78,13 +79,14 @@ public class DowntimeManager : MonoBehaviour
 
     public void MoveToInventory()
     {
-        if (GameManager.instance.PlayerMechController.PlayerMech.MechCurrentHP < GameManager.instance.PlayerMechController.PlayerMech.MechMaxHP)
-            repairButton.SetActive(true);
         OnMoveToInventory?.Invoke();
     }
 
     public void MoveToShop()
     {
+        if (GameManager.instance.PlayerMechController.PlayerMech.MechCurrentHP < GameManager.instance.PlayerMechController.PlayerMech.MechMaxHP)
+            repairButton.SetActive(true);
+
         OnMoveToShop?.Invoke();
     }
 

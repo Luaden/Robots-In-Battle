@@ -210,8 +210,6 @@ public class ShopItemUIController : MonoBehaviour, IPointerDownHandler, IPointer
     {
         if (DowntimeManager.instance != null)
             DowntimeManager.instance.PopupUIManager.HandlePopup(baseSOItemDataObject);
-        else if (CombatManager.instance != null)
-            CombatManager.instance.PopupUIManager.HandlePopup(baseSOItemDataObject);
     }
 
     public void OnPointerExit(PointerEventData eventData)

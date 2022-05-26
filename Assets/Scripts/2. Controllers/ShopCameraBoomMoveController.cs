@@ -46,12 +46,14 @@ public class ShopCameraBoomMoveController : MonoBehaviour
     {
         boomAnimator.ResetTrigger("checkingInventory");
         OnInventoryPositionReached?.Invoke();
+        DowntimeManager.instance.CurrentLocation = WorkshopLocation.Inventory;
     }
 
     private void ReachedShop()
     {
         boomAnimator.ResetTrigger("checkingShop");
         OnShopPositionReached?.Invoke();
+        DowntimeManager.instance.CurrentLocation = WorkshopLocation.Shop;
     }
 
     private void ReachedBar()

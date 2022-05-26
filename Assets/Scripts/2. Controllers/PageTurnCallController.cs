@@ -13,6 +13,6 @@ public class PageTurnCallController : MonoBehaviour
 
     public void EndPageTwoTurn()
     {
-        //sceneTransitionController.SecondPageTurned();
+        sceneTransitionController.SecondPageTurned();
     }
 }

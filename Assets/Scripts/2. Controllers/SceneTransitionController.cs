@@ -5,6 +5,7 @@ using UnityEngine.UI;
 
 public class SceneTransitionController : MonoBehaviour
 {
+    [SerializeField] private Camera transitionCamera;
     [SerializeField] private GameObject firstPage;
     [SerializeField] private GameObject secondPage;
     [SerializeField] private Material screenCaptureDestination;
@@ -27,7 +28,6 @@ public class SceneTransitionController : MonoBehaviour
     public void FirstPageTurned()
     {
         OnFirstPageTurned?.Invoke();
-        firstPage.SetActive(false);
         secondPageAnimator.SetTrigger("isTurningPageTwo");
         Debug.Log("First page turn complete.");
     }
@@ -35,8 +35,10 @@ public class SceneTransitionController : MonoBehaviour
     public void SecondPageTurned()
     {
         Debug.Log("Second page turning.");
-        secondPage.SetActive(false);
         OnSecondPageTurned?.Invoke();
+        firstPage.SetActive(false);
+        secondPage.SetActive(false);
+        transitionCamera.enabled = false;
     }
 
     private void Start()
@@ -56,6 +58,7 @@ public class SceneTransitionController : MonoBehaviour
         firstPage.SetActive(true);
         secondPage.SetActive(true);
         firstPageAnimator.SetTrigger("isTurningPage");
-        Debug.Log("Turning first page.");
+        transitionCamera.enabled = true;
+        Camera.main.enabled = false;
     }
 }

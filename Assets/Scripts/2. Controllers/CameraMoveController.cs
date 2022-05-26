@@ -5,6 +5,7 @@ using TMPro;
 
 public class CameraMoveController : MonoBehaviour
 {
+    [SerializeField] private Camera mainCamera;
     [SerializeField] private bool trailerCamAnimations;
     [SerializeField] private float xDriftMaximum;
     [SerializeField] private float yDriftMaximum;
@@ -127,6 +128,9 @@ public class CameraMoveController : MonoBehaviour
 
     private void DriftCameraWithMouse()
     {
+        if (!mainCamera.enabled)
+            return;
+
         if (playerHasControl && !cameraMovementDisabled)
         {
             mousePosMax = new Vector3(Mathf.Clamp(Input.mousePosition.x - (Screen.width / 2), -xMax, xMax),
@@ -147,6 +151,9 @@ public class CameraMoveController : MonoBehaviour
 
     private void DriftCameraWithGyro()
     {
+        if (!mainCamera.enabled)
+            return;
+
         if (playerHasControl&& !cameraMovementDisabled)
         {
             float rotationXInput = gyroscope.rotationRateUnbiased.x;

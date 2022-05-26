@@ -10,8 +10,7 @@ public class PopupUIManager : MonoBehaviour
     [SerializeField] private EventDialoguePopupController eventDialoguePopupController;
 
     private CombatCardUIPopupController combatCardUIPopupController;
-    private ShopComponentUIPopupController shopComponentUIPopupController;
-    private ShopCardUIPopupController shopCardUIPopupController;
+    private WorkshopItemPopupController workshopItemPopupController;
     private HUDGeneralUIPopupController hudGeneralUIPopupController;
     private HUDBuffUIPopupController hudBuffUIPopupController;
     private HUDMechComponentPopupController hudMechComponentPopupController;
@@ -27,9 +26,8 @@ public class PopupUIManager : MonoBehaviour
     private void Awake()
     {
         combatCardUIPopupController = GetComponentInChildren<CombatCardUIPopupController>();
-        shopComponentUIPopupController = GetComponentInChildren<ShopComponentUIPopupController>();
+        workshopItemPopupController = GetComponentInChildren<WorkshopItemPopupController>();
         hudGeneralUIPopupController = GetComponentInChildren<HUDGeneralUIPopupController>();
-        shopCardUIPopupController = GetComponentInChildren<ShopCardUIPopupController>();
         //aIDialoguePopupController = GetComponentInChildren<AIDialoguePopupController>();
         aIConversationPopupController = GetComponentInChildren<AIConversationPopupController>();
         //eventDialoguePopupController = GetComponentInChildren<EventDialoguePopupController>();
@@ -81,7 +79,7 @@ public class PopupUIManager : MonoBehaviour
     {
         if(popupsEnabled && !GameManager.instance.isTrailerMaking)
         {
-            shopComponentUIPopupController.UpdateUI(sOItemDataObject);
+            workshopItemPopupController.UpdateUI(sOItemDataObject);
         }
     }
     public void HandlePopup(string name, string dialogue, CharacterSelect character)
@@ -139,16 +137,14 @@ public class PopupUIManager : MonoBehaviour
     {
         if(combatCardUIPopupController != null)
             combatCardUIPopupController.UpdateUI(null);
-        if (shopComponentUIPopupController != null)
-            shopComponentUIPopupController.UpdateUI(null);
+        if (workshopItemPopupController != null)
+            workshopItemPopupController.UpdateUI(null);
         if(hudGeneralUIPopupController != null)
             hudGeneralUIPopupController.UpdateUI(HUDGeneralElement.None);
         if (hudBuffUIPopupController != null)
             hudBuffUIPopupController.UpdateUI(HUDBuffElement.None);
         if (hudMechComponentPopupController != null)
             hudMechComponentPopupController.UpdateUI(MechSelect.None);
-        if (shopCardUIPopupController != null)
-            shopCardUIPopupController.UpdateUI(null);
     }
 
     private void DisablePopups()
