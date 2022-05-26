@@ -36,7 +36,6 @@ public class NodeController : MonoBehaviour
 
                     if(fighterNode.nodeType == NodeType.Player)
                     {
-                        Debug.Log("progress fighters player node");
 
                         activeNode.HasWonBattle = false;
                         activeNode.HasBeenAssignedFighter = false;
@@ -69,7 +68,6 @@ public class NodeController : MonoBehaviour
                     // if we have a winner
                     if (fighterNode != null && activeNode.HasWonBattle)
                     {
-                        Debug.Log("we have a winner at: " + activeNode.NodeIndex);
                         activeNode.HasWonBattle = false;
                         activeNode.HasBeenAssignedFighter = false;
 

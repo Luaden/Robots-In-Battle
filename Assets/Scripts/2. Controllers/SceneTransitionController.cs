@@ -83,7 +83,11 @@ public class SceneTransitionController : MonoBehaviour
 
         firstPageAnimator.SetTrigger("isTurningPage");
         transitionCamera.enabled = true;
-        worldCamera.enabled = false;
+
+        if (worldCamera != null)
+            worldCamera.enabled = false;
+        else
+            Camera.main.enabled = false;
     }
 
     private void Update()

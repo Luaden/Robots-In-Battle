@@ -11,7 +11,12 @@ public class ShopCollectionRandomizationController
 
         foreach (SOShopItemCollectionObject collection in shopItemCollectionObject)
         {
-            if (collection.FightsBeforeAppearance > GameManager.instance.PlayerWins)
+            int fightCheckCount = GameManager.instance.PlayerWins;
+
+            if (GameManager.instance.PlayerWins == 0)
+                fightCheckCount = 5;
+
+            if (collection.FightsBeforeAppearance >= fightCheckCount)
                 continue;
 
             foreach(SOItemDataObject item in collection.ItemsInCollection)
@@ -32,12 +37,27 @@ public class ShopCollectionRandomizationController
 
         if (shopItemsToSend.Count < DowntimeManager.instance.MinimumShopItemCount)
         {
-            for (int i = shopItemsToSend.Count; i < DowntimeManager.instance.MinimumShopItemCount; i++)
+            int i = DowntimeManager.instance.MinimumShopItemCount - shopItemsToSend.Count;
+
+            for (int j = 0; j < i; j++)
             {
                 int itemRoll = Random.Range(0, possibleItems.Count);
 
+                Debug.Log(itemRoll);
                 shopItemsToSend.Add(possibleItems[itemRoll]);
                 possibleItems.Remove(possibleItems[itemRoll]);
+            }
+        }
+
+        if(shopItemsToSend.Count > DowntimeManager.instance.MaximumShopItemCount)
+        {
+            int i = shopItemsToSend.Count - DowntimeManager.instance.MinimumShopItemCount;
+
+            for(int j = 0; j < i; j++)
+            {
+                int itemRoll = Random.Range(0, shopItemsToSend.Count);
+
+                shopItemsToSend.Remove(shopItemsToSend[itemRoll]);
             }
         }
 
