@@ -338,10 +338,17 @@ public class ShopItemUIController : MonoBehaviour, IPointerDownHandler, IPointer
     private void UpdateMechStatus(bool value)
     {
         notInMech = value;
+
         if(notInMech && itemType == ItemType.Component)
             componentPricetagObject.SetActive(true);
         else if (!notInMech && itemType == ItemType.Component)
             componentPricetagObject.SetActive(false);
+
+        if (CombatManager.instance != null)
+        {
+            cardPricetagObject.SetActive(false);
+            componentPricetagObject.SetActive(false);
+        }
 
     }
 

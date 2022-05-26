@@ -29,18 +29,12 @@ public class TournamentManager : MonoBehaviour
     {
         AssignNodeIndices();
 
-        if (GameManager.instance.Player.CurrentWinCount == 0 && GameManager.instance.Player.OtherFighters.All(opponent => opponent.FighterNodeIndex == 0))
-            InitTournamentScreen();
-        else
-        {
-            AssignFightersToNodeIndex();
-            nodeController.AssignWinners();
-            nodeController.AssignActiveNodes();
-            nodeController.ProgressFighters();
+        AssignFightersToNodeIndex();
+        nodeController.AssignWinners();
+        nodeController.AssignActiveNodes();
+        nodeController.ProgressFighters();
 
-            if (fightButton != null)
-                fightButton.SetActive(false);
-        }
+        fightButton.SetActive(false);
     }
 
     private void AssignNodeIndices()
@@ -55,11 +49,16 @@ public class TournamentManager : MonoBehaviour
         int fighterIndex = 0;
         bool player = true;
 
-/*        testing
- *        for (int i = 0; i < GameManager.instance.Player.OtherFighters.Count; i++)
-            GameManager.instance.Player.OtherFighters[i].FighterNodeIndex = i;
+        for (int i = 0; i < GameManager.instance.Player.OtherFighters.Count; i++)
+        {
+            if(GameManager.instance.Player.OtherFighters[i].FighterNodeIndex == 0)
+            {
+                GameManager.instance.Player.OtherFighters[i].FighterNodeIndex = i + 1;
+            }
+        }
 
-        GameManager.instance.Player.PlayerFighterData.FighterNodeIndex = 7;*/
+        if(GameManager.instance.Player.PlayerFighterData.FighterNodeIndex == 0)
+            GameManager.instance.Player.PlayerFighterData.FighterNodeIndex = 0;
 
         int playerFighterIndex = GameManager.instance.Player.PlayerFighterData.FighterNodeIndex;
         AddToActiveList(nodeController.GetAllNodes()[playerFighterIndex]);
