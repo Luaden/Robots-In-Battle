@@ -12,6 +12,8 @@ public class SceneTransitionController : MonoBehaviour
     [SerializeField] private Animator firstPageAnimator;
     [SerializeField] private Animator secondPageAnimator;
     private Texture2D texture2D;
+    private Camera worldCamera;
+    private GameObject worldCameraGameObject;
 
     public delegate void onFirstPageTurned();
     public static event onFirstPageTurned OnFirstPageTurned;
@@ -28,20 +30,38 @@ public class SceneTransitionController : MonoBehaviour
     public void FirstPageTurned()
     {
         OnFirstPageTurned?.Invoke();
+    }
+
+    public void OnSceneLoaded()
+    {
+        worldCamera = GameManager.instance.CurrentMainCanvas.worldCamera;
+        worldCameraGameObject = worldCamera.gameObject;
+        worldCamera.enabled = false;
+
+        GameManager.instance.CurrentMainCanvas.worldCamera = transitionCamera;
         secondPageAnimator.SetTrigger("isTurningPageTwo");
     }
 
     public void SecondPageTurned()
     {
-        OnSecondPageTurned?.Invoke();
         firstPage.SetActive(false);
         secondPage.SetActive(false);
+
+        GameManager.instance.CurrentMainCanvas.worldCamera = worldCamera;
         transitionCamera.enabled = false;
+
+        OnSecondPageTurned?.Invoke();
     }
 
     private void Start()
     {
         texture2D = new Texture2D(Screen.width, Screen.height, TextureFormat.RGB24, false);
+        GameManager.OnUpdatedMainCanvas += OnSceneLoaded;
+    }
+
+    private void OnDestroy()
+    {
+        GameManager.OnUpdatedMainCanvas -= OnSceneLoaded;
     }
 
     private IEnumerator CaptureFrame()
@@ -58,5 +78,13 @@ public class SceneTransitionController : MonoBehaviour
         firstPageAnimator.SetTrigger("isTurningPage");
         transitionCamera.enabled = true;
         Camera.main.enabled = false;
+    }
+
+    private void Update()
+    {
+        if(worldCameraGameObject != null)
+        {
+            transform.position = worldCameraGameObject.transform.position;
+        }
     }
 }

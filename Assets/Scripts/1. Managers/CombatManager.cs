@@ -20,7 +20,9 @@ public class CombatManager : MonoBehaviour
     [SerializeField] private GameObject winPanel;
     [SerializeField] private GameObject lossPanel;
     [SerializeField] private GameObject fightButton;
+    [SerializeField] private Canvas mainCanvas;
     [Space]
+
 
     #region Debug
     [Header("Debug / Testing")]
@@ -346,6 +348,8 @@ public class CombatManager : MonoBehaviour
         cardClickController = FindObjectOfType<CardClickController>(true);
         opponentInventoryCardDeckSlotManager = FindObjectOfType<OpponentInventoryCardDeckUISlotManager>(true);
         winLossPanelController = FindObjectOfType<WinLossPanelController>(true);
+
+        GameManager.instance.CurrentMainCanvas = mainCanvas;
     }
 
     private void Start()
