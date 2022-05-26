@@ -102,17 +102,23 @@ public class CardUIController : MonoBehaviour, IPointerEnterHandler, IPointerExi
                 cardBackground.sprite = attackFrame;
                 cardNameAttack.text = newCardData.CardName;
                 cardNameAttackObject.SetActive(true);
+                cardNameDefenseObject.SetActive(false);
+                cardNameNeutralObject.SetActive(false);
                 cardRenderer.material = attackMaterial;
                 break;
             case CardType.Defense:
                 cardBackground.sprite = defenseFrame;
                 cardNameDefense.text = newCardData.CardName;
+                cardNameAttackObject.SetActive(false);
                 cardNameDefenseObject.SetActive(true);
+                cardNameNeutralObject.SetActive(false);
                 cardRenderer.material = defenseMaterial;
                 break;
             case CardType.Neutral:
                 cardBackground.sprite = neutralFrame;
                 cardNameNeutral.text = newCardData.CardName;
+                cardNameAttackObject.SetActive(false);
+                cardNameDefenseObject.SetActive(false);
                 cardNameNeutralObject.SetActive(true);
                 cardRenderer.material = neutralMaterial;
                 break;
