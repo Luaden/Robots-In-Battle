@@ -261,16 +261,16 @@ public class ShopItemUIController : MonoBehaviour, IPointerDownHandler, IPointer
 
         if (DowntimeManager.instance != null && (DowntimeManager.instance.ShopManager.CurrentItemSelected == null || DowntimeManager.instance.ShopManager.CurrentItemSelected == this))
         {
-            transform.localScale = Vector3.one * selectedScaleValue;
+            //transform.localScale = Vector3.one * selectedScaleValue;
             DowntimeManager.instance.ShopManager.CurrentItemSelected = this;
             return;
         }
 
         if (DowntimeManager.instance != null && DowntimeManager.instance.ShopManager.CurrentItemSelected != this)
         {
-            ShopItemUIController shopItem = DowntimeManager.instance.ShopManager.CurrentItemSelected;
-            shopItem.transform.localScale = Vector3.one;
-            transform.localScale = Vector3.one * selectedScaleValue;
+            //ShopItemUIController shopItem = DowntimeManager.instance.ShopManager.CurrentItemSelected;
+            //shopItem.transform.localScale = Vector3.one;
+           // transform.localScale = Vector3.one * selectedScaleValue;
 
             DowntimeManager.instance.ShopManager.CurrentItemSelected = this;
             return;
@@ -347,7 +347,10 @@ public class ShopItemUIController : MonoBehaviour, IPointerDownHandler, IPointer
         {
             ShopItemUIController item = DowntimeManager.instance.ShopManager.CurrentItemSelected;
             if (item == this)
-                item.transform.localScale = Vector3.one;
+            {
+
+            }
+                //item.transform.localScale = Vector3.one;
         }
     }
 }

@@ -208,11 +208,6 @@ public class TournamentManager : MonoBehaviour
 
         for (int i = 0; i < node.Length - 1; i += 2)
             DowntimeManager.instance.TournamentManager.AssignFighterPairs(node[i], node[i + 1]);
-/*
- *      testing
-        nodeController.AssignWinners();
-        nodeController.AssignActiveNodes();
-        nodeController.ProgressFighters();*/
     }
 
     public List<FighterPairObject> GetFighterPairs()
