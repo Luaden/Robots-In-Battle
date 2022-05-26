@@ -37,9 +37,9 @@ public class SceneTransitionController : MonoBehaviour
     {
         worldCamera = GameManager.instance.CurrentMainCanvas.worldCamera;
         worldCameraGameObject = worldCamera.gameObject;
-        worldCamera.enabled = false;
-
         GameManager.instance.CurrentMainCanvas.worldCamera = transitionCamera;
+        worldCamera.enabled = false;
+        
         secondPageAnimator.SetTrigger("isTurningPageTwo");
     }
 
@@ -57,7 +57,7 @@ public class SceneTransitionController : MonoBehaviour
         OnSecondPageTurned?.Invoke();
     }
 
-    private void Awake()
+    private void Start()
     {
         texture2D = new Texture2D(Screen.width, Screen.height, TextureFormat.RGB24, false);
         GameManager.OnUpdatedMainCanvas += OnSceneLoaded;
@@ -77,8 +77,10 @@ public class SceneTransitionController : MonoBehaviour
         texture2D.ReadPixels(screenCapture, 0, 0, false);
         texture2D.Apply();
         screenCaptureDestination.mainTexture = texture2D;
+
         firstPage.SetActive(true);
         secondPage.SetActive(true);
+
         firstPageAnimator.SetTrigger("isTurningPage");
         transitionCamera.enabled = true;
         worldCamera.enabled = false;
