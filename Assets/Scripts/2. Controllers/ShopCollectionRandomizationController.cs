@@ -16,7 +16,7 @@ public class ShopCollectionRandomizationController
             if (GameManager.instance.PlayerWins == 0)
                 fightCheckCount = 5;
 
-            if (collection.FightsBeforeAppearance >= fightCheckCount)
+            if (collection.FightsBeforeAppearance > fightCheckCount)
                 continue;
 
             foreach(SOItemDataObject item in collection.ItemsInCollection)
@@ -29,6 +29,14 @@ public class ShopCollectionRandomizationController
 
             if (item.ChanceToSpawn <= roll)
                 shopItemsToSend.Add(item);
+
+            if(possibleItems.Count == 0)
+            {
+                for(int i = 0; i < DowntimeManager.instance.MinimumShopItemCount; i++)
+                {
+                    shopItemsToSend.Add(possibleItems[i]);
+                }
+            }
         }
 
         foreach (SOItemDataObject item in shopItemsToSend)

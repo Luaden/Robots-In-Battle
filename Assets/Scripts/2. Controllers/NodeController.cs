@@ -24,8 +24,6 @@ public class NodeController : MonoBehaviour
         List<NodeDataObject> tempList = new List<NodeDataObject>();
         tempList.AddRange(activeNodes);
 
-        Debug.Log(tempList.Count);
-
         foreach (NodeDataObject activeNode in tempList)
         {
             if (activeNode != null)
