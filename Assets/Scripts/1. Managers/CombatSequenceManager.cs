@@ -122,7 +122,6 @@ public class CombatSequenceManager : MonoBehaviour
             }
 
             CombatManager.instance.PopupUIManager.HandlePopup(currentCombatSequence.damageQueue.Peek());
-            CombatManager.instance.PopupUIManager.HandlePopup(currentCombatSequence.damageQueue.Peek().CardCharacterPairA.cardChannelPair);
             CombatManager.instance.CombatAnimationManager.SetMechAnimation(currentCombatSequence.animationQueue.Dequeue());
             CombatManager.instance.CombatAnimationManager.PrepCardsToBurn(currentCombatSequence.cardBurnObject);
             animationsComplete = false;

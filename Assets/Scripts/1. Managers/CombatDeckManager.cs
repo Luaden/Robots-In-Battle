@@ -7,29 +7,19 @@ public class CombatDeckManager : MonoBehaviour
     private CombatDeckController playerDeck;
     private CombatDeckController opponentDeck;
 
-    [ContextMenu("Count Flurry")]
-    private void CountFlurryCards()
-    {
-        foreach (CardDataObject oldCard in playerDeck.CardDeck)
-            if (oldCard.CardName == "Flurry of Blows" ||
-                oldCard.CardName == "Block Flurry" ||
-                oldCard.CardName == "Flurry of Kicks")
-                Debug.Log(oldCard.CardName);
-    }
-
     public CombatDeckManager()
     {
         playerDeck = new CombatDeckController();
         opponentDeck = new CombatDeckController();
     }
 
-    public void SetPlayerDeck(List<SOItemDataObject> playerCardSOs)
+    public void SetPlayerDeck(List<CardDataObject> playerCardSOs)
     {
         playerDeck.InitDeckList(playerCardSOs);
         RandomizeCardDeck(playerDeck);
     }
 
-    public void SetOpponentDeck(List<SOItemDataObject> opponentCardSOs)
+    public void SetOpponentDeck(List<CardDataObject> opponentCardSOs)
     {
         opponentDeck.InitDeckList(opponentCardSOs);
         RandomizeCardDeck(opponentDeck);

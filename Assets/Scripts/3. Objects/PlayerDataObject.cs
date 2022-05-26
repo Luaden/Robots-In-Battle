@@ -59,6 +59,5 @@ public class PlayerDataObject
         playerFighterData = new FighterDataObject(newPlayableCharacter);
         playerFighterData.FighterUIObject = pilotUIObject;
         playerFighterData.FighterMech = GameManager.instance.PlayerMechController.BuildNewMech(newPlayableCharacter.MechObject);
-        playerFighterData.FighterDeck = newPlayableCharacter.DeckList;
     }
 }

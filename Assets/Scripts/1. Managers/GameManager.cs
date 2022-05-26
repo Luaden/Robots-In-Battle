@@ -75,6 +75,7 @@ public class GameManager : MonoBehaviour
                                                                boss.FighterPilotUIObject.FighterMouth,
                                                                boss.FighterPilotUIObject.FighterClothes,
                                                                boss.FighterPilotUIObject.FighterBody);
+            newBoss.FighterDeck = PlayerDeckController.BuildFighterDeck(boss.DeckList);
             bossFighters.Add(newBoss);
             Debug.Log("Creating new boss: " + boss.PilotName);
         }
@@ -82,6 +83,7 @@ public class GameManager : MonoBehaviour
         for(int i = 0; i < 7; i++)
         {
             FighterDataObject opponentFighter = fighterBuildController.GetRandomFighter();
+            opponentFighter.FighterDeck = PlayerDeckController.BuildFighterDeck(opponentFighter.FighterCompleteCharacter.DeckList);
             newFighters.Add(opponentFighter);
         }
 
@@ -130,6 +132,7 @@ public class GameManager : MonoBehaviour
             if (starterPilot != null)
             {
                 playerData = new PlayerDataObject(starterPilot);
+                playerData.PlayerFighterData.FighterDeck = PlayerDeckController.BuildFighterDeck(starterPilot.DeckList);
                 return;
             }
 
@@ -168,11 +171,11 @@ public class GameManager : MonoBehaviour
 
     public class DowntimeDeckController
     {
-        public List<SOItemDataObject> PlayerDeck { get => instance.playerData.PlayerFighterData.FighterDeck; }
+        public List<CardDataObject> PlayerDeck { get => instance.playerData.PlayerFighterData.FighterDeck; }
 
         public void AddCardToPlayerDeck(SOItemDataObject newCard)
         {
-            List<SOItemDataObject> currentDeck = new List<SOItemDataObject>(PlayerDeck);
+            List<CardDataObject> currentDeck = new List<CardDataObject>(PlayerDeck);
 
             if (newCard.ItemType != ItemType.Card)
             {
@@ -181,24 +184,65 @@ public class GameManager : MonoBehaviour
                 return;
             }
 
-            currentDeck.Add(newCard);
+            CardDataObject newCardDataObject = new CardDataObject(newCard);
+            currentDeck.Add(newCardDataObject);
 
             instance.playerData.PlayerFighterData.FighterDeck = currentDeck;
         }
 
+        public bool CheckPlayerHasCard(SOItemDataObject cardToCheck)
+        {
+            if (!PlayerDeck.Select(x => x.SOItemDataObject).Contains(cardToCheck))
+            {
+                return false;
+            }
+
+            return true;
+        }
+
         public void RemoveCardFromPlayerDeck(SOItemDataObject newCard)
         {
-            List<SOItemDataObject> currentDeck = new List<SOItemDataObject>(PlayerDeck);
+            List<CardDataObject> currentDeck = new List<CardDataObject>(PlayerDeck);
 
-            if (!PlayerDeck.Contains(newCard))
+            if (!PlayerDeck.Select(x => x.SOItemDataObject).Contains(newCard))
             {
                 Debug.Log("Attempted to remove " + newCard.ComponentName + " from the player deck, but it was not found there.");
                 return;
             }
 
-            currentDeck.Remove(newCard);
+            CardDataObject cardToRemove = null;
+
+            foreach(CardDataObject cardDataObject in PlayerDeck)
+            {
+                if (cardDataObject.SOItemDataObject == newCard)
+                    cardToRemove = cardDataObject;
+            }
+
+            if(cardToRemove != null)
+                currentDeck.Remove(cardToRemove);
 
             instance.playerData.PlayerFighterData.FighterDeck = currentDeck;
+        }
+
+        public List<CardDataObject> BuildFighterDeck(List<SOItemDataObject> cardDeck)
+        {
+            List<CardDataObject> fighterDeck = new List<CardDataObject>();
+
+            CardDataObject newCard;
+
+            foreach (SOItemDataObject newCardSO in cardDeck)
+            {
+                if (newCardSO.ItemType != ItemType.Card)
+                {
+                    Debug.Log(newCardSO.ItemName + " was found in the deck, but it is not a Card ItemType. Was this a mistake or is this item classified incorrectly?");
+                    continue;
+                }
+
+                newCard = new CardDataObject(newCardSO);
+                fighterDeck.Add(newCard);
+            }
+
+            return fighterDeck;
         }
     }
 

@@ -11,23 +11,9 @@ public class CombatDeckController
 
     public CombatDeckController() => cardDeck = new List<CardDataObject>();
 
-    public void InitDeckList(List<SOItemDataObject> newDeckSO)
+    public void InitDeckList(List<CardDataObject> newDeck)
     {
-        cardDeck = new List<CardDataObject>();
-
-        CardDataObject newCard;
-
-        foreach (SOItemDataObject newCardSO in newDeckSO)
-        {
-            if(newCardSO.ItemType != ItemType.Card)
-            {
-                Debug.Log(newCardSO.ItemName + " was found in the deck, but it is not a Card ItemType. Was this a mistake or is this item classified incorrectly?");
-                continue;
-            }
-
-            newCard = new CardDataObject(newCardSO);
-            AddCardToBottom(newCard);
-        }
+        cardDeck = new List<CardDataObject>(newDeck);
     }
 
     public void AddCardToBottom(CardDataObject card) => cardDeck.Add(card);
