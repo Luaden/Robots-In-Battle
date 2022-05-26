@@ -63,11 +63,8 @@ public class ShopManager : MonoBehaviour
             GameManager.instance.PlayerInventoryController.PlayerInventory.Contains(currentItemSelected.MechComponentDataObject)))
         {
             if (currentItemSelected.BaseSOItemDataObject.ItemType == ItemType.Component)
-            {
-                GameManager.instance.PlayerInventoryController.RemoveItemFromInventory(currentItemSelected.MechComponentDataObject);
-                DowntimeManager.instance.InventoryUISlotManager.RemoveItemFromCollection(currentItemSelected);
+                return;
 
-            }
             else if(currentItemSelected.BaseSOItemDataObject.ItemType == ItemType.Card)
             {
                 GameManager.instance.PlayerDeckController.RemoveCardFromPlayerDeck(currentItemSelected.BaseSOItemDataObject);
@@ -76,7 +73,6 @@ public class ShopManager : MonoBehaviour
 
             GameManager.instance.PlayerBankController.SpendPlayerCurrency(DowntimeManager.instance.RemovalCost);
         }
-
     }
 
     private void UpdateSelectedItem(ShopItemUIController newSelectedItem)
