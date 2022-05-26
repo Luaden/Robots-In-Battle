@@ -80,6 +80,9 @@ public class DowntimeManager : MonoBehaviour
 
     public void InitializeShop()
     {
+        if (GameManager.instance.PlayerMechController.PlayerMech.MechCurrentHP < GameManager.instance.PlayerMechController.PlayerMech.MechMaxHP)
+            repairButton.SetActive(true);
+
         instance.ShopManager.InitializeShop();
     }
 
