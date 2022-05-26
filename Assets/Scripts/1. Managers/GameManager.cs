@@ -139,7 +139,6 @@ public class GameManager : MonoBehaviour
 
     private void Awake()
     {
-        Debug.Log("Creating GM");
         if (instance != null && instance != this)
         {
             Destroy(this);
@@ -150,7 +149,6 @@ public class GameManager : MonoBehaviour
             instance = this;
             DontDestroyOnLoad(this);
         }
-        Debug.Log("Building GM");
         Application.targetFrameRate = Screen.currentResolution.refreshRate;
 
         fighterBuildController = GetComponent<FighterBuildController>();

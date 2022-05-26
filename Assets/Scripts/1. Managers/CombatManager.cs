@@ -378,11 +378,6 @@ public class CombatManager : MonoBehaviour
         }
         else
             InitOpponentFighter(GameManager.instance.Player.OtherFighters[GameManager.instance.PlayerWins]);
-
-        pilotEffectManager.InitPilotEffectManager();
-        statTrackerController.InitializeStatTracking();
-
-        StartNewTurn();
     }
 
     private void OnDestroy()
@@ -396,6 +391,7 @@ public class CombatManager : MonoBehaviour
 
         AIDialogueController.OnDialogueComplete -= StartNewTurnCheck;
         AIDialogueController.OnDialogueComplete -= EnableCanPlayCards;
+        SceneTransitionController.OnSecondPageTurned -= BeginCombatScene;
     }
 
     private void DisableCanPlayCards()
@@ -443,6 +439,14 @@ public class CombatManager : MonoBehaviour
         combatAnimationManager.SetMechStartingAnimations(opponentFighter.FighterMech, CharacterSelect.Opponent);
         mechSpriteSwapManager.UpdateMechSprites(newOpponentFighter.FighterMech, CharacterSelect.Opponent);
     }
+
+    private void BeginCombatScene()
+    {
+        pilotEffectManager.InitPilotEffectManager();
+        statTrackerController.InitializeStatTracking();
+
+        StartNewTurn();
+    }
     
     private void StartNewTurnCheck()
     {
@@ -455,6 +459,7 @@ public class CombatManager : MonoBehaviour
 
     private void StartNewTurn()
     {
+        Debug.Log("Starting new turn.");
         if (hasStartedGame && !hasWon && !hasLost)
         {
             if (GameManager.instance.PlayerWins == 0 && hasNotCompletedIntroDialogue)
