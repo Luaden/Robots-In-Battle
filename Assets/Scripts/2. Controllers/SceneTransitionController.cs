@@ -48,6 +48,7 @@ public class SceneTransitionController : MonoBehaviour
         secondPage.SetActive(false);
 
         GameManager.instance.CurrentMainCanvas.worldCamera = worldCamera;
+        worldCamera.enabled = true;
         transitionCamera.enabled = false;
 
         OnSecondPageTurned?.Invoke();
