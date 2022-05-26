@@ -68,7 +68,6 @@ public class OpponentInventoryCardDeckUISlotManager : BaseSlotManager<ShopItemUI
             if (slot.CurrentSlottedItem == item)
             {
                 slot.CurrentSlottedItem = null;
-                GameManager.instance.PlayerDeckController.RemoveCardFromPlayerDeck(item.BaseSOItemDataObject);
                 return;
             }
     }

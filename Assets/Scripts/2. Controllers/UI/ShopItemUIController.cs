@@ -272,6 +272,11 @@ public class ShopItemUIController : MonoBehaviour, IPointerDownHandler, IPointer
         }
     }
 
+    public void DisablePriceTag()
+    {
+        cardPricetagObject.SetActive(false);
+    }
+
     private void Awake()
     {
         draggableRectTransform = GetComponent<RectTransform>();

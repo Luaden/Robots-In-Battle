@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
@@ -46,6 +47,7 @@ public class PlayerInventoryCardDeckUISlotManager : BaseSlotManager<ShopItemUICo
                 item.ItemSlotController.SlotManager.RemoveItemFromCollection(item);
 
             item.NotInMech = true;
+            item.DisablePriceTag();
             slotController.CurrentSlottedItem = item;
             item.ItemSlotController = slotController;
         }
@@ -67,8 +69,8 @@ public class PlayerInventoryCardDeckUISlotManager : BaseSlotManager<ShopItemUICo
         foreach (BaseSlotController<ShopItemUIController> slot in slotList)
             if (slot.CurrentSlottedItem == item)
             {
+                item.ShopItemAnimator.SetTrigger("isDissolving");
                 slot.CurrentSlottedItem = null;
-                GameManager.instance.PlayerDeckController.RemoveCardFromPlayerDeck(item.BaseSOItemDataObject);
                 return;
             }
     }

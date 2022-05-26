@@ -202,26 +202,22 @@ public class GameManager : MonoBehaviour
 
         public void RemoveCardFromPlayerDeck(SOItemDataObject newCard)
         {
-            List<CardDataObject> currentDeck = new List<CardDataObject>(PlayerDeck);
-
-            if (!PlayerDeck.Select(x => x.SOItemDataObject).Contains(newCard))
-            {
-                Debug.Log("Attempted to remove " + newCard.ComponentName + " from the player deck, but it was not found there.");
-                return;
-            }
-
             CardDataObject cardToRemove = null;
 
             foreach(CardDataObject cardDataObject in PlayerDeck)
             {
-                if (cardDataObject.SOItemDataObject == newCard)
+                if (cardDataObject.CardName == newCard.CardName)
+                {
+                    Debug.Log("Found " + cardDataObject.CardName);
                     cardToRemove = cardDataObject;
+                    Debug.Log(cardToRemove.CardName);
+                }
             }
 
-            if(cardToRemove != null)
-                currentDeck.Remove(cardToRemove);
-
-            instance.playerData.PlayerFighterData.FighterDeck = currentDeck;
+            if (cardToRemove != null)
+                PlayerDeck.Remove(cardToRemove);
+            else
+                Debug.Log("Could not find " + newCard.CardName + " in the Player's deck.");
         }
 
         public List<CardDataObject> BuildFighterDeck(List<SOItemDataObject> cardDeck)
