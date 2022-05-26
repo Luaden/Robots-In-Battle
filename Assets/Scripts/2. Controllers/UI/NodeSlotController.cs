@@ -6,10 +6,13 @@ public class NodeSlotController : BaseSlotController<NodeUIController>
 {
     public override void OnDrop(PointerEventData eventData)
     {
-        if (this.GetComponent<NodeDataObject>().nodeType != NodeDataObject.NodeType.Starter &&
-            this.GetComponent<NodeDataObject>().nodeType != NodeDataObject.NodeType.FighterStarter)
+        if (eventData.pointerDrag.GetComponent<NodeDataObject>() != null)
             return;
 
+/*        if (this.GetComponent<NodeDataObject>().nodeType != NodeDataObject.NodeType.Starter &&
+            this.GetComponent<NodeDataObject>().nodeType != NodeDataObject.NodeType.FighterStarter)
+            return;
+*/
         if (eventData.pointerDrag.GetComponent<NodeDataObject>().PreviousNode != null)
             return;
 
