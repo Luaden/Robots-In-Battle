@@ -239,3 +239,15 @@ public enum WorkshopLocation
     Shop,
     Inventory
 }
+
+// Tournament
+public enum NodeType
+{
+    Starter,
+    Second,
+    Third,
+    Last,
+    FighterStarter,
+    Player,
+    Opponent
+}

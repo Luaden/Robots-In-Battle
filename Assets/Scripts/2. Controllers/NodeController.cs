@@ -34,7 +34,7 @@ public class NodeController : MonoBehaviour
                 {
                     NodeDataObject fighterNode = activeNode.transform.GetChild(0).GetComponent<NodeDataObject>();
 
-                    if(fighterNode.nodeType == NodeDataObject.NodeType.Player)
+                    if(fighterNode.nodeType == NodeType.Player)
                     {
                         Debug.Log("progress fighters player node");
 
@@ -130,7 +130,7 @@ public class NodeController : MonoBehaviour
         List<NodeDataObject> tempList = new List<NodeDataObject>();
         tempList.AddRange(activeNodes);
 
-        NodeDataObject.NodeType playerNodeType = GetAllNodes()[GameManager.instance.Player.PlayerFighterData.FighterNodeIndex].nodeType;
+        NodeType playerNodeType = GetAllNodes()[GameManager.instance.Player.PlayerFighterData.FighterNodeIndex].nodeType;
         Debug.Log("AssignActiveNodes_PlayerNodeType: " + playerNodeType);
 
         foreach (FighterDataObject fighter in GameManager.instance.Player.OtherFighters)

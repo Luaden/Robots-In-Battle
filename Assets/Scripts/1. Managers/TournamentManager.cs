@@ -88,13 +88,13 @@ public class TournamentManager : MonoBehaviour
             FighterDataObject fighter;
             if (player)
             {
-                nodeDataObject.nodeType = NodeDataObject.NodeType.Player;
+                nodeDataObject.nodeType = NodeType.Player;
                 fighter = GameManager.instance.Player.PlayerFighterData;
                 player = false;
             }
             else
             {
-                nodeDataObject.nodeType = NodeDataObject.NodeType.Opponent;
+                nodeDataObject.nodeType = NodeType.Opponent;
                 fighter = GameManager.instance.Player.OtherFighters[fighterIndex];
                 fighterIndex++;
             }
@@ -119,10 +119,10 @@ public class TournamentManager : MonoBehaviour
         for(int i = 0; i < nodeController.GetAllNodes().Count; i++)
         {
             NodeDataObject node = nodeController.GetAllNodes()[i];
-            if (node.nodeType == NodeDataObject.NodeType.Starter)
+            if (node.nodeType == NodeType.Starter)
                 nodeController.GetAllActiveNodes().Add(node);
 
-            if (node.nodeType == NodeDataObject.NodeType.FighterStarter)
+            if (node.nodeType == NodeType.FighterStarter)
             {
                 GameObject nodeUIGameObject;
                 nodeUIGameObject = Instantiate(pilotPrefab, node.transform.position, Quaternion.identity, node.transform);
@@ -137,13 +137,13 @@ public class TournamentManager : MonoBehaviour
                 FighterDataObject fighter;
                 if (player)
                 {
-                    nodeDataObject.nodeType = NodeDataObject.NodeType.Player;
+                    nodeDataObject.nodeType = NodeType.Player;
                     fighter = GameManager.instance.Player.PlayerFighterData;
                     player = false;
                 }
                 else
                 {
-                    nodeDataObject.nodeType = NodeDataObject.NodeType.Opponent;
+                    nodeDataObject.nodeType = NodeType.Opponent;
                     fighter = GameManager.instance.Player.OtherFighters[fighterIndex];
                     fighterIndex++;
                 }
