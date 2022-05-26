@@ -360,6 +360,7 @@ public class CombatManager : MonoBehaviour
 
         AIDialogueController.OnDialogueComplete += StartNewTurnCheck;
         AIDialogueController.OnDialogueComplete += EnableCanPlayCards;
+        SceneTransitionController.OnSecondPageTurned += BeginCombatScene;
 
         if (GameManager.instance.Player.PlayerFighterData == null)
             Debug.Log("No player.");

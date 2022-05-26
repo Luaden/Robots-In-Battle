@@ -3,14 +3,14 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class SceneController : MonoBehaviour
+public class SceneManager : MonoBehaviour
 {
     private SceneTransitionController sceneTransitionController;
     
     private int sceneToLoad;
     private bool sceneQueued;
 
-    public static SceneController instance;
+    public static SceneManager instance;
 
     public void LoadTitleScene()
     {
@@ -34,7 +34,10 @@ public class SceneController : MonoBehaviour
     private void Start()
     {
         if (instance != null && instance != this)
-            Destroy(this);
+        {
+            Destroy(this.gameObject);
+            return;
+        }
         else
         {
             instance = this;
@@ -55,7 +58,7 @@ public class SceneController : MonoBehaviour
         if(sceneQueued)
         {
             Debug.Log("Loading scene");
-            SceneManager.LoadScene(sceneToLoad);
+            UnityEngine.SceneManagement.SceneManager.LoadScene(sceneToLoad);
             sceneQueued = false;
         }
     }
