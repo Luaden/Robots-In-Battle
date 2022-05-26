@@ -128,11 +128,6 @@ public class PopupUIManager : MonoBehaviour
         floatingDamagePopupController.UpdateUI(damageObject);
     }
 
-    public void HandlePopup(CardChannelPairObject damageSplashEffectLocation)
-    {
-        damageSplashEffectPopupController.UpdateUI(damageSplashEffectLocation);
-    }
-
     public void ClearAllPopups()
     {
         if(combatCardUIPopupController != null)

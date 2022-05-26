@@ -58,8 +58,9 @@ public class ShopManager : MonoBehaviour
             return;
         }
 
-        if (DowntimeManager.instance.RemovalCost <= GameManager.instance.PlayerBankController.GetPlayerCurrency() && (GameManager.instance.PlayerDeckController.PlayerDeck.Contains(currentItemSelected.BaseSOItemDataObject)
-            || GameManager.instance.PlayerInventoryController.PlayerInventory.Contains(currentItemSelected.MechComponentDataObject)))
+        if (DowntimeManager.instance.RemovalCost <= GameManager.instance.PlayerBankController.GetPlayerCurrency() && 
+            (GameManager.instance.PlayerDeckController.CheckPlayerHasCard(currentItemSelected.BaseSOItemDataObject) || 
+            GameManager.instance.PlayerInventoryController.PlayerInventory.Contains(currentItemSelected.MechComponentDataObject)))
         {
             if (currentItemSelected.BaseSOItemDataObject.ItemType == ItemType.Component)
             {

@@ -77,15 +77,13 @@ public class OpponentInventoryCardDeckUISlotManager : BaseSlotManager<ShopItemUI
     {
         if(DowntimeManager.instance != null)
         {
-            foreach (SOItemDataObject item in GameManager.instance.PlayerDeckController.PlayerDeck)
-                if (item.ItemType == ItemType.Card)
-                    DowntimeManager.instance.ShopItemUIBuildController.BuildAndDisplayItemUI(item, this);
+            foreach (CardDataObject item in GameManager.instance.PlayerDeckController.PlayerDeck)
+                DowntimeManager.instance.ShopItemUIBuildController.BuildAndDisplayItemUI(item.SOItemDataObject, this);
         }
         else if(CombatManager.instance != null)
         {
-            foreach (SOItemDataObject item in CombatManager.instance.OpponentFighter.FighterDeck)
-                if (item.ItemType == ItemType.Card)
-                    CombatManager.instance.CardUIManager.BuildOpponentInventoryCard(item);
+            foreach (CardDataObject item in CombatManager.instance.OpponentFighter.FighterDeck)
+                CombatManager.instance.CardUIManager.BuildOpponentInventoryCard(item.SOItemDataObject);
         }
     }
 

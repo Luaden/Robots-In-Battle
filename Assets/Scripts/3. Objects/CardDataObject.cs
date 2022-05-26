@@ -22,6 +22,7 @@ public class CardDataObject
     [Header("Effect Attributes")]
     private List<SOCardEffectObject> cardEffects;
 
+    private SOItemDataObject sOItemDataObject;
     private GameObject cardUIObject;
     private CardUIController cardUIController;
 
@@ -38,6 +39,7 @@ public class CardDataObject
     public int BaseDamage { get => baseDamage; }
     public bool ApplyEffectsFirst { get => applyEffectsFirst; }
     public List<SOCardEffectObject> CardEffects { get => cardEffects; }
+    public SOItemDataObject SOItemDataObject { get => sOItemDataObject; }
     #endregion
 
     #region Runtime Properties
@@ -48,6 +50,7 @@ public class CardDataObject
     #region Constructor
     public CardDataObject(SOItemDataObject data)
     {
+        sOItemDataObject = data;
         cardName = data.CardName;
         cardDescription = data.CardDescription;
         
