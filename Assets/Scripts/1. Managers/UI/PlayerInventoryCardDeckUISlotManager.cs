@@ -69,7 +69,7 @@ public class PlayerInventoryCardDeckUISlotManager : BaseSlotManager<ShopItemUICo
         foreach (BaseSlotController<ShopItemUIController> slot in slotList)
             if (slot.CurrentSlottedItem == item)
             {
-                item.ShopItemAnimator.SetTrigger("isDissolving");
+                item.DestroyShopUIItem();
                 slot.CurrentSlottedItem = null;
                 return;
             }

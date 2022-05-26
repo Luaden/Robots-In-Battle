@@ -9,7 +9,7 @@ public class ShopItemUIController : MonoBehaviour, IPointerDownHandler, IPointer
                               IPointerEnterHandler, IPointerExitHandler, IBeginDragHandler,
                               IEndDragHandler, IDragHandler, IDropHandler
 {
-
+    [SerializeField] private GameObject shopItemObject;
     [SerializeField] private GameObject cardUIObject;
     [SerializeField] private GameObject componentUIObject;
     [SerializeField] private GameObject cardPricetagObject;
@@ -275,6 +275,11 @@ public class ShopItemUIController : MonoBehaviour, IPointerDownHandler, IPointer
     public void DisablePriceTag()
     {
         cardPricetagObject.SetActive(false);
+    }
+
+    public void DestroyShopUIItem()
+    {
+        Destroy(shopItemObject);
     }
 
     private void Awake()
