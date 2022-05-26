@@ -374,8 +374,7 @@ public class CombatManager : MonoBehaviour
             InitOpponentFighter(GameManager.instance.Player.BossFighters[0]);
         else if (GameManager.instance.PlayerWins == winsBeforeBoss)
         {
-            InitOpponentFighter(GameManager.instance.Player.BossFighters[1]);
-            combatAnimationManager.SetMechStartingAnimations(opponentFighter.FighterMech, CharacterSelect.Opponent, true);
+            InitOpponentFighter(GameManager.instance.Player.BossFighters[1], true);
         }
         else
             InitOpponentFighter(GameManager.instance.Player.OtherFighters[GameManager.instance.PlayerWins]);
@@ -421,7 +420,7 @@ public class CombatManager : MonoBehaviour
         mechSpriteSwapManager.UpdateMechSprites(newPlayerFighter.FighterMech, CharacterSelect.Player);
     }
 
-    private void InitOpponentFighter(FighterDataObject newOpponentFighter)
+    private void InitOpponentFighter(FighterDataObject newOpponentFighter, bool isBoss = false)
     {
         opponentFighter = newOpponentFighter;
         opponentFighter.FighterMech.ResetEnergy();
@@ -437,7 +436,7 @@ public class CombatManager : MonoBehaviour
         aIManager.LoadAIBehaviorModule(opponentFighter.AIBehaviorModule);
         aIManager.LoadAIDialogueModule(opponentFighter.AIDialogueModule);
 
-        combatAnimationManager.SetMechStartingAnimations(opponentFighter.FighterMech, CharacterSelect.Opponent);
+        combatAnimationManager.SetMechStartingAnimations(opponentFighter.FighterMech, CharacterSelect.Opponent, isBoss);
         mechSpriteSwapManager.UpdateMechSprites(newOpponentFighter.FighterMech, CharacterSelect.Opponent);
     }
 
