@@ -33,18 +33,6 @@ public class NodeDataObject : MonoBehaviour
     private string fighterName;
     public string FighterName { get => fighterName; }
 
-    //test
-    public enum NodeType
-    {
-        Starter,
-        Second,
-        Third,
-        Last,
-        FighterStarter,
-        Player,
-        Opponent
-    }
-
     public NodeType nodeType;
 
     public void Init(FighterDataObject fighter)
