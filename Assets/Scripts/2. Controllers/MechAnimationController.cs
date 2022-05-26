@@ -110,15 +110,19 @@ public class MechAnimationController : MonoBehaviour
                 break;
             case ElementType.Fire:
                 animator.SetBool("punchHasFire", true);
+                Debug.Log("Punch Has Fire");
                 break;
             case ElementType.Ice:
                 animator.SetBool("punchHasIce", true);
+                Debug.Log("Punch Has Ice");
                 break;
             case ElementType.Plasma:
                 animator.SetBool("punchHasPlasma", true);
+                Debug.Log("Punch Has Plasma");
                 break;
             case ElementType.Acid:
                 animator.SetBool("punchHasAcid", true);
+                Debug.Log("Punch Has Acid");
                 break;
             case ElementType.Void:
                 break;
@@ -130,15 +134,19 @@ public class MechAnimationController : MonoBehaviour
                 break;
             case ElementType.Fire:
                 animator.SetBool("kickHasFire", true);
+                Debug.Log("Kick Has Fire");
                 break;
             case ElementType.Ice:
                 animator.SetBool("kickHasIce", true);
+                Debug.Log("Kick Has Ice");
                 break;
             case ElementType.Plasma:
                 animator.SetBool("kickHasPlasma", true);
+                Debug.Log("Kick Has Plasma");
                 break;
             case ElementType.Acid:
                 animator.SetBool("kickHasAcid", true);
+                Debug.Log("Kick Has Acid");
                 break;
             case ElementType.Void:
                 break;
