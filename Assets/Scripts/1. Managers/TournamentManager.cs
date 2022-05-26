@@ -30,11 +30,12 @@ public class TournamentManager : MonoBehaviour
         AssignNodeIndices();
         AssignFightersToNodeIndex();
 
+        nodeController.AssignWinners();
+        nodeController.AssignActiveNodes();
+        nodeController.ProgressFighters();
         if (GameManager.instance.Player.CurrentWinCount > 1)
         {
-            nodeController.AssignWinners();
-            nodeController.AssignActiveNodes();
-            nodeController.ProgressFighters();
+
         }
 
         fightButton.SetActive(false);
