@@ -57,7 +57,7 @@ public class SceneTransitionController : MonoBehaviour
         OnSecondPageTurned?.Invoke();
     }
 
-    private void Start()
+    private void Awake()
     {
         texture2D = new Texture2D(Screen.width, Screen.height, TextureFormat.RGB24, false);
         GameManager.OnUpdatedMainCanvas += OnSceneLoaded;
@@ -81,7 +81,7 @@ public class SceneTransitionController : MonoBehaviour
         secondPage.SetActive(true);
         firstPageAnimator.SetTrigger("isTurningPage");
         transitionCamera.enabled = true;
-        Camera.main.enabled = false;
+        worldCamera.enabled = false;
     }
 
     private void Update()

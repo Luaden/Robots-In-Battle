@@ -255,6 +255,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 228216025069861699, guid: f3d7e5f43fb3aaf449af3ceb4c7af47f, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 1233868153977185166, guid: f3d7e5f43fb3aaf449af3ceb4c7af47f, type: 3}
       propertyPath: m_RootOrder
       value: 1
@@ -299,9 +303,29 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1960291621802995088, guid: f3d7e5f43fb3aaf449af3ceb4c7af47f, type: 3}
+      propertyPath: legDamageEffect
+      value: 
+      objectReference: {fileID: 725381314}
+    - target: {fileID: 1960291621802995088, guid: f3d7e5f43fb3aaf449af3ceb4c7af47f, type: 3}
+      propertyPath: headDamageEffect
+      value: 
+      objectReference: {fileID: 725381316}
+    - target: {fileID: 1960291621802995088, guid: f3d7e5f43fb3aaf449af3ceb4c7af47f, type: 3}
+      propertyPath: torsoDamageEffect
+      value: 
+      objectReference: {fileID: 725381315}
+    - target: {fileID: 2067217830836569904, guid: f3d7e5f43fb3aaf449af3ceb4c7af47f, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3653822395748768844, guid: f3d7e5f43fb3aaf449af3ceb4c7af47f, type: 3}
       propertyPath: m_LocalRotation.w
       value: 0.037455816
+      objectReference: {fileID: 0}
+    - target: {fileID: 4058043214827717542, guid: f3d7e5f43fb3aaf449af3ceb4c7af47f, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5138576883489054052, guid: f3d7e5f43fb3aaf449af3ceb4c7af47f, type: 3}
       propertyPath: m_LocalRotation.x
@@ -357,6 +381,65 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f3d7e5f43fb3aaf449af3ceb4c7af47f, type: 3}
+--- !u!1 &725381314 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2067217830836569904, guid: f3d7e5f43fb3aaf449af3ceb4c7af47f, type: 3}
+  m_PrefabInstance: {fileID: 725381313}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &725381315 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 228216025069861699, guid: f3d7e5f43fb3aaf449af3ceb4c7af47f, type: 3}
+  m_PrefabInstance: {fileID: 725381313}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &725381316 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4058043214827717542, guid: f3d7e5f43fb3aaf449af3ceb4c7af47f, type: 3}
+  m_PrefabInstance: {fileID: 725381313}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &725381317 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2291190256177171004, guid: f3d7e5f43fb3aaf449af3ceb4c7af47f, type: 3}
+  m_PrefabInstance: {fileID: 725381313}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &725381318 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6824667244282904198, guid: f3d7e5f43fb3aaf449af3ceb4c7af47f, type: 3}
+  m_PrefabInstance: {fileID: 725381313}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 725381317}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5e28c5ae8460b9e44beddcae2f42c225, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &725381319
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 725381317}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 19af6e22ad5066246b3cb02af0d1ddf5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerMech: {fileID: 725381318}
+  opponentMech: {fileID: 0}
+  randomizeOnCombat: 0
+  randomizePace: 0
+  headSprites: []
+  torsoSprites: []
+  bicep1Sprites: []
+  arm1Sprites: []
+  bicep2Sprites: []
+  arm2Sprites: []
+  thigh1Sprites: []
+  leg1Sprites: []
+  foot1Sprites: []
+  thigh2Sprites: []
+  leg2Sprites: []
+  foot2Sprites: []
 --- !u!114 &826691185 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 5301822218315101193, guid: 9b1ab143dccb04f42bef31fbf489a54e, type: 3}
@@ -493,50 +576,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 2b2032fc692b93a4ab21791b760b753c, type: 3}
---- !u!1 &1718672372 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 5282501210029617433, guid: f3d7e5f43fb3aaf449af3ceb4c7af47f, type: 3}
-  m_PrefabInstance: {fileID: 725381313}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &1718672374
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1718672372}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 19af6e22ad5066246b3cb02af0d1ddf5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  playerMech: {fileID: 1718672376}
-  opponentMech: {fileID: 0}
-  randomizeOnCombat: 0
-  randomizePace: 0
-  headSprites: []
-  torsoSprites: []
-  bicep1Sprites: []
-  arm1Sprites: []
-  bicep2Sprites: []
-  arm2Sprites: []
-  thigh1Sprites: []
-  leg1Sprites: []
-  foot1Sprites: []
-  thigh2Sprites: []
-  leg2Sprites: []
-  foot2Sprites: []
---- !u!114 &1718672376 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 590764341827847587, guid: f3d7e5f43fb3aaf449af3ceb4c7af47f, type: 3}
-  m_PrefabInstance: {fileID: 725381313}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1718672372}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5e28c5ae8460b9e44beddcae2f42c225, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1001 &1893060765
 PrefabInstance:
   m_ObjectHideFlags: 0
