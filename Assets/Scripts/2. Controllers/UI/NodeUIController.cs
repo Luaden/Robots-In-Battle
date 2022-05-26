@@ -19,7 +19,7 @@ public class NodeUIController : MonoBehaviour, IPointerDownHandler, IPointerUpHa
     [SerializeField] private Image fighterClothes;
     [SerializeField] private Image fighterBody;
 
-    [SerializeField] private Sprite crossedOutSprite;
+    [SerializeField] private GameObject crossedOutObject;
 
     private bool isPickedUp = false;
     private Transform previousParentObject;
@@ -163,12 +163,13 @@ public class NodeUIController : MonoBehaviour, IPointerDownHandler, IPointerUpHa
 
     public void SetInactive()
     {
+        crossedOutObject.SetActive(false);
         this.enabled = false;
 
-        GetComponent<Image>().sprite = crossedOutSprite;
     }
     public void SetActive()
     {
+        crossedOutObject.SetActive(true);
         this.enabled = true;
     }
 
