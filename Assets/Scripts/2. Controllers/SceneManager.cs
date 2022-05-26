@@ -31,7 +31,7 @@ public class SceneManager : MonoBehaviour
         sceneTransitionController.LoadTransitionScene();
     }
 
-    private void Start()
+    private void Awake()
     {
         if (instance != null && instance != this)
         {

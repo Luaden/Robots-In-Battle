@@ -61,6 +61,8 @@ public class DowntimeManager : MonoBehaviour
         }
         instance = this;
 
+        GameManager.instance.CurrentMainCanvas = mainCanvas;
+
         shopManager = FindObjectOfType<ShopManager>(true);
         tournamentManager = FindObjectOfType<TournamentManager>(true);
         popupUIManager = FindObjectOfType<PopupUIManager>(true);
@@ -72,7 +74,6 @@ public class DowntimeManager : MonoBehaviour
         mechSpriteSwapManager = FindObjectOfType<MechSpriteSwapManager>(true);
         mechSpriteSwapManager.UpdateMechSprites(GameManager.instance.Player.PlayerFighterData.FighterMech, CharacterSelect.Player);
 
-        GameManager.instance.CurrentMainCanvas = mainCanvas;
     }
 
     public void InitializeShop()
