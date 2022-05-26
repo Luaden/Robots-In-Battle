@@ -19,6 +19,8 @@ public class NodeUIController : MonoBehaviour, IPointerDownHandler, IPointerUpHa
     [SerializeField] private Image fighterClothes;
     [SerializeField] private Image fighterBody;
 
+    [SerializeField] private Sprite crossedOutSprite;
+
     private bool isPickedUp = false;
     private Transform previousParentObject;
     [SerializeField] protected float travelSpeed;
@@ -162,8 +164,8 @@ public class NodeUIController : MonoBehaviour, IPointerDownHandler, IPointerUpHa
     public void SetInactive()
     {
         this.enabled = false;
-        
-        GetComponent<Image>().color = Color.red;
+
+        GetComponent<Image>().sprite = crossedOutSprite;
     }
     public void SetActive()
     {
