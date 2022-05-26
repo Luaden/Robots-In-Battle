@@ -200,17 +200,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &253880202 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 7365537428165533950, guid: 26e5e608706a92646a9395f7fd865905, type: 3}
-  m_PrefabInstance: {fileID: 5680968833849195400}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dd94c914ad15f0e4392d4a586c65be61, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1001 &342477385
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -218,6 +207,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 2134957543, guid: a8bf5297a007b044299658621b7a1b8c, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 2978099269507667929, guid: a8bf5297a007b044299658621b7a1b8c, type: 3}
       propertyPath: m_Name
       value: Scene Loader Canvas
@@ -755,18 +748,5 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 5680968835091152498, guid: 26e5e608706a92646a9395f7fd865905, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
-      value: 
-      objectReference: {fileID: 253880202}
-    - target: {fileID: 5680968835091152498, guid: 26e5e608706a92646a9395f7fd865905, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: LoadWorkShopScene
-      objectReference: {fileID: 0}
-    - target: {fileID: 5680968835091152498, guid: 26e5e608706a92646a9395f7fd865905, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
-      value: TitleManager, Assembly-CSharp
-      objectReference: {fileID: 0}
-    m_RemovedComponents:
-    - {fileID: 5680968833370576715, guid: 26e5e608706a92646a9395f7fd865905, type: 3}
+    m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 26e5e608706a92646a9395f7fd865905, type: 3}
