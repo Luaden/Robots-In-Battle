@@ -391,7 +391,7 @@ public class CombatManager : MonoBehaviour
 
         AIDialogueController.OnDialogueComplete -= StartNewTurnCheck;
         AIDialogueController.OnDialogueComplete -= EnableCanPlayCards;
-        SceneTransitionController.OnSecondPageTurned += BeginCombatScene;
+        SceneTransitionController.OnSecondPageTurned -= BeginCombatScene;
     }
 
     private void DisableCanPlayCards()
@@ -459,6 +459,7 @@ public class CombatManager : MonoBehaviour
 
     private void StartNewTurn()
     {
+        Debug.Log("Starting new turn.");
         if (hasStartedGame && !hasWon && !hasLost)
         {
             if (GameManager.instance.PlayerWins == 0 && hasNotCompletedIntroDialogue)
