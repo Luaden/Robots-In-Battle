@@ -102,6 +102,7 @@ public class AudioController : MonoBehaviour
 
         bgmAudioSource.loop = true;
         dialogueAudioSource.loop = true;
+        queuedSounds = new Queue<AudioClip>();
 
         //We'll use this if we develop a playerprefs setup for players.
         //MasterVolume = GameManager.Instance.Config.MasterVolume;
