@@ -260,7 +260,8 @@ public class AIConversationPopupController : BaseUIElement<ConversationObject>
 
                 if(!playingDialogueSound)
                 {
-                    AudioController.instance.PlayDialogue(currentDialogueSound);
+                    //AudioController.instance.PlayDialogue(currentDialogueSound);
+                    AudioController.instance.PlayDialogue(SoundType.Dialogue);
                     playingDialogueSound = true;
                 }
             }

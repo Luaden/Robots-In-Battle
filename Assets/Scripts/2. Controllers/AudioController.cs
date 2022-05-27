@@ -128,7 +128,7 @@ public class AudioController : MonoBehaviour
         {
             UpdateBGMVolume(bgmAudioVolume + Time.deltaTime);
 
-            if(bgmAudioVolume <= previousBGMVolume)
+            if(bgmAudioVolume >= previousBGMVolume)
             {
                 bgmAudioVolume = previousBGMVolume;
                 musicQueued = false;
