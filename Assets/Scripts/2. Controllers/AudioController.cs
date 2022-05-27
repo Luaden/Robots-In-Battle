@@ -55,6 +55,7 @@ public class AudioController : MonoBehaviour
             musicQueue.Enqueue(clipToPlay);
             newImmediateTrack = true;
             fadeOut = true;
+            Debug.Log("Queueing music.");
             previousBGMVolume = bgmAudioVolume;
         }
         else
@@ -126,10 +127,13 @@ public class AudioController : MonoBehaviour
     {
         if(newImmediateTrack && fadeOut)
         {
+            Debug.Log("Lowering volume.");
             UpdateBGMVolume(bgmAudioVolume - Time.deltaTime);
 
             if(bgmAudioVolume <= 0f)
             {
+                Debug.Log("Fade out complete.");
+
                 bgmAudioSource.clip = musicQueue.Dequeue();
                 bgmAudioSource.Play();
 
@@ -148,6 +152,7 @@ public class AudioController : MonoBehaviour
 
         if(fadeIn)
         {
+            Debug.Log("Fading in.");
             UpdateBGMVolume(bgmAudioVolume + Time.deltaTime);
 
             if(bgmAudioVolume >= previousBGMVolume)
@@ -167,7 +172,7 @@ public class AudioController : MonoBehaviour
 
     private void UpdateMasterVolume(float value)
     {
-        float newValue = value / 10;
+        float newValue = value / 10f;
         masterVolume = newValue;
         sfxAudioSource.volume = sfxAudioVolume * masterVolume;
         bgmAudioSource.volume = bgmAudioVolume * masterVolume;
@@ -178,7 +183,7 @@ public class AudioController : MonoBehaviour
 
     private void UpdateSFXVolume(float value)
     {
-        float newValue = value / 10;
+        float newValue = value / 10f;
         sfxAudioVolume = newValue;
         sfxAudioSource.volume = sfxAudioVolume * masterVolume;
         dialogueAudioSource.volume = sfxAudioVolume * masterVolume;
@@ -192,7 +197,7 @@ public class AudioController : MonoBehaviour
 
     private void UpdateBGMVolume(float value)
     {
-        float newValue = value / 10;
+        float newValue = value / 10f;
         bgmAudioVolume = newValue;
         bgmAudioSource.volume = bgmAudioVolume * masterVolume;
 

@@ -28,20 +28,16 @@ public class EventManager : MonoBehaviour
     {
         if (CheckCurrentEventRequirements())
         {
-            Debug.Log("Passed the requirements check. Applying effects.");
-
             foreach (SOEventOutcomeObject outcome in currentEvent.SuccessfulAcceptanceOutcomes)
                 ApplyOutcomeEffect(outcome);
 
             if(currentEvent.EventObjectives != null)
             {
-                Debug.Log("Found objectives in current event. Adding it to the tracked events list.");
                 newAcceptedEvents.Add(currentEvent);
             }
 
             currentEvent = currentEvent.SuccessfulAcceptanceDialogue;
 
-            Debug.Log("Starting acceptance dialogue.");
             PlayCurrentEventDialogue();
         }
         else
@@ -132,7 +128,6 @@ public class EventManager : MonoBehaviour
         if (uncheckedAcceptedEvents.Count == 0)
             return;
 
-        Debug.Log("Checking accepted events.");
         currentEvent = uncheckedAcceptedEvents[0];
         
         if(CheckCurrentEventObjectiveCompletion())
