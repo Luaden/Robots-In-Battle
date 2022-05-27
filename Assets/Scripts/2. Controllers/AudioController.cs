@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class AudioController : MonoBehaviour
 {
@@ -7,6 +8,8 @@ public class AudioController : MonoBehaviour
     [SerializeField] private AudioSource sfxAudioSource;
     [SerializeField] private AudioSource bgmAudioSource;
     [SerializeField] private AudioSource dialogueAudioSource;
+    [SerializeField] private Slider sfxSlider;
+    [SerializeField] private Slider bgmSlider;
 
     private AudioClip queuedMusic;
     private AudioClip nextMusicInQueue;
@@ -104,6 +107,9 @@ public class AudioController : MonoBehaviour
         dialogueAudioSource.loop = true;
         queuedSounds = new Queue<AudioClip>();
 
+        sfxSlider.value = sfxAudioVolume;
+        bgmSlider.value = bgmAudioVolume;
+
         //We'll use this if we develop a playerprefs setup for players.
         //MasterVolume = GameManager.Instance.Config.MasterVolume;
         //SFXVolume = GameManager.Instance.Config.SFXVolume;
@@ -174,8 +180,9 @@ public class AudioController : MonoBehaviour
     {
         sfxAudioVolume = value;
         sfxAudioSource.volume = sfxAudioVolume * masterVolume;
-
         dialogueAudioSource.volume = sfxAudioVolume * masterVolume;
+
+        sfxSlider.value = value;
         
         //We'll use this if we develop a playerprefs setup for players.
         //GameManager.Instance.Config.SFXVolume = value;
@@ -187,6 +194,8 @@ public class AudioController : MonoBehaviour
         bgmAudioVolume = value;
         bgmAudioSource.volume = bgmAudioVolume * masterVolume;
 
+
+        bgmSlider.value = value;
         //We'll use this if we develop a playerprefs setup for players.
         //GameManager.Instance.Config.BGMVolume = value;
     }
