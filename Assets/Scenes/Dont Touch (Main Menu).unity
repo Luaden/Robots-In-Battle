@@ -123,6 +123,17 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!114 &55099800 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2837356265982751145, guid: 2b2032fc692b93a4ab21791b760b753c, type: 3}
+  m_PrefabInstance: {fileID: 692122491}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 67db9e8f0e2ae9c40bc1e2b64352a6b4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &157294355
 GameObject:
   m_ObjectHideFlags: 0
@@ -200,6 +211,17 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &175583122 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2837356265747220289, guid: 2b2032fc692b93a4ab21791b760b753c, type: 3}
+  m_PrefabInstance: {fileID: 692122491}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 67db9e8f0e2ae9c40bc1e2b64352a6b4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &342477385
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -207,10 +229,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 2134957543, guid: a8bf5297a007b044299658621b7a1b8c, type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 2978099269507667929, guid: a8bf5297a007b044299658621b7a1b8c, type: 3}
       propertyPath: m_Name
       value: Scene Loader Canvas
@@ -423,6 +441,14 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 2837356265747220289, guid: 2b2032fc692b93a4ab21791b760b753c, type: 3}
+      propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 869094271}
+    - target: {fileID: 2837356265982751145, guid: 2b2032fc692b93a4ab21791b760b753c, type: 3}
+      propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 869094271}
     - target: {fileID: 7179853960726524380, guid: 2b2032fc692b93a4ab21791b760b753c, type: 3}
       propertyPath: m_RootOrder
       value: 6
@@ -602,6 +628,17 @@ MonoBehaviour:
   m_RequiresDepthTexture: 0
   m_RequiresColorTexture: 0
   m_Version: 2
+--- !u!114 &869094271 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8485672843545772909, guid: c3d8814ee1aaa9340a2f37c0a2e98c3c, type: 3}
+  m_PrefabInstance: {fileID: 1409086044}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e588531a5fa191e489bea4d74bb503f1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &1409086044
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -613,6 +650,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: Audio Controller
       objectReference: {fileID: 0}
+    - target: {fileID: 8485672843545772909, guid: c3d8814ee1aaa9340a2f37c0a2e98c3c, type: 3}
+      propertyPath: bgmSlider
+      value: 
+      objectReference: {fileID: 55099800}
+    - target: {fileID: 8485672843545772909, guid: c3d8814ee1aaa9340a2f37c0a2e98c3c, type: 3}
+      propertyPath: sfxSlider
+      value: 
+      objectReference: {fileID: 175583122}
     - target: {fileID: 8485672843545772910, guid: c3d8814ee1aaa9340a2f37c0a2e98c3c, type: 3}
       propertyPath: m_RootOrder
       value: 4

@@ -14,7 +14,7 @@ public class AudioController : MonoBehaviour
     private AudioClip queuedMusic;
     private AudioClip nextMusicInQueue;
     private Queue<AudioClip> queuedSounds;
-    private float masterVolume = .5f;
+    private float masterVolume = 1f;
     private float sfxAudioVolume = .5f;
     private float bgmAudioVolume = .5f;
     private float dialogueAudioVolume = .5f;
@@ -174,6 +174,8 @@ public class AudioController : MonoBehaviour
         sfxAudioVolume = value;
         sfxAudioSource.volume = sfxAudioVolume * masterVolume;
         dialogueAudioSource.volume = sfxAudioVolume * masterVolume;
+
+        Debug.Log("SFX Volume is " + sfxAudioVolume);
         
         //We'll use this if we develop a playerprefs setup for players.
         //GameManager.Instance.Config.SFXVolume = value;
@@ -184,6 +186,8 @@ public class AudioController : MonoBehaviour
     {
         bgmAudioVolume = value;
         bgmAudioSource.volume = bgmAudioVolume * masterVolume;
+
+        Debug.Log("SFX Volume is " + sfxAudioVolume);
 
         //We'll use this if we develop a playerprefs setup for players.
         //GameManager.Instance.Config.BGMVolume = value;

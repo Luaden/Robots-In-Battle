@@ -6,6 +6,7 @@ using TMPro;
 
 public class CreditsDialoguePopupController : MonoBehaviour
 {
+    [SerializeField] private Animator cameraAnim;
     [Header("Popup Texts")]
     [SerializeField] private TMP_Text popupDialogue1;
     [SerializeField] private TMP_Text popupDialogue2;
@@ -31,6 +32,18 @@ public class CreditsDialoguePopupController : MonoBehaviour
         GameManager.instance.LoadTitleScene();
     }
 
+    public void StartDialogue()
+    {
+        startDialogue = true;
+        popupDialogue1Object.SetActive(true);
+        popupDialogue2Object.SetActive(true);
+    }
+
+    private void Awake()
+    {
+        SceneTransitionController.OnSecondPageTurned += StartCameraCrawl;
+    }
+
     private void Start()
     {
         completeDialogue = new Queue<char>();
@@ -46,11 +59,14 @@ public class CreditsDialoguePopupController : MonoBehaviour
         UpdateTextOverTime();
     }
 
-    public void StartDialogue()
+    private void OnDestroy()
     {
-        startDialogue = true;
-        popupDialogue1Object.SetActive(true);
-        popupDialogue2Object.SetActive(true);
+        SceneTransitionController.OnSecondPageTurned -= StartCameraCrawl;
+    }
+
+    private void StartCameraCrawl()
+    {
+        cameraAnim.SetTrigger("onPageTwoTurned");
     }
 
     private void UpdateTextOverTime()
