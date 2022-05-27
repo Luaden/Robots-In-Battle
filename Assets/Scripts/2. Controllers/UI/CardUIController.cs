@@ -155,6 +155,7 @@ public class CardUIController : MonoBehaviour, IPointerEnterHandler, IPointerExi
                 return;
 
             CombatManager.instance.CardClickController.HandleClick(eventData);
+            AudioController.instance.PlaySound(SoundType.PositiveButton);
         }
     }
 
