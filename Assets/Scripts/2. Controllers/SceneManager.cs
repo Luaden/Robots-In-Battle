@@ -14,18 +14,21 @@ public class SceneManager : MonoBehaviour
 
     public void LoadTitleScene()
     {
+        AudioController.instance.PlaySound(SoundType.RecordScratch);
         sceneToLoad = 0;
         sceneQueued = true;
         sceneTransitionController.LoadTransitionScene();
     }
     public void LoadWorkshopScene()
     {
+        AudioController.instance.PlaySound(SoundType.RecordScratch);
         sceneToLoad = 1;
         sceneQueued = true;
         sceneTransitionController.LoadTransitionScene();
     }
     public void LoadCombatScene()
     {
+        AudioController.instance.PlaySound(SoundType.RecordScratch);
         sceneToLoad = 2;
         sceneQueued = true;
         sceneTransitionController.LoadTransitionScene();

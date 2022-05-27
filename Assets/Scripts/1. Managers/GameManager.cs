@@ -208,7 +208,6 @@ public class GameManager : MonoBehaviour
             {
                 if (cardDataObject.CardName == newCard.CardName)
                 {
-                    Debug.Log("Found " + cardDataObject.CardName);
                     cardToRemove = cardDataObject;
                     Debug.Log(cardToRemove.CardName);
                 }
@@ -363,6 +362,7 @@ public class GameManager : MonoBehaviour
             instance.playerData.CurrencyToSpend -= currencyToSpend;
 
             OnUpdatePlayerCurrencies?.Invoke();
+            AudioController.instance.PlaySound(SoundType.CashRegister);
         }
 
         public void SpendPlayerTime(float timeToSpend)

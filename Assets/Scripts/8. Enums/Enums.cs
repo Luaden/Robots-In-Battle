@@ -277,6 +277,7 @@ public enum ThemeType
     Workshop,
     CombatIntro,
     Combat,
+    BossIntro,
     Boss,
     Credits,
     Win,

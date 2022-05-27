@@ -379,7 +379,9 @@ public class CombatManager : MonoBehaviour
         else if (GameManager.instance.PlayerWins == winsBeforeBoss)
         {
             InitOpponentFighter(GameManager.instance.Player.BossFighters[1], true);
-            AudioController.instance.PlayMusic(ThemeType.Boss);
+            AudioController.instance.PlayMusic(ThemeType.BossIntro);
+            AudioController.instance.QueueMusic(ThemeType.Boss);
+
         }
         else
         {

@@ -277,6 +277,7 @@ public class ShopItemUIController : MonoBehaviour, IPointerDownHandler, IPointer
             transform.SetParent(itemShopUISlotController.SlotManager.MainCanvas.transform);
 
             DowntimeManager.instance.ShopManager.CurrentItemSelected = this;
+            AudioController.instance.PlaySound(SoundType.PositiveButton);
         }
     }
 
