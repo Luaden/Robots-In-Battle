@@ -20,6 +20,9 @@ public class SliderUpdaterController : MonoBehaviour
 
     private void Update()
     {
+        if (!enabled)
+            return; 
+
         if (sfxSlider.value == 0)
         {
             soundOffIcon.SetActive(true);

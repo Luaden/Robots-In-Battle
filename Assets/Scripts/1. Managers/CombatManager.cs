@@ -32,6 +32,7 @@ public class CombatManager : MonoBehaviour
     [SerializeField] private bool narrateAIDecisionMaking;
     [SerializeField] private bool displayAIDecisionIndicator;
     [SerializeField] private bool playPilotEffectsOnFirstTurn;
+    [SerializeField] private bool firstPilotIsBoss;
 
     public bool NarrateCardSelection { get => narrateCardSelection; }
     public bool NarrateCombat { get => narrateCombat; }
@@ -373,26 +374,36 @@ public class CombatManager : MonoBehaviour
         if (GameManager.instance.Player.OtherFighters[0] == null)
             Debug.Log("No Opponent.");
 
-        InitPlayerFighter(GameManager.instance.Player.PlayerFighterData);
-
-        if (GameManager.instance.PlayerWins == 0)
+        if(!firstPilotIsBoss)
         {
-            InitOpponentFighter(GameManager.instance.Player.BossFighters[0]);
-            AudioController.instance.PlayMusic(ThemeType.CombatIntro);
-            AudioController.instance.QueueMusic(ThemeType.Combat);
-        }
-        else if (GameManager.instance.PlayerWins == winsBeforeBoss)
-        {
-            InitOpponentFighter(GameManager.instance.Player.BossFighters[1], true);
-            AudioController.instance.PlayMusic(ThemeType.BossIntro);
-            AudioController.instance.QueueMusic(ThemeType.Boss);
+            InitPlayerFighter(GameManager.instance.Player.PlayerFighterData);
 
+            if (GameManager.instance.PlayerWins == 0)
+            {
+                InitOpponentFighter(GameManager.instance.Player.BossFighters[0]);
+                AudioController.instance.PlayMusic(ThemeType.CombatIntro);
+                AudioController.instance.QueueMusic(ThemeType.Combat);
+            }
+            else if (GameManager.instance.PlayerWins == winsBeforeBoss)
+            {
+                InitOpponentFighter(GameManager.instance.Player.BossFighters[1], true);
+                AudioController.instance.PlayMusic(ThemeType.BossIntro);
+                AudioController.instance.QueueMusic(ThemeType.Boss);
+
+            }
+            else
+            {
+                InitOpponentFighter(GameManager.instance.Player.OtherFighters[GameManager.instance.PlayerWins]);
+                AudioController.instance.PlayMusic(ThemeType.CombatIntro);
+                AudioController.instance.QueueMusic(ThemeType.Combat);
+            }
         }
         else
         {
-            InitOpponentFighter(GameManager.instance.Player.OtherFighters[GameManager.instance.PlayerWins]);
-            AudioController.instance.PlayMusic(ThemeType.CombatIntro);
-            AudioController.instance.QueueMusic(ThemeType.Combat);
+            InitPlayerFighter(GameManager.instance.Player.PlayerFighterData);
+            InitOpponentFighter(GameManager.instance.Player.BossFighters[1], true);
+            AudioController.instance.PlayMusic(ThemeType.BossIntro);
+            AudioController.instance.QueueMusic(ThemeType.Boss);
         }
     }
 

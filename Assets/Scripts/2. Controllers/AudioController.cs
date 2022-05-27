@@ -11,14 +11,16 @@ public class AudioController : MonoBehaviour
     [SerializeField] private Slider sfxSlider;
     [SerializeField] private Slider bgmSlider;
 
-    private AudioClip queuedMusic;
-    private AudioClip nextMusicInQueue;
-    private Queue<AudioClip> queuedSounds;
+    private Queue<AudioClip> musicQueue;
+    private Queue<AudioClip> soundQueue;
     private float masterVolume = 1f;
     private float sfxAudioVolume = .5f;
     private float bgmAudioVolume = .5f;
     private float dialogueAudioVolume = .5f;
-    private bool musicQueued = false;
+    private bool newImmediateTrack = false;
+    private bool newDelayedTrack = false;
+    private bool fadeOut = false;
+    private bool fadeIn = false;
     private float previousBGMVolume;
 
     public static AudioController instance;
@@ -40,18 +42,19 @@ public class AudioController : MonoBehaviour
         if (!sfxAudioSource.isPlaying)
             sfxAudioSource.clip = audioLookup.GetSound(sound);
         else
-            queuedSounds.Enqueue(audioLookup.GetSound(sound));
+            soundQueue.Enqueue(audioLookup.GetSound(sound));
     }
 
-    public void PlayMusic(AudioClip clipToPlay)
+    public void PlayMusic(AudioClip clipToPlay, bool playImmediately = true)
     {
         if (bgmAudioSource.clip == clipToPlay)
             return;
 
         if (bgmAudioSource.clip != null)
         {
-            queuedMusic = clipToPlay;
-            musicQueued = true;
+            musicQueue.Enqueue(clipToPlay);
+            newImmediateTrack = true;
+            fadeOut = true;
             previousBGMVolume = bgmAudioVolume;
         }
         else
@@ -64,7 +67,7 @@ public class AudioController : MonoBehaviour
 
     public void QueueMusic(ThemeType theme)
     {
-        nextMusicInQueue = audioLookup.GetMusic(theme);
+        musicQueue.Enqueue(audioLookup.GetMusic(theme));
     }
 
     public void PlayMusic(ThemeType theme)
@@ -103,7 +106,8 @@ public class AudioController : MonoBehaviour
 
         bgmAudioSource.loop = true;
         dialogueAudioSource.loop = true;
-        queuedSounds = new Queue<AudioClip>();
+        soundQueue = new Queue<AudioClip>();
+        musicQueue = new Queue<AudioClip>();
 
         //We'll use this if we develop a playerprefs setup for players.
         //MasterVolume = GameManager.Instance.Config.MasterVolume;
@@ -115,46 +119,48 @@ public class AudioController : MonoBehaviour
 
     private void Update()
     {
-        ChangeBGM();
+        ChangeBGMImmediately();
     }
 
-    private void ChangeBGM()
+    private void ChangeBGMImmediately()
     {
-        if(musicQueued && queuedMusic != null)
+        if(newImmediateTrack && fadeOut)
         {
             UpdateBGMVolume(bgmAudioVolume - Time.deltaTime);
 
             if(bgmAudioVolume <= 0f)
             {
-                bgmAudioSource.clip = queuedMusic;
+                bgmAudioSource.clip = musicQueue.Dequeue();
                 bgmAudioSource.Play();
 
-                queuedMusic = null;
+                fadeOut = false;
+                newImmediateTrack = false;
+                fadeIn = true;
             }
         }
 
-        if(musicQueued && queuedMusic == null)
+        if(newDelayedTrack && !bgmAudioSource.isPlaying)
+        {
+            bgmAudioSource.clip = musicQueue.Dequeue();
+            bgmAudioSource.Play();
+            newDelayedTrack = false;
+        }
+
+        if(fadeIn)
         {
             UpdateBGMVolume(bgmAudioVolume + Time.deltaTime);
 
             if(bgmAudioVolume >= previousBGMVolume)
             {
                 bgmAudioVolume = previousBGMVolume;
-                musicQueued = false;
+                fadeIn = false;
                 previousBGMVolume = 0f;
             }
         }
 
-        if(queuedMusic == null && nextMusicInQueue != null && !bgmAudioSource.isPlaying)
+        if(soundQueue.Count > 0 && !sfxAudioSource.isPlaying)
         {
-            bgmAudioSource.clip = nextMusicInQueue;
-            bgmAudioSource.Play();
-            nextMusicInQueue = null;
-        }
-
-        if(queuedSounds.Count > 0 && !sfxAudioSource.isPlaying)
-        {
-            sfxAudioSource.clip = queuedSounds.Dequeue();
+            sfxAudioSource.clip = soundQueue.Dequeue();
             sfxAudioSource.Play();
         }
     }
