@@ -51,7 +51,6 @@ public class ShopCollectionRandomizationController
             {
                 int itemRoll = Random.Range(0, possibleItems.Count);
 
-                Debug.Log(itemRoll);
                 shopItemsToSend.Add(possibleItems[itemRoll]);
                 possibleItems.Remove(possibleItems[itemRoll]);
             }

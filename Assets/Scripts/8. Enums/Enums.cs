@@ -252,3 +252,33 @@ public enum NodeType
     Player,
     Opponent
 }
+
+
+public enum SoundType
+{
+    CashRegister,
+    PositiveButton,
+    NegativeButton,
+    RecordScratch,
+    Punch,
+    Kick,
+    Block,
+    Fire,
+    Ice,
+    Plasma,
+    Acid,
+    Dialogue,
+    Beam
+}
+
+public enum ThemeType
+{
+    Title,
+    Workshop,
+    CombatIntro,
+    Combat,
+    Boss,
+    Credits,
+    Win,
+    Loss
+}

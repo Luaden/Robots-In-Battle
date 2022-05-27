@@ -6,9 +6,9 @@ public class DowntimeManager : MonoBehaviour
 {
     [SerializeField] private GameObject inventory;
     [SerializeField] private GameObject shopCartWindow;
+    [SerializeField] private GameObject repairButton;
     [SerializeField] private Canvas mainCanvas;
 
-    [SerializeField] private GameObject repairButton;
     [SerializeField] private int repairCost;
     [SerializeField] private int minimumShopItemCount;
     [SerializeField] private int maximumShopItemCount;
@@ -56,31 +56,6 @@ public class DowntimeManager : MonoBehaviour
     public delegate void onMoveToShop();
     public static event onMoveToShop OnMoveToShop;
 
-    private void Awake()
-    {
-        if (instance != this && instance != null)
-        {
-            Destroy(gameObject);
-            return;
-        }
-        instance = this;
-
-        GameManager.instance.CurrentMainCanvas = mainCanvas;
-
-        shopManager = FindObjectOfType<ShopManager>(true);
-        tournamentManager = FindObjectOfType<TournamentManager>(true);
-        popupUIManager = FindObjectOfType<PopupUIManager>(true);
-        shopUISlotManager = FindObjectOfType<ShopUISlotManager>(true);
-        shopItemUIBuildController = FindObjectOfType<ShopItemUIBuildController>(true);
-        inventoryUISlotManager = FindObjectOfType<InventoryUISlotManager>(true);
-        inventoryCardDeckUISlotManager = FindObjectOfType<PlayerInventoryCardDeckUISlotManager>(true);
-        cameraBoomMoveController = FindObjectOfType<ShopCameraBoomMoveController>(true);
-        mechSpriteSwapManager = FindObjectOfType<MechSpriteSwapManager>(true);
-        mechAnimationController = FindObjectOfType<MechAnimationController>(true);
-        mechSpriteSwapManager.UpdateMechSprites(GameManager.instance.Player.PlayerFighterData.FighterMech, CharacterSelect.Player);
-        mechAnimationController.SetMechAnimation(AnimationType.WorkshopIdle);
-    }
-
     public void InitializeShop()
     {
         if (GameManager.instance.PlayerMechController.PlayerMech.MechCurrentHP < GameManager.instance.PlayerMechController.PlayerMech.MechMaxHP)
@@ -116,6 +91,37 @@ public class DowntimeManager : MonoBehaviour
         {
             GameManager.instance.PlayerMechController.PlayerMech.ResetHealth();
             GameManager.instance.PlayerBankController.SpendPlayerCurrency(repairCost);
+            repairButton.SetActive(false);
         }
+    }
+
+    private void Awake()
+    {
+        if (instance != this && instance != null)
+        {
+            Destroy(gameObject);
+            return;
+        }
+        instance = this;
+
+        GameManager.instance.CurrentMainCanvas = mainCanvas;
+
+        shopManager = FindObjectOfType<ShopManager>(true);
+        tournamentManager = FindObjectOfType<TournamentManager>(true);
+        popupUIManager = FindObjectOfType<PopupUIManager>(true);
+        shopUISlotManager = FindObjectOfType<ShopUISlotManager>(true);
+        shopItemUIBuildController = FindObjectOfType<ShopItemUIBuildController>(true);
+        inventoryUISlotManager = FindObjectOfType<InventoryUISlotManager>(true);
+        inventoryCardDeckUISlotManager = FindObjectOfType<PlayerInventoryCardDeckUISlotManager>(true);
+        cameraBoomMoveController = FindObjectOfType<ShopCameraBoomMoveController>(true);
+        mechSpriteSwapManager = FindObjectOfType<MechSpriteSwapManager>(true);
+        mechAnimationController = FindObjectOfType<MechAnimationController>(true);
+        mechSpriteSwapManager.UpdateMechSprites(GameManager.instance.Player.PlayerFighterData.FighterMech, CharacterSelect.Player);
+        mechAnimationController.SetMechAnimation(AnimationType.WorkshopIdle);
+    }
+
+    private void Start()
+    {
+        AudioController.instance.PlayMusic(ThemeType.Workshop);
     }
 }

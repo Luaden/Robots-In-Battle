@@ -9,6 +9,7 @@ public class TitleManager : MonoBehaviour
     private void Start()
     {
         GameManager.instance.CurrentMainCanvas = mainCanvas;
+        AudioController.instance.PlayMusic(ThemeType.Title);
     }
 
     public void LoadCombatScene()

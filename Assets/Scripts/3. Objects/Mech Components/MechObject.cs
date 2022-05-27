@@ -182,7 +182,6 @@ public class MechObject
                 if (mechArms.ComponentCurrentHP >= 0)
                 {
                     int tempHP = mechHead.ComponentCurrentHP;
-                    Debug.Log(tempHP);
 
                     if (damageToDeal > tempHP)
                     {
@@ -206,7 +205,6 @@ public class MechObject
                 if (mechTorso.ComponentCurrentHP >= 0)
                 {
                     int tempHP = mechTorso.ComponentCurrentHP;
-                    Debug.Log(tempHP);
 
                     if (damageToDeal > tempHP)
                     {
@@ -230,7 +228,6 @@ public class MechObject
                 if (mechLegs.ComponentCurrentHP >= 0)
                 {
                     int tempHP = mechLegs.ComponentCurrentHP;
-                    Debug.Log(tempHP);
                     if (damageToDeal > tempHP)
                     {
                         bonusDamage = damageToDeal - tempHP;
@@ -257,9 +254,6 @@ public class MechObject
                 break;
         }
 
-        Debug.Log("Damage To Deal: " + damageToDeal);
-        Debug.Log("Bonus Damage: " + bonusDamage * CombatManager.instance.BrokenCDM);
-        Debug.Log("Unmodified Damage: " + unmodifiedDamage);
         return Mathf.RoundToInt((bonusDamage * CombatManager.instance.BrokenCDM) + unmodifiedDamage);
     }
 

@@ -98,7 +98,6 @@ public class HUDFloatingDamagePopupController : BaseUIElement<DamageMechPairObje
 
             if (bonusDamage > damageShieldPair.x)
             {
-                Debug.Log("Bonus damage: " + bonusDamage + " was greater than initial estimate: " + damageShieldPair.x);
                 opponentDamageText.text = (bonusDamage).ToString();
                 opponentBonusDamageTextObject.SetActive(true);
             }

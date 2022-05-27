@@ -224,25 +224,40 @@ public class MechAnimationController : MonoBehaviour
                 break;
             case AnimationType.PunchHigh:
                 if (!punchHasElement)
+                {
                     CombatManager.instance.PopupUIManager.HandlePopup(Channels.High);
+                    AudioController.instance.PlaySound(SoundType.Punch);
+                }
                 break;
             case AnimationType.PunchMid:
                 if (!punchHasElement)
+                {
                     CombatManager.instance.PopupUIManager.HandlePopup(Channels.Mid);
+                    AudioController.instance.PlaySound(SoundType.Punch);
+                }
                 break;
             case AnimationType.KickMid:
                 if (!kickHasElement)
+                {
                     CombatManager.instance.PopupUIManager.HandlePopup(Channels.Mid);
+                    AudioController.instance.PlaySound(SoundType.Kick);
+                }
                 break;
             case AnimationType.KickLow:
                 if (!kickHasElement)
+                {
                     CombatManager.instance.PopupUIManager.HandlePopup(Channels.Low);
+                    AudioController.instance.PlaySound(SoundType.Kick);
+                }
                 break;
             case AnimationType.SpecialMid:
-                if (!torsoHasElement)
-                    CombatManager.instance.PopupUIManager.HandlePopup(Channels.Mid);
+                AudioController.instance.PlaySound(SoundType.Beam);
+
                 break;
             case AnimationType.Guard:
+                {
+                    AudioController.instance.PlaySound(SoundType.Block);
+                }
                 break;
             case AnimationType.Counter:
                 break;
@@ -255,8 +270,10 @@ public class MechAnimationController : MonoBehaviour
             case AnimationType.Lose:
                 break;
             case AnimationType.DamagedFire:
+                AudioController.instance.PlaySound(SoundType.Fire);
                 break;
             case AnimationType.DamagedPlasma:
+                AudioController.instance.PlaySound(SoundType.Plasma);
                 break;
             case AnimationType.WorkshopIdle:
                 break;

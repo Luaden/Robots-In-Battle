@@ -81,13 +81,13 @@ public class PopupUIManager : MonoBehaviour
     }
     public void HandlePopup(string name, string dialogue, CharacterSelect character)
     {
-        ClearAllPopups();
+        //ClearAllPopups();
         aIDialoguePopupController.UpdateUI(name, dialogue, character);
     }
 
     public void HandlePopup(ConversationObject conversationObject)
     {
-        ClearAllPopups();
+        //ClearAllPopups();
         aIConversationPopupController.UpdateUI(conversationObject);
     }
 
@@ -146,11 +146,11 @@ public class PopupUIManager : MonoBehaviour
 
     private void DisablePopups()
     {
-        popupsEnabled = false;
+        //popupsEnabled = false;
     }
 
     private void EnablePopups()
     {
-        popupsEnabled = true;
+        //popupsEnabled = true;
     }
 }

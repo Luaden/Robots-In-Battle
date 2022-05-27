@@ -371,13 +371,22 @@ public class CombatManager : MonoBehaviour
         InitPlayerFighter(GameManager.instance.Player.PlayerFighterData);
 
         if (GameManager.instance.PlayerWins == 0)
+        {
             InitOpponentFighter(GameManager.instance.Player.BossFighters[0]);
+            AudioController.instance.PlayMusic(ThemeType.CombatIntro);
+            AudioController.instance.QueueMusic(ThemeType.Combat);
+        }
         else if (GameManager.instance.PlayerWins == winsBeforeBoss)
         {
             InitOpponentFighter(GameManager.instance.Player.BossFighters[1], true);
+            AudioController.instance.PlayMusic(ThemeType.Boss);
         }
         else
+        {
             InitOpponentFighter(GameManager.instance.Player.OtherFighters[GameManager.instance.PlayerWins]);
+            AudioController.instance.PlayMusic(ThemeType.CombatIntro);
+            AudioController.instance.QueueMusic(ThemeType.Combat);
+        }
     }
 
     private void OnDestroy()

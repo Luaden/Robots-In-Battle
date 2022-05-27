@@ -3,16 +3,18 @@ using UnityEngine;
 
 public class AudioController : MonoBehaviour
 {
+    [SerializeField] private AudioLookup audioLookup;
     [SerializeField] private AudioSource sfxAudioSource;
     [SerializeField] private AudioSource bgmAudioSource;
     [SerializeField] private AudioSource dialogueAudioSource;
 
     private List<AudioClip> dialogueSounds;
     private AudioClip queuedMusic;
-    private float masterVolume = 1f;
-    private float sfxAudioVolume = 1f;
-    private float bgmAudioVolume = 1f;
-    private float dialogueAudioVolume = 1f;
+    private AudioClip nextMusicInQueue;
+    private float masterVolume = .5f;
+    private float sfxAudioVolume = .5f;
+    private float bgmAudioVolume = .5f;
+    private float dialogueAudioVolume = .5f;
     private bool musicQueued = false;
     private float previousBGMVolume;
 
@@ -25,17 +27,43 @@ public class AudioController : MonoBehaviour
 
     public void PlaySound(AudioClip clipToPlay) => sfxAudioSource.PlayOneShot(clipToPlay);
 
+    public void PlaySound(SoundType sound)
+    {
+        PlaySound(audioLookup.GetSound(sound));
+    }
+
     public void PlayMusic(AudioClip clipToPlay)
     {
         if (bgmAudioSource.clip == clipToPlay)
             return;
-
+        Debug.Log("Got past the guard.");
         if (bgmAudioSource.clip != null)
         {
             queuedMusic = clipToPlay;
             musicQueued = true;
             previousBGMVolume = bgmAudioVolume;
+
+            Debug.Log("Music is queued.");
         }
+        else
+        {
+            Debug.Log("Playing music immediately.");
+            bgmAudioSource.clip = clipToPlay;
+            bgmAudioSource.Play();
+            previousBGMVolume = bgmAudioVolume;
+        }
+    }
+
+    public void QueueMusic(ThemeType theme)
+    {
+        Debug.Log("Adding a theme request to the queue.");
+        nextMusicInQueue = audioLookup.GetMusic(theme);
+    }
+
+    public void PlayMusic(ThemeType theme)
+    {
+        Debug.Log("Recieved a theme request.");
+        PlayMusic(audioLookup.GetMusic(theme));
     }
 
     public void PlayDialogue(AudioClip clipToPlay)
@@ -44,10 +72,9 @@ public class AudioController : MonoBehaviour
         dialogueAudioSource.Play();
     }
 
-    [ContextMenu("Do it")]
-    public void PlayAgain()
+    public void PlayDialogue(SoundType sound)
     {
-        dialogueAudioSource.Play();
+        PlayDialogue(audioLookup.GetSound(sound));
     }
 
     public void StopDialogue()
@@ -89,6 +116,7 @@ public class AudioController : MonoBehaviour
 
             if(bgmAudioVolume <= 0f)
             {
+                Debug.Log("Switching songs.");
                 bgmAudioSource.clip = queuedMusic;
                 bgmAudioSource.Play();
 
@@ -106,6 +134,14 @@ public class AudioController : MonoBehaviour
                 musicQueued = false;
                 previousBGMVolume = 0f;
             }
+        }
+
+        if(queuedMusic == null && nextMusicInQueue != null && !bgmAudioSource.isPlaying)
+        {
+            Debug.Log("Playing next in queue.");
+            bgmAudioSource.clip = nextMusicInQueue;
+            bgmAudioSource.Play();
+            nextMusicInQueue = null;
         }
     }
 
@@ -147,5 +183,96 @@ public class AudioController : MonoBehaviour
 
         //We'll use this if we develop a playerprefs setup for players.
         //GameManager.Instance.Config.DialogueVolume = value;
+    }
+
+    [System.Serializable]
+    private class AudioLookup
+    {
+        [Header("Themes/BGM")]
+        [SerializeField] private AudioClip titleTheme;
+        [SerializeField] private AudioClip workShopTheme;
+        [SerializeField] private AudioClip combatIntro;
+        [SerializeField] private AudioClip combatTheme;
+        [SerializeField] private AudioClip bossTheme;
+        [SerializeField] private AudioClip creditsTheme;
+        [SerializeField] private AudioClip winTheme;
+        [SerializeField] private AudioClip lossTheme;
+        [Space]
+        [Header("General SFX")]
+        [SerializeField] private AudioClip cashRegisterSound;
+        [SerializeField] private AudioClip positiveButtonSound;
+        [SerializeField] private AudioClip negativeButtonSound;
+        [SerializeField] private AudioClip recordScratchSound;
+        [SerializeField] private AudioClip dialogueSound;
+        [Space]
+        [Header("Combat SFX")]
+        [SerializeField] private AudioClip punchSound;
+        [SerializeField] private AudioClip kickSound;
+        [SerializeField] private AudioClip blockSound;
+        [SerializeField] private AudioClip fireSound;
+        [SerializeField] private AudioClip iceSound;
+        [SerializeField] private AudioClip plasmaSound;
+        [SerializeField] private AudioClip acidSound;
+        [SerializeField] private AudioClip beamSound;
+        
+        public AudioClip GetMusic(ThemeType theme)
+        {
+            switch (theme)
+            {
+                case ThemeType.Title:
+                    return titleTheme;
+                case ThemeType.Workshop:
+                    return workShopTheme;
+                case ThemeType.CombatIntro:
+                    return combatIntro;
+                case ThemeType.Combat:
+                    return combatTheme;
+                case ThemeType.Boss:
+                    return bossTheme;
+                case ThemeType.Credits:
+                    return creditsTheme;
+                case ThemeType.Win:
+                    return winTheme;
+                case ThemeType.Loss:
+                    return lossTheme;
+                default:
+                    return null;
+            }
+        }
+
+        public AudioClip GetSound(SoundType sound)
+        {
+            switch (sound)
+            {
+                case SoundType.CashRegister:
+                    return cashRegisterSound;
+                case SoundType.PositiveButton:
+                    return positiveButtonSound;
+                case SoundType.NegativeButton:
+                    return negativeButtonSound;
+                case SoundType.RecordScratch:
+                    return recordScratchSound;
+                case SoundType.Punch:
+                    return punchSound;
+                case SoundType.Kick:
+                    return kickSound;
+                case SoundType.Block:
+                    return blockSound;
+                case SoundType.Fire:
+                    return fireSound;
+                case SoundType.Ice:
+                    return iceSound;
+                case SoundType.Plasma:
+                    return plasmaSound;
+                case SoundType.Acid:
+                    return acidSound;
+                case SoundType.Dialogue:
+                    return dialogueSound;
+                case SoundType.Beam:
+                    return beamSound;
+                default:
+                    return null;
+            }
+        }
     }
 }

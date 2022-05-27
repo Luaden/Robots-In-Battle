@@ -69,11 +69,13 @@ public class WinLossPanelController : BaseUIElement<ScoreObject>
 
         if(primaryData.hasWon)
         {
+            AudioController.instance.PlayMusic(ThemeType.Win);
             SetGameOverText(primaryData);
             winPanel.SetActive(true);
         }
         else
         {
+            AudioController.instance.PlayMusic(ThemeType.Loss);
             SetGameOverText(primaryData);
             losePanel.SetActive(true);
         }
