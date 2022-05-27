@@ -128,12 +128,13 @@ public class AudioController : MonoBehaviour
         if(newImmediateTrack && fadeOut)
         {
             Debug.Log("Lowering volume.");
-            UpdateBGMVolume(bgmAudioVolume - Time.deltaTime);
+            bgmAudioVolume -= Time.deltaTime;
 
             if(bgmAudioVolume <= 0f)
             {
                 Debug.Log("Fade out complete.");
 
+                Debug.Log("Playing: " + musicQueue.Peek());
                 bgmAudioSource.clip = musicQueue.Dequeue();
                 bgmAudioSource.Play();
 
@@ -153,7 +154,7 @@ public class AudioController : MonoBehaviour
         if(fadeIn)
         {
             Debug.Log("Fading in.");
-            UpdateBGMVolume(bgmAudioVolume + Time.deltaTime);
+            bgmAudioVolume += Time.deltaTime;
 
             if(bgmAudioVolume >= previousBGMVolume)
             {
@@ -224,6 +225,7 @@ public class AudioController : MonoBehaviour
         [SerializeField] private AudioClip workShopTheme;
         [SerializeField] private AudioClip combatIntro;
         [SerializeField] private AudioClip combatTheme;
+        [SerializeField] private AudioClip bossIntro;
         [SerializeField] private AudioClip bossTheme;
         [SerializeField] private AudioClip creditsTheme;
         [SerializeField] private AudioClip winTheme;
@@ -266,6 +268,8 @@ public class AudioController : MonoBehaviour
                     return winTheme;
                 case ThemeType.Loss:
                     return lossTheme;
+                case ThemeType.BossIntro:
+                    return bossIntro;
                 default:
                     return null;
             }
