@@ -296,6 +296,7 @@ public class ShopItemUIController : MonoBehaviour, IPointerDownHandler, IPointer
     public void DisablePriceTag()
     {
         cardPricetagObject.SetActive(false);
+        componentPricetagObject.SetActive(false);
     }
 
     public void DestroyShopUIItem()

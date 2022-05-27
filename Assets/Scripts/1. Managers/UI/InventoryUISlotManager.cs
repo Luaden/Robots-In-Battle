@@ -20,7 +20,10 @@ public class InventoryUISlotManager : BaseSlotManager<ShopItemUIController>
     {
 
         if (item.MechComponentDataObject == null)
+        {
             item.MechComponentDataObject = new MechComponentDataObject(item.BaseSOItemDataObject);
+            item.DisablePriceTag();
+        }
 
         if (slot != null && slot.CurrentSlottedItem == null)
         {
@@ -28,6 +31,7 @@ public class InventoryUISlotManager : BaseSlotManager<ShopItemUIController>
             item.ItemSlotController.SlotManager.RemoveItemFromCollection(item);
             slot.CurrentSlottedItem = item;
             item.ItemSlotController = slot;
+            item.DisablePriceTag();
             return;
         }
         else
@@ -41,6 +45,7 @@ public class InventoryUISlotManager : BaseSlotManager<ShopItemUIController>
                     item.NotInMech = true;
                     slotOption.CurrentSlottedItem = item;
                     item.ItemSlotController = slotOption;
+                    item.DisablePriceTag();
                     return;
                 }
                 else
@@ -52,9 +57,11 @@ public class InventoryUISlotManager : BaseSlotManager<ShopItemUIController>
 
             if (item.ItemSlotController != null)
                 item.ItemSlotController.SlotManager.RemoveItemFromCollection(item);
+
             item.NotInMech = true;
             slotController.CurrentSlottedItem = item;
             item.ItemSlotController = slotController;
+            item.DisablePriceTag();
         }
 
         UpdatePlayerInventory();
@@ -113,6 +120,8 @@ public class InventoryUISlotManager : BaseSlotManager<ShopItemUIController>
                 GameManager.instance.PlayerInventoryController.AddItemToInventory(item.MechComponentDataObject);
             else
                 GameManager.instance.PlayerInventoryController.AddItemToInventory(new MechComponentDataObject(item.BaseSOItemDataObject));
+
+            item.DisablePriceTag();
         }
     }
 

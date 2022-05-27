@@ -20,6 +20,7 @@ public class PlayerInventoryCardDeckUISlotManager : BaseSlotManager<ShopItemUICo
             item.ItemSlotController.SlotManager.RemoveItemFromCollection(item);
             slot.CurrentSlottedItem = item;
             item.ItemSlotController = slot;
+            item.DisablePriceTag();
             return;
         }
         else
@@ -33,6 +34,7 @@ public class PlayerInventoryCardDeckUISlotManager : BaseSlotManager<ShopItemUICo
                     item.NotInMech = true;
                     slotOption.CurrentSlottedItem = item;
                     item.ItemSlotController = slotOption;
+                    item.DisablePriceTag();
                     return;
                 }
                 else

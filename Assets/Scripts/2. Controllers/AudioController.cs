@@ -161,7 +161,8 @@ public class AudioController : MonoBehaviour
 
     private void UpdateMasterVolume(float value)
     {
-        masterVolume = value;
+        float newValue = value / 10;
+        masterVolume = newValue;
         sfxAudioSource.volume = sfxAudioVolume * masterVolume;
         bgmAudioSource.volume = bgmAudioVolume * masterVolume;
 
@@ -171,7 +172,8 @@ public class AudioController : MonoBehaviour
 
     private void UpdateSFXVolume(float value)
     {
-        sfxAudioVolume = value;
+        float newValue = value / 10;
+        sfxAudioVolume = newValue;
         sfxAudioSource.volume = sfxAudioVolume * masterVolume;
         dialogueAudioSource.volume = sfxAudioVolume * masterVolume;
 
@@ -184,10 +186,11 @@ public class AudioController : MonoBehaviour
 
     private void UpdateBGMVolume(float value)
     {
-        bgmAudioVolume = value;
+        float newValue = value / 10;
+        bgmAudioVolume = newValue;
         bgmAudioSource.volume = bgmAudioVolume * masterVolume;
 
-        Debug.Log("SFX Volume is " + sfxAudioVolume);
+        Debug.Log("SFX Volume is " + bgmAudioVolume);
 
         //We'll use this if we develop a playerprefs setup for players.
         //GameManager.Instance.Config.BGMVolume = value;

@@ -20,24 +20,27 @@ public class PlayerMechUISlotManager : BaseSlotManager<ShopItemUIController>
                     headSlot.CurrentSlottedItem = item;
                     item.ItemSlotController = headSlot;
                     item.NotInMech = false;
+                    item.DisablePriceTag();
                     break;
 
                 case MechComponent.Torso:
                     torsoSlot.CurrentSlottedItem = item;
                     item.ItemSlotController = torsoSlot;
                     item.NotInMech = false;
-
+                    item.DisablePriceTag();
                     break;
                 case MechComponent.Arms:
                     armsSlot.CurrentSlottedItem = item;
                     item.ItemSlotController = armsSlot;
                     item.NotInMech = false;
+                    item.DisablePriceTag();
                     break;
 
                 case MechComponent.Legs:
                     legsSlot.CurrentSlottedItem = item;
                     item.ItemSlotController = legsSlot;
                     item.NotInMech = false;
+                    item.DisablePriceTag();
                     break;
             }
 
@@ -56,6 +59,7 @@ public class PlayerMechUISlotManager : BaseSlotManager<ShopItemUIController>
                         slot.CurrentSlottedItem = item;
                         item.ItemSlotController = slot;
                         item.NotInMech = false;
+                        item.DisablePriceTag();
 
                         CheckSlotItems();
                         UpdateCurrentMech();
@@ -71,6 +75,7 @@ public class PlayerMechUISlotManager : BaseSlotManager<ShopItemUIController>
                         slot.CurrentSlottedItem = item;
                         item.ItemSlotController = slot;
                         item.NotInMech = false;
+                        item.DisablePriceTag();
 
                         CheckSlotItems();
                         UpdateCurrentMech();
@@ -86,6 +91,7 @@ public class PlayerMechUISlotManager : BaseSlotManager<ShopItemUIController>
                         slot.CurrentSlottedItem = item;
                         item.ItemSlotController = slot;
                         item.NotInMech = false;
+                        item.DisablePriceTag();
 
                         CheckSlotItems();
                         UpdateCurrentMech();
@@ -101,6 +107,7 @@ public class PlayerMechUISlotManager : BaseSlotManager<ShopItemUIController>
                         slot.CurrentSlottedItem = item;
                         item.ItemSlotController = slot;
                         item.NotInMech = false;
+                        item.DisablePriceTag();
 
                         CheckSlotItems();
                         UpdateCurrentMech();
@@ -154,6 +161,8 @@ public class PlayerMechUISlotManager : BaseSlotManager<ShopItemUIController>
         void SwapComponentIntoInventory(ShopItemUIController newItem, BaseSlotController<ShopItemUIController> slotToAddTo)
         {
             newItem.ItemSlotController.SlotManager.RemoveItemFromCollection(newItem);
+            newItem.DisablePriceTag();
+
             DowntimeManager.instance.InventoryUISlotManager.AddItemToCollection(slotToAddTo.CurrentSlottedItem, slotToAddTo);
 
             newItem.NotInMech = false;

@@ -15,6 +15,9 @@ public class ShopItemUIBuildController : MonoBehaviour
         ShopItemUIController shopItemUIController = shopItemUIGameObject.GetComponent<ShopItemUIController>();
         shopItemUIController.InitUI(shopItem, oldMechComponentData);
 
+        if (slotManager == DowntimeManager.instance.InventoryUISlotManager || slotManager == DowntimeManager.instance.InventoryCardDeckUISlotManager)
+            shopItemUIController.DisablePriceTag();
+
         slotManager.AddItemToCollection(shopItemUIController, null);
         shopItemUIGameObject.SetActive(true);
     }
