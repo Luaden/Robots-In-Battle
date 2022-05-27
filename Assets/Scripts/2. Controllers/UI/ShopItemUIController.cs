@@ -211,6 +211,8 @@ public class ShopItemUIController : MonoBehaviour, IPointerDownHandler, IPointer
     {
         if (DowntimeManager.instance != null)
             DowntimeManager.instance.PopupUIManager.HandlePopup(baseSOItemDataObject);
+        else
+            CombatManager.instance.PopupUIManager.HandlePopup(baseSOItemDataObject);
     }
 
     public void OnPointerExit(PointerEventData eventData)
@@ -223,6 +225,9 @@ public class ShopItemUIController : MonoBehaviour, IPointerDownHandler, IPointer
 
     public virtual void OnBeginDrag(PointerEventData eventData)
     {
+        if (DowntimeManager.instance == null)
+            return;
+
         if (notInMech)
         {
             isPickedUp = true;
@@ -233,7 +238,10 @@ public class ShopItemUIController : MonoBehaviour, IPointerDownHandler, IPointer
 
     public void OnDrag(PointerEventData eventData)
     {
-        if(notInMech)
+        if (DowntimeManager.instance == null)
+            return;
+
+        if (notInMech)
         {
             itemShopUISlotController.HandleDrag(eventData);
         }
@@ -241,6 +249,9 @@ public class ShopItemUIController : MonoBehaviour, IPointerDownHandler, IPointer
 
     public virtual void OnEndDrag(PointerEventData eventData)
     {
+        if (DowntimeManager.instance == null)
+            return;
+
         isPickedUp = false;
         draggableCanvasGroup.blocksRaycasts = true;
         draggableCanvasGroup.alpha = 1f;
@@ -248,13 +259,19 @@ public class ShopItemUIController : MonoBehaviour, IPointerDownHandler, IPointer
 
     public void OnDrop(PointerEventData eventData)
     {
-        if(!notInMech)
+        if (DowntimeManager.instance == null)
+            return;
+
+        if (!notInMech)
             itemShopUISlotController.OnDrop(eventData);
     }
 
     public void OnPointerDown(PointerEventData eventData)
     {
-        if(notInMech)
+        if (DowntimeManager.instance == null)
+            return;
+
+        if (notInMech)
         {
             isPickedUp = true;
             transform.SetParent(itemShopUISlotController.SlotManager.MainCanvas.transform);
@@ -265,7 +282,10 @@ public class ShopItemUIController : MonoBehaviour, IPointerDownHandler, IPointer
 
     public void OnPointerUp(PointerEventData eventData)
     {
-        if(notInMech)
+        if (DowntimeManager.instance == null)
+            return;
+
+        if (notInMech)
         {
             isPickedUp = false;
             transform.SetParent(previousParentObject);

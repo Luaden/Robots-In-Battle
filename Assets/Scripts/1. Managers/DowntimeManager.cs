@@ -23,6 +23,7 @@ public class DowntimeManager : MonoBehaviour
     private ShopCameraBoomMoveController cameraBoomMoveController;
     private TournamentManager tournamentManager;
     private MechSpriteSwapManager mechSpriteSwapManager;
+    private MechAnimationController mechAnimationController;
     private WorkshopLocation currentLocation = WorkshopLocation.Shop;
 
     public static DowntimeManager instance;
@@ -44,6 +45,7 @@ public class DowntimeManager : MonoBehaviour
     public ShopCameraBoomMoveController CameraBoomMoveController { get => cameraBoomMoveController; }
     public MechSpriteSwapManager MechSpriteSwapManager { get => mechSpriteSwapManager; }
     public TournamentManager TournamentManager { get => tournamentManager; }
+    public MechAnimationController MechAnimationController { get => mechAnimationController; }
 
     public delegate void onLoadCombatScene();
     public static event onLoadCombatScene OnLoadCombatScene;
@@ -74,14 +76,17 @@ public class DowntimeManager : MonoBehaviour
         inventoryCardDeckUISlotManager = FindObjectOfType<PlayerInventoryCardDeckUISlotManager>(true);
         cameraBoomMoveController = FindObjectOfType<ShopCameraBoomMoveController>(true);
         mechSpriteSwapManager = FindObjectOfType<MechSpriteSwapManager>(true);
+        mechAnimationController = FindObjectOfType<MechAnimationController>(true);
         mechSpriteSwapManager.UpdateMechSprites(GameManager.instance.Player.PlayerFighterData.FighterMech, CharacterSelect.Player);
-
+        mechAnimationController.SetMechAnimation(AnimationType.WorkshopIdle);
     }
 
     public void InitializeShop()
     {
         if (GameManager.instance.PlayerMechController.PlayerMech.MechCurrentHP < GameManager.instance.PlayerMechController.PlayerMech.MechMaxHP)
             repairButton.SetActive(true);
+        else
+            repairButton.SetActive(false);
 
         instance.ShopManager.InitializeShop();
     }

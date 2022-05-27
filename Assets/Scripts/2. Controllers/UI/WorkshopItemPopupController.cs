@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -101,21 +102,20 @@ public class WorkshopItemPopupController : BaseUIElement<SOItemDataObject>
 
             componentNameText.text = primaryData.ItemName;
             componentHealthText.text = ("Health: ") + primaryData.ComponentHP.ToString();
-            componentEnergyText.text = ("Energy: ") + primaryData.ComponentHP.ToString();
+            componentEnergyText.text = ("Energy: ") + primaryData.ComponentEnergy.ToString();
             componentEnergyGainText.text = ("Bonus Energy Gain: ") + primaryData.EnergyGainModifier.ToString();
-            componentElementText.text = ("Element: ") + System.Enum.GetName(typeof(ElementType), primaryData.ComponentElement);
-            currencyCostText.text = primaryData.CurrencyCost.ToString();
+            componentElementText.text = ("Element: ") + Enum.GetName(typeof(ElementType), primaryData.ComponentElement);
+            currencyCostText.text = ("Price: ") + primaryData.CurrencyCost.ToString();
 
             currentComponentNameText.text = currentItem.ComponentName;
             currentComponentHealthText.text = ("Health: ") + currentItem.ComponentMaxHP.ToString();
             currentComponentEnergyText.text = ("Energy: ") + currentItem.ComponentMaxEnergy.ToString();
             currentComponentEnergyGainText.text = ("Bonus Energy Gain: ") + currentItem.EnergyGainModifier.ToString();
-            currentComponentElementText.text = System.Enum.GetName(typeof(ElementType), currentItem.ComponentElement);
-
-            Debug.Log("Found component in shop.");
+            currentComponentElementText.text = ("Element: ") + Enum.GetName(typeof(ElementType), currentItem.ComponentElement);
 
             popupQueued = true;
             componentPopupObject.SetActive(true);
+            return;
         }
 
         if (primaryData.ItemType == ItemType.Card)
@@ -147,7 +147,7 @@ public class WorkshopItemPopupController : BaseUIElement<SOItemDataObject>
                     currentItem = GameManager.instance.PlayerMechController.PlayerMech.MechTorso;
                     break;
                 case MechComponent.Arms:
-                    currentItem = GameManager.instance.PlayerMechController.PlayerMech.MechHead;
+                    currentItem = GameManager.instance.PlayerMechController.PlayerMech.MechArms;
                     break;
                 case MechComponent.Legs:
                     currentItem = GameManager.instance.PlayerMechController.PlayerMech.MechLegs;
@@ -156,15 +156,15 @@ public class WorkshopItemPopupController : BaseUIElement<SOItemDataObject>
 
             inventoryComponentNameText.text = primaryData.ItemName;
             inventoryComponentHealthText.text = ("Health: ") + primaryData.ComponentHP.ToString();
-            inventoryComponentEnergyText.text = ("Energy: ") + primaryData.ComponentHP.ToString();
+            inventoryComponentEnergyText.text = ("Energy: ") + primaryData.ComponentEnergy.ToString();
             inventoryComponentEnergyGainText.text = ("Bonus Energy Gain: ") + primaryData.EnergyGainModifier.ToString();
-            inventoryComponentElementText.text = ("Element: ") + System.Enum.GetName(typeof(ElementType), primaryData.ComponentElement);
+            inventoryComponentElementText.text = ("Element: ") + Enum.GetName(typeof(ElementType), primaryData.ComponentElement);
 
             inventoryCurrentComponentNameText.text = currentItem.ComponentName;
             inventoryCurrentComponentHealthText.text = ("Health: ") + currentItem.ComponentMaxHP.ToString();
             inventoryCurrentComponentEnergyText.text = ("Energy: ") + currentItem.ComponentMaxEnergy.ToString();
             inventoryCurrentComponentEnergyGainText.text = ("Bonus Energy Gain: ") + currentItem.EnergyGainModifier.ToString();
-            inventoryCurrentComponentElementText.text = System.Enum.GetName(typeof(ElementType), currentItem.ComponentElement);
+            inventoryCurrentComponentElementText.text = ("Element: ") + Enum.GetName(typeof(ElementType), currentItem.ComponentElement);
 
             popupQueued = true;
 

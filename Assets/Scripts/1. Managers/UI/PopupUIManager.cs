@@ -77,10 +77,11 @@ public class PopupUIManager : MonoBehaviour
 
     public void HandlePopup(SOItemDataObject sOItemDataObject)
     {
-        if(popupsEnabled && !GameManager.instance.isTrailerMaking)
-        {
+        if (popupsEnabled && DowntimeManager.instance != null)
             workshopItemPopupController.UpdateUI(sOItemDataObject);
-        }
+        else if (popupsEnabled && CombatManager.instance != null)
+            combatCardUIPopupController.UpdateUI(sOItemDataObject);
+
     }
     public void HandlePopup(string name, string dialogue, CharacterSelect character)
     {
