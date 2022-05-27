@@ -49,12 +49,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isTrailerMaking: 0
   timeBetweenFights: 100
-  playerCurrencyGainOnWin: 100
+  playerCurrencyGainOnWin: 200
   starterPilot: {fileID: 11400000, guid: 945cf619b16680c4eb0188b51f5cc0e8, type: 2}
   bossCharacters:
   - {fileID: 11400000, guid: 38f27c0cf609a6a4f8dde5c35c91913b, type: 2}
   - {fileID: 11400000, guid: b3a31f4a32bcc344dabcfecb97977adf, type: 2}
-  optionsCanvasObject: {fileID: 0}
+  optionsCanvasObject: {fileID: 2837356266740572719}
 --- !u!114 &1813485250
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -308,6 +308,18 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 7
       objectReference: {fileID: 0}
+    - target: {fileID: 2373658108423233947, guid: bd9becbe9a015be45aadb9b69321415d, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 1.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 2373658108423233947, guid: bd9becbe9a015be45aadb9b69321415d, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 1.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 2373658108423233947, guid: bd9becbe9a015be45aadb9b69321415d, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 1.5
+      objectReference: {fileID: 0}
     - target: {fileID: 2373658108458634850, guid: bd9becbe9a015be45aadb9b69321415d, type: 3}
       propertyPath: m_Layer
       value: 7
@@ -391,6 +403,18 @@ PrefabInstance:
     - target: {fileID: 2373658109532497062, guid: bd9becbe9a015be45aadb9b69321415d, type: 3}
       propertyPath: m_Layer
       value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 2373658109532497115, guid: bd9becbe9a015be45aadb9b69321415d, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 7179853960726524383}
+    - target: {fileID: 2373658109532497115, guid: bd9becbe9a015be45aadb9b69321415d, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: CloseOptionsCanvas
+      objectReference: {fileID: 0}
+    - target: {fileID: 2373658109532497115, guid: bd9becbe9a015be45aadb9b69321415d, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: GameManager, Assembly-CSharp
       objectReference: {fileID: 0}
     - target: {fileID: 2373658109550340899, guid: bd9becbe9a015be45aadb9b69321415d, type: 3}
       propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.size
@@ -544,6 +568,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 67db9e8f0e2ae9c40bc1e2b64352a6b4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &2837356266740572719 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2373658107681487013, guid: bd9becbe9a015be45aadb9b69321415d, type: 3}
+  m_PrefabInstance: {fileID: 545143383460960906}
+  m_PrefabAsset: {fileID: 0}
 --- !u!224 &2837356266740572755 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 2373658107681487065, guid: bd9becbe9a015be45aadb9b69321415d, type: 3}

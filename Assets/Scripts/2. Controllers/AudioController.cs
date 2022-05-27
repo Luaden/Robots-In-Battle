@@ -96,7 +96,10 @@ public class AudioController : MonoBehaviour
     private void Start()
     {
         if (instance != null && instance != this)
+        {
             Destroy(this);
+            return;
+        }
         else
         {
             instance = this;
