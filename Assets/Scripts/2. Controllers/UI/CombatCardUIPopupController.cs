@@ -40,9 +40,52 @@ public class CombatCardUIPopupController : BaseUIElement<CardDataObject>
         popupObject.SetActive(true);
     }
 
+    public void UpdateUI(SOItemDataObject primaryData)
+    {
+        if (ClearedIfEmpty(primaryData))
+            return;
+
+        nameText.text = primaryData.CardName;
+        descriptionText.text = primaryData.CardDescription;
+        energyCostText.text = ("Energy: ") + primaryData.EnergyCost.ToString();
+        damageDealtText.text = ("Damage: ") + primaryData.BaseDamage.ToString();
+
+        Vector3 mousePosition = Input.mousePosition / mainCanvas.scaleFactor;
+
+        if (mousePosition.x + popupObject.GetComponent<RectTransform>().rect.width > mainCanvas.GetComponent<RectTransform>().rect.width)
+        {
+            mousePosition.x = mainCanvas.GetComponent<RectTransform>().rect.width - popupObject.GetComponent<RectTransform>().rect.width;
+        }
+
+        if (mousePosition.y + popupObject.GetComponent<RectTransform>().rect.height > mainCanvas.GetComponent<RectTransform>().rect.height)
+        {
+            mousePosition.y = mainCanvas.GetComponent<RectTransform>().rect.height - popupObject.GetComponent<RectTransform>().rect.height;
+        }
+
+        popupRect.anchoredPosition = mousePosition;
+
+        popupObject.SetActive(true);
+    }
+
     protected override bool ClearedIfEmpty(CardDataObject newData)
     {
         if (newData == null)
+        {
+            nameText.text = string.Empty;
+            descriptionText.text = string.Empty;
+            energyCostText.text = string.Empty;
+            damageDealtText.text = string.Empty;
+
+            popupObject.SetActive(false);
+            return true;
+        }
+
+        return false;
+    }
+
+    protected bool ClearedIfEmpty(SOItemDataObject newData)
+    {
+        if (newData == null || newData.ItemType != ItemType.Card)
         {
             nameText.text = string.Empty;
             descriptionText.text = string.Empty;

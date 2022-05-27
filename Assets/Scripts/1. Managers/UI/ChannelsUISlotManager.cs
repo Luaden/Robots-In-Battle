@@ -164,7 +164,7 @@ public class ChannelsUISlotManager : BaseSlotManager<CardUIController>
             attackSlotAFilled = true;
             OnSlotFilled?.Invoke();
 
-            if (attackSlotBFilled)
+            if (attackSlotAFilled && attackSlotBFilled)
                 OnSlotFilledOrRemoved.Invoke(2);
             else
                 OnSlotFilledOrRemoved?.Invoke(1);
@@ -214,7 +214,7 @@ public class ChannelsUISlotManager : BaseSlotManager<CardUIController>
             attackSlotBFilled = true;
             OnSlotFilled?.Invoke();
 
-            if (attackSlotAFilled)
+            if (attackSlotAFilled && attackSlotBFilled)
                 OnSlotFilledOrRemoved.Invoke(2);
             else
                 OnSlotFilledOrRemoved?.Invoke(1);
@@ -323,10 +323,10 @@ public class ChannelsUISlotManager : BaseSlotManager<CardUIController>
             else
                 CombatManager.instance.ResetMechEnergyHUD(CharacterSelect.Player);
 
-            if (attackSlotBFilled)
-                OnSlotFilledOrRemoved?.Invoke(1);
+            if (attackSlotAFilled && attackSlotBFilled)
+                OnSlotFilledOrRemoved.Invoke(2);
             else
-                OnSlotFilledOrRemoved?.Invoke(0);
+                OnSlotFilledOrRemoved?.Invoke(1);
             return;
         }
 
@@ -345,10 +345,10 @@ public class ChannelsUISlotManager : BaseSlotManager<CardUIController>
             else
                 CombatManager.instance.ResetMechEnergyHUD(CharacterSelect.Player);
 
-            if (attackSlotAFilled)
-                OnSlotFilledOrRemoved?.Invoke(1);
+            if (attackSlotAFilled && attackSlotBFilled)
+                OnSlotFilledOrRemoved.Invoke(2);
             else
-                OnSlotFilledOrRemoved?.Invoke(0);
+                OnSlotFilledOrRemoved?.Invoke(1);
             return;
         }
     }

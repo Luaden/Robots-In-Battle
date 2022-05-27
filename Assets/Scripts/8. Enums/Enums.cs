@@ -48,7 +48,8 @@ public enum AnimationType
     Win,
     Lose,
     DamagedFire,
-    DamagedPlasma
+    DamagedPlasma,
+    WorkshopIdle
 }
 
 [Flags]

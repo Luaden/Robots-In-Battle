@@ -61,7 +61,7 @@ public class PlayerInventoryCardDeckUISlotManager : BaseSlotManager<ShopItemUICo
 
     public override void HandleDrop(PointerEventData eventData, ShopItemUIController newData, BaseSlotController<ShopItemUIController> slot)
     {
-        
+        return;
     }
 
     public override void RemoveItemFromCollection(ShopItemUIController item)
