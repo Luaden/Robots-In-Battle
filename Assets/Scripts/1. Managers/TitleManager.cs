@@ -21,4 +21,9 @@ public class TitleManager : MonoBehaviour
     {
         GameManager.instance.LoadWorkshopScene();
     }
+
+    public void OpenOptionsCanvas()
+    {
+        GameManager.instance.OpenOptionsCanvas();
+    }
 }

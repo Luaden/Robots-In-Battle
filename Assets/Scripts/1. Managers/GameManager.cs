@@ -14,6 +14,8 @@ public class GameManager : MonoBehaviour
     [SerializeField] private SOCompleteCharacter starterPilot;
     [Header("Bosses")]
     [SerializeField] private List<SOCompleteCharacter> bossCharacters;
+    [Space]
+    [SerializeField] private GameObject optionsCanvasObject;
 
 
     private int currencyGainModifier = 0;
@@ -138,6 +140,18 @@ public class GameManager : MonoBehaviour
 
             Debug.Log("No starter pilot was found.");
         }
+    }
+
+    public void OpenOptionsCanvas()
+    {
+        optionsCanvasObject.SetActive(true);
+        currentMainCanvas.gameObject.SetActive(false);
+    }
+
+    public void CloseOptionsCanvas()
+    {
+        optionsCanvasObject.SetActive(false);
+        currentMainCanvas.gameObject.SetActive(true);
     }
 
     private void Awake()

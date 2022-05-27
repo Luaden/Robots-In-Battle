@@ -85,6 +85,11 @@ public class DowntimeManager : MonoBehaviour
         GameManager.instance.LoadCombatScene();
     }
 
+    public void OpenOptionsCanvas()
+    {
+
+    }
+
     public void RepairEquippedItems()
     {
         if (GameManager.instance.PlayerBankController.GetPlayerCurrency() >= repairCost)

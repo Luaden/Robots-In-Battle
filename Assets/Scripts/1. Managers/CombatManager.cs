@@ -323,6 +323,11 @@ public class CombatManager : MonoBehaviour
         GameManager.instance.LoadTitleScene();
     }
 
+    public void OpenOptionsCanvas()
+    {
+        GameManager.instance.OpenOptionsCanvas();
+    }
+
     private void Awake()
     {
         instance = this;
