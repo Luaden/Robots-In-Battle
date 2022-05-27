@@ -24,8 +24,8 @@ public class AudioController : MonoBehaviour
     public static AudioController instance;
 
     public float MasterVolume { get => masterVolume; set => UpdateMasterVolume(value); }
-    public float SFXVolume { get => SFXVolume; set => UpdateSFXVolume(value); }
-    public float BGMVolume { get => BGMVolume; set => UpdateBGMVolume(value); }
+    public float SFXVolume { get => sfxAudioVolume; set => UpdateSFXVolume(value); }
+    public float BGMVolume { get => bgmAudioVolume; set => UpdateBGMVolume(value); }
     public float DialogueVolumet { get => dialogueAudioVolume; }
 
     public void PlaySound(AudioClip clipToPlay) => sfxAudioSource.PlayOneShot(clipToPlay);
@@ -47,18 +47,15 @@ public class AudioController : MonoBehaviour
     {
         if (bgmAudioSource.clip == clipToPlay)
             return;
-        Debug.Log("Got past the guard.");
+
         if (bgmAudioSource.clip != null)
         {
             queuedMusic = clipToPlay;
             musicQueued = true;
             previousBGMVolume = bgmAudioVolume;
-
-            Debug.Log("Music is queued.");
         }
         else
         {
-            Debug.Log("Playing music immediately.");
             bgmAudioSource.clip = clipToPlay;
             bgmAudioSource.Play();
             previousBGMVolume = bgmAudioVolume;
@@ -67,13 +64,11 @@ public class AudioController : MonoBehaviour
 
     public void QueueMusic(ThemeType theme)
     {
-        Debug.Log("Adding a theme request to the queue.");
         nextMusicInQueue = audioLookup.GetMusic(theme);
     }
 
     public void PlayMusic(ThemeType theme)
     {
-        Debug.Log("Recieved a theme request.");
         PlayMusic(audioLookup.GetMusic(theme));
     }
 
@@ -97,7 +92,7 @@ public class AudioController : MonoBehaviour
     {
         if (instance != null && instance != this)
         {
-            Destroy(this);
+            Destroy(this.gameObject);
             return;
         }
         else
@@ -109,9 +104,6 @@ public class AudioController : MonoBehaviour
         bgmAudioSource.loop = true;
         dialogueAudioSource.loop = true;
         queuedSounds = new Queue<AudioClip>();
-
-        sfxSlider.value = sfxAudioVolume;
-        bgmSlider.value = bgmAudioVolume;
 
         //We'll use this if we develop a playerprefs setup for players.
         //MasterVolume = GameManager.Instance.Config.MasterVolume;
@@ -134,7 +126,6 @@ public class AudioController : MonoBehaviour
 
             if(bgmAudioVolume <= 0f)
             {
-                Debug.Log("Switching songs.");
                 bgmAudioSource.clip = queuedMusic;
                 bgmAudioSource.Play();
 
@@ -156,7 +147,6 @@ public class AudioController : MonoBehaviour
 
         if(queuedMusic == null && nextMusicInQueue != null && !bgmAudioSource.isPlaying)
         {
-            Debug.Log("Playing next in queue.");
             bgmAudioSource.clip = nextMusicInQueue;
             bgmAudioSource.Play();
             nextMusicInQueue = null;
@@ -184,8 +174,6 @@ public class AudioController : MonoBehaviour
         sfxAudioVolume = value;
         sfxAudioSource.volume = sfxAudioVolume * masterVolume;
         dialogueAudioSource.volume = sfxAudioVolume * masterVolume;
-
-        sfxSlider.value = value;
         
         //We'll use this if we develop a playerprefs setup for players.
         //GameManager.Instance.Config.SFXVolume = value;
@@ -197,8 +185,6 @@ public class AudioController : MonoBehaviour
         bgmAudioVolume = value;
         bgmAudioSource.volume = bgmAudioVolume * masterVolume;
 
-
-        bgmSlider.value = value;
         //We'll use this if we develop a playerprefs setup for players.
         //GameManager.Instance.Config.BGMVolume = value;
     }
