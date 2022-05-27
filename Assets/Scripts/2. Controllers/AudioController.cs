@@ -8,9 +8,9 @@ public class AudioController : MonoBehaviour
     [SerializeField] private AudioSource bgmAudioSource;
     [SerializeField] private AudioSource dialogueAudioSource;
 
-    private List<AudioClip> dialogueSounds;
     private AudioClip queuedMusic;
     private AudioClip nextMusicInQueue;
+    private Queue<AudioClip> queuedSounds;
     private float masterVolume = .5f;
     private float sfxAudioVolume = .5f;
     private float bgmAudioVolume = .5f;
@@ -30,6 +30,14 @@ public class AudioController : MonoBehaviour
     public void PlaySound(SoundType sound)
     {
         PlaySound(audioLookup.GetSound(sound));
+    }
+
+    public void QueueSound(SoundType sound)
+    {
+        if (!sfxAudioSource.isPlaying)
+            sfxAudioSource.clip = audioLookup.GetSound(sound);
+        else
+            queuedSounds.Enqueue(audioLookup.GetSound(sound));
     }
 
     public void PlayMusic(AudioClip clipToPlay)
@@ -142,6 +150,12 @@ public class AudioController : MonoBehaviour
             bgmAudioSource.clip = nextMusicInQueue;
             bgmAudioSource.Play();
             nextMusicInQueue = null;
+        }
+
+        if(queuedSounds.Count > 0 && !sfxAudioSource.isPlaying)
+        {
+            sfxAudioSource.clip = queuedSounds.Dequeue();
+            sfxAudioSource.Play();
         }
     }
 
