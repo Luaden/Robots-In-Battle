@@ -86,7 +86,7 @@ public class SceneTransitionController : MonoBehaviour
 
         if (worldCamera != null)
             worldCamera.enabled = false;
-        else
+        else if (Camera.main != null)
             Camera.main.enabled = false;
     }
 

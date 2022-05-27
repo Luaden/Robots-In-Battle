@@ -37,19 +37,19 @@ public class HUDFloatingDamagePopupController : BaseUIElement<DamageMechPairObje
             switch (primaryData.CardCharacterPairA.cardChannelPair.CardData.SelectedChannels)
             {
                 case Channels.High:
-                    bonusDamage = CombatManager.instance.PlayerFighter.FighterMech.GetBonusDamage(damageShieldPair.x, MechComponent.Head);
+                    bonusDamage = CombatManager.instance.PlayerFighter.FighterMech.GetDamageWithBonus(damageShieldPair.x, MechComponent.Head);
                     break;
                 case Channels.Mid:
-                    bonusDamage = CombatManager.instance.PlayerFighter.FighterMech.GetBonusDamage(damageShieldPair.x, MechComponent.Torso);
+                    bonusDamage = CombatManager.instance.PlayerFighter.FighterMech.GetDamageWithBonus(damageShieldPair.x, MechComponent.Torso);
                     break;
                 case Channels.Low:
-                    bonusDamage = CombatManager.instance.PlayerFighter.FighterMech.GetBonusDamage(damageShieldPair.x, MechComponent.Torso);
+                    bonusDamage = CombatManager.instance.PlayerFighter.FighterMech.GetDamageWithBonus(damageShieldPair.x, MechComponent.Legs);
                     break;
             }
 
-            if(bonusDamage > 0)
+            if(bonusDamage > damageShieldPair.x)
             {
-                playerDamageText.text = (bonusDamage + damageShieldPair.x).ToString();
+                playerDamageText.text = (bonusDamage).ToString();
                 playerBonusDamageTextObject.SetActive(true);
             }
             else
@@ -86,19 +86,20 @@ public class HUDFloatingDamagePopupController : BaseUIElement<DamageMechPairObje
             switch (primaryData.CardCharacterPairA.cardChannelPair.CardData.SelectedChannels)
             {
                 case Channels.High:
-                    bonusDamage = CombatManager.instance.OpponentFighter.FighterMech.GetBonusDamage(damageShieldPair.x, MechComponent.Head);
+                    bonusDamage = CombatManager.instance.OpponentFighter.FighterMech.GetDamageWithBonus(damageShieldPair.x, MechComponent.Head);
                     break;
                 case Channels.Mid:
-                    bonusDamage = CombatManager.instance.OpponentFighter.FighterMech.GetBonusDamage(damageShieldPair.x, MechComponent.Torso);
+                    bonusDamage = CombatManager.instance.OpponentFighter.FighterMech.GetDamageWithBonus(damageShieldPair.x, MechComponent.Torso);
                     break;
                 case Channels.Low:
-                    bonusDamage = CombatManager.instance.OpponentFighter.FighterMech.GetBonusDamage(damageShieldPair.x, MechComponent.Torso);
+                    bonusDamage = CombatManager.instance.OpponentFighter.FighterMech.GetDamageWithBonus(damageShieldPair.x, MechComponent.Legs);
                     break;
             }
 
-            if (bonusDamage > 0)
+            if (bonusDamage > damageShieldPair.x)
             {
-                opponentDamageText.text = (bonusDamage + damageShieldPair.x).ToString();
+                Debug.Log("Bonus damage: " + bonusDamage + " was greater than initial estimate: " + damageShieldPair.x);
+                opponentDamageText.text = (bonusDamage).ToString();
                 opponentBonusDamageTextObject.SetActive(true);
             }
             else

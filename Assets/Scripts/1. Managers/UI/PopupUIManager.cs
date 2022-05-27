@@ -8,18 +8,17 @@ public class PopupUIManager : MonoBehaviour
     [SerializeField] private float generalHUDPopupDelay;
     [SerializeField] private AIDialoguePopupController aIDialoguePopupController;
     [SerializeField] private EventDialoguePopupController eventDialoguePopupController;
+    [SerializeField] private VFXPopupController vFXPopupController;
+    private bool popupsEnabled = true;
 
     private CombatCardUIPopupController combatCardUIPopupController;
     private WorkshopItemPopupController workshopItemPopupController;
     private HUDGeneralUIPopupController hudGeneralUIPopupController;
     private HUDBuffUIPopupController hudBuffUIPopupController;
     private HUDMechComponentPopupController hudMechComponentPopupController;
-    //private AIDialoguePopupController aIDialoguePopupController;
     private AIConversationPopupController aIConversationPopupController;
     private HUDFloatingDamagePopupController floatingDamagePopupController;
-    private DamageSplashEffectPopupController damageSplashEffectPopupController;
 
-    [SerializeField] private bool popupsEnabled = true;
     public float TextPace { get => textRate; }
     public float GeneralHUDPopupDelay { get => generalHUDPopupDelay; }
 
@@ -28,13 +27,10 @@ public class PopupUIManager : MonoBehaviour
         combatCardUIPopupController = GetComponentInChildren<CombatCardUIPopupController>();
         workshopItemPopupController = GetComponentInChildren<WorkshopItemPopupController>();
         hudGeneralUIPopupController = GetComponentInChildren<HUDGeneralUIPopupController>();
-        //aIDialoguePopupController = GetComponentInChildren<AIDialoguePopupController>();
         aIConversationPopupController = GetComponentInChildren<AIConversationPopupController>();
-        //eventDialoguePopupController = GetComponentInChildren<EventDialoguePopupController>();
         hudBuffUIPopupController = GetComponentInChildren<HUDBuffUIPopupController>();
         hudMechComponentPopupController = GetComponentInChildren<HUDMechComponentPopupController>();
         floatingDamagePopupController = GetComponentInChildren<HUDFloatingDamagePopupController>();
-        damageSplashEffectPopupController = GetComponentInChildren<DamageSplashEffectPopupController>();
 
         if (CombatManager.instance != null)
         {
@@ -127,6 +123,11 @@ public class PopupUIManager : MonoBehaviour
     public void HandlePopup(DamageMechPairObject damageObject)
     {
         floatingDamagePopupController.UpdateUI(damageObject);
+    }
+
+    public void HandlePopup(Channels channel)
+    {
+        vFXPopupController.UpdateUI(channel);
     }
 
     public void ClearAllPopups()

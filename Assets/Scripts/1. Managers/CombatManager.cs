@@ -459,7 +459,6 @@ public class CombatManager : MonoBehaviour
 
     private void StartNewTurn()
     {
-        Debug.Log("Starting new turn.");
         if (hasStartedGame && !hasWon && !hasLost)
         {
             if (GameManager.instance.PlayerWins == 0 && hasNotCompletedIntroDialogue)

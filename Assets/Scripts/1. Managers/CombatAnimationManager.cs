@@ -49,13 +49,11 @@ public class CombatAnimationManager : MonoBehaviour
     {
         if(character == CharacterSelect.Player)
         {
-            Debug.Log("Player is boss:" + isBoss);
             playerMechAnimationController.SetMechBossStatus(isBoss);
             playerMechAnimationController.SetMechElements(mech);
         }
         else
         {
-            Debug.Log("Opponent is boss:" + isBoss);
             opponentMechAnimationController.SetMechBossStatus(isBoss);
             opponentMechAnimationController.SetMechElements(mech);
         }

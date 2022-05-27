@@ -68,12 +68,10 @@ public class WorkshopItemPopupController : BaseUIElement<SOItemDataObject>
 
         if (DowntimeManager.instance.CurrentLocation == WorkshopLocation.Shop)
         {
-            Debug.Log("Handling shop popup.");
             HandleShopPopups(primaryData);
         }
         else
         {
-            Debug.Log("Handling inventory popups.");
             HandleInventoryPopups(primaryData);
         }
     }

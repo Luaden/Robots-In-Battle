@@ -224,12 +224,6 @@ public class PlayerMechUISlotManager : BaseSlotManager<ShopItemUIController>
     {
         CheckSlotItems();
 
-        Debug.Log(headSlot.CurrentSlottedItem.MechComponentDataObject.ComponentMaxHP);
-        Debug.Log(torsoSlot.CurrentSlottedItem.MechComponentDataObject.ComponentMaxHP);
-        Debug.Log(armsSlot.CurrentSlottedItem.MechComponentDataObject.ComponentMaxHP);
-        Debug.Log(legsSlot.CurrentSlottedItem.MechComponentDataObject.ComponentMaxHP);
-
-
         MechObject newMech = new MechObject(headSlot.CurrentSlottedItem.MechComponentDataObject, 
                                             torsoSlot.CurrentSlottedItem.MechComponentDataObject,
                                             armsSlot.CurrentSlottedItem.MechComponentDataObject,

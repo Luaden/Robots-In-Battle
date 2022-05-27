@@ -11,6 +11,10 @@ public class MechAnimationController : MonoBehaviour
     [SerializeField] private GameObject legDamageEffect;
 
     private bool isAnimating;
+    private AnimationType currentAnimation;
+    private bool punchHasElement = false;
+    private bool kickHasElement = false;
+    private bool torsoHasElement = false;
 
     public delegate void onAttackingPlayer();
     public static event onAttackingPlayer OnAttackingPlayer;
@@ -47,60 +51,74 @@ public class MechAnimationController : MonoBehaviour
         {
             case AnimationType.PunchHigh:
                 animator.SetTrigger("isPunchingHigh");
+                currentAnimation = AnimationType.PunchHigh;
                 break;
 
             case AnimationType.PunchMid:
                 animator.SetTrigger("isPunchingMid");
+                currentAnimation = AnimationType.PunchMid;
                 break;
 
             case AnimationType.KickMid:
                 animator.SetTrigger("isKickingMid");
+                currentAnimation = AnimationType.KickMid;
                 break;
 
             case AnimationType.KickLow:
                 animator.SetTrigger("isKickingLow");
+                currentAnimation = AnimationType.KickLow;
                 break;
 
             case AnimationType.SpecialMid:
                 animator.SetTrigger("isSpecialingMid");
+                currentAnimation = AnimationType.SpecialMid;
                 break;
 
             case AnimationType.Guard:
                 animator.SetTrigger("isGuarding");
+                currentAnimation = AnimationType.Guard;
                 break;
 
             case AnimationType.Counter:
                 animator.SetTrigger("isCountering");
+                currentAnimation = AnimationType.Counter;
                 break;
 
             case AnimationType.Damaged:
                 animator.SetTrigger("isDamaged");
+                currentAnimation = AnimationType.Damaged;
                 break;
 
             case AnimationType.Jazzersize:
                 animator.SetTrigger("isJazzersizing");
+                currentAnimation = AnimationType.Jazzersize;
                 break;
 
             case AnimationType.Win:
                 animator.SetTrigger("isWinning");
+                currentAnimation = AnimationType.Win;
                 break;
 
             case AnimationType.DamagedFire:
                 animator.SetTrigger("isDamagedFire");
+                currentAnimation = AnimationType.DamagedFire;
                 break;
 
             case AnimationType.DamagedPlasma:
                 animator.SetTrigger("isDamagedPlasma");
+                currentAnimation = AnimationType.DamagedPlasma;
                 break;
 
             case AnimationType.Lose:
                 animator.SetTrigger("isLosing");
+                currentAnimation = AnimationType.Lose;
                 break;
             case AnimationType.Idle:
                 break;
 
             case AnimationType.WorkshopIdle:
                 animator.SetBool("isInForRepairs", true);
+                currentAnimation = AnimationType.WorkshopIdle;
                 break;
         }
     }
@@ -113,15 +131,19 @@ public class MechAnimationController : MonoBehaviour
                 break;
             case ElementType.Fire:
                 animator.SetBool("punchHasFire", true);
+                punchHasElement = true;
                 break;
             case ElementType.Ice:
                 animator.SetBool("punchHasIce", true);
+                punchHasElement = true;
                 break;
             case ElementType.Plasma:
                 animator.SetBool("punchHasPlasma", true);
+                punchHasElement = true;
                 break;
             case ElementType.Acid:
                 animator.SetBool("punchHasAcid", true);
+                punchHasElement = true;
                 break;
             case ElementType.Void:
                 break;
@@ -133,19 +155,26 @@ public class MechAnimationController : MonoBehaviour
                 break;
             case ElementType.Fire:
                 animator.SetBool("kickHasFire", true);
+                kickHasElement = true;
                 break;
             case ElementType.Ice:
                 animator.SetBool("kickHasIce", true);
+                kickHasElement = true;
                 break;
             case ElementType.Plasma:
                 animator.SetBool("kickHasPlasma", true);
+                kickHasElement = true;
                 break;
             case ElementType.Acid:
                 animator.SetBool("kickHasAcid", true);
+                kickHasElement = true;
                 break;
             case ElementType.Void:
                 break;
         }
+
+        if (mechObject.MechTorso.ComponentElement != ElementType.None)
+            torsoHasElement = true;
 
         if (mechObject.MechHead.ComponentCurrentHP <= 0)
             BreakComponent(MechComponent.Head);
@@ -175,8 +204,8 @@ public class MechAnimationController : MonoBehaviour
             case MechComponent.Arms:
                 break;
             case MechComponent.Legs:
-                break;
                 legDamageEffect.SetActive(true);
+                break;
             case MechComponent.Back:
                 break;
         }
@@ -188,5 +217,49 @@ public class MechAnimationController : MonoBehaviour
             OnAttackingOpponent?.Invoke();
         else
             OnAttackingPlayer?.Invoke();
+
+        switch (currentAnimation)
+        {
+            case AnimationType.Idle:
+                break;
+            case AnimationType.PunchHigh:
+                if (!punchHasElement)
+                    CombatManager.instance.PopupUIManager.HandlePopup(Channels.High);
+                break;
+            case AnimationType.PunchMid:
+                if (!punchHasElement)
+                    CombatManager.instance.PopupUIManager.HandlePopup(Channels.Mid);
+                break;
+            case AnimationType.KickMid:
+                if (!kickHasElement)
+                    CombatManager.instance.PopupUIManager.HandlePopup(Channels.Mid);
+                break;
+            case AnimationType.KickLow:
+                if (!kickHasElement)
+                    CombatManager.instance.PopupUIManager.HandlePopup(Channels.Low);
+                break;
+            case AnimationType.SpecialMid:
+                if (!torsoHasElement)
+                    CombatManager.instance.PopupUIManager.HandlePopup(Channels.Mid);
+                break;
+            case AnimationType.Guard:
+                break;
+            case AnimationType.Counter:
+                break;
+            case AnimationType.Damaged:
+                break;
+            case AnimationType.Jazzersize:
+                break;
+            case AnimationType.Win:
+                break;
+            case AnimationType.Lose:
+                break;
+            case AnimationType.DamagedFire:
+                break;
+            case AnimationType.DamagedPlasma:
+                break;
+            case AnimationType.WorkshopIdle:
+                break;
+        }
     }
 }

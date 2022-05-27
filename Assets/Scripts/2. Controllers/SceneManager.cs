@@ -57,7 +57,6 @@ public class SceneManager : MonoBehaviour
     {
         if(sceneQueued)
         {
-            Debug.Log("Loading scene");
             UnityEngine.SceneManagement.SceneManager.LoadScene(sceneToLoad);
             sceneQueued = false;
         }

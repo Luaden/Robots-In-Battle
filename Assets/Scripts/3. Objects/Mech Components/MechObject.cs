@@ -171,8 +171,9 @@ public class MechObject
         DamageWholeMechHP(Mathf.RoundToInt(bonusDamage * CombatManager.instance.BrokenCDM));
     }
 
-    public int GetBonusDamage(int damageToDeal, MechComponent component)
+    public int GetDamageWithBonus(int damageToDeal, MechComponent component)
     {
+        int unmodifiedDamage = 0;
         int bonusDamage = 0;
 
         switch (component)
@@ -181,11 +182,19 @@ public class MechObject
                 if (mechArms.ComponentCurrentHP >= 0)
                 {
                     int tempHP = mechHead.ComponentCurrentHP;
-                    tempHP -= damageToDeal;
+                    Debug.Log(tempHP);
 
-                    if (tempHP < 0)
-                        bonusDamage = Mathf.Abs(tempHP);
-                    break;
+                    if (damageToDeal > tempHP)
+                    {
+                        bonusDamage = damageToDeal - tempHP;
+                        unmodifiedDamage = damageToDeal - bonusDamage;
+                        break;
+                    }
+                    else
+                    {
+                        unmodifiedDamage = damageToDeal;
+                        break;
+                    }
                 }
                 else
                 {
@@ -197,11 +206,19 @@ public class MechObject
                 if (mechTorso.ComponentCurrentHP >= 0)
                 {
                     int tempHP = mechTorso.ComponentCurrentHP;
-                    tempHP -= damageToDeal;
+                    Debug.Log(tempHP);
 
-                    if (tempHP < 0)
-                        bonusDamage = Mathf.Abs(tempHP);
-                    break;
+                    if (damageToDeal > tempHP)
+                    {
+                        bonusDamage = damageToDeal - tempHP;
+                        unmodifiedDamage = damageToDeal - bonusDamage;
+                        break;
+                    }
+                    else
+                    {
+                        unmodifiedDamage = damageToDeal;
+                        break;
+                    }
                 }
                 else
                 {
@@ -213,12 +230,18 @@ public class MechObject
                 if (mechLegs.ComponentCurrentHP >= 0)
                 {
                     int tempHP = mechLegs.ComponentCurrentHP;
-                    
-                    tempHP -= damageToDeal;
-
-                    if (tempHP < 0)
-                        bonusDamage = Mathf.Abs(tempHP);
-                    break;
+                    Debug.Log(tempHP);
+                    if (damageToDeal > tempHP)
+                    {
+                        bonusDamage = damageToDeal - tempHP;
+                        unmodifiedDamage = damageToDeal - bonusDamage;
+                        break;
+                    }
+                    else
+                    {
+                        unmodifiedDamage = damageToDeal;
+                        break;
+                    }
                 }
                 else
                 {
@@ -234,7 +257,10 @@ public class MechObject
                 break;
         }
 
-        return (Mathf.RoundToInt(bonusDamage * CombatManager.instance.BrokenCDM));
+        Debug.Log("Damage To Deal: " + damageToDeal);
+        Debug.Log("Bonus Damage: " + bonusDamage * CombatManager.instance.BrokenCDM);
+        Debug.Log("Unmodified Damage: " + unmodifiedDamage);
+        return Mathf.RoundToInt((bonusDamage * CombatManager.instance.BrokenCDM) + unmodifiedDamage);
     }
 
     public void DamageWholeMechHP(int damageToDeal)
