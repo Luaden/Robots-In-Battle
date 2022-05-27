@@ -113,6 +113,16 @@ public class GameManager : MonoBehaviour
         playerBankController.ResetPlayerTime();
     }
 
+    public void LoadCreditsScene()
+    {
+        SceneManager.instance.LoadCreditsScene();
+    }
+
+    public void LoadTitleWithoutDestruction()
+    {
+        SceneManager.instance.LoadTitleScene();
+    }
+
     public void UpdatePlayerAfterFight(MechObject newMech)
     {
         PlayerMechController.SetNewPlayerMech(newMech);

@@ -19,6 +19,7 @@ public class SceneManager : MonoBehaviour
         sceneQueued = true;
         sceneTransitionController.LoadTransitionScene();
     }
+
     public void LoadWorkshopScene()
     {
         AudioController.instance.PlaySound(SoundType.RecordScratch);
@@ -26,10 +27,19 @@ public class SceneManager : MonoBehaviour
         sceneQueued = true;
         sceneTransitionController.LoadTransitionScene();
     }
+
     public void LoadCombatScene()
     {
         AudioController.instance.PlaySound(SoundType.RecordScratch);
         sceneToLoad = 2;
+        sceneQueued = true;
+        sceneTransitionController.LoadTransitionScene();
+    }
+
+    public void LoadCreditsScene()
+    {
+        AudioController.instance.PlaySound(SoundType.RecordScratch);
+        sceneToLoad = 3;
         sceneQueued = true;
         sceneTransitionController.LoadTransitionScene();
     }
