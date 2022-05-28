@@ -152,9 +152,6 @@ public class AIManager : MonoBehaviour
                     currentEnergyConsumption += attackA.CardData.EnergyCost;
             }
 
-            if(attackA.CardData != null)
-                Debug.Log("Playing " + attackA.CardData.CardName + ". Current energy consumption: " + currentEnergyConsumption);
-
             CombatManager.instance.PreviewEnergyConsumption(CharacterSelect.Opponent, currentEnergyConsumption);
 
             if (CombatManager.instance.NarrateCardSelection)
@@ -206,9 +203,6 @@ public class AIManager : MonoBehaviour
                 else
                     currentEnergyConsumption += attackB.CardData.EnergyCost;
             }
-
-            if(attackA.CardData != null)
-                Debug.Log("Playing " + attackB.CardData.CardName + ". Current energy consumption: " + currentEnergyConsumption);
 
             CombatManager.instance.PreviewEnergyConsumption(CharacterSelect.Opponent, currentEnergyConsumption);
 

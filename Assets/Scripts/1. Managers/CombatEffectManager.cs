@@ -1292,6 +1292,7 @@ public class CombatEffectManager : MonoBehaviour
 
                     if (currentElement == ElementType.Fire || currentElement == ElementType.Plasma)
                     {
+                        Debug.Log("Adding fire or plasma to enemy torso.");
                         int currentStacks;
 
                         if (opponentFighterEffectObject.FirePlasmaStacks.TryGetValue(currentElement, out currentStacks))
@@ -1306,6 +1307,7 @@ public class CombatEffectManager : MonoBehaviour
                     if (currentElement == ElementType.Ice || currentElement == ElementType.Acid)
                     {
                         List<ElementStackObject> currentStackObject = new List<ElementStackObject>();
+                        Debug.Log("Adding ice or acid to enemy torso.");
 
                         if (opponentFighterEffectObject.IceAcidStacks.TryGetValue(cardChannelPair.CardChannel, out currentStackObject))
                         {
@@ -1395,7 +1397,7 @@ public class CombatEffectManager : MonoBehaviour
             case MechComponent.Arms:
                 if (destinationMech == CharacterSelect.Player)
                 {
-                    ElementType currentElement = CombatManager.instance.OpponentFighter.FighterMech.MechHead.ComponentElement;
+                    ElementType currentElement = CombatManager.instance.OpponentFighter.FighterMech.MechArms.ComponentElement;
                     newStacks += CombatManager.instance.OpponentFighter.FighterMech.MechHead.ExtraElementStacks;
 
                     if (currentElement == ElementType.None)
@@ -1449,7 +1451,7 @@ public class CombatEffectManager : MonoBehaviour
 
                 if (destinationMech == CharacterSelect.Opponent)
                 {
-                    ElementType currentElement = CombatManager.instance.PlayerFighter.FighterMech.MechHead.ComponentElement;
+                    ElementType currentElement = CombatManager.instance.PlayerFighter.FighterMech.MechArms.ComponentElement;
                     newStacks += CombatManager.instance.PlayerFighter.FighterMech.MechHead.ExtraElementStacks;
 
                     if (currentElement == ElementType.None)

@@ -13,6 +13,7 @@ public class StatTrackerController : MonoBehaviour
     [Space]
     [Header("Debug")]
     [SerializeField] private bool testWin = true;
+    [SerializeField] private bool bossKilled = true;
 
     private int playerStartingHealth;
 
@@ -29,7 +30,7 @@ public class StatTrackerController : MonoBehaviour
         turnsTaken = 0;
     }
 
-    public void GameOver(bool playerWon)
+    public void GameOver(bool playerWon, bool bossKilled)
     {
         int maxPoints = pointsGainedForNoHealthLoss + pointsGainedForWin + pointsGainedForWinUnderTurnLimit;
 
@@ -60,13 +61,13 @@ public class StatTrackerController : MonoBehaviour
         ScoreObject newScoreObject = new ScoreObject(playerPercentile, pointsGainedForWinUnderTurnLimit, pointsForTurnLimit, pointsGainedForWin,
                                              pointsForWin, pointsGainedForNoHealthLoss, pointsForPlayerHP, playerWon);
 
-        CombatManager.instance.WinLossPanelController.UpdateUI(newScoreObject);
+        CombatManager.instance.WinLossPanelController.UpdateUI(newScoreObject, bossKilled);
     }
 
     [ContextMenu("Game Over")]
     private void GameOver()
     {
-        GameOver(testWin);
+        GameOver(testWin, bossKilled);
     }
 
     private void Start()

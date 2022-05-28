@@ -4,10 +4,11 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
-public class WinLossPanelController : BaseUIElement<ScoreObject>
+public class WinLossPanelController : BaseUIElement<ScoreObject, bool>
 {
     [SerializeField] private float statCrawlSpeedModifier;
     [SerializeField] private GameObject winPanel;
+    [SerializeField] private GameObject creditsSceneButton;
     [SerializeField] private GameObject losePanel;
     [SerializeField] private GameObject starsBackground;
     [SerializeField] private GameObject starsForeground;
@@ -62,9 +63,9 @@ public class WinLossPanelController : BaseUIElement<ScoreObject>
         playerStatsSet = true;
     }
 
-    public override void UpdateUI(ScoreObject primaryData)
+    public override void UpdateUI(ScoreObject primaryData, bool bossKilled = false)
     {
-        if (ClearedIfEmpty(primaryData))
+        if (ClearedIfEmpty(primaryData, bossKilled))
             return;
 
         if(primaryData.hasWon)
@@ -72,6 +73,9 @@ public class WinLossPanelController : BaseUIElement<ScoreObject>
             AudioController.instance.PlayMusic(ThemeType.Win);
             SetGameOverText(primaryData);
             winPanel.SetActive(true);
+
+            if(bossKilled)
+                creditsSceneButton.SetActive(true);
         }
         else
         {
@@ -81,7 +85,7 @@ public class WinLossPanelController : BaseUIElement<ScoreObject>
         }
     }
 
-    protected override bool ClearedIfEmpty(ScoreObject newData)
+    protected override bool ClearedIfEmpty(ScoreObject newData, bool bossKilled)
     {
         if (newData == null)
             return true;

@@ -140,6 +140,17 @@ public class GameManager : MonoBehaviour
         PlayerMechController.SetNewPlayerMech(newMech);
         playerData.CurrentWinCount += 1;
     }
+    public void OpenOptionsCanvas()
+    {
+        optionsCanvasObject.SetActive(true);
+        currentMainCanvas.gameObject.SetActive(false);
+    }
+
+    public void CloseOptionsCanvas()
+    {
+        optionsCanvasObject.SetActive(false);
+        currentMainCanvas.gameObject.SetActive(true);
+    }
 
     public void LoadPlayer(PlayerDataObject playerDataObject = null)
     {
@@ -164,16 +175,12 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    public void OpenOptionsCanvas()
-    {
-        optionsCanvasObject.SetActive(true);
-        currentMainCanvas.gameObject.SetActive(false);
-    }
 
-    public void CloseOptionsCanvas()
+
+    [ContextMenu("Report HP")]
+    private void ReportMechHealth()
     {
-        optionsCanvasObject.SetActive(false);
-        currentMainCanvas.gameObject.SetActive(true);
+        Debug.Log("Player Mech HP:" + instance.playerMechController.PlayerMech.MechCurrentHP);
     }
 
     private void Awake()

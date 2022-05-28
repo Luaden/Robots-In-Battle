@@ -60,17 +60,11 @@ public class MechObject
                 oldComponent = mechHead;
                 mechHead = newComponent;
 
-                RemoveMechHPByComponent(oldComponent);
-                AddMechHPByComponent(newComponent);
-
                 return oldComponent;
 
             case MechComponent.Torso:
                 oldComponent = mechTorso;
                 mechTorso = newComponent;
-
-                RemoveMechHPByComponent(oldComponent);
-                AddMechHPByComponent(newComponent);
                 
                 return oldComponent;
 
@@ -78,23 +72,19 @@ public class MechObject
                 oldComponent = mechArms;
                 mechArms = newComponent;
 
-                RemoveMechHPByComponent(oldComponent);
-                AddMechHPByComponent(newComponent);
-
                 return oldComponent;
 
             case MechComponent.Legs:
                 oldComponent = mechLegs;
                 mechLegs = newComponent;
 
-                RemoveMechHPByComponent(oldComponent);
-                AddMechHPByComponent(newComponent);
-
                 return oldComponent;
                
             case MechComponent.Back:
                 return null;
         }
+
+        RecalculateCurrentHP();
 
         return null;
     }
@@ -278,15 +268,12 @@ public class MechObject
         mechCurrentEnergy = mechMaxEnergy;
     }
 
-    private void RemoveMechHPByComponent(MechComponentDataObject componentRemoved)
+    private void RecalculateCurrentHP()
     {
-        mechMaxHP -= componentRemoved.ComponentMaxHP;
-        mechCurrentHP -= componentRemoved.ComponentCurrentHP;
-    }
-
-    private void AddMechHPByComponent(MechComponentDataObject componentAdded)
-    {
-        mechMaxHP += componentAdded.ComponentMaxHP;
-        mechCurrentHP += componentAdded.ComponentCurrentHP;
+        mechCurrentHP = 0;
+        mechCurrentHP += mechHead.ComponentCurrentHP;
+        mechCurrentHP += mechTorso.ComponentCurrentHP;
+        mechCurrentHP += mechArms.ComponentCurrentHP;
+        mechCurrentHP += mechLegs.ComponentCurrentHP;
     }
 }

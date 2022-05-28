@@ -75,6 +75,7 @@ public class CombatManager : MonoBehaviour
     private bool gameOver = false;
     private bool hasWon = false;
     private bool hasLost = false;
+    private bool fightingBoss = false;
 
     public FighterDataObject PlayerFighter { get => playerFighter; set => InitPlayerFighter(value); }
     public FighterDataObject OpponentFighter { get => opponentFighter; set => InitOpponentFighter(value); }
@@ -329,6 +330,11 @@ public class CombatManager : MonoBehaviour
         GameManager.instance.OpenOptionsCanvas();
     }
 
+    public void LoadCredits()
+    {
+        GameManager.instance.LoadCreditsScene();
+    }
+
     private void Awake()
     {
         instance = this;
@@ -389,6 +395,7 @@ public class CombatManager : MonoBehaviour
                 InitOpponentFighter(GameManager.instance.Player.BossFighters[1], true);
                 AudioController.instance.PlayMusic(ThemeType.BossIntro);
                 AudioController.instance.QueueMusic(ThemeType.Boss);
+                fightingBoss = true;
 
             }
             else
@@ -515,7 +522,7 @@ public class CombatManager : MonoBehaviour
 
         if(hasWon)
         {
-            statTrackerController.GameOver(true);
+            statTrackerController.GameOver(true, fightingBoss);
             winLossPanel.SetActive(true);
             winPanel.SetActive(true);
             fightButton.SetActive(false);
@@ -523,7 +530,7 @@ public class CombatManager : MonoBehaviour
 
         if(hasLost)
         {
-            statTrackerController.GameOver(false);
+            statTrackerController.GameOver(false, false);
             winLossPanel.SetActive(true);
             lossPanel.SetActive(true);
             fightButton.SetActive(false);

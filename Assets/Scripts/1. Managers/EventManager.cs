@@ -55,9 +55,13 @@ public class EventManager : MonoBehaviour
 
     private void Start()
     {
+        DowntimeManager.OnLoadCombatScene += StashEventLog;
+
         uncheckedAcceptedEvents = new List<SOEventObject>();
         newAcceptedEvents = new List<SOEventObject>();
-        DowntimeManager.OnLoadCombatScene += StashEventLog;
+
+        if (GameManager.instance.RemainingPotentialEvents != null)
+            possibleEvents = new List<SOEventObject>(GameManager.instance.RemainingPotentialEvents);
 
         LoadEventLog();
     }
