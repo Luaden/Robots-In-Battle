@@ -20,6 +20,10 @@ public class EventDialoguePopupController : BaseUIElement<SOEventObject>
     [SerializeField] private GameObject refuseDialogueButton;
     [SerializeField] private GameObject leaveDialogueButton;
 
+    [Header("Animation Stuff")]
+    [SerializeField] private Animator stickShiftMustache;
+    private bool isMustaching;
+
     private SOEventObject currentEvent;
     private Queue<string> dialogueQueue = new Queue<string>();
     private string currentDialogue;
@@ -127,6 +131,12 @@ public class EventDialoguePopupController : BaseUIElement<SOEventObject>
 
         if (completeDialogue.Count != 0)
         {
+            if(!isMustaching)
+            {
+                isMustaching = true;
+                stickShiftMustache.SetBool("isMustaching", true);
+            }
+
             if (CheckTimer())
             {
                 currentDialogue += completeDialogue.Dequeue();
@@ -152,6 +162,12 @@ public class EventDialoguePopupController : BaseUIElement<SOEventObject>
                 leaveDialogueButton.SetActive(true);
                 dialogueComplete = true;
             }
+        }
+
+        if(completeDialogue.Count == 0 && dialogueQueue.Count == 0 && isMustaching)
+        {
+            isMustaching = false;
+            stickShiftMustache.SetBool("isMustaching", false);
         }
     }
 
