@@ -15,14 +15,17 @@ public class CreditsDialoguePopupController : MonoBehaviour
     [SerializeField] private GameObject popupDialogue1Object;
     [SerializeField] private GameObject popupDialogue2Object;
     [Space]
-    [SerializeField] private string defaultText;
+    [SerializeField] private string defaultText1;
+    [SerializeField] private string defaultText2;
     [SerializeField] private float textPace;
 
     public bool startDialogue = false;
 
     private float currentTimer = 0f;
-    private Queue<char> completeDialogue;
-    private string currentDialogue;
+    private Queue<char> completeDialogue1;
+    private Queue<char> completeDialogue2;
+    private string currentDialogue1;
+    private string currentDialogue2;
 
     public delegate void onAIDialogueComplete();
     public static event onAIDialogueComplete OnAIDialogueComplete;
@@ -46,10 +49,14 @@ public class CreditsDialoguePopupController : MonoBehaviour
 
     private void Start()
     {
-        completeDialogue = new Queue<char>();
+        completeDialogue1 = new Queue<char>();
+        completeDialogue2 = new Queue<char>();
 
-        foreach (char letter in defaultText)
-            completeDialogue.Enqueue(letter);
+        foreach (char letter in defaultText1)
+            completeDialogue1.Enqueue(letter);
+
+        foreach (char letter in defaultText2)
+            completeDialogue2.Enqueue(letter);
     }
 
     private void Update()
@@ -71,14 +78,18 @@ public class CreditsDialoguePopupController : MonoBehaviour
 
     private void UpdateTextOverTime()
     {
-        if (completeDialogue.Count != 0)
+        if(CheckTimer())
         {
-            if (CheckTimer())
+            if (completeDialogue2.Count != 0)
             {
-                currentDialogue += completeDialogue.Dequeue();
-                
-                popupDialogue1.text = currentDialogue;
-                popupDialogue2.text = currentDialogue;
+                currentDialogue2 += completeDialogue2.Dequeue();
+                popupDialogue2.text = currentDialogue2;
+            }
+
+            if (completeDialogue1.Count != 0)
+            {
+                currentDialogue1 += completeDialogue1.Dequeue();
+                popupDialogue1.text = currentDialogue1;
             }
         }
     }
