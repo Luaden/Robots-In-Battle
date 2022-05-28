@@ -44,6 +44,14 @@ public class SceneManager : MonoBehaviour
         sceneTransitionController.LoadTransitionScene();
     }
 
+    public void LoadBossScene()
+    {
+        AudioController.instance.PlaySound(SoundType.RecordScratch);
+        sceneToLoad = 4;
+        sceneQueued = true;
+        sceneTransitionController.LoadTransitionScene();
+    }
+
     private void Awake()
     {
         if (instance != null && instance != this)

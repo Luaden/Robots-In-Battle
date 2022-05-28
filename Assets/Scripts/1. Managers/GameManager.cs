@@ -99,6 +99,13 @@ public class GameManager : MonoBehaviour
         Application.Quit();
     }
 
+    public void LoadBossScene()
+    {
+        SceneManager.instance.LoadBossScene();
+        instance = null;
+        Destroy(gameObject);
+    }
+
     public void LoadTitleScene()
     {
         SceneManager.instance.LoadTitleScene();
