@@ -22,6 +22,7 @@ public class GameManager : MonoBehaviour
     private int enemyHealthModifier = 0;
     private List<SOEventObject> activeEvents;
     private FighterDataObject nextFighter;
+    private List<SOEventObject> remainingPotentialEvents;
     private Canvas currentMainCanvas;
 
     private FighterBuildController fighterBuildController;
@@ -46,6 +47,7 @@ public class GameManager : MonoBehaviour
     public List<SOEventObject> ActiveEvents { get => activeEvents; }
     public PlayerDataObject Player { get => playerData; }
     public FighterDataObject NextFighter { get => nextFighter; set => nextFighter = value; }
+    public List<SOEventObject> RemainingPotentialEvents { get => remainingPotentialEvents; set => remainingPotentialEvents = value; }
 
     public delegate void onUpdatePlayerCurrencies();
     public static event onUpdatePlayerCurrencies OnUpdatePlayerCurrencies;
@@ -79,7 +81,6 @@ public class GameManager : MonoBehaviour
                                                                boss.FighterPilotUIObject.FighterBody);
             newBoss.FighterDeck = PlayerDeckController.BuildFighterDeck(boss.DeckList);
             bossFighters.Add(newBoss);
-            Debug.Log("Creating new boss: " + boss.PilotName);
         }
         
         for(int i = 0; i < 7; i++)
@@ -168,7 +169,7 @@ public class GameManager : MonoBehaviour
     {
         if (instance != null && instance != this)
         {
-            Destroy(this);
+            Destroy(this.gameObject);
             return;
         }
         else
@@ -331,7 +332,9 @@ public class GameManager : MonoBehaviour
 
         public void AddItemToInventory(MechComponentDataObject mechComponent)
         {
+            Debug.Log("Adding an item to the inventory.");
             instance.playerData.PlayerInventory.Add(mechComponent);
+            Debug.Log("Inventory Count: " + PlayerInventory.Count);
         }
 
         public void RemoveItemFromInventory(MechComponentDataObject mechComponent)

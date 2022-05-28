@@ -63,8 +63,6 @@ public class InventoryUISlotManager : BaseSlotManager<ShopItemUIController>
             item.ItemSlotController = slotController;
             item.DisablePriceTag();
         }
-
-        UpdatePlayerInventory();
     }
 
     public override void AddSlotToList(BaseSlotController<ShopItemUIController> newSlot)
@@ -100,11 +98,38 @@ public class InventoryUISlotManager : BaseSlotManager<ShopItemUIController>
             }
     }
 
+    public void SetInventoryActive()
+    {
+        inventoryButton.SetActive(false);
+        inventoryPanel.SetActive(true);
+        cardDeckButton.SetActive(true);
+        cardDeckPanel.SetActive(false);
+        mechComponentsPanel.SetActive(true);
+    }
+
+    public void SetCardDeckActive()
+    {
+        cardDeckButton.SetActive(false);
+        cardDeckPanel.SetActive(true);
+        inventoryButton.SetActive(true);
+        inventoryPanel.SetActive(false);
+        mechComponentsPanel.SetActive(false);
+    }
+
     private void Start()
     {
         foreach (MechComponentDataObject item in GameManager.instance.PlayerInventoryController.PlayerInventory)
-            if (item.SOItemDataObject.ItemType == ItemType.Component)
-                DowntimeManager.instance.ShopItemUIBuildController.BuildAndDisplayItemUI(item.SOItemDataObject, this, item);
+        {
+            Debug.Log(item.ComponentName);
+            DowntimeManager.instance.ShopItemUIBuildController.BuildAndDisplayItemUI(item.SOItemDataObject, this, item);
+        }
+
+        DowntimeManager.OnLoadCombatScene += UpdatePlayerInventory;
+    }
+
+    private void OnDestroy()
+    {
+        DowntimeManager.OnLoadCombatScene -= UpdatePlayerInventory;
     }
 
     private void UpdatePlayerInventory()
@@ -116,6 +141,9 @@ public class InventoryUISlotManager : BaseSlotManager<ShopItemUIController>
 
         foreach (ShopItemUIController item in shopItemUIControllers)
         {
+            if (item == null)
+                continue;
+
             if (item.MechComponentDataObject != null)
                 GameManager.instance.PlayerInventoryController.AddItemToInventory(item.MechComponentDataObject);
             else
@@ -125,21 +153,9 @@ public class InventoryUISlotManager : BaseSlotManager<ShopItemUIController>
         }
     }
 
-    public void SetInventoryActive()
+    [ContextMenu("Count Inventory")]
+    private void CountInventory()
     {
-        inventoryButton.SetActive(false);
-        inventoryPanel.SetActive(true);
-        cardDeckButton.SetActive(true);
-        cardDeckPanel.SetActive(false);
-        mechComponentsPanel.SetActive(true);
+        Debug.Log(GameManager.instance.PlayerInventoryController.PlayerInventory.Count);
     }
-    public void SetCardDeckActive()
-    {
-        cardDeckButton.SetActive(false);
-        cardDeckPanel.SetActive(true);
-        inventoryButton.SetActive(true);
-        inventoryPanel.SetActive(false);
-        mechComponentsPanel.SetActive(false);
-    }
-
 }

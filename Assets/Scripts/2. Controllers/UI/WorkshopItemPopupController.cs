@@ -167,8 +167,6 @@ public class WorkshopItemPopupController : BaseUIElement<SOItemDataObject>
             popupQueued = true;
 
             inventoryComponentPopupObject.SetActive(true);
-
-            Debug.Log("Found component in inventory.");
         }
 
         if (primaryData.ItemType == ItemType.Card)

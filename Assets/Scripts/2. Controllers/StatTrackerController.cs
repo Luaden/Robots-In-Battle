@@ -10,6 +10,9 @@ public class StatTrackerController : MonoBehaviour
     [SerializeField] private int pointLossPerHealthLoss;
     [SerializeField] private int pointsGainedForNoHealthLoss;
     [SerializeField] private int pointsGainedForWin;
+    [Space]
+    [Header("Debug")]
+    [SerializeField] private bool testWin = true;
 
     private int playerStartingHealth;
 
@@ -57,12 +60,13 @@ public class StatTrackerController : MonoBehaviour
         ScoreObject newScoreObject = new ScoreObject(playerPercentile, pointsGainedForWinUnderTurnLimit, pointsForTurnLimit, pointsGainedForWin,
                                              pointsForWin, pointsGainedForNoHealthLoss, pointsForPlayerHP, playerWon);
 
-        Debug.Log("Player HP Score: " + pointsForPlayerHP);
-        Debug.Log("Player Turn Score: " + pointsForTurnLimit);
-        Debug.Log("Player Win Score: " + pointsForWin);
-        Debug.Log("Player Total Score: " + playerPercentile);
-
         CombatManager.instance.WinLossPanelController.UpdateUI(newScoreObject);
+    }
+
+    [ContextMenu("Game Over")]
+    private void GameOver()
+    {
+        GameOver(testWin);
     }
 
     private void Start()

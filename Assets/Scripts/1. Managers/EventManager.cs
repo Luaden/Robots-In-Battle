@@ -43,6 +43,7 @@ public class EventManager : MonoBehaviour
         else
             UnsuccessfulAcceptCurrentEvent();
     }
+
     public void RefuseCurrentEvent()
     {
         foreach (SOEventOutcomeObject outcome in currentEvent.RefusalOutcomes)
@@ -75,6 +76,7 @@ public class EventManager : MonoBehaviour
     private void StashEventLog()
     {
         GameManager.instance.StashCurrentEvents(newAcceptedEvents);
+        GameManager.instance.RemainingPotentialEvents = new List<SOEventObject>(possibleEvents);
     }
 
     private void CheckEventLog()
@@ -96,11 +98,11 @@ public class EventManager : MonoBehaviour
 
         if (!hasRolledNewEvent)
         {
-            if(possibleEvents.Count > 0)
+            if (possibleEvents.Count > 0)
             {
                 RollForNewEvent();
             }
-            
+
             hasRolledNewEvent = true;
         }
 
@@ -119,6 +121,7 @@ public class EventManager : MonoBehaviour
             roll = Random.Range(0, possibleEvents.Count);
 
             currentEvent = possibleEvents[roll];
+            possibleEvents.Remove(possibleEvents[roll]);
             CheckEventLog();
         }            
     }
@@ -149,7 +152,7 @@ public class EventManager : MonoBehaviour
             currentEvent = currentEvent.ObjectiveFailureDialogue;
         }
 
-        PlayCurrentEventDialogue();
+        CheckEventLog();
     }
 
     private bool CheckCurrentEventRequirements()

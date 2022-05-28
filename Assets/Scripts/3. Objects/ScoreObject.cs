@@ -22,7 +22,7 @@ public class ScoreObject
         this.turnLimitMaxPoints = turnLimitMaxPoints;
         this.playerTurnLimitPoints = playerTurnLimitPoints;
         this.winPoints = winPoints;
-        this.playerWinPoints = winPoints;
+        this.playerWinPoints = playerWinPoints;
         this.pointsGainedForNoHealthLoss = pointsGainedForNoHealthLoss;
         this.playerPointsGainedForHealthLoss = playerPointsGainedForHealthLoss;
         this.hasWon = hasWon;

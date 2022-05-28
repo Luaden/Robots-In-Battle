@@ -133,6 +133,7 @@ public class WinLossPanelController : BaseUIElement<ScoreObject>
 
             if (playerCurrentWinPoints >= playerWinPoints)
             {
+                Debug.Log(playerWinPoints);
                 playerCurrentWinPoints = playerWinPoints;
                 playerWinPointsText.text = playerWinPoints.ToString();
                 playerWinStatsComplete = true;

@@ -52,8 +52,9 @@ public class AudioController : MonoBehaviour
 
         if (bgmAudioSource.clip != null)
         {
+            musicQueue.Clear();
             musicQueue.Enqueue(clipToPlay);
-            newImmediateTrack = true;
+            newImmediateTrack = playImmediately;
             fadeOut = true;
             Debug.Log("Queueing music.");
             previousBGMVolume = bgmAudioVolume;
@@ -71,9 +72,9 @@ public class AudioController : MonoBehaviour
         musicQueue.Enqueue(audioLookup.GetMusic(theme));
     }
 
-    public void PlayMusic(ThemeType theme)
+    public void PlayMusic(ThemeType theme, bool playImmediately = true)
     {
-        PlayMusic(audioLookup.GetMusic(theme));
+        PlayMusic(audioLookup.GetMusic(theme), playImmediately);
     }
 
     public void PlayDialogue(AudioClip clipToPlay)
@@ -127,13 +128,10 @@ public class AudioController : MonoBehaviour
     {
         if(newImmediateTrack && fadeOut)
         {
-            Debug.Log("Lowering volume.");
             bgmAudioVolume -= Time.deltaTime;
 
             if(bgmAudioVolume <= 0f)
             {
-                Debug.Log("Fade out complete.");
-
                 Debug.Log("Playing: " + musicQueue.Peek());
                 bgmAudioSource.clip = musicQueue.Dequeue();
                 bgmAudioSource.Play();
@@ -153,7 +151,6 @@ public class AudioController : MonoBehaviour
 
         if(fadeIn)
         {
-            Debug.Log("Fading in.");
             bgmAudioVolume += Time.deltaTime;
 
             if(bgmAudioVolume >= previousBGMVolume)
@@ -188,8 +185,6 @@ public class AudioController : MonoBehaviour
         sfxAudioVolume = newValue;
         sfxAudioSource.volume = sfxAudioVolume * masterVolume;
         dialogueAudioSource.volume = sfxAudioVolume * masterVolume;
-
-        Debug.Log("SFX Volume is " + sfxAudioVolume);
         
         //We'll use this if we develop a playerprefs setup for players.
         //GameManager.Instance.Config.SFXVolume = value;
@@ -201,8 +196,6 @@ public class AudioController : MonoBehaviour
         float newValue = value / 10f;
         bgmAudioVolume = newValue;
         bgmAudioSource.volume = bgmAudioVolume * masterVolume;
-
-        Debug.Log("SFX Volume is " + bgmAudioVolume);
 
         //We'll use this if we develop a playerprefs setup for players.
         //GameManager.Instance.Config.BGMVolume = value;
