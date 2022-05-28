@@ -25,6 +25,7 @@ public class AIManager : MonoBehaviour
     private List<CardDataObject> opponentHand;
     private CardChannelPairObject attackA;
     private CardChannelPairObject attackB;
+    private int currentEnergyConsumption;
     private string aICombatLog = "";
 
     #region Utility
@@ -34,7 +35,6 @@ public class AIManager : MonoBehaviour
         newCardPriority.card = card;
         newCardPriority.channel = channel;
         newCardPriority.priority = 0;
-
         return newCardPriority;
     }
 
@@ -108,6 +108,8 @@ public class AIManager : MonoBehaviour
 
     private void BuildCardChannelPairA()
     {
+        currentEnergyConsumption = 0;
+
         if (attackA != null)
             return;
 
@@ -141,7 +143,19 @@ public class AIManager : MonoBehaviour
             attackA = new CardChannelPairObject(cardPlays[highestCardIndex].card, cardPlays[highestCardIndex].channel);
             attackA.CardData.SelectedChannels = attackA.CardChannel;
 
-            CombatManager.instance.PreviewEnergyConsumption(CharacterSelect.Opponent, attackA.CardData.EnergyCost);
+
+            if(attackA.CardData != null)
+            {
+                if (CombatManager.instance.CombatEffectManager.GetIceElementInChannel(attackA.CardChannel, CharacterSelect.Opponent))
+                    currentEnergyConsumption += Mathf.RoundToInt(attackA.CardData.EnergyCost * CombatManager.instance.IceChannelEnergyReductionModifier);
+                else
+                    currentEnergyConsumption += attackA.CardData.EnergyCost;
+            }
+
+            if(attackA.CardData != null)
+                Debug.Log("Playing " + attackA.CardData.CardName + ". Current energy consumption: " + currentEnergyConsumption);
+
+            CombatManager.instance.PreviewEnergyConsumption(CharacterSelect.Opponent, currentEnergyConsumption);
 
             if (CombatManager.instance.NarrateCardSelection)
                 Debug.Log("Opponent selected " + attackA.CardData.CardName + " for their A Slot.");
@@ -183,10 +197,20 @@ public class AIManager : MonoBehaviour
             attackB = new CardChannelPairObject(cardPlays[highestCardIndex].card, cardPlays[highestCardIndex].channel);
             attackB.CardData.SelectedChannels = attackB.CardChannel;
 
-            if(attackA != null && attackA.CardData != null)
-                CombatManager.instance.PreviewEnergyConsumption(CharacterSelect.Opponent, attackA.CardData.EnergyCost + attackB.CardData.EnergyCost);
-            else
-                CombatManager.instance.PreviewEnergyConsumption(CharacterSelect.Opponent, attackB.CardData.EnergyCost);
+            if (attackB.CardData != null)
+            {
+                if (CombatManager.instance.CombatEffectManager.GetIceElementInChannel(attackA.CardChannel, CharacterSelect.Opponent))
+                {
+                    currentEnergyConsumption += Mathf.RoundToInt(attackB.CardData.EnergyCost * CombatManager.instance.IceChannelEnergyReductionModifier);
+                }
+                else
+                    currentEnergyConsumption += attackB.CardData.EnergyCost;
+            }
+
+            if(attackA.CardData != null)
+                Debug.Log("Playing " + attackB.CardData.CardName + ". Current energy consumption: " + currentEnergyConsumption);
+
+            CombatManager.instance.PreviewEnergyConsumption(CharacterSelect.Opponent, currentEnergyConsumption);
 
             if (CombatManager.instance.NarrateCardSelection)
                 Debug.Log("Opponent selected " + attackB.CardData.CardName + " for their B Slot.");
@@ -233,6 +257,8 @@ public class AIManager : MonoBehaviour
             attackA = null;
             attackB = null;
         }
+
+        Debug.Log(CombatManager.instance.OpponentFighter.FighterMech.MechCurrentEnergy);
     }
 
     private List<CardPlayPriorityObject> GetCurrentPossibleCards(bool aSlot)
@@ -246,13 +272,13 @@ public class AIManager : MonoBehaviour
         {
             foreach(Channels channel in CombatManager.instance.GetChannelListFromFlags(card.PossibleChannels))
             {
-                if (CombatManager.instance.CombatEffectManager.GetIceElementInChannel(channel, CharacterSelect.Player))
+                if (CombatManager.instance.CombatEffectManager.GetIceElementInChannel(channel, CharacterSelect.Opponent))
                 {
-                    if (card.EnergyCost * CombatManager.instance.IceChannelEnergyReductionModifier > CombatManager.instance.OpponentFighter.FighterMech.MechCurrentEnergy)
+                    if ((card.EnergyCost * CombatManager.instance.IceChannelEnergyReductionModifier) + currentEnergyConsumption > CombatManager.instance.OpponentFighter.FighterMech.MechCurrentEnergy)
                         continue;
                 }                    
                 else
-                    if (card.EnergyCost > CombatManager.instance.OpponentFighter.FighterMech.MechCurrentEnergy)
+                    if (card.EnergyCost + currentEnergyConsumption> CombatManager.instance.OpponentFighter.FighterMech.MechCurrentEnergy)
                         continue;
 
                 if (aSlot && (card.CardType == CardType.Attack || card.CardType == CardType.Neutral))
