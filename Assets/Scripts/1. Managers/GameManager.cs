@@ -94,6 +94,10 @@ public class GameManager : MonoBehaviour
         playerData.OtherFighters = newFighters;
     }
 
+    public void QuitGame()
+    {
+        Application.Quit();
+    }
 
     public void LoadTitleScene()
     {

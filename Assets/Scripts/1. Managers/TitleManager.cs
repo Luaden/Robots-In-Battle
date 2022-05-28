@@ -26,6 +26,11 @@ public class TitleManager : MonoBehaviour
         GameManager.instance.LoadCreditsScene();
     }
 
+    public void QuitGame()
+    {
+        Application.Quit();
+    }
+
     private void Start()
     {
         GameManager.instance.CurrentMainCanvas = mainCanvas;
