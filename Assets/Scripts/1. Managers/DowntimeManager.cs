@@ -87,7 +87,7 @@ public class DowntimeManager : MonoBehaviour
 
     public void OpenOptionsCanvas()
     {
-
+        GameManager.instance.OpenOptionsCanvas();
     }
 
     public void RepairEquippedItems()
