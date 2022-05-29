@@ -101,15 +101,15 @@ public class GameManager : MonoBehaviour
 
     public void LoadBossScene()
     {
-        SceneManager.instance.LoadBossScene();
         instance = null;
+        SceneManager.instance.LoadBossScene();
         Destroy(gameObject);
     }
 
     public void LoadTitleScene()
     {
-        SceneManager.instance.LoadTitleScene();
         instance = null;
+        SceneManager.instance.LoadTitleScene();
         Destroy(gameObject);
     }
 
@@ -187,6 +187,7 @@ public class GameManager : MonoBehaviour
     {
         if (instance != null && instance != this)
         {
+            Debug.Log("Game manager already exists.");
             Destroy(this.gameObject);
             return;
         }

@@ -434,10 +434,10 @@ AnimatorStateTransition:
   m_Name: 
   m_Conditions:
   - m_ConditionMode: 1
-    m_ConditionEvent: isBoss
+    m_ConditionEvent: isLosing
     m_EventTreshold: 0
   - m_ConditionMode: 1
-    m_ConditionEvent: isLosing
+    m_ConditionEvent: isBoss
     m_EventTreshold: 0
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: -1624501002912243007}
@@ -3754,7 +3754,7 @@ AnimatorStateTransition:
   m_Name: 
   m_Conditions:
   - m_ConditionMode: 1
-    m_ConditionEvent: isLosing
+    m_ConditionEvent: isWinning
     m_EventTreshold: 0
   - m_ConditionMode: 1
     m_ConditionEvent: isBoss
